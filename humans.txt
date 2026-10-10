@@ -1,0 +1,47 @@
+/* TEAM */
+
+  Founder & Maintainer: Ravi Raj
+  Contact: bandwar.archive@gmail.com
+  Location: Bandwar, Begusarai, Bihar, India
+
+  Community: Bandwar Village Community
+  Contact: bandwar.archive@gmail.com
+  Location: Bandwar, Begusarai, Bihar, India
+
+/* THANKS */
+
+  The residents and elders of Bandwar village
+  — for their memories, photographs, and patience.
+
+  Contributors to the archive, 2024–2026
+  — for sharing what they know.
+
+  Everyone who has ever paused to read
+  — for keeping the record alive.
+
+/* SITE */
+
+  Last update: 2026-10-10
+  Language: English (en-IN)
+  Doctype: HTML5
+  Standards: HTML5, CSS3, ES2022
+
+  Components:
+    Typography: Fraunces (display), Inter (body), IBM Plex Mono (metadata)
+    Icons: Unicode + inline SVG
+    Maps: Leaflet.js + Esri Satellite
+    Fonts: Google Fonts
+
+  Software:
+    Build engine: Node.js + custom static generator
+    Deployment: Vercel
+    Automation: GitHub Actions
+
+  License:
+    Code: MIT
+    Content: © Bandwar Village Community
+
+  Archive:
+    Established: 2024
+    URL: https://bandwar.vercel.app
+    Repository: https://github.com/ravirajhere/Bandwar
