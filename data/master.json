@@ -1,0 +1,222 @@
+{
+  "$schema": "./master.schema.json",
+  "version": "5.0.0",
+  "lastUpdated": "2026-10-10",
+
+  "site": {
+    "name": "Bandwar — A Village Archive",
+    "shortName": "Bandwar",
+    "tagline": "A community-built digital archive",
+    "description": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — history, temples, schools, culture, and daily life.",
+    "url": "https://bandwar.vercel.app",
+    "edition": "2026",
+    "language": "en-IN",
+    "locale": "en_IN",
+    "dir": "ltr",
+    "established": "2024"
+  },
+
+  "village": {
+    "name": "Bandwar",
+    "alias": ["Vandwar", "Banduar", "बनद्वार"],
+    "region": "Mithila",
+    "district": "Begusarai",
+    "state": "Bihar",
+    "country": "India",
+    "pincode": "851131",
+    "coordinates": { "lat": 25.5009, "lng": 86.1606 },
+    "elevation": "45 m (148 ft)",
+    "population": 12943,
+    "area": "840 hectares",
+    "censusCode": 238112
+  },
+
+  "brand": {
+    "colors": {
+      "primary": "#1a1a18",
+      "base": "#f7f5ef",
+      "surface": "#efece4",
+      "accent": "#1f3d2f",
+      "warn": "#a64b2a",
+      "white": "#ffffff"
+    },
+    "fonts": {
+      "display": "Fraunces",
+      "body": "Inter",
+      "mono": "IBM Plex Mono"
+    }
+  },
+
+  "nav": [
+    { "label": "Home", "href": "/", "icon": "🏠" },
+    { "label": "Archive", "href": "/section", "icon": "📚" },
+    { "label": "Places", "href": "/place", "icon": "🗺️" },
+    { "label": "Time", "href": "/time", "icon": "⏳" },
+    { "label": "Vision", "href": "/vision", "icon": "🔮" },
+    { "label": "About", "href": "/about", "icon": "ℹ️" }
+  ],
+
+  "footer": {
+    "sections": [
+      { "label": "Temples", "href": "/section/religion" },
+      { "label": "Schools", "href": "/section/education" },
+      { "label": "Culture", "href": "/section/culture" },
+      { "label": "Infrastructure", "href": "/section/infrastructure" }
+    ],
+    "explore": [
+      { "label": "Map", "href": "/place" },
+      { "label": "Gallery", "href": "/place?view=gallery" },
+      { "label": "Timeline", "href": "/time" },
+      { "label": "Vision 2035", "href": "/vision" },
+      { "label": "Contribute", "href": "/contribute" }
+    ],
+    "copyright": "© {year} Bandwar Village Archive",
+    "credit": "Made with ❤️ & Curiosity"
+  },
+
+  "seo": {
+    "titlePattern": "{title} — Bandwar Archive",
+    "titlePatternHome": "{siteName}",
+    "defaultDescription": "A community-built digital archive of Bandwar village, Begusarai (Bihar).",
+    "ogImage": "/images/home/bandwar-hero.jpg",
+    "ogImageWidth": 1200,
+    "ogImageHeight": 630,
+    "twitterHandle": null,
+    "verification": {
+      "google": "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs"
+    }
+  },
+
+  "imageSEO": {
+    "enabled": true,
+    "namingConvention": {
+      "case": "kebab",
+      "maxWords": 5,
+      "minWords": 2,
+      "allowNumbersAtEnd": true,
+      "allowHindiProperNouns": true,
+      "forbiddenPrefixes": ["img", "photo", "image", "pic"],
+      "forbiddenPatterns": ["^\\d+-", "-\\d+-"]
+    },
+    "altTextTemplate": "{caption} — {village.name}, {village.district} ({year})",
+    "captionMinLength": 30,
+    "captionMaxLength": 160,
+    "generateWebP": true,
+    "generateAVIF": true,
+    "generateResponsive": true,
+    "responsiveWidths": [400, 800, 1200, 1600],
+    "defaultQuality": 82,
+    "webpQuality": 78,
+    "avifQuality": 65,
+    "lazyLoad": true,
+    "addImageSchema": true,
+    "addToImageSitemap": true,
+    "license": "https://bandwar.vercel.app/about#license",
+    "creditText": "Bandwar Village Archive",
+    "creator": "Bandwar Village Community"
+  },
+
+  "images": {
+    "sizes": {
+      "thumbnail": 400,
+      "card": 800,
+      "hero": 1600,
+      "og": 1200
+    },
+    "formats": {
+      "fallback": "jpg",
+      "modern": ["webp", "avif"]
+    },
+    "aspectRatios": {
+      "hero": "16/9",
+      "card": "4/3",
+      "gallery": "1/1",
+      "portrait": "4/5"
+    }
+  },
+
+  "contact": {
+    "email": "bandwar.archive@gmail.com",
+    "address": "Bandwar, Begusarai, Bihar — 851131",
+    "coordinates": { "lat": 25.5009, "lng": 86.1606 }
+  },
+
+  "social": {
+    "github": "https://github.com/ravirajhe/Bandwar",
+    "youtube": null,
+    "instagram": null,
+    "twitter": null
+  },
+
+  "features": {
+    "darkMode": true,
+    "search": true,
+    "pwa": true,
+    "analytics": false,
+    "hindiVersion": false,
+    "map": true,
+    "gallery": true,
+    "timeline": true,
+    "vision": true,
+    "manifesto": true,
+    "imageOptimization": true,
+    "webpConversion": true,
+    "avifConversion": true,
+    "responsiveImages": true
+  },
+
+  "analytics": {
+    "ga4Id": null,
+    "plausibleDomain": null
+  },
+
+  "license": {
+    "code": "MIT",
+    "content": "© Bandwar Village Community — Not for commercial use",
+    "url": "/about#license"
+  },
+
+  "organization": {
+    "name": "Bandwar Village Archive",
+    "type": "NGO",
+    "foundingDate": "2024",
+    "founders": ["Bandwar Village Community"],
+    "areaServed": "Bandwar, Begusarai, Bihar, India"
+  },
+
+  "content": {
+    "defaultAuthor": "Bandwar Village Archive",
+    "defaultLanguage": "en-IN",
+    "dateFormat": "YYYY-MM-DD",
+    "timezone": "Asia/Kolkata",
+    "minWordCount": 400,
+    "targetWordCount": 800,
+    "minSectionsPerArticle": 3,
+    "minRelatedArticles": 2,
+    "minTagsPerArticle": 3
+  },
+
+  "build": {
+    "outputDir": "dist",
+    "cleanOutput": true,
+    "minifyHTML": true,
+    "minifyCSS": true,
+    "minifyJS": true,
+    "inlineCriticalCSS": true,
+    "generateSitemaps": true,
+    "generateManifesto": true,
+    "validateRules": true,
+    "failOnValidationError": true
+  },
+
+  "rules": {
+    "noInlineCSS": true,
+    "noHardcodedColors": true,
+    "noQueryParamURLs": true,
+    "requireAltText": true,
+    "requireImageSitemap": true,
+    "requireSchema": true,
+    "requireCanonical": true,
+    "requireMetaTags": true
+  }
+}
