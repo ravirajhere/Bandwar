@@ -4,6 +4,10 @@
   "cleanUrls": true,
   "trailingSlash": false,
 
+  "git": {
+    "deploymentEnabled": false
+  },
+
   "buildCommand": "node scripts/build.cjs --clean && node scripts/generate-sitemaps.cjs",
   "outputDirectory": "dist",
   "installCommand": "npm install",
@@ -69,6 +73,7 @@
     { "source": "/gallery", "destination": "/place?view=gallery", "permanent": true },
     { "source": "/category", "destination": "/section", "permanent": true },
     { "source": "/need", "destination": "/vision", "permanent": true },
-    { "source": "/article", "destination": "/section", "permanent": false }
+    { "source": "/article", "destination": "/section", "permanent": false },
+    { "source": "/contribute", "destination": "/about#contact", "permanent": true }
   ]
 }
