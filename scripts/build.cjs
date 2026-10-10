@@ -327,6 +327,7 @@ function buildImageNode(imagePath, meta, master) {
     ...(meta.height && { 'height': { '@type': 'QuantitativeValue', 'value': meta.height } }),
     'creator': { '@id': `${master.site.url}/#organization` },
     'creditText': master.imageSEO.creditText,
+    'copyrightNotice': master.license.content,
     'license': master.imageSEO.license,
     'acquireLicensePage': master.imageSEO.acquireLicensePage,
     ...(meta.uploadDate && { 'uploadDate': meta.uploadDate })
