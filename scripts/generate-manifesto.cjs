@@ -123,7 +123,6 @@ async function optimizeImage(relPath, options = {}) {
 function normalizeHow(how) {
   if (!how) return [];
   
-  // If array of {label, value} or {label, value, ...}
   if (Array.isArray(how)) {
     return how.map(f => ({
       label: f.label || f.key || '',
@@ -131,7 +130,6 @@ function normalizeHow(how) {
     }));
   }
   
-  // If object {scheme: "...", cost: "...", ...}
   if (typeof how === 'object') {
     return Object.entries(how).map(([key, value]) => ({
       label: key,
@@ -184,7 +182,8 @@ async function buildManifestoHTML(master, vision) {
   async function getImage(relPath) {
     if (!relPath) return null;
     if (imageCache.has(relPath)) return imageCache.get(relPath);
-    const data = await optimizeImage(relPath, { maxWidth: 1400, quality: 75 });
+    // ✅ COMPRESSED: maxWidth 800, quality 60 (was 1400, 75)
+    const data = await optimizeImage(relPath, { maxWidth: 800, quality: 60 });
     imageCache.set(relPath, data);
     return data;
   }
@@ -391,7 +390,6 @@ async function buildManifestoHTML(master, vision) {
     const statusText = need.status === 'in-progress' ? 'In Progress' : 'Planned';
     const statusClass = need.status === 'in-progress' ? 'badge-progress' : 'badge-pending';
 
-    // ✅ FIXED: handle how as array OR object
     const howEntries = normalizeHow(need.how);
     const factsHTML = howEntries.map(({ label, value }) => `
       <div class="priority-fact">
@@ -642,7 +640,6 @@ async function buildManifestoHTML(master, vision) {
     color: #8a8578;
   }
 
-  /* COVER */
   .cover { background: #1a1a18; color: #f7f5ef; padding: 0; justify-content: flex-end; overflow: hidden; }
   .cover-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.4; }
   .cover-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,26,24,0.5) 0%, rgba(26,26,24,0.85) 70%, rgba(26,26,24,0.98) 100%); }
@@ -655,7 +652,6 @@ async function buildManifestoHTML(master, vision) {
   .cover-edition { font-family: 'Courier New', monospace; font-size: 9pt; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(247,245,239,0.6); padding-top: 4mm; border-top: 1px solid rgba(247,245,239,0.2); display: inline-block; }
   .cover-footer { position: absolute; bottom: 20mm; left: 20mm; font-family: 'Courier New', monospace; font-size: 8pt; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(247,245,239,0.4); }
 
-  /* COLOPHON */
   .colophon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm 12mm; flex: 1; }
   .colophon-item { break-inside: avoid; }
   .colophon-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.15em; color: #1f3d2f; margin-bottom: 3mm; }
@@ -663,11 +659,9 @@ async function buildManifestoHTML(master, vision) {
   .colophon-sources { list-style: none; font-size: 10pt; line-height: 1.7; color: #3a3a34; }
   .colophon-sources li::before { content: '— '; color: #8a8578; }
 
-  /* PREAMBLE */
   .preamble-body p { font-size: 11pt; line-height: 1.7; color: #3a3a34; margin-bottom: 6mm; max-width: 155mm; }
   .preamble-lead { font-size: 13pt; font-style: italic; color: #1a1a18 !important; line-height: 1.5 !important; margin-bottom: 8mm !important; padding-bottom: 6mm; border-bottom: 1px solid #d4d0c4; }
 
-  /* SNAPSHOT */
   .snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm 6mm; margin-bottom: 15mm; }
   .snapshot-item { padding-top: 4mm; border-top: 1px solid #1f3d2f; }
   .snapshot-value { font-family: Georgia, serif; font-size: 22pt; font-weight: 500; line-height: 1; letter-spacing: -0.02em; color: #1a1a18; margin-bottom: 3mm; }
@@ -677,7 +671,6 @@ async function buildManifestoHTML(master, vision) {
   .snapshot-meta-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; }
   .snapshot-meta-value { font-size: 11pt; color: #1a1a18; }
 
-  /* PRIORITY */
   .priority { padding: 18mm 18mm 15mm; }
   .priority-header { margin-bottom: 6mm; }
   .priority-meta { display: flex; align-items: center; gap: 4mm; margin-bottom: 4mm; }
@@ -701,7 +694,6 @@ async function buildManifestoHTML(master, vision) {
   .priority-fact-label { font-family: 'Courier New', monospace; font-size: 7pt; text-transform: uppercase; letter-spacing: 0.12em; color: #8a8578; }
   .priority-fact-value { font-size: 10pt; color: #1a1a18; font-weight: 500; }
 
-  /* ACHIEVEMENT */
   .achievement-image { margin: 6mm 0; overflow: hidden; }
   .achievement-image img { width: 100%; max-height: 100mm; object-fit: cover; display: block; }
   .achievement-description { font-size: 11pt; line-height: 1.6; color: #3a3a34; max-width: 155mm; margin-bottom: 8mm; }
@@ -710,7 +702,6 @@ async function buildManifestoHTML(master, vision) {
   .achievement-fact-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; }
   .achievement-fact-value { font-family: Georgia, serif; font-size: 12pt; color: #1a1a18; font-weight: 500; }
 
-  /* ROADMAP */
   .roadmap-years { font-family: 'Courier New', monospace; font-size: 10pt; letter-spacing: 0.14em; color: #8a8578; margin-bottom: 3mm; }
   .roadmap-focus { font-family: Georgia, serif; font-size: 12pt; font-style: italic; color: #6a6560; margin-bottom: 10mm; }
   .roadmap-items { list-style: none; display: grid; gap: 6mm; }
@@ -720,7 +711,6 @@ async function buildManifestoHTML(master, vision) {
   .roadmap-item strong { font-family: Georgia, serif; font-size: 12pt; font-weight: 500; color: #1a1a18; display: block; margin-bottom: 1.5mm; }
   .roadmap-item p { font-size: 10pt; line-height: 1.5; color: #6a6560; }
 
-  /* ADOPTION */
   .adoption-lead { font-family: Georgia, serif; font-size: 13pt; font-style: italic; line-height: 1.5; color: #1a1a18; margin-bottom: 8mm; padding-bottom: 6mm; border-bottom: 1px solid #d4d0c4; max-width: 155mm; }
   .adoption p { font-size: 11pt; line-height: 1.6; color: #3a3a34; margin-bottom: 6mm; max-width: 155mm; }
   .signature-lines { margin: 15mm 0 10mm; display: grid; gap: 12mm; }
@@ -731,7 +721,6 @@ async function buildManifestoHTML(master, vision) {
   .adoption-meta-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; margin-bottom: 2mm; }
   .adoption-meta-value { font-size: 11pt; color: #1a1a18; }
 
-  /* BACK COVER */
   .back-cover { background: #1a1a18; color: #f7f5ef; justify-content: space-between; padding: 0; }
   .back-cover-content { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40mm 25mm; }
   .back-cover-quote { font-family: Georgia, serif; font-size: 18pt; font-style: italic; line-height: 1.45; color: rgba(247,245,239,0.92); max-width: 140mm; margin-bottom: 8mm; }
@@ -840,7 +829,6 @@ async function main() {
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
-  // ─── LOAD DATA ───
   console.log(`${COLORS.gray}  Loading data...${COLORS.reset}`);
   const master = loadJSON('data/master.json');
   const vision = loadJSON('data/vision.json');
@@ -853,27 +841,22 @@ async function main() {
   console.log(`  ${COLORS.green}✓${COLORS.reset} vision.json   ${COLORS.gray}(${priorityCount} priorities, ${achievementCount} achievements, ${roadmapCount} roadmap phases)${COLORS.reset}`);
   console.log('');
 
-  // ─── BUILD HTML ───
   console.log(`${COLORS.bold}Building manifesto HTML...${COLORS.reset}`);
   const { html, stats } = await buildManifestoHTML(master, vision);
   console.log(`  ${COLORS.green}✓${COLORS.reset} HTML built (${(html.length / 1024 / 1024).toFixed(2)} MB)`);
   console.log('');
 
-  // ─── ENSURE OUTPUT DIR ───
   ensureDir(PDF_DIR);
 
-  // ─── OUTPUT PATH ───
   const outputFile = `bandwar-vision-${stats.currentYear}-${stats.horizonEnd}.pdf`;
   const outputPath = path.join(PDF_DIR, outputFile);
 
-  // ─── GENERATE PDF ───
   console.log(`${COLORS.bold}Generating PDF...${COLORS.reset}`);
   console.log(`  ${COLORS.gray}Edition: ${stats.editionLabel}${COLORS.reset}`);
   console.log(`  ${COLORS.gray}Pages:   ~${stats.totalPages}${COLORS.reset}`);
 
   await renderPDF(html, outputPath);
 
-  // ─── STATS ───
   const fileSize = fs.statSync(outputPath).size;
   const fileSizeMB = (fileSize / 1024 / 1024).toFixed(2);
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
