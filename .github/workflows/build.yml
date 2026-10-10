@@ -1,0 +1,127 @@
+# ═══════════════════════════════════════════════════════════════════
+# BANDWAR — BUILD WORKFLOW
+# Auto-builds site on push to main · Deploys via Vercel hook
+# ═══════════════════════════════════════════════════════════════════
+
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'templates/**'
+      - 'css/**'
+      - 'js/**'
+      - 'scripts/**'
+      - 'images/**'
+      - 'package.json'
+      - '.github/workflows/build.yml'
+
+  # Allow manual trigger
+  workflow_dispatch:
+
+# ─── PERMISSIONS ───
+permissions:
+  contents: write
+
+# ─── JOBS ───
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # ─── CHECKOUT ───
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ─── NODE SETUP ───
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ─── INSTALL DEPENDENCIES ───
+      - name: Install dependencies
+        run: npm ci
+
+      # ─── VALIDATE (fail fast) ───
+      - name: Validate data & rules
+        run: node scripts/validate.cjs
+        continue-on-error: false
+
+      # ─── OPTIMIZE IMAGES ───
+      - name: Optimize images (WebP + AVIF + responsive)
+        run: node scripts/optimize-images.cjs --verbose
+        continue-on-error: true
+
+      # ─── BUILD SITE ───
+      - name: Build static site
+        run: node scripts/build.cjs --clean
+
+      # ─── GENERATE SITEMAPS ───
+      - name: Generate sitemaps
+        run: node scripts/generate-sitemaps.cjs
+
+      # ─── GENERATE MANIFESTO PDF ───
+      - name: Generate manifesto PDF
+        run: node scripts/generate-manifesto.cjs
+        continue-on-error: true
+
+      # ─── COMMIT OPTIMIZED IMAGES ───
+      - name: Commit optimized images
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add images/ .image-cache.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: optimize images [skip ci]"
+            git push
+          else
+            echo "No image changes to commit"
+          fi
+        continue-on-error: true
+
+      # ─── DEPLOY VIA VERCEL HOOK ───
+      - name: Deploy to Vercel
+        if: env.VERCEL_DEPLOY_HOOK != ''
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then
+            curl -X POST "$VERCEL_DEPLOY_HOOK"
+            echo "✓ Deployment triggered"
+          else
+            echo "⚠ VERCEL_DEPLOY_HOOK not set — skipping deploy"
+          fi
+        continue-on-error: true
+
+      # ─── UPLOAD ARTIFACT (for debugging) ───
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 7
+        continue-on-error: true
+
+      # ─── SUMMARY ───
+      - name: Build summary
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -d "dist" ]; then
+            PAGES=$(find dist -name "*.html" | wc -l)
+            echo "- **Pages built:** $PAGES" >> $GITHUB_STEP_SUMMARY
+            SIZE=$(du -sh dist 2>/dev/null | cut -f1)
+            echo "- **Total size:** $SIZE" >> $GITHUB_STEP_SUMMARY
+          fi
