@@ -1,0 +1,57 @@
+name: Optimize Images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'images/**'
+      - 'scripts/optimize-images.cjs'
+      - '.github/workflows/optimize-images.yml'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    name: Optimize images
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Optimize images (WebP + AVIF + responsive)
+        run: node scripts/optimize-images.cjs
+
+      - name: Commit optimized images
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add images/ .image-cache.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: optimize images [skip ci]"
+            git push
+          else
+            echo "No image changes to commit"
+          fi
+        continue-on-error: true
+
+      - name: Summary
+        run: |
+          echo "## Image Optimization" >> $GITHUB_STEP_SUMMARY
+          echo "- **Completed:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "- **WebP files:** $(find images -name '*.webp' | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "- **AVIF files:** $(find images -name '*.avif' | wc -l)" >> $GITHUB_STEP_SUMMARY
