@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════════════════════════════
+# BANDWAR — .editorconfig
+# Consistent coding style across editors
+# ═══════════════════════════════════════════════════════════════════
+
+root = true
+
+# ─── DEFAULT FOR ALL FILES ───
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# ─── MARKDOWN ───
+[*.md]
+trim_trailing_whitespace = false
+indent_size = 2
+
+# ─── JSON / YAML ───
+[*.{json,yml,yaml}]
+indent_size = 2
+
+# ─── JAVASCRIPT ───
+[*.{js,cjs,mjs}]
+indent_size = 2
+quote_type = single
+
+# ─── HTML / CSS ───
+[*.{html,css}]
+indent_size = 2
+
+# ─── SHELL SCRIPTS ───
+[*.sh]
+indent_size = 2
+end_of_line = lf
+
+# ─── BATCH (Windows) ───
+[*.{bat,cmd}]
+end_of_line = crlf
+
+# ─── MAKE ───
+[Makefile]
+indent_style = tab
