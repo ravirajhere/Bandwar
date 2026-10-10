@@ -1,0 +1,685 @@
+{
+  "gallery": {
+    "categories": [
+      { "id": "all", "title": "All", "icon": "📸" },
+      { "id": "temples", "title": "Temples", "icon": "🛕" },
+      { "id": "schools", "title": "Schools", "icon": "🏫" },
+      { "id": "nature", "title": "Nature", "icon": "🌊" },
+      { "id": "festivals", "title": "Festivals", "icon": "🎉" },
+      { "id": "landmarks", "title": "Landmarks", "icon": "🚩" },
+      { "id": "daily-life", "title": "Daily Life", "icon": "🏘️" },
+      { "id": "infrastructure", "title": "Infrastructure", "icon": "🏗️" }
+    ],
+    "photos": [
+      {
+        "id": "river-fog",
+        "src": "images/home/bandwar-hero.jpg",
+        "caption": "The Burhi Gandak at dawn",
+        "category": "nature",
+        "year": "2025"
+      },
+      {
+        "id": "river-flowers-yellow",
+        "src": "images/home/burhi-gandak-river.jpg",
+        "caption": "Wildflowers on the river bank at sunset",
+        "category": "nature",
+        "year": "2025"
+      },
+      {
+        "id": "river-greenery",
+        "src": "images/home/bandh-embankment.jpg",
+        "caption": "The Bandh — morning on the Burhi Gandak",
+        "category": "nature",
+        "year": "2025"
+      },
+      {
+        "id": "banyan-tree",
+        "src": "images/home/banyan-tree.jpg",
+        "caption": "A banyan tree — the village's natural landmark",
+        "category": "nature",
+        "year": "2025"
+      },
+      {
+        "id": "river-vertical",
+        "src": "images/home/burhi-gandak-vertical.jpg",
+        "caption": "The embankment and the river",
+        "category": "nature",
+        "year": "2025"
+      },
+      {
+        "id": "shaheed-dwar-day",
+        "src": "images/history/shaheed-dwar-day.jpg",
+        "caption": "Shaheed Ramchandra Dwar — the village entrance",
+        "category": "landmarks",
+        "year": "2025"
+      },
+      {
+        "id": "shaheed-dwar-night",
+        "src": "images/history/shaheed-dwar-night.jpg",
+        "caption": "Shaheed Ramchandra Dwar — lit at night",
+        "category": "landmarks",
+        "year": "2025"
+      },
+      {
+        "id": "chandrashekhar-chowk",
+        "src": "images/history/chandrashekhar-chowk.jpg",
+        "caption": "Chandrashekhar Chowk — the village square",
+        "category": "landmarks",
+        "year": "2025"
+      },
+      {
+        "id": "school-signboard",
+        "src": "images/village/madhya-vidyalaya-building.jpg",
+        "caption": "Rajkiyakrit Madhya Vidyalaya, established 1955",
+        "category": "schools",
+        "year": "2025"
+      },
+      {
+        "id": "school-prangan",
+        "src": "images/village/madhya-vidyalaya-courtyard.jpg",
+        "caption": "The middle school courtyard, 2020",
+        "category": "schools",
+        "year": "2020"
+      },
+      {
+        "id": "sbi-2015",
+        "src": "images/village/sbi-bank-branch-2015.jpg",
+        "caption": "SBI Bandwar, 2015",
+        "category": "infrastructure",
+        "year": "2015"
+      },
+      {
+        "id": "sbi-2025",
+        "src": "images/village/sbi-bank-branch-2025.jpg",
+        "caption": "SBI Bandwar, 2025",
+        "category": "infrastructure",
+        "year": "2025"
+      },
+      {
+        "id": "sbi-atm",
+        "src": "images/village/sbi-bank-atm.jpg",
+        "caption": "SBI ATM at Bandwar",
+        "category": "infrastructure",
+        "year": "2025"
+      },
+      {
+        "id": "petrol-pump",
+        "src": "images/village/ram-janki-petrol-pump.jpg",
+        "caption": "Ram Janki Fuels — the Indian Oil petrol pump",
+        "category": "infrastructure",
+        "year": "2025"
+      },
+      {
+        "id": "nal-jal-tank",
+        "src": "images/village/jal-jeevan-water-tower.jpg",
+        "caption": "Jal Jeevan Mission water tower",
+        "category": "infrastructure",
+        "year": "2025"
+      },
+      {
+        "id": "construction",
+        "src": "images/village/road-construction.jpg",
+        "caption": "Bricks and timber on a village road",
+        "category": "daily-life",
+        "year": "2025"
+      },
+      {
+        "id": "village-corner",
+        "src": "images/village/village-corner.jpg",
+        "caption": "A corner of Bandwar — the Shivala and daily life",
+        "category": "daily-life",
+        "year": "2025"
+      },
+      {
+        "id": "village-lane",
+        "src": "images/village/village-lane-musahri.jpg",
+        "caption": "A village lane — bamboo fences and daily life",
+        "category": "daily-life",
+        "year": "2025"
+      },
+      {
+        "id": "panchayat",
+        "src": "images/village/panchayat-bhawan.jpg",
+        "caption": "Gram Panchayat Bhawan, Bandwar",
+        "category": "infrastructure",
+        "year": "2025"
+      },
+      {
+        "id": "thakurbari-sunset",
+        "src": "images/culture/ram-mandir-thakurbari-sunset.jpg",
+        "caption": "Ram Mandir Thakurbari at sunset",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "temple-durga",
+        "src": "images/culture/durga-mandir.jpg",
+        "caption": "Maharishi Gautam Aadi Shakti Durga Mandir",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "temple-durga-murti",
+        "src": "images/culture/durga-mandir-idol.jpg",
+        "caption": "Chaiti Durga idol inside the temple",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "krishna-mandir-bada",
+        "src": "images/culture/bada-krishna-mandir.jpg",
+        "caption": "Bada Krishna Mandir",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "krishna-mandir-bada-murti",
+        "src": "images/culture/bada-krishna-mandir-idol.jpg",
+        "caption": "Radha-Krishna idol inside the larger temple",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "krishna-mandir-chhota",
+        "src": "images/culture/chhota-krishna-mandir.jpg",
+        "caption": "Chhota Krishna Mandir",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "krishna-mandir-chhota-murti",
+        "src": "images/culture/chhota-krishna-mandir-idol.jpg",
+        "caption": "Radha-Krishna idol inside the smaller temple",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "ram-mandir-thakurbari",
+        "src": "images/culture/ram-mandir-thakurbari.jpg",
+        "caption": "Ram Mandir Thakurbari",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "hanuman-mandir-murti",
+        "src": "images/culture/hanuman-mandir.jpg",
+        "caption": "Sankat Mochan Hanuman idol",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "hanuman-mandir-beech",
+        "src": "images/culture/baba-bhole-mandir.jpg",
+        "caption": "Baba Bhole Durgasthan Hanuman Mandir",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "shivala",
+        "src": "images/culture/shivala.jpg",
+        "caption": "Shivala — the village's Shiva temple",
+        "category": "temples",
+        "year": "2025"
+      },
+      {
+        "id": "well",
+        "src": "images/culture/historic-well-chaupal.jpg",
+        "caption": "The historic well — Chaupal",
+        "category": "landmarks",
+        "year": "2025"
+      },
+      {
+        "id": "chhath-puja-murti",
+        "src": "images/culture/chhath-puja-surya-idol.jpg",
+        "caption": "Chhath Puja — Surya Dev idol at Bandh",
+        "category": "festivals",
+        "year": "2025"
+      },
+      {
+        "id": "ram-katha-2021",
+        "src": "images/culture/ram-katha-2021.jpg",
+        "caption": "Ram Katha at Thakurbari, 2021",
+        "category": "festivals",
+        "year": "2021"
+      },
+      {
+        "id": "library-gate",
+        "src": "images/education/library-gate.jpg",
+        "caption": "Vaani Vilas Pustakalaya — the village library",
+        "category": "schools",
+        "year": "2025"
+      },
+      {
+        "id": "library-books",
+        "src": "images/education/library-books.jpg",
+        "caption": "Bookshelves inside Vaani Vilas Pustakalaya",
+        "category": "schools",
+        "year": "2025"
+      },
+      {
+        "id": "library-reading-area",
+        "src": "images/education/library-reading-area.jpg",
+        "caption": "The reading area of Vaani Vilas Pustakalaya",
+        "category": "schools",
+        "year": "2025"
+      },
+      {
+        "id": "library-portraits",
+        "src": "images/education/library-portraits.jpg",
+        "caption": "Framed portraits inside Vaani Vilas Pustakalaya",
+        "category": "schools",
+        "year": "2025"
+      }
+    ]
+  },
+
+  "landmarks": [
+    {
+      "id": "shaheed-dwar",
+      "name": "Shaheed Ramchandra Dwar",
+      "type": "landmark",
+      "category": "landmarks",
+      "icon": "🚩",
+      "lat": 25.510425,
+      "lng": 86.161750,
+      "description": "The main entrance gate to Bandwar village. Built under the initiative of Girija Singh.",
+      "article": "shaheed-dwar",
+      "photo": "images/history/shaheed-dwar-day.jpg"
+    },
+    {
+      "id": "chandrashekhar-chowk",
+      "name": "Chandrashekhar Chowk",
+      "type": "landmark",
+      "category": "landmarks",
+      "icon": "🗿",
+      "lat": 25.507475,
+      "lng": 86.158000,
+      "description": "The village square with the statue of Chandrashekhar Singh — Begusarai's first communist MLA.",
+      "article": "chandrashekhar-chowk",
+      "photo": "images/history/chandrashekhar-chowk.jpg"
+    },
+    {
+      "id": "shivala",
+      "name": "Shivala",
+      "type": "temple",
+      "category": "religion",
+      "icon": "🛕",
+      "lat": 25.509831,
+      "lng": 86.164250,
+      "description": "A Hindu temple dedicated to Lord Shiva, in the centre of the village.",
+      "article": "shivala",
+      "photo": "images/culture/shivala.jpg"
+    },
+    {
+      "id": "maharishi-gautam-mandir",
+      "name": "Maharishi Gautam Aadi Shakti Durga Mandir",
+      "type": "temple",
+      "category": "religion",
+      "icon": "🛕",
+      "lat": 25.509300,
+      "lng": 86.166875,
+      "description": "A temple dedicated to Durga, featuring a Chaiti Durga idol. Orange exterior with green pillars.",
+      "article": "maharishi-gautam-mandir",
+      "photo": "images/culture/durga-mandir.jpg"
+    },
+    {
+      "id": "krishna-mandir-bada",
+      "name": "Bada Krishna Mandir",
+      "type": "temple",
+      "category": "religion",
+      "icon": "🛕",
+      "lat": 25.510288,
+      "lng": 86.161625,
+      "description": "The larger of the village's two Krishna temples.",
+      "article": "krishna-mandir-bada",
+      "photo": "images/culture/bada-krishna-mandir.jpg"
+    },
+    {
+      "id": "krishna-mandir-chhota",
+      "name": "Chhota Krishna Mandir",
+      "type": "temple",
+      "category": "religion",
+      "icon": "🛕",
+      "lat": 25.510294,
+      "lng": 86.161750,
+      "description": "The smaller Krishna temple, with colorful arches and marble steps.",
+      "article": "krishna-mandir-chhota",
+      "photo": "images/culture/chhota-krishna-mandir.jpg"
+    },
+    {
+      "id": "ram-mandir-thakurbari",
+      "name": "Ram Mandir Thakurbari",
+      "type": "temple",
+      "category": "religion",
+      "icon": "🛕",
+      "lat": 25.507456,
+      "lng": 86.157375,
+      "description": "The village's Ram temple, with two shikharas. Site of the annual Ram Katha.",
+      "article": "ram-mandir-thakurbari",
+      "photo": "images/culture/ram-mandir-thakurbari.jpg"
+    },
+    {
+      "id": "hanuman-mandir",
+      "name": "Sankat Mochan Hanuman Mandir",
+      "type": "temple",
+      "category": "religion",
+      "icon": "🛕",
+      "lat": 25.507406,
+      "lng": 86.157375,
+      "description": "A temple dedicated to Hanuman ji, with a red idol and brass bell.",
+      "article": "hanuman-mandir",
+      "photo": "images/culture/hanuman-mandir.jpg"
+    },
+    {
+      "id": "baba-bhole-mandir",
+      "name": "Baba Bhole Durgasthan Hanuman Mandir",
+      "type": "temple",
+      "category": "religion",
+      "icon": "🛕",
+      "lat": 25.509406,
+      "lng": 86.168625,
+      "description": "A mid-village temple dedicated to Baba Bhole, Durga, and Hanuman.",
+      "article": "baba-bhole-mandir",
+      "photo": "images/culture/baba-bhole-mandir.jpg"
+    },
+    {
+      "id": "sbi-bank",
+      "name": "State Bank of India — Bandwar Branch",
+      "type": "bank",
+      "category": "infrastructure",
+      "icon": "🏦",
+      "lat": 25.509988,
+      "lng": 86.162000,
+      "description": "The village's only bank branch. IFSC: SBIN0015585. ATM also available.",
+      "article": "sbi-bank",
+      "photo": "images/village/sbi-bank-branch-2025.jpg"
+    },
+    {
+      "id": "petrol-pump",
+      "name": "Ram Janki Fuels — IOCL Petrol Pump",
+      "type": "petrol-pump",
+      "category": "infrastructure",
+      "icon": "⛽",
+      "lat": 25.505125,
+      "lng": 86.157625,
+      "description": "Indian Oil petrol pump on SH 55. Operated as Ram Janki Fuels.",
+      "article": "petrol-pump",
+      "photo": "images/village/ram-janki-petrol-pump.jpg"
+    },
+    {
+      "id": "snk-high-school",
+      "name": "Bhagwandutt S.N.K. High School",
+      "type": "school",
+      "category": "education",
+      "icon": "🏫",
+      "lat": 25.509263,
+      "lng": 86.166625,
+      "description": "The village's first high school, established 1942 as a free Gurukul by Pandit Taradutt Pathak.",
+      "article": "snk-high-school"
+    },
+    {
+      "id": "high-school-umv",
+      "name": "High School UMV",
+      "type": "school",
+      "category": "education",
+      "icon": "🏫",
+      "lat": 25.508113,
+      "lng": 86.171000,
+      "description": "A high school in the Chak Parna area near Bandwar.",
+      "photo": null
+    },
+    {
+      "id": "madhya-vidyalaya",
+      "name": "Rajkiyakrit Madhya Vidyalaya",
+      "type": "school",
+      "category": "education",
+      "icon": "🏫",
+      "lat": 25.509225,
+      "lng": 86.169875,
+      "description": "The government middle school, established 1955.",
+      "article": "madhya-vidyalaya",
+      "photo": "images/village/madhya-vidyalaya-building.jpg"
+    },
+    {
+      "id": "adharsh-vikash",
+      "name": "Adharsh Vikash Vidhya Mandir",
+      "type": "school",
+      "category": "education",
+      "icon": "🏫",
+      "lat": 25.508875,
+      "lng": 86.170125,
+      "description": "A private school offering primary and upper primary education. Established 2015.",
+      "article": "adharsh-vikash"
+    },
+    {
+      "id": "vaani-vilas-library",
+      "name": "Vaani Vilas Pustakalaya",
+      "type": "library",
+      "category": "education",
+      "icon": "📚",
+      "lat": 25.510294,
+      "lng": 86.161750,
+      "description": "The village library on Bandwar Road, inaugurated by Rakesh Sinha ji. Built with MPLAD funds under the initiative of Girija Singh.",
+      "article": "vaani-vilas-library",
+      "photo": "images/education/library-gate.jpg"
+    },
+    {
+      "id": "panchayat",
+      "name": "Gram Panchayat Bhawan",
+      "type": "panchayat",
+      "category": "infrastructure",
+      "icon": "🏛️",
+      "lat": 25.507831,
+      "lng": 86.158875,
+      "description": "The office of the Bandwar Gram Panchayat.",
+      "photo": "images/village/panchayat-bhawan.jpg"
+    },
+    {
+      "id": "burhi-gandak",
+      "name": "Burhi Gandak River",
+      "type": "river",
+      "category": "geography",
+      "icon": "🌊",
+      "lat": 25.511794,
+      "lng": 86.159750,
+      "description": "The flood-prone river that flows along the western edge of Bandwar.",
+      "article": "burhi-gandak",
+      "photo": "images/home/bandwar-hero.jpg"
+    }
+  ],
+
+  "timeline": [
+    {
+      "id": "anga-kingdom",
+      "year": "c. 600 BCE",
+      "sortKey": -600,
+      "era": "ancient",
+      "title": "Anga Mahajanapada",
+      "description": "The region that includes present-day Bandwar becomes part of the ancient kingdom of Anga, with its capital at Champa (near modern Bhagalpur).",
+      "category": "history",
+      "icon": "🏛️"
+    },
+    {
+      "id": "mauryan-trade",
+      "year": "3rd century BCE",
+      "sortKey": -250,
+      "era": "ancient",
+      "title": "Under the Mauryan Empire",
+      "description": "During the reign of Ashoka, the Begusarai region becomes a centre of riverine trade along the Ganga.",
+      "category": "history",
+      "icon": "🏛️"
+    },
+    {
+      "id": "pala-dynasty",
+      "year": "8th–10th century",
+      "sortKey": 800,
+      "era": "ancient",
+      "title": "Pala Dynasty",
+      "description": "Buddhism flourishes under the Palas. Temples and monasteries are built at Jaimangalagarh and Naulagarh — artefacts from this era continue to be unearthed.",
+      "category": "history",
+      "icon": "🛕"
+    },
+    {
+      "id": "bihat-revolt",
+      "year": "1857",
+      "sortKey": 1857,
+      "era": "colonial",
+      "title": "First War of Independence",
+      "description": "Bihat, near Bandwar, is among the first villages in Bihar to rise against the British. The spark of a movement that shapes Begusarai's identity.",
+      "category": "history",
+      "icon": "🚩"
+    },
+    {
+      "id": "gurukul",
+      "year": "1942",
+      "sortKey": 1942,
+      "era": "colonial",
+      "title": "The Free Gurukul Is Founded",
+      "description": "Pandit Taradutt Pathak establishes the Bhagwan Datt Pathak Sanskrit Vidyalaya in memory of his father. Free education, food, and lodging for students across Bihar.",
+      "category": "education",
+      "icon": "📚",
+      "article": "snk-high-school"
+    },
+    {
+      "id": "independence",
+      "year": "1947",
+      "sortKey": 1947,
+      "era": "modern",
+      "title": "Indian Independence",
+      "description": "India becomes independent. Bandwar, like the rest of the country, enters a new era. The Gurukul transitions into a government school.",
+      "category": "history",
+      "icon": "🇮🇳"
+    },
+    {
+      "id": "madhya-vidyalaya",
+      "year": "1955",
+      "sortKey": 1955,
+      "era": "modern",
+      "title": "Middle School Established",
+      "description": "Rajkiyakrit Madhya Vidyalaya is established, extending schooling in the village.",
+      "category": "education",
+      "icon": "🏫",
+      "article": "madhya-vidyalaya"
+    },
+    {
+      "id": "first-communist-mla",
+      "year": "1956",
+      "sortKey": 1956,
+      "era": "modern",
+      "title": "Begusarai's First Communist MLA",
+      "description": "Chandrashekhar Singh becomes the first communist MLA from Barauni. Begusarai begins to be called 'the Leningrad of Bihar.'",
+      "category": "history",
+      "icon": "🚩",
+      "article": "chandrashekhar-chowk"
+    },
+    {
+      "id": "begusarai-district",
+      "year": "1972",
+      "sortKey": 1972,
+      "era": "modern",
+      "title": "Begusarai Becomes a District",
+      "description": "Carved out of Munger district, Begusarai is officially recognised as a district of Bihar — with Bandwar among its oldest inhabited villages.",
+      "category": "history",
+      "icon": "🗺️"
+    },
+    {
+      "id": "census-2011",
+      "year": "2011",
+      "sortKey": 2011,
+      "era": "modern",
+      "title": "Census Records",
+      "description": "Bandwar's population is recorded at 12,943. The village is the third-largest in Begusarai taluk.",
+      "category": "economy",
+      "icon": "📊"
+    },
+    {
+      "id": "sbi-branch",
+      "year": "2010s",
+      "sortKey": 2015,
+      "era": "modern",
+      "title": "SBI Branch Arrives",
+      "description": "A State Bank of India branch is established in Bandwar, bringing formal banking to the village and surrounding panchayats.",
+      "category": "infrastructure",
+      "icon": "🏦",
+      "article": "sbi-bank"
+    },
+    {
+      "id": "vaani-vilas-library",
+      "year": "September 2023",
+      "sortKey": 2023,
+      "era": "modern",
+      "title": "Vaani Vilas Pustakalaya Opens",
+      "description": "The village library is inaugurated by Rajya Sabha MP Rakesh Sinha ji, built with MPLAD funds under the initiative of Girija Singh.",
+      "category": "education",
+      "icon": "📚",
+      "article": "vaani-vilas-library"
+    },
+    {
+      "id": "pm-wani-wifi",
+      "year": "February 2024",
+      "sortKey": 2024,
+      "era": "digital",
+      "title": "PM-WANI WiFi Arrives",
+      "description": "Begusarai becomes the first district in Bihar to equip all its Gram Panchayats with public WiFi under the PM-WANI scheme. Bandwar is among them.",
+      "category": "infrastructure",
+      "icon": "📡"
+    },
+    {
+      "id": "plus-two-school",
+      "year": "March 2025",
+      "sortKey": 2025,
+      "era": "modern",
+      "title": "New Plus Two School Building",
+      "description": "MLA Kundan Kumar inaugurates the new Plus Two Vidyalaya Vandwar building, constructed at a cost of ₹1.96 crore.",
+      "category": "education",
+      "icon": "🏫"
+    },
+    {
+      "id": "diarrhea-outbreak",
+      "year": "September 2025",
+      "sortKey": 2025,
+      "era": "modern",
+      "title": "The Diarrhea Outbreak",
+      "description": "A grim chapter. More than ten deaths in fifteen days, concentrated in Wards 1 and 2. The crisis exposes decades of neglect in water and health infrastructure.",
+      "category": "health",
+      "icon": "💔"
+    },
+    {
+      "id": "archive-launch",
+      "year": "2026",
+      "sortKey": 2026,
+      "era": "digital",
+      "title": "The Archive Begins",
+      "description": "This website is published. Bandwar's population crosses 22,000. New roads and schools are being built. The village enters the digital age.",
+      "category": "digital",
+      "icon": "💻"
+    }
+  ],
+
+  "eras": [
+    {
+      "id": "ancient",
+      "title": "Ancient",
+      "subtitle": "600 BCE – 1200 CE",
+      "color": "#a64b2a"
+    },
+    {
+      "id": "colonial",
+      "title": "Colonial Era",
+      "subtitle": "1200 – 1947",
+      "color": "#1f3d2f"
+    },
+    {
+      "id": "modern",
+      "title": "Modern Era",
+      "subtitle": "1947 – 2020",
+      "color": "#1a1a18"
+    },
+    {
+      "id": "digital",
+      "title": "Digital Era",
+      "subtitle": "2020 – Present",
+      "color": "#0ea5e9"
+    }
+  ]
+}
