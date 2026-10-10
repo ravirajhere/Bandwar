@@ -1,28 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — SITEMAP GENERATOR
    sitemap.xml (pages) + sitemap-images.xml (images with captions)
-   
-   Reads from:
-     data/master.json    → site URL, config
-     data/content.json   → articles + categories
-     data/media.json     → gallery + landmarks + timeline
-     data/vision.json    → needs + thanks
-   
-   Outputs:
-     dist/sitemap.xml
-     dist/sitemap-images.xml
-     dist/sitemap-index.xml
-   
-   Features:
-     - Filesystem-checked images (zero 404s)
-     - Clean URLs (no .html extension)
-     - Rolling horizon aware (vision year)
-     - Image SEO with captions
-     - Auto-included from build
-   
-   Usage:
-     node scripts/generate-sitemaps.cjs
-     node scripts/generate-sitemaps.cjs --verbose
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -98,7 +76,6 @@ const stats = {
   images: 0,
   imagesMissing: 0,
   imagesMissingList: [],
-  imagesSeen: new Set(),
   imagesMissingSeen: new Set(),
 };
 
@@ -121,21 +98,21 @@ function trackImage(src, caption, list, seen) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGE URL BUILDERS
+   BUILD PAGES
    ═══════════════════════════════════════════════════════════════════ */
 function buildPages(master, content) {
   const base = master.site.url.replace(/\/$/, '');
   const today = formatDate();
   const pages = [];
 
-  // ─── STATIC PAGES ───
+  // Static pages
   const staticPages = [
-    { path: '/',         priority: 1.0, changefreq: 'weekly',  label: 'Homepage' },
-    { path: '/section',  priority: 0.9, changefreq: 'weekly',  label: 'Archive' },
-    { path: '/place',    priority: 0.9, changefreq: 'monthly', label: 'Places' },
-    { path: '/time',     priority: 0.8, changefreq: 'monthly', label: 'Timeline' },
-    { path: '/vision',   priority: 0.8, changefreq: 'monthly', label: 'Vision' },
-    { path: '/about',    priority: 0.6, changefreq: 'monthly', label: 'About' },
+    { path: '/',         priority: 1.0, changefreq: 'weekly' },
+    { path: '/section',  priority: 0.9, changefreq: 'weekly' },
+    { path: '/place',    priority: 0.9, changefreq: 'monthly' },
+    { path: '/time',     priority: 0.8, changefreq: 'monthly' },
+    { path: '/vision',   priority: 0.8, changefreq: 'monthly' },
+    { path: '/about',    priority: 0.6, changefreq: 'monthly' },
   ];
 
   staticPages.forEach(p => {
@@ -147,33 +124,22 @@ function buildPages(master, content) {
     });
   });
 
-  // ─── ARTICLES ───
+  // Articles
   const articles = content.articles || [];
   articles.forEach(article => {
-    const lastmod = article.dateModified 
-      ? formatDate(new Date(article.dateModified))
-      : (article.datePublished 
-          ? formatDate(new Date(article.datePublished))
-          : today);
-
     pages.push({
       loc: `${base}/article/${article.id}`,
-      lastmod,
+      lastmod: today,
       changefreq: 'monthly',
       priority: 0.8,
     });
   });
 
-  // ─── CATEGORIES (section pages) ───
+  // Categories
   const categories = content.categories || [];
   categories.forEach(category => {
-    const count = articles.filter(a => 
-      (a.categories || []).includes(category.id)
-    ).length;
-
-    // Skip empty categories
+    const count = articles.filter(a => (a.categories || []).includes(category.id)).length;
     if (count === 0) return;
-
     pages.push({
       loc: `${base}/section/${category.id}`,
       lastmod: today,
@@ -186,8 +152,7 @@ function buildPages(master, content) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   IMAGE MAP BUILDER
-   Returns: Map<pageUrl, Array<{ src, caption }>>
+   BUILD IMAGE MAP
    ═══════════════════════════════════════════════════════════════════ */
 function buildImageMap(master, content, media, vision) {
   const base = master.site.url.replace(/\/$/, '');
@@ -203,7 +168,6 @@ function buildImageMap(master, content, media, vision) {
   {
     const list = [];
     const seen = new Set();
-
     if (master.home?.hero?.image) {
       trackImage(
         master.home.hero.image,
@@ -212,16 +176,6 @@ function buildImageMap(master, content, media, vision) {
         seen
       );
     }
-
-    if (master.seo?.ogImage && master.seo.ogImage !== master.home?.hero?.image) {
-      trackImage(
-        master.seo.ogImage,
-        `${master.village.name} — ${master.site.tagline}`,
-        list,
-        seen
-      );
-    }
-
     add(base + '/', list);
   }
 
@@ -232,26 +186,14 @@ function buildImageMap(master, content, media, vision) {
     const list = [];
     const seen = new Set();
 
-    // Hero image
     if (article.hero) {
-      trackImage(
-        article.hero,
-        article.title,
-        list,
-        seen
-      );
+      trackImage(article.hero, article.title, list, seen);
     }
 
-    // Photo gallery
     if (Array.isArray(article.photos)) {
       article.photos.forEach(photo => {
         if (photo && photo.src) {
-          trackImage(
-            photo.src,
-            photo.caption || article.title,
-            list,
-            seen
-          );
+          trackImage(photo.src, photo.caption || article.title, list, seen);
         }
       });
     }
@@ -259,36 +201,27 @@ function buildImageMap(master, content, media, vision) {
     add(pageUrl, list);
   });
 
-  /* ─── PLACE (MAP + GALLERY) ─── */
+  /* ─── PLACE (landmarks + gallery) ─── */
   {
     const pageUrl = `${base}/place`;
     const list = [];
     const seen = new Set();
 
-    // Landmark photos
-    if (media.landmarks) {
+    // Landmarks
+    if (Array.isArray(media.landmarks)) {
       media.landmarks.forEach(landmark => {
         if (landmark.photo) {
-          trackImage(
-            landmark.photo,
-            landmark.name,
-            list,
-            seen
-          );
+          trackImage(landmark.photo, landmark.name, list, seen);
         }
       });
     }
 
-    // Gallery photos
-    if (media.gallery) {
-      media.gallery.forEach(photo => {
+    // Gallery — FIXED: media.gallery is object with .photos
+    const galleryPhotos = media.gallery?.photos || [];
+    if (Array.isArray(galleryPhotos)) {
+      galleryPhotos.forEach(photo => {
         if (photo.src) {
-          trackImage(
-            photo.src,
-            photo.caption || 'Bandwar village photograph',
-            list,
-            seen
-          );
+          trackImage(photo.src, photo.caption || 'Bandwar village photograph', list, seen);
         }
       });
     }
@@ -296,21 +229,16 @@ function buildImageMap(master, content, media, vision) {
     add(pageUrl, list);
   }
 
-  /* ─── TIME (TIMELINE) ─── */
+  /* ─── TIME (timeline — usually no photos, skip) ─── */
   {
     const pageUrl = `${base}/time`;
     const list = [];
     const seen = new Set();
 
-    if (media.timeline) {
+    if (Array.isArray(media.timeline)) {
       media.timeline.forEach(event => {
         if (event.photo) {
-          trackImage(
-            event.photo,
-            event.title,
-            list,
-            seen
-          );
+          trackImage(event.photo, event.title, list, seen);
         }
       });
     }
@@ -318,14 +246,14 @@ function buildImageMap(master, content, media, vision) {
     add(pageUrl, list);
   }
 
-  /* ─── VISION (NEEDS + ACHIEVEMENTS) ─── */
+  /* ─── VISION (priorities + achievements) ─── */
   {
     const pageUrl = `${base}/vision`;
     const list = [];
     const seen = new Set();
 
-    // Need sliders — present + required photos
-    if (vision.priorities) {
+    // Priorities
+    if (Array.isArray(vision.priorities)) {
       vision.priorities.forEach(need => {
         if (need.present?.photo) {
           trackImage(
@@ -343,19 +271,19 @@ function buildImageMap(master, content, media, vision) {
             seen
           );
         }
+        if (need.inside?.photos && Array.isArray(need.inside.photos)) {
+          need.inside.photos.forEach(p => {
+            if (p && p.src) trackImage(p.src, p.caption || need.title, list, seen);
+          });
+        }
       });
     }
 
-    // Achievement photos
-    if (vision.achievements) {
-      vision.achievements.forEach(achievement => {
-        if (achievement.photo) {
-          trackImage(
-            achievement.photo,
-            achievement.title,
-            list,
-            seen
-          );
+    // Achievements
+    if (Array.isArray(vision.achievements)) {
+      vision.achievements.forEach(ach => {
+        if (ach.photo) {
+          trackImage(ach.photo, ach.title, list, seen);
         }
       });
     }
@@ -367,7 +295,7 @@ function buildImageMap(master, content, media, vision) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SITEMAP.XML GENERATOR
+   GENERATE SITEMAP.XML
    ═══════════════════════════════════════════════════════════════════ */
 function generateSitemap(pages) {
   const lines = [
@@ -385,13 +313,12 @@ function generateSitemap(pages) {
   });
 
   lines.push('</urlset>');
-  lines.push('');  // trailing newline
-
+  lines.push('');
   return lines.join('\n');
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SITEMAP-IMAGES.XML GENERATOR
+   GENERATE SITEMAP-IMAGES.XML
    ═══════════════════════════════════════════════════════════════════ */
 function generateImageSitemap(pageImages, master) {
   const lines = [
@@ -400,7 +327,6 @@ function generateImageSitemap(pageImages, master) {
     '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
   ];
 
-  // Sort pages: homepage first, then alphabetical
   const base = master.site.url.replace(/\/$/, '');
   const sorted = [...pageImages.keys()].sort((a, b) => {
     if (a === base + '/') return -1;
@@ -421,7 +347,7 @@ function generateImageSitemap(pageImages, master) {
       lines.push('    <image:image>');
       lines.push(`      <image:loc>${esc(absoluteUrl(img.src, base))}</image:loc>`);
       if (img.caption) {
-        const cleanCaption = img.caption.slice(0, 500);  // Google limit
+        const cleanCaption = img.caption.slice(0, 500);
         lines.push(`      <image:caption>${esc(cleanCaption)}</image:caption>`);
         lines.push(`      <image:title>${esc(cleanCaption)}</image:title>`);
       }
@@ -434,13 +360,11 @@ function generateImageSitemap(pageImages, master) {
 
   lines.push('</urlset>');
   lines.push('');
-
   return { xml: lines.join('\n'), total };
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SITEMAP-INDEX.XML GENERATOR
-   Reference file that links both sitemaps
+   GENERATE SITEMAP-INDEX.XML
    ═══════════════════════════════════════════════════════════════════ */
 function generateSitemapIndex(master) {
   const base = master.site.url.replace(/\/$/, '');
@@ -463,7 +387,7 @@ function generateSitemapIndex(master) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   WRITE FILES
+   WRITE OUTPUT
    ═══════════════════════════════════════════════════════════════════ */
 function ensureDist() {
   if (!fs.existsSync(DIST)) {
@@ -471,13 +395,9 @@ function ensureDist() {
   }
 }
 
-function writeOutput(relPath, content, label) {
+function writeOutput(relPath, content) {
   const full = path.join(DIST, relPath);
   fs.writeFileSync(full, content, 'utf8');
-  const size = (content.length / 1024).toFixed(1);
-  if (VERBOSE) {
-    console.log(`  ${COLORS.green}✓${COLORS.reset} ${label} ${COLORS.gray}(${size} KB)${COLORS.reset}`);
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -491,7 +411,6 @@ function main() {
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
-  // ─── LOAD DATA ───
   console.log(`${COLORS.gray}  Loading data...${COLORS.reset}`);
 
   const master  = loadJSON('data/master.json');
@@ -501,80 +420,59 @@ function main() {
 
   const articles = content.articles || [];
   const categories = content.categories || [];
+  const landmarkCount = (media.landmarks || []).length;
+  const galleryCount = (media.gallery?.photos || []).length;
+  const timelineCount = (media.timeline || []).length;
 
   console.log(`  ${COLORS.green}✓${COLORS.reset} master.json   ${COLORS.gray}(${master.site.url})${COLORS.reset}`);
   console.log(`  ${COLORS.green}✓${COLORS.reset} content.json  ${COLORS.gray}(${articles.length} articles, ${categories.length} categories)${COLORS.reset}`);
-  console.log(`  ${COLORS.green}✓${COLORS.reset} media.json    ${COLORS.gray}(${(media.landmarks || []).length} landmarks, ${(media.gallery || []).length} photos, ${(media.timeline || []).length} events)${COLORS.reset}`);
+  console.log(`  ${COLORS.green}✓${COLORS.reset} media.json    ${COLORS.gray}(${landmarkCount} landmarks, ${galleryCount} photos, ${timelineCount} events)${COLORS.reset}`);
   console.log(`  ${COLORS.green}✓${COLORS.reset} vision.json   ${COLORS.gray}(${(vision.priorities || []).length} priorities, ${(vision.achievements || []).length} achievements)${COLORS.reset}`);
   console.log('');
 
-  // ─── BUILD PAGES ───
+  // Build pages
   console.log(`${COLORS.bold}Building page URLs...${COLORS.reset}`);
   const pages = buildPages(master, content);
   stats.pages = pages.length;
   console.log(`  ${COLORS.green}✓${COLORS.reset} ${pages.length} page URLs`);
   console.log('');
 
-  // ─── BUILD IMAGE MAP ───
+  // Build image map
   console.log(`${COLORS.bold}Building image map...${COLORS.reset}`);
   const pageImages = buildImageMap(master, content, media, vision);
   console.log(`  ${COLORS.green}✓${COLORS.reset} ${stats.images} images across ${pageImages.size} pages`);
   if (stats.imagesMissing > 0) {
     console.log(`  ${COLORS.yellow}⚠${COLORS.reset} ${stats.imagesMissing} images missing (skipped)`);
-    if (VERBOSE) {
-      stats.imagesMissingList.slice(0, 15).forEach(m => {
-        console.log(`      ${COLORS.gray}- ${m}${COLORS.reset}`);
-      });
-      if (stats.imagesMissingList.length > 15) {
-        console.log(`      ${COLORS.gray}... and ${stats.imagesMissingList.length - 15} more${COLORS.reset}`);
-      }
-    }
   }
   console.log('');
 
-  // ─── ENSURE DIST EXISTS ───
+  // Ensure dist
   ensureDist();
 
-  // ─── WRITE SITEMAP.XML ───
+  // Write sitemaps
   console.log(`${COLORS.bold}Writing sitemaps...${COLORS.reset}`);
 
   const sitemapXML = generateSitemap(pages);
-  writeOutput('sitemap.xml', sitemapXML, 'sitemap.xml');
-  console.log(`  ${COLORS.green}✓${COLORS.reset} sitemap.xml         ${COLORS.gray}(${pages.length} URLs, ${(sitemapXML.length / 1024).toFixed(1)} KB)${COLORS.reset}`);
+  writeOutput('sitemap.xml', sitemapXML);
+  console.log(`  ${COLORS.green}✓${COLORS.reset} sitemap.xml         ${COLORS.gray}(${pages.length} URLs)${COLORS.reset}`);
 
-  // ─── WRITE SITEMAP-IMAGES.XML ───
   const { xml: imageXML, total: imageCount } = generateImageSitemap(pageImages, master);
-  writeOutput('sitemap-images.xml', imageXML, 'sitemap-images.xml');
-  console.log(`  ${COLORS.green}✓${COLORS.reset} sitemap-images.xml  ${COLORS.gray}(${imageCount} images, ${(imageXML.length / 1024).toFixed(1)} KB)${COLORS.reset}`);
+  writeOutput('sitemap-images.xml', imageXML);
+  console.log(`  ${COLORS.green}✓${COLORS.reset} sitemap-images.xml  ${COLORS.gray}(${imageCount} images)${COLORS.reset}`);
 
-  // ─── WRITE SITEMAP-INDEX.XML ───
   const indexXML = generateSitemapIndex(master);
-  writeOutput('sitemap-index.xml', indexXML, 'sitemap-index.xml');
+  writeOutput('sitemap-index.xml', indexXML);
   console.log(`  ${COLORS.green}✓${COLORS.reset} sitemap-index.xml   ${COLORS.gray}(master index)${COLORS.reset}`);
 
-  // ─── SUMMARY ───
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
 
   console.log('');
   console.log(`${COLORS.bold}═══ Sitemap Summary ═══${COLORS.reset}`);
   console.log(`  Pages:  ${COLORS.blue}${pages.length}${COLORS.reset}`);
   console.log(`  Images: ${COLORS.blue}${imageCount}${COLORS.reset}`);
-  if (stats.imagesMissing > 0) {
-    console.log(`  ${COLORS.yellow}Missing images: ${stats.imagesMissing}${COLORS.reset}`);
-  }
   console.log(`  Time:   ${COLORS.blue}${elapsed}s${COLORS.reset}`);
   console.log('');
-  console.log(`  ${COLORS.gray}Base URL: ${master.site.url}${COLORS.reset}`);
-  console.log(`  ${COLORS.gray}Output:   dist/${COLORS.reset}`);
-  console.log('');
   console.log(`${COLORS.green}${COLORS.bold}Sitemaps generated.${COLORS.reset}`);
-  console.log('');
-
-  // ─── HINTS ───
-  console.log(`${COLORS.gray}Next steps:${COLORS.reset}`);
-  console.log(`${COLORS.gray}  1. Run:    ${COLORS.reset}${COLORS.blue}node scripts/build.cjs --clean${COLORS.reset}`);
-  console.log(`${COLORS.gray}  2. Deploy: ${COLORS.reset}${COLORS.blue}vercel --prod${COLORS.reset}`);
-  console.log(`${COLORS.gray}  3. Submit: ${COLORS.reset}${COLORS.blue}https://search.google.com/search-console${COLORS.reset}`);
   console.log('');
 }
 
