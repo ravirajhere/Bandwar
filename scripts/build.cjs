@@ -1,29 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — BUILD ENGINE
    Static site generator · Pre-renders every page from JSON data
-   
-   What it does:
-     1. Loads master.json + content.json + vision.json + media.json
-     2. Renders partials (head, nav, footer)
-     3. Renders every page template
-     4. Generates schemas (JSON-LD @graph) per page
-     5. Writes HTML files to dist/
-     6. Copies assets (css, js, images)
-     7. Handles rolling horizon (vision year auto-shifts)
-   
-   Usage:
-     node scripts/build.cjs           # Standard build
-     node scripts/build.cjs --watch   # Watch mode (dev)
-     node scripts/build.cjs --clean   # Clean dist/ first
-   
-   Output:
-     dist/
-     ├── index.html
-     ├── article/{30 files}.html
-     ├── section/{11 files}.html
-     ├── place.html, time.html, vision.html, about.html
-     ├── sitemap.xml, sitemap-images.xml
-     └── assets/{css,js,images}/
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -65,16 +42,12 @@ function loadJSON(relPath) {
 
 function loadAllData() {
   console.log(`${COLORS.gray}  Loading data files...${COLORS.reset}`);
-
   const master = loadJSON('data/master.json');
   const content = loadJSON('data/content.json');
   const vision = loadJSON('data/vision.json');
   const media = loadJSON('data/media.json');
-
-  // Merge categories into content for convenience
   const categories = content.categories || [];
   const articles = content.articles || [];
-
   return { master, content, vision, media, categories, articles };
 }
 
@@ -91,13 +64,10 @@ function loadTemplate(relPath) {
 
 function loadAllTemplates() {
   return {
-    // Partials
     head: loadTemplate('partials/head.html'),
     nav: loadTemplate('partials/nav.html'),
     footer: loadTemplate('partials/footer.html'),
-    // Layouts
     layout: loadTemplate('layout.html'),
-    // Pages
     index: loadTemplate('index.html'),
     article: loadTemplate('article.html'),
     section: loadTemplate('section.html'),
@@ -112,7 +82,6 @@ function loadAllTemplates() {
    UTILITIES
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ─── Escape HTML ─── */
 function escapeHtml(str) {
   if (str == null) return '';
   return String(str)
@@ -123,29 +92,23 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-/* ─── Slugify heading (for anchor IDs) ─── */
 function slugify(str) {
-  return String(str)
-    .toLowerCase()
-    .trim()
+  return String(str).toLowerCase().trim()
     .replace(/[^\w\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 }
 
-/* ─── Word count ─── */
 function countWords(text) {
   if (!text) return 0;
   return String(text).split(/\s+/).filter(Boolean).length;
 }
 
-/* ─── Reading time (minutes) ─── */
 function readingTime(wordCount) {
   return Math.max(1, Math.round(wordCount / 220));
 }
 
-/* ─── Absolute URL from relative path ─── */
 function absoluteUrl(relPath, baseUrl) {
   if (!relPath) return baseUrl;
   if (relPath.startsWith('http')) return relPath;
@@ -153,30 +116,26 @@ function absoluteUrl(relPath, baseUrl) {
   return `${baseUrl.replace(/\/$/, '')}/${clean}`;
 }
 
-/* ─── Derive webp path from jpg/png ─── */
 function toWebp(imagePath) {
   if (!imagePath) return '';
   return imagePath.replace(/\.(jpe?g|png)$/i, '.webp');
 }
 
-/* ─── Derive avif path from jpg/png ─── */
 function toAvif(imagePath) {
   if (!imagePath) return '';
   return imagePath.replace(/\.(jpe?g|png)$/i, '.avif');
 }
 
-/* ─── Build srcset for responsive images ─── */
 function buildSrcset(imagePath, widths = [400, 800, 1200, 1600]) {
   if (!imagePath) return '';
   const base = imagePath.replace(/\.(jpe?g|png)$/i, '');
   const ext = imagePath.match(/\.(jpe?g|png)$/i)?.[0] || '.jpg';
-  return widths
-    .map(w => `${base}-${w}${ext} ${w}w`)
-    .join(', ');
+  return widths.map(w => `${base}-${w}${ext} ${w}w`).join(', ');
 }
 
-/* ─── Group array by key ─── */
+/* ─── Group array by key (safe with non-array) ─── */
 function groupBy(arr, key) {
+  if (!Array.isArray(arr)) return {};
   return arr.reduce((acc, item) => {
     const k = item[key];
     if (!k) return acc;
@@ -186,8 +145,8 @@ function groupBy(arr, key) {
   }, {});
 }
 
-/* ─── Sort articles by date (newest first) ─── */
 function sortByDate(articles) {
+  if (!Array.isArray(articles)) return [];
   return [...articles].sort((a, b) => {
     const da = a.datePublished || '';
     const db = b.datePublished || '';
@@ -195,31 +154,16 @@ function sortByDate(articles) {
   });
 }
 
-/* ─── Get primary category for an article ─── */
 function primaryCategory(article, categories) {
   if (!article.categories || !article.categories.length) return null;
   return categories.find(c => c.id === article.categories[0]) || null;
 }
 
-/* ─── Get all categories for an article ─── */
 function getCategories(article, categories) {
   if (!article.categories) return [];
-  return article.categories
-    .map(id => categories.find(c => c.id === id))
-    .filter(Boolean);
+  return article.categories.map(id => categories.find(c => c.id === id)).filter(Boolean);
 }
 
-/* ─── Get category icon (fallback) ─── */
-function categoryIcon(category) {
-  return category?.icon || '📄';
-}
-
-/* ─── Get category title (fallback) ─── */
-function categoryTitle(category) {
-  return category?.title || 'Uncategorised';
-}
-
-/* ─── Check file exists ─── */
 function exists(relPath) {
   try {
     return fs.statSync(path.join(ROOT, relPath)).isFile();
@@ -228,7 +172,6 @@ function exists(relPath) {
   }
 }
 
-/* ─── Write file with dir creation ─── */
 function writeFile(relPath, content) {
   const full = path.join(DIST, relPath);
   fs.mkdirSync(path.dirname(full), { recursive: true });
@@ -239,7 +182,6 @@ function writeFile(relPath, content) {
   }
 }
 
-/* ─── Copy file ─── */
 function copyFile(srcRel, destRel) {
   const src = path.join(ROOT, srcRel);
   const dest = path.join(DIST, destRel);
@@ -247,23 +189,17 @@ function copyFile(srcRel, destRel) {
   fs.copyFileSync(src, dest);
 }
 
-/* ─── Recursive copy directory ─── */
 function copyDir(srcRel, destRel, filter = null) {
   const src = path.join(ROOT, srcRel);
   const dest = path.join(DIST, destRel);
-  
   if (!fs.existsSync(src)) return;
-  
   fs.mkdirSync(dest, { recursive: true });
   const entries = fs.readdirSync(src, { withFileTypes: true });
-  
   entries.forEach(entry => {
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
     const relPath = path.join(srcRel, entry.name);
-    
     if (filter && !filter(relPath)) return;
-    
     if (entry.isDirectory()) {
       copyDir(relPath, path.join(destRel, entry.name), filter);
     } else {
@@ -272,7 +208,6 @@ function copyDir(srcRel, destRel, filter = null) {
   });
 }
 
-/* ─── Clean dist ─── */
 function cleanDist() {
   if (fs.existsSync(DIST)) {
     fs.rmSync(DIST, { recursive: true, force: true });
@@ -281,7 +216,6 @@ function cleanDist() {
   fs.mkdirSync(DIST, { recursive: true });
 }
 
-/* ─── Replace multiple placeholders ─── */
 function replaceAll(template, replacements) {
   let result = template;
   Object.entries(replacements).forEach(([key, value]) => {
@@ -292,10 +226,9 @@ function replaceAll(template, replacements) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   SCHEMA BUILDERS (JSON-LD @graph)
+   SCHEMA BUILDERS
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ─── Base organization node ─── */
 function buildOrganizationNode(master) {
   return {
     '@type': 'Organization',
@@ -322,7 +255,6 @@ function buildOrganizationNode(master) {
   };
 }
 
-/* ─── Base website node ─── */
 function buildWebsiteNode(master) {
   return {
     '@type': 'WebSite',
@@ -343,7 +275,6 @@ function buildWebsiteNode(master) {
   };
 }
 
-/* ─── Place node (village) ─── */
 function buildPlaceNode(master) {
   return {
     '@type': 'Place',
@@ -371,7 +302,6 @@ function buildPlaceNode(master) {
   };
 }
 
-/* ─── Breadcrumb node ─── */
 function buildBreadcrumbNode(items, baseUrl) {
   return {
     '@type': 'BreadcrumbList',
@@ -384,7 +314,6 @@ function buildBreadcrumbNode(items, baseUrl) {
   };
 }
 
-/* ─── ImageObject node ─── */
 function buildImageNode(imagePath, meta, master) {
   const absolute = absoluteUrl(imagePath, master.site.url);
   return {
@@ -400,12 +329,11 @@ function buildImageNode(imagePath, meta, master) {
     'creator': { '@id': `${master.site.url}/#organization` },
     'creditText': master.imageSEO.creditText,
     'license': master.imageSEO.license,
-    'acquireLicensePage': master.imageSEO.license,
+    'acquireLicensePage': master.imageSEO.acquireLicensePage,
     ...(meta.uploadDate && { 'uploadDate': meta.uploadDate })
   };
 }
 
-/* ─── HOME schema ─── */
 function buildHomeSchema(master, content) {
   return {
     '@context': 'https://schema.org',
@@ -427,26 +355,21 @@ function buildHomeSchema(master, content) {
   };
 }
 
-/* ─── ARTICLE schema ─── */
 function buildArticleSchema(article, master, categories) {
   const url = `${master.site.url}/article/${article.id}`;
-
-  // Compute word count
   const text = [
     article.summary || '',
     ...(article.content || []).map(c => c.text || '')
   ].join(' ');
   const wordCount = countWords(text);
 
-  // Date handling
-  const datePub = article.datePublished 
-    ? new Date(article.datePublished).toISOString() 
+  const datePub = article.datePublished
+    ? new Date(article.datePublished).toISOString()
     : `${master.site.established || '2024'}-01-01T00:00:00+05:30`;
-  const dateMod = article.dateModified 
-    ? new Date(article.dateModified).toISOString() 
+  const dateMod = article.dateModified
+    ? new Date(article.dateModified).toISOString()
     : new Date(master.lastUpdated).toISOString();
 
-  // Build images array
   const images = [];
   if (article.hero) {
     images.push(buildImageNode(article.hero, {
@@ -456,7 +379,7 @@ function buildArticleSchema(article, master, categories) {
       uploadDate: datePub
     }, master));
   }
-  (article.photos || []).forEach((photo, i) => {
+  (article.photos || []).forEach((photo) => {
     if (photo.src && photo.src !== article.hero) {
       images.push(buildImageNode(photo.src, {
         caption: photo.caption || article.title,
@@ -511,14 +434,13 @@ function buildArticleSchema(article, master, categories) {
   };
 }
 
-/* ─── SECTION schema ─── */
 function buildSectionSchema(category, articles, master, isAll) {
-  const url = isAll 
+  const url = isAll
     ? `${master.site.url}/section`
     : `${master.site.url}/section/${category.id}`;
 
   const name = isAll ? 'All Articles' : category.title;
-  const description = isAll 
+  const description = isAll
     ? `Browse all ${articles.length} articles in the Bandwar Archive.`
     : category.description || `${articles.length} articles in ${category.title}`;
 
@@ -562,8 +484,7 @@ function buildSectionSchema(category, articles, master, isAll) {
   };
 }
 
-/* ─── PLACE schema ─── */
-function buildPlaceSchema(landmarks, master, categories) {
+function buildPlaceSchema(landmarks, master) {
   const url = `${master.site.url}/place`;
 
   return {
@@ -606,7 +527,6 @@ function buildPlaceSchema(landmarks, master, categories) {
   };
 }
 
-/* ─── TIME schema ─── */
 function buildTimeSchema(timeline, master) {
   const url = `${master.site.url}/time`;
 
@@ -631,7 +551,7 @@ function buildTimeSchema(timeline, master) {
               '@type': 'Event',
               'name': event.title,
               'description': event.description,
-              ...(event.sortKey && { 'startDate': String(event.sortKey) }),
+              ...(event.sortKey != null && { 'startDate': String(event.sortKey) }),
               'location': {
                 '@type': 'Place',
                 'name': `${master.village.name}, ${master.village.district}`
@@ -649,7 +569,6 @@ function buildTimeSchema(timeline, master) {
   };
 }
 
-/* ─── VISION schema (rolling horizon) ─── */
 function buildVisionSchema(priorities, achievements, roadmap, master, currentYear, horizonEnd) {
   const url = `${master.site.url}/vision`;
 
@@ -690,7 +609,6 @@ function buildVisionSchema(priorities, achievements, roadmap, master, currentYea
   };
 }
 
-/* ─── ABOUT schema ─── */
 function buildAboutSchema(master) {
   const url = `${master.site.url}/about`;
 
@@ -716,76 +634,43 @@ function buildAboutSchema(master) {
   };
 }
 
-/* ─── Serialize schema for HTML injection ─── */
 function serializeSchema(schema) {
   return JSON.stringify(schema, null, 2);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PART 2 — PARTIAL RENDERERS + LAYOUT
-   ═══════════════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════════════
-   HEAD PARTIAL RENDERER
-   Fills all SEO meta tags, OG, Twitter, schema, resources
+   HEAD RENDERER
    ═══════════════════════════════════════════════════════════════════ */
 function renderHead(templates, master, pageData) {
   const {
-    title,
-    description,
-    canonical,
-    ogImage,
-    ogType = 'website',
-    ogImageAlt,
+    title, description, canonical, ogImage,
+    ogType = 'website', ogImageAlt,
     robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
-    schema,
-    hreflangHindi = '',
-    preloadImages = '',
-    pageSpecificHead = '',
+    schema, hreflangHindi = '', preloadImages = '', pageSpecificHead = '',
   } = pageData;
 
-  // ─── FAVICON (inline SVG) ───
   const faviconSvg = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231a1a18'/><text x='50' y='68' font-family='Georgia' font-size='60' fill='%23f7f5ef' text-anchor='middle'>B</text></svg>`;
-
-  // ─── THEME COLOR ───
   const themeColor = master.brand.colors.primary;
-
-  // ─── OG IMAGE ───
-  const ogImageUrl = ogImage.startsWith('http') 
-    ? ogImage 
-    : absoluteUrl(ogImage, master.site.url);
-  
+  const ogImageUrl = ogImage.startsWith('http') ? ogImage : absoluteUrl(ogImage, master.site.url);
   const ogImageAltFinal = ogImageAlt || `${master.site.shortName} — ${master.site.tagline}`;
 
-  // ─── KEYWORDS (optional — only if provided) ───
   const keywordsTag = pageData.keywords
     ? `<meta name="keywords" content="${escapeHtml(pageData.keywords)}">`
     : '';
-
-  // ─── TWITTER SITE (if handle provided) ───
   const twitterSite = master.seo.twitterHandle
     ? `<meta name="twitter:site" content="${escapeHtml(master.seo.twitterHandle)}">`
     : '';
 
-  // ─── BUILD REPLACEMENTS ───
   const replacements = {
     lang: master.site.language,
     dir: master.site.dir,
     themeColor,
-
-    // Primary SEO
     title: escapeHtml(title),
     description: escapeHtml(description),
     keywords: keywordsTag,
     canonical: escapeHtml(canonical),
-
-    // Robots
     robots,
-
-    // Language alternates
     hreflangHindi,
-
-    // OG
     ogType,
     ogSiteName: escapeHtml(master.site.name),
     ogTitle: escapeHtml(title),
@@ -795,30 +680,18 @@ function renderHead(templates, master, pageData) {
     ogImageHeight: master.seo.ogImageHeight || 630,
     ogImageAlt: escapeHtml(ogImageAltFinal),
     ogLocale: master.site.locale,
-
-    // Twitter
     twitterCard: 'summary_large_image',
     twitterTitle: escapeHtml(title),
     twitterDescription: escapeHtml(description),
     twitterImage: ogImageUrl,
     twitterSite,
-
-    // Verification
     verificationGoogle: master.seo.verification?.google || '',
-
-    // Icons & manifest
     faviconSvg,
     manifestUrl: '/manifest.json',
-
-    // Resources
     themeCss: `/assets/css/theme.css?v=${master.version}`,
     styleCss: `/assets/css/style.css?v=${master.version}`,
     pageSpecificHead,
-
-    // Preload (LCP optimization)
     preloadImages,
-
-    // Schema
     schema: schema ? serializeSchema(schema) : '{}',
   };
 
@@ -826,54 +699,34 @@ function renderHead(templates, master, pageData) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   NAV PARTIAL RENDERER
-   Master-driven nav · Active state auto-detected
+   NAV RENDERER
    ═══════════════════════════════════════════════════════════════════ */
 function renderNav(templates, master, currentPath) {
-  // ─── NAV ITEMS ───
   const navItems = master.nav.map(item => {
     const isActive = isActiveNavItem(item.href, currentPath);
     const activeClass = isActive ? ' class="active"' : '';
     const activeAria = isActive ? ' aria-current="page"' : '';
-    const icon = item.icon 
-      ? `<span aria-hidden="true">${item.icon}</span> ` 
-      : '';
-
+    const icon = item.icon ? `<span aria-hidden="true">${item.icon}</span> ` : '';
     return `<li role="none"><a href="${escapeHtml(item.href)}" role="menuitem"${activeClass}${activeAria}>${icon}${escapeHtml(item.label)}</a></li>`;
   }).join('\n        ');
 
-  // ─── THEME TOGGLE (conditional) ───
   const themeToggle = master.features.darkMode ? `
-        <button class="nav-icon-btn"
-                id="themeToggle"
-                aria-label="Toggle dark mode"
-                title="Toggle theme"
-                type="button">
+        <button class="nav-icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>` : '';
 
-  // ─── SEARCH BUTTON (conditional) ───
   const searchBtn = master.features.search ? `
-        <a href="/section"
-           class="nav-icon-btn"
-           aria-label="Search the archive"
-           title="Search">
+        <a href="/section" class="nav-icon-btn" aria-label="Search the archive" title="Search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/>
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
         </a>` : '';
 
-  // ─── HAMBURGER ───
   const hamburger = `
-        <button class="nav-toggle"
-                id="navToggle"
-                aria-label="Open menu"
-                aria-expanded="false"
-                aria-controls="navMenu"
-                type="button">
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
             <line x1="3" y1="7" x2="21" y2="7"/>
             <line x1="3" y1="12" x2="21" y2="12"/>
@@ -881,27 +734,22 @@ function renderNav(templates, master, currentPath) {
           </svg>
         </button>`;
 
-  // ─── CURRENT PAGE (for data-page attribute) ───
   const pageSlug = derivePageSlug(currentPath);
 
-  const replacements = {
+  return replaceAll(templates.nav, {
     siteName: escapeHtml(master.site.shortName),
     navItems,
     themeToggle: themeToggle + searchBtn + hamburger,
     navActive: pageSlug,
-  };
-
-  return replaceAll(templates.nav, replacements);
+  });
 }
 
-/* ─── Determine if a nav item is active ─── */
 function isActiveNavItem(href, currentPath) {
   if (href === '/' && currentPath === '/') return true;
   if (href !== '/' && currentPath.startsWith(href)) return true;
   return false;
 }
 
-/* ─── Derive page slug from path ─── */
 function derivePageSlug(currentPath) {
   if (currentPath === '/' || currentPath === '/index.html') return 'home';
   const clean = currentPath.replace(/^\/|\/$/g, '').replace(/\.html$/, '');
@@ -909,31 +757,24 @@ function derivePageSlug(currentPath) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   FOOTER PARTIAL RENDERER
+   FOOTER RENDERER
    ═══════════════════════════════════════════════════════════════════ */
 function renderFooter(templates, master) {
   const currentYear = new Date().getFullYear();
 
-  // ─── SECTIONS LIST ───
-  const footerSections = master.footer.sections.map(item => 
+  const footerSections = master.footer.sections.map(item =>
     `<li><a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a></li>`
   ).join('\n          ');
 
-  // ─── EXPLORE LIST ───
-  const footerExplore = master.footer.explore.map(item => 
+  const footerExplore = master.footer.explore.map(item =>
     `<li><a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a></li>`
   ).join('\n          ');
 
-  // ─── SOCIAL LINKS (conditional) ───
   const socialLinks = renderSocialLinks(master.social);
-
-  // ─── COPYRIGHT (year replaced) ───
   const copyright = (master.footer.copyright || '').replace('{year}', currentYear);
-
-  // ─── CREDIT ───
   const credit = master.footer.credit || '';
 
-  const replacements = {
+  return replaceAll(templates.footer, {
     siteName: escapeHtml(master.site.shortName),
     siteFullName: escapeHtml(master.site.name),
     siteDescription: escapeHtml(master.site.description),
@@ -947,12 +788,9 @@ function renderFooter(templates, master) {
     villageState: escapeHtml(master.village.state),
     villagePincode: escapeHtml(master.village.pincode),
     socialLinks,
-  };
-
-  return replaceAll(templates.footer, replacements);
+  });
 }
 
-/* ─── Render social links ─── */
 function renderSocialLinks(social) {
   const platforms = {
     github: { label: 'GitHub', url: social.github },
@@ -963,20 +801,15 @@ function renderSocialLinks(social) {
 
   const links = Object.entries(platforms)
     .filter(([_, p]) => p.url)
-    .map(([key, p]) => 
-      `<a href="${escapeHtml(p.url)}" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          aria-label="${escapeHtml(p.label)}">${escapeHtml(p.label)}</a>`
+    .map(([key, p]) =>
+      `<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(p.label)}">${escapeHtml(p.label)}</a>`
     );
 
-  return links.length 
-    ? `<div class="footer-social">${links.join('')}</div>` 
-    : '';
+  return links.length ? `<div class="footer-social">${links.join('')}</div>` : '';
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   BREADCRUMB RENDERER
+   BREADCRUMB + LAYOUT
    ═══════════════════════════════════════════════════════════════════ */
 function renderBreadcrumb(items, master) {
   if (!items || items.length === 0) return '';
@@ -1002,55 +835,26 @@ function renderBreadcrumb(items, master) {
 </div>`.trim();
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   LAYOUT MERGER
-   Merges head + nav + breadcrumb + content + footer + scripts
-   ═══════════════════════════════════════════════════════════════════ */
 function renderLayout(templates, master, pageData) {
   const {
-    slug,
-    title,
-    description,
-    canonical,
-    ogImage,
-    ogType = 'website',
-    ogImageAlt,
-    robots,
-    keywords,
-    schema,
-    content,
-    bodyClass = '',
-    bodyAttr = '',
-    breadcrumb = '',
-    pageScripts = '',
-    preloadImages = '',
-    pageSpecificHead = '',
+    slug, title, description, canonical, ogImage,
+    ogType = 'website', ogImageAlt, robots, keywords, schema,
+    content, bodyClass = '', bodyAttr = '', breadcrumb = '',
+    pageScripts = '', preloadImages = '', pageSpecificHead = '',
   } = pageData;
 
-  // ─── RENDER PARTIALS ───
   const head = renderHead(templates, master, {
-    title,
-    description,
-    canonical,
-    ogImage,
-    ogType,
-    ogImageAlt,
-    robots,
-    keywords,
-    schema,
-    preloadImages,
-    pageSpecificHead,
+    title, description, canonical, ogImage, ogType, ogImageAlt,
+    robots, keywords, schema, preloadImages, pageSpecificHead,
   });
 
   const currentPath = canonicalToPath(canonical, master);
   const nav = renderNav(templates, master, currentPath);
   const footer = renderFooter(templates, master);
 
-  // ─── BODY CLASSES ───
   const bodyClassFinal = `page-${slug}${bodyClass ? ' ' + bodyClass : ''}`;
 
-  // ─── MERGE INTO LAYOUT ───
-  const replacements = {
+  return replaceAll(templates.layout, {
     lang: master.site.language,
     dir: master.site.dir,
     head,
@@ -1062,12 +866,9 @@ function renderLayout(templates, master, pageData) {
     content,
     pageScripts,
     version: master.version,
-  };
-
-  return replaceAll(templates.layout, replacements);
+  });
 }
 
-/* ─── Convert canonical URL back to path for nav active detection ─── */
 function canonicalToPath(canonical, master) {
   try {
     const url = new URL(canonical);
@@ -1078,7 +879,7 @@ function canonicalToPath(canonical, master) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   URL BUILDERS
+   URL HELPERS
    ═══════════════════════════════════════════════════════════════════ */
 function buildCanonical(pathname, master) {
   const base = master.site.url.replace(/\/$/, '');
@@ -1090,27 +891,12 @@ function articleUrl(articleId, master) {
   return buildCanonical(`/article/${articleId}`, master);
 }
 
-function sectionUrl(categoryId, master) {
-  return categoryId 
-    ? buildCanonical(`/section/${categoryId}`, master)
-    : buildCanonical('/section', master);
-}
-
 function sectionCanonicalPath(categoryId) {
   return categoryId ? `/section/${categoryId}` : '/section';
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   PRELOAD IMAGE HELPER
-   Generates <link rel="preload"> for LCP optimization
-   ═══════════════════════════════════════════════════════════════════ */
 function preloadImage(imagePath, master, options = {}) {
   if (!imagePath) return '';
-  
-  const absolute = absoluteUrl(imagePath, master.site.url);
-  const webp = toWebp(imagePath);
-  const webpAbs = absoluteUrl(webp, master.site.url);
-
   const {
     fetchpriority = 'high',
     media = null,
@@ -1118,12 +904,11 @@ function preloadImage(imagePath, master, options = {}) {
     isHero = false,
   } = options;
 
-  // For hero images, preload the largest variant
-  const srcset = isHero 
+  const srcset = isHero
     ? buildSrcset(imagePath, [800, 1200, 1600])
     : '';
 
-  const href = isHero 
+  const href = isHero
     ? `${imagePath.replace(/\.(jpe?g|png)$/i, '-1200$1')}`
     : imagePath;
 
@@ -1139,16 +924,11 @@ function preloadImage(imagePath, master, options = {}) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PART 3 — PAGE RENDERERS + MAIN ORCHESTRATION
-   ═══════════════════════════════════════════════════════════════════ */
-
-/* ═══════════════════════════════════════════════════════════════════
    PAGE RENDERER — HOME
    ═══════════════════════════════════════════════════════════════════ */
 function renderHome(templates, master, content) {
   const { categories, articles } = content;
 
-  // ─── 1. HERO ───
   const hero = master.home.hero;
   const heroImage = hero.image;
   const heroMeta = master.home.meta.map(m => `
@@ -1157,25 +937,19 @@ function renderHome(templates, master, content) {
           <b>${escapeHtml(m.value)}</b>
         </span>`).join('');
 
-  // ─── 2. STATS ───
   const statsRow = master.home.stats.map(stat => `
       <div class="stat-item">
         <div class="stat-value">${escapeHtml(stat.value)}</div>
         <div class="stat-label">${escapeHtml(stat.label)}</div>
       </div>`).join('\n      ');
 
-  // ─── 3. MANIFESTO BANNER ───
-  const manifestoBanner = master.features.manifesto
-    ? renderManifestoBanner(master)
-    : '';
+  const manifestoBanner = master.features.manifesto ? renderManifestoBanner(master) : '';
 
-  // ─── 4. RECENT ARTICLES ───
   const recent = sortByDate(articles).slice(0, 6);
   const recentArticles = recent.map(article => {
     const cat = primaryCategory(article, categories);
     const summary = article.summary || '';
     const truncated = summary.length > 180 ? summary.slice(0, 180) + '…' : summary;
-
     return `
       <li class="recent-item">
         <a href="/article/${escapeHtml(article.id)}">
@@ -1189,19 +963,14 @@ function renderHome(templates, master, content) {
       </li>`;
   }).join('\n      ');
 
-  // ─── 5. PULLQUOTE ───
   const pullquote = `
     <div class="pullquote">
       <blockquote>${escapeHtml(master.home.pullquote.text)}</blockquote>
       <cite>${escapeHtml(master.home.pullquote.cite)}</cite>
     </div>`;
 
-  // ─── 6. CATEGORY TILES ───
   const categoryTiles = categories.map(cat => {
-    const count = articles.filter(a => 
-      (a.categories || []).includes(cat.id)
-    ).length;
-
+    const count = articles.filter(a => (a.categories || []).includes(cat.id)).length;
     return `
       <a href="/section/${escapeHtml(cat.id)}" class="category-tile">
         <div class="category-tile-icon">${cat.icon || '📁'}</div>
@@ -1210,12 +979,10 @@ function renderHome(templates, master, content) {
       </a>`;
   }).join('\n      ');
 
-  // ─── 7. ABOUT PARAGRAPHS ───
   const aboutParagraphs = master.home.about.paragraphs
     .map(p => `<p>${escapeHtml(p)}</p>`)
     .join('\n      ');
 
-  // ─── RENDER TEMPLATE ───
   const pageContent = replaceAll(templates.index, {
     heroImage: '/' + heroImage.replace(/^\//, ''),
     heroImageAlt: escapeHtml(hero.alt),
@@ -1235,7 +1002,6 @@ function renderHome(templates, master, content) {
     ctaHref: escapeHtml(master.home.cta.href),
   });
 
-  // ─── LAYOUT WRAP ───
   return renderLayout(templates, master, {
     slug: 'home',
     title: master.site.name,
@@ -1246,18 +1012,14 @@ function renderHome(templates, master, content) {
     schema: buildHomeSchema(master, content),
     content: pageContent,
     bodyAttr: 'data-page="home"',
-    preloadImages: preloadImage(heroImage, master, { 
-      fetchpriority: 'high', 
-      isHero: true 
-    }),
+    preloadImages: preloadImage(heroImage, master, { fetchpriority: 'high', isHero: true }),
   });
 }
 
-/* ─── Manifesto banner ─── */
 function renderManifestoBanner(master) {
   const currentYear = new Date().getFullYear();
   const horizonEnd = currentYear + 10;
-  
+
   return `
     <section class="manifesto-banner" aria-label="Manifesto download">
       <div class="container-wide">
@@ -1268,9 +1030,7 @@ function renderManifestoBanner(master) {
             <p>15 priorities · 10-year roadmap · Download the PDF</p>
           </div>
           <div class="banner-actions">
-            <a href="/assets/pdfs/bandwar-vision-${currentYear}-${horizonEnd}.pdf"
-               class="btn btn-primary"
-               download>
+            <a href="/assets/pdfs/bandwar-vision-${currentYear}-${horizonEnd}.pdf" class="btn btn-primary" download>
               📄 Download PDF
             </a>
           </div>
@@ -1286,7 +1046,6 @@ function renderArticle(templates, master, content, article) {
   const { categories } = content;
   const articleUrlFull = articleUrl(article.id, master);
 
-  // ─── WORD COUNT + READING TIME ───
   const text = [
     article.summary || '',
     ...(article.content || []).map(c => c.text || '')
@@ -1294,13 +1053,11 @@ function renderArticle(templates, master, content, article) {
   const wordCount = countWords(text);
   const readMin = readingTime(wordCount);
 
-  // ─── CATEGORIES ───
   const cats = getCategories(article, categories);
   const primaryCat = cats[0] || null;
   const catText = cats.map(c => c.title).join(' · ');
 
-  // ─── EYEBROW ───
-  const year = article.datePublished 
+  const year = article.datePublished
     ? new Date(article.datePublished).getFullYear()
     : new Date().getFullYear();
 
@@ -1311,25 +1068,17 @@ function renderArticle(templates, master, content, article) {
       <span class="dot"></span>
       <span>${year}</span>`;
 
-  // ─── SUBTITLE BLOCK ───
   const articleSubtitleBlock = article.subtitle
     ? `<p class="article-subtitle">${escapeHtml(article.subtitle)}</p>`
     : '';
 
-  // ─── HERO FIGURE ───
   const heroFigure = article.hero ? renderHeroFigure(article, master) : '';
+  const factsBlock = article.infobox ? renderFactsBlock(article.infobox) : '';
 
-  // ─── FACTS BLOCK ───
-  const factsBlock = article.infobox
-    ? renderFactsBlock(article.infobox)
-    : '';
-
-  // ─── CONTENT SECTIONS ───
   const contentSections = (article.content || []).map((section, i, arr) => {
     const num = String(i + 1).padStart(2, '0');
     const total = String(arr.length).padStart(2, '0');
     const anchor = slugify(section.heading);
-
     return `
     <section class="article-section" id="${escapeHtml(anchor)}">
       <span class="article-section-num">${num} / ${total}</span>
@@ -1338,32 +1087,18 @@ function renderArticle(templates, master, content, article) {
     </section>`;
   }).join('\n');
 
-  // ─── PHOTOS BLOCK ───
   const photosBlock = renderPhotosBlock(article, master);
-
-  // ─── VOICE QUOTE ───
-  const voiceQuoteBlock = article.quote
-    ? renderVoiceQuote(article.quote)
-    : '';
-
-  // ─── RELATED BLOCK ───
+  const voiceQuoteBlock = article.quote ? renderVoiceQuote(article.quote) : '';
   const relatedBlock = renderRelated(article, content, master);
-
-  // ─── TAGS BLOCK ───
   const tagsBlock = renderTags(article);
 
-  // ─── META FOOTER ───
   const metaFooter = `
       <span>Published<b>${escapeHtml(master.site.shortName)} Archive</b></span>
-      <span>Location<b>${article.location 
-        ? `${article.location.lat.toFixed(4)}°N, ${article.location.lng.toFixed(4)}°E` 
-        : '—'}</b></span>
+      <span>Location<b>${article.location ? `${article.location.lat.toFixed(4)}°N, ${article.location.lng.toFixed(4)}°E` : '—'}</b></span>
       <span>Category<b>${escapeHtml(catText || 'Uncategorised')}</b></span>`;
 
-  // ─── NEXT ARTICLE (for page nav) ───
   const nextArticle = computeNextArticle(article, content);
 
-  // ─── RENDER ───
   const pageContent = replaceAll(templates.article, {
     articleId: escapeHtml(article.id),
     articleTitle: escapeHtml(article.title),
@@ -1382,7 +1117,6 @@ function renderArticle(templates, master, content, article) {
     nextArticle,
   });
 
-  // ─── LAYOUT WRAP ───
   return renderLayout(templates, master, {
     slug: `article-${article.id}`,
     title: `${article.title} — ${master.site.shortName} Archive`,
@@ -1401,13 +1135,10 @@ function renderArticle(templates, master, content, article) {
       { name: article.title, url: `/article/${article.id}` },
     ], master),
     pageScripts: '<script src="/assets/js/articles.js" defer></script>',
-    preloadImages: article.hero 
-      ? preloadImage(article.hero, master, { fetchpriority: 'high', isHero: true }) 
-      : '',
+    preloadImages: article.hero ? preloadImage(article.hero, master, { fetchpriority: 'high', isHero: true }) : '',
   });
 }
 
-/* ─── Article hero figure ─── */
 function renderHeroFigure(article, master) {
   const hero = article.hero;
   const webp = toWebp(hero);
@@ -1430,7 +1161,6 @@ function renderHeroFigure(article, master) {
     </figure>`.trim();
 }
 
-/* ─── Facts block (infobox) ─── */
 function renderFactsBlock(infobox) {
   const entries = Object.entries(infobox);
   if (!entries.length) return '';
@@ -1449,7 +1179,6 @@ function renderFactsBlock(infobox) {
     </div>`.trim();
 }
 
-/* ─── Photos block ─── */
 function renderPhotosBlock(article, master) {
   const photos = (article.photos || []).filter(p => p.src && p.src !== article.hero);
   if (!photos.length) return '';
@@ -1477,7 +1206,6 @@ function renderPhotosBlock(article, master) {
     </section>`.trim();
 }
 
-/* ─── Voice quote ─── */
 function renderVoiceQuote(quote) {
   return `
     <div class="container-text">
@@ -1491,7 +1219,6 @@ function renderVoiceQuote(quote) {
     </div>`.trim();
 }
 
-/* ─── Related articles ─── */
 function renderRelated(article, content, master) {
   const { articles, categories } = content;
   const related = (article.related || [])
@@ -1504,7 +1231,6 @@ function renderRelated(article, content, master) {
   const cards = related.map(rel => {
     const cat = primaryCategory(rel, categories);
     const summary = (rel.summary || '').slice(0, 160);
-
     return `
         <a class="article-related-card" href="/article/${escapeHtml(rel.id)}">
           <div>
@@ -1525,7 +1251,6 @@ function renderRelated(article, content, master) {
     </section>`.trim();
 }
 
-/* ─── Tags block ─── */
 function renderTags(article) {
   if (!article.tags || !article.tags.length) return '';
 
@@ -1534,13 +1259,11 @@ function renderTags(article) {
       <div class="article-tags">
         <span class="article-tags-label">Topics</span>
         ${article.tags.map(tag => `
-          <a href="/section?q=${encodeURIComponent(tag)}" 
-             class="article-tag">${escapeHtml(tag)}</a>`).join('')}
+          <a href="/section?q=${encodeURIComponent(tag)}" class="article-tag">${escapeHtml(tag)}</a>`).join('')}
       </div>
     </div>`.trim();
 }
 
-/* ─── Next article (for page nav) ─── */
 function computeNextArticle(article, content) {
   const { articles } = content;
   const sorted = sortByDate(articles);
@@ -1563,20 +1286,18 @@ function computeNextArticle(article, content) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGE RENDERER — SECTION (11 pages: /section + 10 categories)
+   PAGE RENDERER — SECTION
    ═══════════════════════════════════════════════════════════════════ */
 function renderSection(templates, master, content, category = null) {
   const { categories, articles } = content;
   const isAll = !category;
 
-  // ─── FILTER ARTICLES ───
   const filtered = isAll
     ? articles
     : articles.filter(a => (a.categories || []).includes(category.id));
 
   const sortedFiltered = sortByDate(filtered);
 
-  // ─── HEADER ───
   const title = isAll ? 'All Articles' : category.title;
   const intro = isAll
     ? 'Browse every article in the archive — history, religion, education, culture, infrastructure, and more.'
@@ -1584,30 +1305,23 @@ function renderSection(templates, master, content, category = null) {
   const eyebrow = isAll ? 'The Archive' : `Category · ${category.title}`;
   const count = `${sortedFiltered.length} article${sortedFiltered.length === 1 ? '' : 's'}${isAll ? ' in the archive' : ' in this category'}`;
 
-  const sectionIntroBlock = intro
-    ? `<p class="section-intro">${escapeHtml(intro)}</p>`
-    : '';
+  const sectionIntroBlock = intro ? `<p class="section-intro">${escapeHtml(intro)}</p>` : '';
 
-  // ─── FILTER CHIPS ───
   const filterChips = renderFilterChips(categories, articles, category, isAll);
 
-  // ─── ARTICLE CARDS ───
   const articlesGrid = sortedFiltered
     .map(a => renderSectionCard(a, content, master))
     .join('\n      ');
 
-  // ─── EMPTY STATE ───
   const emptyState = sortedFiltered.length === 0 ? `
     <div class="section-empty">
       <p>No articles in this category yet.</p>
       <a href="/section" class="read-link">Browse all articles</a>
     </div>`.trim() : '';
 
-  // ─── URL ───
   const urlPath = sectionCanonicalPath(category?.id);
   const canonical = buildCanonical(urlPath, master);
 
-  // ─── RENDER ───
   const pageContent = replaceAll(templates.section, {
     sectionEyebrow: escapeHtml(eyebrow),
     sectionTitle: escapeHtml(title),
@@ -1620,7 +1334,6 @@ function renderSection(templates, master, content, category = null) {
     pagination: '',
   });
 
-  // ─── LAYOUT WRAP ───
   const slug = isAll ? 'section' : `section-${category.id}`;
   const bodyAttr = isAll
     ? 'data-page="section"'
@@ -1629,7 +1342,7 @@ function renderSection(templates, master, content, category = null) {
   return {
     html: renderLayout(templates, master, {
       slug,
-      title: isAll 
+      title: isAll
         ? `${master.site.shortName} Archive — All Articles`
         : `${title} — ${master.site.shortName} Archive`,
       description: intro || master.seo.defaultDescription,
@@ -1656,7 +1369,6 @@ function renderSection(templates, master, content, category = null) {
   };
 }
 
-/* ─── Filter chips ─── */
 function renderFilterChips(categories, articles, activeCategory, isAll) {
   const allCount = articles.length;
   const chips = [
@@ -1675,7 +1387,6 @@ function renderFilterChips(categories, articles, activeCategory, isAll) {
   return chips.join('\n      ');
 }
 
-/* ─── Section card ─── */
 function renderSectionCard(article, content, master) {
   const { categories } = content;
   const cat = primaryCategory(article, categories);
@@ -1707,14 +1418,17 @@ function renderSectionCard(article, content, master) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGE RENDERER — PLACE
+   PAGE RENDERER — PLACE (FIXED for new media.json structure)
    ═══════════════════════════════════════════════════════════════════ */
 function renderPlace(templates, master, content, media) {
   const landmarks = media.landmarks || [];
-  const gallery = media.gallery || [];
+
+  // ─── FIX: gallery is now an object with .categories and .photos ───
+  const gallery = media.gallery?.photos || [];
+  const galleryCategories = media.gallery?.categories || [];
 
   // ─── STATS ───
-  const groups = groupBy(landmarks, 'cat');
+  const landmarkGroups = groupBy(landmarks, 'category');
   const mapStats = `
       <div class="map-stat">
         <span class="map-stat-value">${landmarks.length}</span>
@@ -1725,7 +1439,7 @@ function renderPlace(templates, master, content, media) {
         <span class="map-stat-label">Photographs</span>
       </div>
       <div class="map-stat">
-        <span class="map-stat-value">${Object.keys(groups).length}</span>
+        <span class="map-stat-value">${Object.keys(landmarkGroups).length}</span>
         <span class="map-stat-label">Categories</span>
       </div>
       <div class="map-stat">
@@ -1733,12 +1447,12 @@ function renderPlace(templates, master, content, media) {
         <span class="map-stat-label">Village area</span>
       </div>`;
 
-  // ─── FILTERS (landmarks) ───
+  // ─── FILTERS (landmarks — uses content categories) ───
   const mapFilters = renderPlaceFilters(landmarks, content.categories, 'place-filter');
 
   // ─── LANDMARK LIST (SEO) ───
   const landmarkList = landmarks.map(l => {
-    const cat = content.categories.find(c => c.id === l.cat);
+    const cat = content.categories.find(c => c.id === l.category);
     return `
         <li class="landmark-item">
           <a href="/article/${escapeHtml(l.article || l.id)}" class="landmark-link">
@@ -1760,17 +1474,17 @@ function renderPlace(templates, master, content, media) {
     landmarks: landmarks.map(l => ({
       id: l.id,
       name: l.name,
-      cat: l.cat,
+      cat: l.category,
       lat: l.lat,
       lng: l.lng,
-      icon: content.categories.find(c => c.id === l.cat)?.icon || '📍',
+      icon: l.icon || content.categories.find(c => c.id === l.category)?.icon || '📍',
       article: l.article || l.id,
       photo: l.photo ? '/' + l.photo.replace(/^\//, '') : null,
     })),
   });
 
   // ─── LEGEND ───
-  const mapLegend = Object.entries(groups).map(([catId, items]) => {
+  const mapLegend = Object.entries(landmarkGroups).map(([catId, items]) => {
     const cat = content.categories.find(c => c.id === catId);
     return `
         <div class="legend-item">
@@ -1780,8 +1494,8 @@ function renderPlace(templates, master, content, media) {
         </div>`;
   }).join('');
 
-  // ─── GALLERY FILTERS ───
-  const galleryFilters = renderPlaceFilters(gallery, content.categories, 'gallery-filter');
+  // ─── GALLERY FILTERS (uses gallery categories) ───
+  const galleryFilters = renderPlaceFilters(gallery, galleryCategories, 'gallery-filter');
 
   // ─── GALLERY ITEMS ───
   const galleryItems = gallery.map(photo => `
@@ -1800,16 +1514,13 @@ function renderPlace(templates, master, content, media) {
           </figcaption>
         </figure>`).join('\n');
 
-  // ─── PAGE SPECIFIC HEAD (Leaflet) ───
   const pageSpecificHead = master.features.map ? `
     <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css" media="print" onload="this.media='all'">` : '';
 
-  // ─── PAGE SCRIPTS ───
   const pageScripts = master.features.map ? `
     <script src="/assets/vendor/leaflet/leaflet.js" defer></script>
     <script src="/assets/js/places.js" defer></script>` : '<script src="/assets/js/places.js" defer></script>';
 
-  // ─── RENDER ───
   const pageContent = replaceAll(templates.place, {
     placeTitle: 'Places',
     placeIntro: 'Bandwar through its landmarks and photographs — an interactive map of the village and a curated gallery of images from across the archive.',
@@ -1824,7 +1535,6 @@ function renderPlace(templates, master, content, media) {
     galleryItems,
   });
 
-  // ─── LAYOUT WRAP ───
   return renderLayout(templates, master, {
     slug: 'place',
     title: `Places — ${master.site.shortName} Map & Gallery`,
@@ -1832,7 +1542,7 @@ function renderPlace(templates, master, content, media) {
     canonical: buildCanonical('/place', master),
     ogImage: master.seo.ogImage,
     ogType: 'website',
-    schema: buildPlaceSchema(landmarks, master, content.categories),
+    schema: buildPlaceSchema(landmarks, master),
     content: pageContent,
     bodyAttr: 'data-page="place"',
     breadcrumb: renderBreadcrumb([
@@ -1844,9 +1554,9 @@ function renderPlace(templates, master, content, media) {
   });
 }
 
-/* ─── Place filters (reusable for map + gallery) ─── */
+/* ─── Place filters (uses 'category' key now) ─── */
 function renderPlaceFilters(items, categories, className) {
-  const groups = groupBy(items, 'cat') || groupBy(items, 'category');
+  const groups = groupBy(items, 'category');
   const allLabel = 'All';
 
   const chips = [
@@ -1865,14 +1575,13 @@ function renderPlaceFilters(items, categories, className) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGE RENDERER — TIME (Timeline)
+   PAGE RENDERER — TIME
    ═══════════════════════════════════════════════════════════════════ */
 function renderTime(templates, master, content, media) {
   const timeline = media.timeline || [];
   const eras = groupBy(timeline, 'era');
   const eraKeys = Object.keys(eras);
 
-  // ─── STATS ───
   const timeStats = `
       <div class="time-stat">
         <span class="time-stat-value">2,600</span>
@@ -1891,12 +1600,12 @@ function renderTime(templates, master, content, media) {
         <span class="time-stat-label">Related articles</span>
       </div>`;
 
-  // ─── ERA FILTERS ───
   const eraMeta = {
     ancient:  { icon: '🏛️', title: 'Ancient' },
     medieval: { icon: '🕌', title: 'Medieval' },
     colonial: { icon: '⚔️', title: 'Colonial' },
     modern:   { icon: '🏙️', title: 'Modern' },
+    digital:  { icon: '💻', title: 'Digital' },
   };
 
   const eraFilters = [
@@ -1912,15 +1621,14 @@ function renderTime(templates, master, content, media) {
     }),
   ].join('\n      ');
 
-  // ─── ERA LABELS ───
   const eraLabels = {
     ancient:  { title: 'Ancient Period',   span: '600 BCE – 1200 CE' },
     medieval: { title: 'Medieval Period',  span: '1200 – 1750 CE' },
     colonial: { title: 'Colonial Period',  span: '1750 – 1947' },
     modern:   { title: 'Modern Period',    span: '1947 – Present' },
+    digital:  { title: 'Digital Era',      span: '2020 – Present' },
   };
 
-  // ─── ERAS CONTAINER ───
   const totalEras = eraKeys.length;
   const erasContainer = eraKeys.map((era, i) => {
     const meta = eraLabels[era] || { title: era, span: '' };
@@ -1957,7 +1665,6 @@ function renderTime(templates, master, content, media) {
       </section>`;
   }).join('\n');
 
-  // ─── RENDER ───
   const pageContent = replaceAll(templates.time, {
     timeTitle: 'Time',
     timeIntro: 'Bandwar across 2,600 years — from the Anga Mahajanapada to the present day.',
@@ -1966,7 +1673,6 @@ function renderTime(templates, master, content, media) {
     erasContainer,
   });
 
-  // ─── LAYOUT WRAP ───
   return renderLayout(templates, master, {
     slug: 'time',
     title: `Time — ${master.site.shortName} Timeline`,
@@ -1986,14 +1692,13 @@ function renderTime(templates, master, content, media) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGE RENDERER — VISION (Rolling Horizon)
+   PAGE RENDERER — VISION
    ═══════════════════════════════════════════════════════════════════ */
 function renderVision(templates, master, content, vision) {
   const currentYear = new Date().getFullYear();
   const horizonEnd = currentYear + 10;
   const editionLabel = `${currentYear}–${horizonEnd} Edition`;
 
-  // ─── CATEGORIZE PRIORITIES ───
   const allPriorities = vision.priorities || [];
   const activePriorities = allPriorities.filter(p =>
     p.status === 'pending' || p.status === 'in-progress' || !p.status
@@ -2002,7 +1707,6 @@ function renderVision(templates, master, content, vision) {
     p.status === 'done' && p.completed
   );
 
-  // ─── MERGE ACHIEVEMENTS ───
   const manualAchievements = vision.achievements || [];
   const autoAchievements = donePriorities.map(p => ({
     id: p.id,
@@ -2016,7 +1720,6 @@ function renderVision(templates, master, content, vision) {
   const allAchievements = [...manualAchievements, ...autoAchievements]
     .sort((a, b) => (b.completed || '').localeCompare(a.completed || ''));
 
-  // ─── STATS ───
   const visionStats = `
       <div class="vision-stat">
         <span class="vision-stat-value">${activePriorities.length}</span>
@@ -2035,7 +1738,6 @@ function renderVision(templates, master, content, vision) {
         <span class="vision-stat-label">Phases</span>
       </div>`;
 
-  // ─── MANIFESTO BANNER ───
   const manifestoBanner = master.features.manifesto ? `
     <section class="manifesto-banner">
       <div class="container-wide">
@@ -2046,8 +1748,7 @@ function renderVision(templates, master, content, vision) {
             <p>${editionLabel} · ${activePriorities.length} priorities · ${allAchievements.length} achievements</p>
           </div>
           <div class="banner-actions">
-            <a href="/assets/pdfs/bandwar-vision-${currentYear}-${horizonEnd}.pdf"
-               class="btn btn-primary" download>
+            <a href="/assets/pdfs/bandwar-vision-${currentYear}-${horizonEnd}.pdf" class="btn btn-primary" download>
               📄 Download PDF
             </a>
           </div>
@@ -2055,7 +1756,6 @@ function renderVision(templates, master, content, vision) {
       </div>
     </section>`.trim() : '';
 
-  // ─── NEEDS BLOCKS ───
   const needsBlocks = activePriorities.map((need, i) => {
     const num = String(i + 1).padStart(2, '0');
     const total = String(activePriorities.length).padStart(2, '0');
@@ -2082,9 +1782,11 @@ function renderVision(templates, master, content, vision) {
           <span class="ba-label ba-after-label">Vision</span>
         </div>` : '';
 
-    const factsList = (need.how || []).map(f =>
-      `<li><b>${escapeHtml(f.label)}:</b> ${escapeHtml(f.value)}</li>`
-    ).join('');
+    const howFacts = need.how && typeof need.how === 'object' && !Array.isArray(need.how)
+      ? Object.entries(need.how).map(([k, v]) => `<li><b>${escapeHtml(k)}:</b> ${escapeHtml(v)}</li>`).join('')
+      : (Array.isArray(need.how) ? need.how.map(f =>
+          `<li><b>${escapeHtml(f.label)}:</b> ${escapeHtml(f.value)}</li>`
+        ).join('') : '');
 
     const articleLink = need.article
       ? `<footer class="need-footer"><a href="/article/${escapeHtml(need.article)}" class="read-link">Read more →</a></footer>`
@@ -2112,17 +1814,16 @@ function renderVision(templates, master, content, vision) {
               <span class="need-detail-label">What It Should Be</span>
               <p>${escapeHtml(need.vision)}</p>
             </div>` : ''}
-          ${factsList ? `
+          ${howFacts ? `
             <div class="need-detail">
               <span class="need-detail-label">How It Can Happen</span>
-              <ul class="need-facts">${factsList}</ul>
+              <ul class="need-facts">${howFacts}</ul>
             </div>` : ''}
         </div>
         ${articleLink}
       </article>`;
   }).join('\n');
 
-  // ─── THANKS BLOCKS ───
   const thanksBlocks = allAchievements.map(ach => `
       <article class="achievement">
         ${ach.photo ? `
@@ -2147,7 +1848,6 @@ function renderVision(templates, master, content, vision) {
         </div>
       </article>`).join('\n');
 
-  // ─── ROADMAP PHASES (relative years) ───
   const roadmapPhases = (vision.roadmap || []).map((phase, i) => {
     const num = String(i + 1).padStart(2, '0');
     const yearStart = currentYear + (phase.phase - 1) * 3;
@@ -2175,7 +1875,6 @@ function renderVision(templates, master, content, vision) {
       </article>`;
   }).join('\n');
 
-  // ─── ARCHIVE LINKS ───
   const archiveYears = [];
   for (let y = currentYear - 1; y >= Math.max(2026, currentYear - 3); y--) {
     archiveYears.push(y);
@@ -2194,7 +1893,6 @@ function renderVision(templates, master, content, vision) {
       }).join('')
     : `<li class="archive-empty">This is the first edition of the rolling manifesto.</li>`;
 
-  // ─── CONTRIBUTE CTA ───
   const contributeCTA = `
       <div class="vision-cta">
         <span class="eyebrow">Get Involved</span>
@@ -2206,7 +1904,6 @@ function renderVision(templates, master, content, vision) {
         </div>
       </div>`;
 
-  // ─── RENDER ───
   const pageContent = replaceAll(templates.vision, {
     visionTitle: 'Vision',
     horizonEnd: String(horizonEnd),
@@ -2224,13 +1921,12 @@ function renderVision(templates, master, content, vision) {
     contributeCTA,
   });
 
-  // ─── LAYOUT WRAP ───
   return renderLayout(templates, master, {
     slug: 'vision',
     title: `Vision — Bandwar ${horizonEnd}`,
     description: `Bandwar ${horizonEnd} — a non-political development plan with ${activePriorities.length} active priorities and a 10-year roadmap (${currentYear}–${horizonEnd}).`,
     canonical: buildCanonical('/vision', master),
-    ogImage: '/images/vision/og-vision.jpg',
+    ogImage: master.seo.ogImage,
     ogType: 'website',
     schema: buildVisionSchema(activePriorities, allAchievements, vision.roadmap, master, currentYear, horizonEnd),
     content: pageContent,
@@ -2249,11 +1945,9 @@ function renderVision(templates, master, content, vision) {
 function renderAbout(templates, master) {
   const about = master.about;
 
-  // ─── STORY ───
-  const storyBlocks = about.story.map(p => `<p>${escapeHtml(p)}</p>`).join('\n      ');
+  const storyBlocks = (about.story || []).map(p => `<p>${escapeHtml(p)}</p>`).join('\n      ');
 
-  // ─── PRINCIPLES ───
-  const principlesList = about.principles.map(p => `
+  const principlesList = (about.principles || []).map(p => `
         <li class="principle-item">
           <span class="principle-icon" aria-hidden="true">${p.icon}</span>
           <div>
@@ -2262,8 +1956,7 @@ function renderAbout(templates, master) {
           </div>
         </li>`).join('');
 
-  // ─── SOURCES ───
-  const sourcesList = about.sources.map(src => {
+  const sourcesList = (about.sources || []).map(src => {
     const name = src.url
       ? `<a href="${escapeHtml(src.url)}" class="source-name" target="_blank" rel="noopener noreferrer">${escapeHtml(src.name)}</a>`
       : `<span class="source-name">${escapeHtml(src.name)}</span>`;
@@ -2275,7 +1968,6 @@ function renderAbout(templates, master) {
         </li>`;
   }).join('');
 
-  // ─── COMMUNITY ───
   const committeeList = (about.committee || []).map(m => `
         <li class="committee-member">
           <span class="committee-role">${escapeHtml(m.role)}</span>
@@ -2291,7 +1983,6 @@ function renderAbout(templates, master) {
       <h3 class="community-subhead">Contributors</h3>
       <p class="community-contributors">${escapeHtml(about.community.contributors)}</p>`;
 
-  // ─── LICENSE ───
   const licenseBlock = `
       <div class="license-item">
         <span class="license-badge">Code · ${escapeHtml(master.license.code)}</span>
@@ -2304,7 +1995,6 @@ function renderAbout(templates, master) {
         <a href="mailto:${escapeHtml(master.contact.email)}?subject=Content license enquiry" class="read-link">Request permission →</a>
       </div>`;
 
-  // ─── CONTACT ───
   const contactBlock = `
       <dl class="contact-list">
         <div class="contact-item">
@@ -2330,7 +2020,6 @@ function renderAbout(templates, master) {
           </div>` : ''}
       </dl>`;
 
-  // ─── RENDER ───
   const pageContent = replaceAll(templates.about, {
     aboutTitle: 'About',
     aboutIntro: escapeHtml(about.intro),
@@ -2342,7 +2031,6 @@ function renderAbout(templates, master) {
     contactBlock,
   });
 
-  // ─── LAYOUT WRAP ───
   return renderLayout(templates, master, {
     slug: 'about',
     title: `About — ${master.site.shortName} Archive`,
@@ -2401,27 +2089,23 @@ function copyAssets() {
   // CSS
   copyFile('css/theme.css', 'assets/css/theme.css');
   copyFile('css/style.css', 'assets/css/style.css');
-  copyFile('css/manifesto-print.css', 'assets/css/manifesto-print.css');
 
   // JS
-  copyFile('js/core.js', 'assets/js/core.js');
-  copyFile('js/articles.js', 'assets/js/articles.js');
-  copyFile('js/sections.js', 'assets/js/sections.js');
-  copyFile('js/places.js', 'assets/js/places.js');
-  copyFile('js/time.js', 'assets/js/time.js');
-  copyFile('js/vision.js', 'assets/js/vision.js');
-  copyFile('js/contribute.js', 'assets/js/contribute.js');
+  const jsFiles = ['core.js', 'articles.js', 'sections.js', 'places.js', 'time.js', 'vision.js'];
+  jsFiles.forEach(f => {
+    if (fs.existsSync(path.join(ROOT, 'js', f))) {
+      copyFile(`js/${f}`, `assets/js/${f}`);
+    }
+  });
 
   // Vendor (Leaflet)
   if (fs.existsSync(path.join(ROOT, 'vendor/leaflet'))) {
     copyDir('vendor/leaflet', 'assets/vendor/leaflet');
   }
 
-  // Images (optimized dist images if they exist, else original)
-  const optimizedImages = path.join(ROOT, 'images');
-  if (fs.existsSync(optimizedImages)) {
+  // Images
+  if (fs.existsSync(path.join(ROOT, 'images'))) {
     copyDir('images', 'images', (rel) => {
-      // Skip source-only folders
       if (rel.includes('_source/')) return false;
       return true;
     });
@@ -2437,9 +2121,7 @@ function copyAssets() {
     'robots.txt',
     'manifest.json',
     'sw.js',
-    'favicon.ico',
     'humans.txt',
-    '.well-known/security.txt',
   ];
 
   staticFiles.forEach(f => {
@@ -2455,14 +2137,8 @@ function copyAssets() {
 const stats = {
   startTime: Date.now(),
   pages: {
-    home: 0,
-    article: 0,
-    section: 0,
-    place: 0,
-    time: 0,
-    vision: 0,
-    about: 0,
-    error: 0,
+    home: 0, article: 0, section: 0, place: 0,
+    time: 0, vision: 0, about: 0, error: 0,
   },
   total: 0,
   warnings: [],
@@ -2474,7 +2150,7 @@ function trackPage(type) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   MAIN ORCHESTRATION
+   MAIN
    ═══════════════════════════════════════════════════════════════════ */
 function main() {
   console.log('');
@@ -2482,28 +2158,27 @@ function main() {
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
-  // ─── CLEAN ───
   if (CLEAN) {
     cleanDist();
   } else {
     fs.mkdirSync(DIST, { recursive: true });
   }
 
-  // ─── LOAD DATA + TEMPLATES ───
   const data = loadAllData();
   const templates = loadAllTemplates();
 
   const { master, content, vision, media, categories, articles } = data;
 
-  // ─── STATS PRE-COMPUTE ───
-  master.home.stats = master.home.stats.map(stat => {
-    if (stat.value === '{{articleCount}}') {
-      return { ...stat, value: String(articles.length) };
-    }
-    return stat;
-  });
+  // Resolve {{articleCount}} placeholder
+  if (master.home?.stats) {
+    master.home.stats = master.home.stats.map(stat => {
+      if (stat.value === '{{articleCount}}') {
+        return { ...stat, value: String(articles.length) };
+      }
+      return stat;
+    });
+  }
 
-  // ─── RENDER PAGES ───
   console.log('');
   console.log(`${COLORS.bold}Rendering pages...${COLORS.reset}`);
 
@@ -2520,7 +2195,7 @@ function main() {
   });
   console.log(`  ${COLORS.green}✓${COLORS.reset} article/*.html (${articles.length} pages)`);
 
-  // Sections (all + categories)
+  // Sections
   const allSection = renderSection(templates, master, content, null);
   writeFile(allSection.path, allSection.html);
   trackPage('section');
@@ -2557,11 +2232,11 @@ function main() {
   trackPage('error');
   console.log(`  ${COLORS.green}✓${COLORS.reset} 404.html`);
 
-  // ─── COPY ASSETS ───
+  // Copy assets
   console.log('');
   copyAssets();
 
-  // ─── SUMMARY ───
+  // Summary
   const elapsed = ((Date.now() - stats.startTime) / 1000).toFixed(2);
 
   console.log('');
@@ -2612,10 +2287,9 @@ if (WATCH) {
       }
     });
 
-    // Initial build
     main();
   } else {
-    console.log(`${COLORS.yellow}Watch mode requires chokidar. Run: npm i -D chokidar${COLORS.reset}`);
+    console.log(`${COLORS.yellow}Watch mode requires chokidar.${COLORS.reset}`);
     main();
   }
 } else {
