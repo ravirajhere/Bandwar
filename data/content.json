@@ -1,0 +1,879 @@
+{
+  "categories": [
+    { "id": "history", "title": "History", "icon": "📜", "description": "From Anga Mahajanapada to the 1942 Gurukul" },
+    { "id": "religion", "title": "Religion", "icon": "🛕", "description": "Temples, festivals, and faith" },
+    { "id": "education", "title": "Education", "icon": "🏫", "description": "Schools, teachers, and learning" },
+    { "id": "health", "title": "Health", "icon": "🏥", "description": "Medical facilities and health records" },
+    { "id": "economy", "title": "Economy", "icon": "💰", "description": "Agriculture, businesses, and employment" },
+    { "id": "infrastructure", "title": "Infrastructure", "icon": "🏗️", "description": "Roads, banks, and utilities" },
+    { "id": "culture", "title": "Culture", "icon": "🎉", "description": "Festivals, sports, and daily life" },
+    { "id": "geography", "title": "Geography", "icon": "🌊", "description": "River, land, and climate" },
+    { "id": "people", "title": "People", "icon": "👥", "description": "Notable personalities and elders" },
+    { "id": "landmarks", "title": "Landmarks", "icon": "🚩", "description": "Notable places in the village" }
+  ],
+
+  "articles": [
+    {
+      "id": "shivala",
+      "title": "Shivala",
+      "subtitle": "The village's Shiva temple",
+      "categories": ["religion", "landmarks"],
+      "summary": "A Hindu temple in the centre of Bandwar, dedicated to Lord Shiva. It is one of the village's eight temples and has served as a place of worship for generations.",
+      "hero": "images/culture/shivala.jpg",
+      "photos": [
+        { "src": "images/culture/shivala.jpg", "caption": "Shivala — the village's Shiva temple" }
+      ],
+      "infobox": {
+        "Type": "Hindu temple",
+        "Deity": "Lord Shiva",
+        "Location": "Village centre",
+        "Built": "Pre-independence",
+        "Managed by": "Village community"
+      },
+      "content": [
+        { "heading": "History", "text": "The exact year of Shivala's construction is not documented, but village elders believe it has stood for at least three generations. It was built by the residents of Bandwar themselves, without any government support." },
+        { "heading": "Architecture", "text": "The temple features a traditional nagara-style shikhara — a towering spire typical of North Indian temple architecture. The exterior is painted white, with a simple brown door that faces east. The structure is small but well-maintained." },
+        { "heading": "Festivals", "text": "Maha Shivaratri is the primary festival celebrated here, when villagers gather for all-night prayers. During Sawan (the monsoon month), devotees offer water and bel leaves to the Shivling every day." },
+        { "heading": "Present Day", "text": "The temple continues to be maintained by the village community. It stands in a grove of trees, and is a common sight for anyone walking through the centre of Bandwar." }
+      ],
+      "related": ["ram-mandir-thakurbari", "krishna-mandir-bada", "hanuman-mandir"],
+      "location": { "lat": 25.5012, "lng": 86.1610 },
+      "tags": ["shiva", "temple", "worship", "religion", "maha-shivaratri"]
+    },
+
+    {
+      "id": "snk-high-school",
+      "title": "Bhagwandutt S.N.K. High School",
+      "subtitle": "The village's first high school, established 1942",
+      "categories": ["education", "history"],
+      "summary": "Established in 1942 by Pandit Taradutt Pathak in memory of his father Pandit Bhagwan Dutt Pathak, this was the village's first formal school. Today it operates as a government secondary school.",
+      "photos": [],
+      "infobox": {
+        "Established": "1942",
+        "Founder": "Pandit Taradutt Pathak",
+        "Named after": "Pandit Bhagwan Dutt Pathak",
+        "Type": "Government secondary school",
+        "Classes": "9 to 10",
+        "Medium": "Hindi"
+      },
+      "content": [
+        { "heading": "Origins — The 1942 Gurukul", "text": "In 1942, during the final years of British rule, Pandit Taradutt Pathak established a Sanskrit school in memory of his father. It was a traditional gurukul — students came from across Bihar, and education, food, and lodging were all provided free of cost." },
+        { "heading": "After Independence", "text": "Following India's independence, the school was brought under the Department of Education and became a government secondary school. It continued to serve the village and surrounding areas for decades." },
+        { "heading": "Present Day", "text": "The school today operates from a rented building with no dedicated instructional classrooms. There is no electricity connection, no girls' toilet, and no playground. It has a library with 327 books, a functional well for drinking water, and six teachers (three male, three female)." },
+        { "heading": "Legacy", "text": "The school's history represents both the ambition of the village's founders and the failures of subsequent administrations. A place that once offered free education to students from across Bihar now struggles to provide basic infrastructure." }
+      ],
+      "related": ["madhya-vidyalaya", "gps-paschimibandwar", "adharsh-vikash"],
+      "location": { "lat": 25.5010, "lng": 86.1605 },
+      "tags": ["school", "1942", "gurukul", "education", "history"]
+    },
+
+    {
+      "id": "janmashtami-mela",
+      "title": "Janmashtami Mela",
+      "subtitle": "A fair running for over 200 years",
+      "categories": ["culture", "religion"],
+      "summary": "The Bandwar Krishna Janmashtami Mela is a fair held annually in Bandwar, running for over two hundred years. It is considered the oldest Janmashtami fair in Bihar and features mud-pit wrestling with participants from across the region.",
+      "photos": [],
+      "infobox": {
+        "Also known as": "Bandwar Krishna Janmashtami Mela",
+        "Type": "Religious and cultural fair",
+        "Occasion": "Janmashtami",
+        "Duration": "2-3 days",
+        "Age": "200+ years",
+        "Location": "Village ground"
+      },
+      "content": [
+        { "heading": "A 200-Year-Old Tradition", "text": "According to local record-keepers and village elders, the fair has been held continuously for over two centuries. It predates the district of Begusarai itself (established 1972), and even the independence of India." },
+        { "heading": "The Mud-Pit Wrestling", "text": "At the heart of the fair is mud-pit wrestling, or kushti. The pit is prepared fresh each year by village youths — the earth is softened, watered, and smoothed by foot. Wrestlers come from across Bihar, and also from Rajasthan, Madhya Pradesh, and Nepal. There is no prize money — only the honour of having wrestled at Bandwar." },
+        { "heading": "Local Belief", "text": "Villagers believe that a wish made at the Janmashtami fair does not go unanswered. The fair is not organised by any committee — every household contributes what it can, and the tradition sustains itself." },
+        { "heading": "Recognition", "text": "Local news outlets have described it as 'the oldest Janmashtami fair in Bihar'. The fair continues to be a defining feature of Bandwar's cultural identity." }
+      ],
+      "related": ["chhath-puja", "ram-katha-2021", "kushti"],
+      "location": { "lat": 25.5008, "lng": 86.1608 },
+      "tags": ["festival", "janmashtami", "mela", "wrestling", "kushti", "culture"]
+    },
+
+    {
+      "id": "sbi-bank",
+      "title": "State Bank of India — Bandwar Branch",
+      "subtitle": "The village's only bank branch",
+      "categories": ["infrastructure", "economy"],
+      "summary": "The Bandwar branch of the State Bank of India provides banking services to the village and surrounding areas. It operates with the IFSC code SBIN0015585.",
+      "hero": "images/village/sbi-bank-branch-2025.jpg",
+      "photos": [
+        { "src": "images/village/sbi-bank-branch-2015.jpg", "caption": "The branch in 2015" },
+        { "src": "images/village/sbi-bank-branch-2025.jpg", "caption": "The branch in 2025, after renovation" },
+        { "src": "images/village/sbi-bank-atm.jpg", "caption": "The SBI ATM at the branch" }
+      ],
+      "infobox": {
+        "Bank": "State Bank of India",
+        "Branch": "Bandwar",
+        "IFSC Code": "SBIN0015585",
+        "Hours": "Mon-Fri 10:00-16:00",
+        "Saturday": "10:00-16:00 (2nd & 4th off)",
+        "Services": "Savings, Loans, NEFT/RTGS/UPI, Lockers"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The State Bank of India has operated a branch in Bandwar for over a decade. It is the only formal banking facility in the village, and serves not just Bandwar but also the surrounding panchayats." },
+        { "heading": "Services", "text": "The branch offers savings accounts, loans, mutual funds, foreign exchange, lockers, and agricultural & rural banking. NEFT, RTGS, and UPI services are available. An ATM is also operational at the branch." },
+        { "heading": "Renovation", "text": "Between 2015 and 2025, the branch underwent renovation. While the building itself remained the same, the exterior colour scheme was changed from its original beige to the current blue and white." },
+        { "heading": "Impact", "text": "The presence of a bank branch in a village of Bandwar's size is significant. It reduces the need for residents to travel 18 kilometres to Begusarai town for basic financial services." }
+      ],
+      "related": ["post-office", "petrol-pump", "roads"],
+      "location": { "lat": 25.5005, "lng": 86.1600 },
+      "tags": ["bank", "sbi", "infrastructure", "finance", "atm"]
+    },
+
+    {
+      "id": "burhi-gandak",
+      "title": "Burhi Gandak River",
+      "subtitle": "The river that named the village",
+      "categories": ["geography", "history"],
+      "summary": "The Burhi Gandak is a flood-prone river that flows along the western edge of Bandwar. The embankment built along it — the bandh — is believed to be the source of the village's name.",
+      "hero": "images/home/bandwar-hero.jpg",
+      "photos": [
+        { "src": "images/home/bandwar-hero.jpg", "caption": "The Burhi Gandak at dawn" },
+        { "src": "images/home/burhi-gandak-river.jpg", "caption": "Wildflowers on the river bank at sunset" },
+        { "src": "images/home/bandh-embankment.jpg", "caption": "The bandh along the river" },
+        { "src": "images/home/burhi-gandak-vertical.jpg", "caption": "The embankment and the river" }
+      ],
+      "infobox": {
+        "Type": "River",
+        "Length": "~320 km",
+        "Source": "Someshwar Hills, Nepal",
+        "Flows through": "West Champaran, Muzaffarpur, Samastipur, Begusarai, Khagaria",
+        "Relation to Bandwar": "Flows along western edge"
+      },
+      "content": [
+        { "heading": "Origin of the Name", "text": "The name 'Burhi Gandak' means 'old Gandak'. The river is believed to be an old channel of the Gandak, which shifted course over centuries. It is the largest tributary of the Ganga in the region." },
+        { "heading": "The Bandh", "text": "Because the Burhi Gandak floods almost every year, villagers built an embankment — a bandh — parallel to the river to protect their homes. It is from this bandh that the village is believed to have taken its name: Bandwar." },
+        { "heading": "Flood Risk", "text": "The river is classified as highly flood-prone. The district administration's flood hazard maps place Begusarai in the high-risk category. The village has experienced flooding repeatedly, though the bandh has mitigated much of the damage." },
+        { "heading": "The Landscape", "text": "At dawn and dusk, the river offers a striking view — its still waters, the green embankment, and the dense tree cover on the opposite bank. It has become a familiar landmark for anyone visiting Bandwar." }
+      ],
+      "related": ["bandh", "shivala", "jal-jeevan-tank"],
+      "location": { "lat": 25.5009, "lng": 86.1590 },
+      "tags": ["river", "burhi-gandak", "geography", "flood", "bandh", "nature"]
+    },
+
+    {
+      "id": "maharishi-gautam-mandir",
+      "title": "Maharishi Gautam Aadi Shakti Durga Mandir",
+      "subtitle": "The village's Chaiti Durga temple",
+      "categories": ["religion", "landmarks"],
+      "summary": "A Hindu temple in Bandwar dedicated to Durga, with a distinctive orange exterior and green pillars. The temple houses a Chaiti Durga idol and is the site of the village's Chaitra Navratri celebrations.",
+      "hero": "images/culture/durga-mandir.jpg",
+      "photos": [
+        { "src": "images/culture/durga-mandir.jpg", "caption": "The temple, decorated for the festival" },
+        { "src": "images/culture/durga-mandir-idol.jpg", "caption": "Chaiti Durga idol inside the temple" }
+      ],
+      "infobox": {
+        "Type": "Hindu temple",
+        "Deity": "Durga",
+        "Also known as": "Chaiti Durga Mandir",
+        "Festival": "Chaiti Durga Puja (March–April)",
+        "Location": "Village centre",
+        "Exterior": "Orange with green pillars"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Maharishi Gautam Aadi Shakti Durga Mandir is one of the village's most visited temples. It stands in the centre of Bandwar, painted in a distinctive orange with bright green pillars, and is easily recognisable from the lane that passes it." },
+        { "heading": "The Deity", "text": "The temple is dedicated to Durga, in her aspect as Chaiti Durga — the form worshipped during Chaitra Navratri, which falls in March or April. The idol inside depicts the ten-armed Durga seated on a lion, engaged in combat with Mahishasura, the buffalo demon. She is flanked by her family — Lakshmi, Saraswati, Ganesh, and Kartikeya." },
+        { "heading": "Festivals", "text": "Chaitra Navratri is the most important festival at this temple, when the village observes nine nights of prayer. During the festival, the temple is decorated with lights, and the doors are kept open for darshan through the day and into the night." },
+        { "heading": "Architecture", "text": "The temple has a simple, functional design — a rectangular hall with an arched entryway, iron grilles across the windows, and a small shrine at the centre. Above the doorway, the temple's name is painted in Hindi." },
+        { "heading": "Present Day", "text": "The temple continues to be maintained by villagers. A woman from the village is often seen sitting outside the temple in the mornings, and the temple remains a common stopping point for anyone walking through the centre of Bandwar." }
+      ],
+      "related": ["krishna-mandir-bada", "ram-mandir-thakurbari", "shivala"],
+      "location": { "lat": 25.5006, "lng": 86.1602 },
+      "tags": ["durga", "chaiti durga", "temple", "religion", "navratri"]
+    },
+
+    {
+      "id": "krishna-mandir-bada",
+      "title": "Bada Krishna Mandir",
+      "subtitle": "The larger of the village's two Krishna temples",
+      "categories": ["religion", "landmarks"],
+      "summary": "The larger of Bandwar's two Krishna temples. It houses a Radha-Krishna idol and is a whitewashed building with an arched entrance and a handpump in its courtyard.",
+      "hero": "images/culture/bada-krishna-mandir.jpg",
+      "photos": [
+        { "src": "images/culture/bada-krishna-mandir.jpg", "caption": "The temple's exterior and courtyard" },
+        { "src": "images/culture/bada-krishna-mandir-idol.jpg", "caption": "Radha-Krishna idol inside the shrine" }
+      ],
+      "infobox": {
+        "Type": "Hindu temple",
+        "Deity": "Krishna and Radha",
+        "Also known as": "Bada Krishna Mandir",
+        "Location": "Village centre",
+        "Exterior": "Whitewashed, arched entrance"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Bada Krishna Mandir is the larger of the two Krishna temples in Bandwar. It stands in a quiet courtyard, a whitewashed building with a maroon border and a wide arched entrance that opens into a pillared hall." },
+        { "heading": "The Deity", "text": "The temple houses a Radha-Krishna idol, with Krishna depicted in blue, holding his flute, wearing a peacock crown and yellow robes, and adorned with an intricate golden prabhavali. Radha stands to his left in a green sari." },
+        { "heading": "Festivals", "text": "The temple's most important celebrations are Janmashtami — the birth of Krishna — which is the same occasion as the village's Janmashtami fair, and Radha Ashtami." },
+        { "heading": "Present Day", "text": "The temple is looked after by the village community. It has no fixed priest, and villagers take turns maintaining the shrine and offering prayers." }
+      ],
+      "related": ["krishna-mandir-chhota", "ram-mandir-thakurbari", "maharishi-gautam-mandir"],
+      "location": { "lat": 25.5005, "lng": 86.1614 },
+      "tags": ["krishna", "radha", "temple", "religion", "janmashtami"]
+    },
+
+    {
+      "id": "krishna-mandir-chhota",
+      "title": "Chhota Krishna Mandir",
+      "subtitle": "The smaller of the village's two Krishna temples",
+      "categories": ["religion", "landmarks"],
+      "summary": "The smaller of Bandwar's two Krishna temples. It is distinguished by its colourful scalloped arches, marble steps, and green and red side walls.",
+      "hero": "images/culture/chhota-krishna-mandir.jpg",
+      "photos": [
+        { "src": "images/culture/chhota-krishna-mandir.jpg", "caption": "The temple's decorated arches" },
+        { "src": "images/culture/chhota-krishna-mandir-idol.jpg", "caption": "Radha-Krishna idol inside the shrine" }
+      ],
+      "infobox": {
+        "Type": "Hindu temple",
+        "Deity": "Krishna and Radha",
+        "Also known as": "Chhota Krishna Mandir",
+        "Location": "Village centre",
+        "Distinctive feature": "Colourful scalloped arches"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Chhota Krishna Mandir stands a short distance from its larger counterpart, in the centre of the village. It is reached by a flight of marble steps and is distinguished by its decorated scalloped arches — outlined in yellow, pink, and blue — and its green and red side walls." },
+        { "heading": "Architecture", "text": "The temple is built in a traditional North Indian style, with a shallow entrance porch supported by white pillars and topped by a decorated ceiling. Inside, the doorway is framed with painted wooden panels." },
+        { "heading": "The Deity", "text": "The temple houses a Radha-Krishna idol, shown with Krishna seated on the coils of Shesh Naag — the serpent of Vishnu — with Radha beside him, and an intricate golden prabhavali behind them." },
+        { "heading": "Festivals", "text": "The temple is decorated and opened for extended darshan on Janmashtami, Radha Ashtami, and during Kartik Purnima." }
+      ],
+      "related": ["krishna-mandir-bada", "ram-mandir-thakurbari", "shivala"],
+      "location": { "lat": 25.5009, "lng": 86.1615 },
+      "tags": ["krishna", "radha", "temple", "religion", "janmashtami"]
+    },
+
+    {
+      "id": "ram-mandir-thakurbari",
+      "title": "Ram Mandir Thakurbari",
+      "subtitle": "The village's Ram temple",
+      "categories": ["religion", "landmarks", "culture"],
+      "summary": "Bandwar's Ram temple, distinguished by its twin shikharas. It is the site of the annual Ram Katha — the recitation of the Ramcharitmanas — and is especially striking against the evening sky at sunset.",
+      "hero": "images/culture/ram-mandir-thakurbari.jpg",
+      "photos": [
+        { "src": "images/culture/ram-mandir-thakurbari.jpg", "caption": "Ram Mandir Thakurbari" },
+        { "src": "images/culture/ram-mandir-thakurbari-sunset.jpg", "caption": "The temple at sunset" },
+        { "src": "images/culture/ram-katha-2021.jpg", "caption": "Ram Katha at the temple, 2021" }
+      ],
+      "infobox": {
+        "Type": "Hindu temple",
+        "Deity": "Rama",
+        "Also known as": "Thakurbari",
+        "Distinctive feature": "Twin shikharas (spires)",
+        "Location": "Village centre",
+        "Festival": "Ram Navami, Ram Katha (annual)"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Ram Mandir Thakurbari is one of the most distinctive temples in Bandwar, easily recognised by its twin shikharas — the two towers rising above the shrine. The temple sits among trees, and at sunset its silhouette against the sky is one of the village's most photographed views." },
+        { "heading": "Architecture", "text": "The temple is built in the nagara style, with two spires of slightly different heights — the taller one marks the main shrine, and the smaller one an adjoining shrine. An orange dhwaja (flag) is flown from the taller spire." },
+        { "heading": "Ram Katha", "text": "Once a year, the temple hosts a Ram Katha — a multi-day recitation of the Ramcharitmanas by a trained kathavachak (narrator). Villagers gather under a decorated pandal in the temple courtyard to listen. The most recent public record of this is from 2021, when the entire village participated." },
+        { "heading": "Festivals", "text": "Ram Navami — the birth of Rama, in March or April — is the principal festival. The temple also observes Vijayadashami (Dussehra) and Diwali." },
+        { "heading": "Present Day", "text": "The temple is looked after by the village community and receives regular visits throughout the year." }
+      ],
+      "related": ["krishna-mandir-bada", "krishna-mandir-chhota", "hanuman-mandir"],
+      "location": { "lat": 25.5010, "lng": 86.1606 },
+      "tags": ["ram", "thakurbari", "temple", "religion", "ram-katha", "ram-navami"]
+    },
+
+    {
+      "id": "hanuman-mandir",
+      "title": "Sankat Mochan Hanuman Mandir",
+      "subtitle": "The village's Hanuman temple",
+      "categories": ["religion", "landmarks"],
+      "summary": "A temple dedicated to Hanuman ji, known for its bright red idol holding a gada (mace). The temple is small but well-maintained, with a brass bell hung at the entrance.",
+      "hero": "images/culture/hanuman-mandir.jpg",
+      "photos": [
+        { "src": "images/culture/hanuman-mandir.jpg", "caption": "The idol of Hanuman ji inside the temple" }
+      ],
+      "infobox": {
+        "Type": "Hindu temple",
+        "Deity": "Hanuman",
+        "Also known as": "Sankat Mochan Mandir",
+        "Location": "Village centre",
+        "Distinctive feature": "Red idol holding a mace"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Sankat Mochan Hanuman Mandir is one of the smallest temples in Bandwar, but also among the most visited. It is dedicated to Hanuman ji — the devotee of Rama, the remover of obstacles, and the deity most commonly invoked by villagers for strength and protection." },
+        { "heading": "The Deity", "text": "The idol of Hanuman inside the temple is painted a bright vermilion red — the traditional colour for Hanuman icons in North India — and holds the gada (mace). He is shown with a golden prabhavali behind him, and is adorned with flowers and sindoor. A brass bell hangs from the ceiling, rung by worshippers as they enter." },
+        { "heading": "Festivals", "text": "Hanuman Jayanti — the birth of Hanuman — is the temple's most important festival, celebrated on the full moon of the Chaitra month (March or April). Hanuman is also especially worshipped on Tuesdays and Saturdays." },
+        { "heading": "Present Day", "text": "The temple is looked after by a local pujari and receives visitors throughout the week. An elderly priest is often seen at the temple in the mornings." }
+      ],
+      "related": ["ram-mandir-thakurbari", "baba-bhole-mandir", "shivala"],
+      "location": { "lat": 25.5013, "lng": 86.1608 },
+      "tags": ["hanuman", "temple", "religion", "hanuman-jayanti"]
+    },
+
+    {
+      "id": "baba-bhole-mandir",
+      "title": "Baba Bhole Durgasthan Hanuman Mandir",
+      "subtitle": "A multi-deity temple in the middle of the village",
+      "categories": ["religion", "landmarks"],
+      "summary": "A temple in the centre of Bandwar dedicated to three deities — Baba Bhole (Shiva), Durga, and Hanuman. It is distinguished by its blue-grey shikhara, maroon walls, and an iron gate inscribed with 'Om Namah Shivaya'.",
+      "hero": "images/culture/baba-bhole-mandir.jpg",
+      "photos": [
+        { "src": "images/culture/baba-bhole-mandir.jpg", "caption": "The temple's maroon walls and blue-grey shikhara" }
+      ],
+      "infobox": {
+        "Type": "Hindu temple",
+        "Deities": "Shiva, Durga, Hanuman",
+        "Also known as": "Baba Bhole Durgasthan Hanuman Mandir",
+        "Location": "Mid-village",
+        "Distinctive feature": "Blue-grey shikhara, maroon walls"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Baba Bhole Durgasthan Hanuman Mandir stands in the middle of Bandwar, and is one of the few temples in the village dedicated to more than one deity. Its name — Baba Bhole, Durgasthan, and Hanuman — reflects its triple dedication to Shiva, Durga, and Hanuman." },
+        { "heading": "Architecture", "text": "The temple is built with a blue-grey shikhara above a maroon-walled sanctum. An arched doorway, framed with an intricate golden screen, opens into the shrine. The entrance gate is made of iron, and carries the inscription 'Om Namah Shivaya' alongside images of Hindu deities." },
+        { "heading": "The Deities", "text": "Inside the sanctum, idols of the three deities are arranged together. The temple's name suggests that Baba Bhole — Shiva — occupies the central position, with Durga and Hanuman to either side." },
+        { "heading": "Festivals", "text": "The temple observes three festivals — Maha Shivaratri for Shiva, Chaitra Navratri for Durga, and Hanuman Jayanti for Hanuman. On these days, the temple is decorated and receives a large number of worshippers." },
+        { "heading": "Present Day", "text": "The temple is looked after by the village community and remains in active use throughout the year." }
+      ],
+      "related": ["shivala", "hanuman-mandir", "maharishi-gautam-mandir"],
+      "location": { "lat": 25.5007, "lng": 86.1605 },
+      "tags": ["shiva", "durga", "hanuman", "temple", "religion"]
+    },
+
+    {
+      "id": "madhya-vidyalaya",
+      "title": "Rajkiyakrit Madhya Vidyalaya, Vandwar",
+      "subtitle": "The government middle school, established 1955",
+      "categories": ["education", "history"],
+      "summary": "A government middle school in Bandwar, established in 1955. It has served the village for nearly seven decades and remains one of its primary educational institutions.",
+      "hero": "images/village/madhya-vidyalaya-building.jpg",
+      "photos": [
+        { "src": "images/village/madhya-vidyalaya-building.jpg", "caption": "Rajkiyakrit Madhya Vidyalaya, Vandwar" },
+        { "src": "images/village/madhya-vidyalaya-courtyard.jpg", "caption": "The school courtyard, 2020" }
+      ],
+      "infobox": {
+        "Established": "1955",
+        "Type": "Government middle school",
+        "Managed by": "Department of Education, Bihar",
+        "Medium": "Hindi",
+        "Location": "Village centre"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Rajkiyakrit Madhya Vidyalaya is the government middle school of Bandwar. Established in 1955 — eight years after India's independence — it was the second formal school to open in the village, following the S.N.K. High School founded in 1942." },
+        { "heading": "History", "text": "The school was established as part of Bihar's post-independence push to expand rural education. It began as a small primary school and was upgraded to middle school status as the village's population grew." },
+        { "heading": "The Building", "text": "The school operates from a pucca building with classrooms set around a courtyard. The building has been periodically renovated — a photograph from 2020 shows the courtyard largely empty during the COVID-19 closures." },
+        { "heading": "Present Day", "text": "The school serves students from Bandwar and neighbouring villages. Its curriculum follows the Bihar state board, with instruction in Hindi and English." }
+      ],
+      "related": ["snk-high-school", "gps-paschimibandwar", "pskanyamohanpur"],
+      "location": { "lat": 25.5003, "lng": 86.1612 },
+      "tags": ["school", "education", "1955", "middle-school", "government"]
+    },
+
+    {
+      "id": "gps-paschimibandwar",
+      "title": "GPS Paschimibandwar",
+      "subtitle": "A government primary school in West Bandwar",
+      "categories": ["education"],
+      "summary": "A government primary school in the western part of Bandwar, established in 1952. It provides primary education to children in the village's western neighbourhoods.",
+      "photos": [],
+      "infobox": {
+        "Established": "1952",
+        "Type": "Government primary school",
+        "Classes": "1 to 5",
+        "Medium": "Hindi",
+        "Location": "West Bandwar"
+      },
+      "content": [
+        { "heading": "Overview", "text": "GPS Paschimibandwar — Government Primary School, West Bandwar — is one of the village's older primary schools. Established in 1952, it was among the earliest government schools to open in the area." },
+        { "heading": "Location and Access", "text": "The school is located in the western part of Bandwar, close to the embankment that runs along the Burhi Gandak. It is accessible via an all-weather road, which makes it reliable for students even during the monsoon season." },
+        { "heading": "Present Day", "text": "The school continues to function as a government primary school, serving children from the western and central parts of the village." }
+      ],
+      "related": ["madhya-vidyalaya", "snk-high-school", "pskanyamohanpur"],
+      "location": { "lat": 25.5008, "lng": 86.1598 },
+      "tags": ["school", "education", "1952", "primary-school", "government"]
+    },
+
+    {
+      "id": "pskanyamohanpur",
+      "title": "Pskanyamohanpur Primary School",
+      "subtitle": "A girls' primary school in Mohanpur",
+      "categories": ["education"],
+      "summary": "A girls-only primary school in the Mohanpur area of Bandwar, established in 1956. The school has a small library of 305 books and five female teachers.",
+      "photos": [],
+      "infobox": {
+        "Established": "1956",
+        "Type": "Government primary school (girls)",
+        "Classes": "1 to 5",
+        "Teachers": "5 (all female)",
+        "Library": "305 books",
+        "Location": "Mohanpur, Bandwar"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Pskanyamohanpur Primary School is the village's girls-only primary school, established in 1956. It stands in the Mohanpur area of Bandwar, and serves girls from across the village." },
+        { "heading": "The School", "text": "The school operates from a small building with two classrooms, both in good condition. It has five teachers, all of them female. The school also maintains a small library of 305 books." },
+        { "heading": "Facilities", "text": "The school's drinking water comes from a hand-pump on the premises. It has no playground, and its boundary wall is incomplete. Mid-day meals are prepared on the school grounds." },
+        { "heading": "Present Day", "text": "The school remains an important institution for girls' education in Bandwar. Its all-female teaching staff and dedicated girls-only environment make it a distinct part of the village's educational ecosystem." }
+      ],
+      "related": ["madhya-vidyalaya", "snk-high-school", "gps-paschimibandwar"],
+      "location": { "lat": 25.5004, "lng": 86.1609 },
+      "tags": ["school", "education", "1956", "girls-school", "primary-school"]
+    },
+
+    {
+      "id": "gps-bandwar-musahri",
+      "title": "GPS Bandwar Musahri",
+      "subtitle": "A primary school in the Musahri tola",
+      "categories": ["education"],
+      "summary": "A government primary school in the Musahri neighbourhood of Bandwar, established in 1995. It serves children from the Musahri tola and surrounding areas.",
+      "photos": [],
+      "infobox": {
+        "Established": "1995",
+        "Type": "Government primary school",
+        "Classes": "1 to 5",
+        "Head Master": "Amit Kumar Devershi",
+        "Students": "184 (88 boys, 96 girls)",
+        "Teachers": "9",
+        "Location": "Musahri, Bandwar"
+      },
+      "content": [
+        { "heading": "Overview", "text": "GPS Bandwar Musahri is a government primary school in the Musahri tola of Bandwar. It was established in 1995 — the most recent of the village's primary schools — and has grown into one of the largest, with an enrolment of 184 students." },
+        { "heading": "The School", "text": "The school is headed by Amit Kumar Devershi, and is staffed by nine teachers — six male and two female. It operates four classrooms, all in good condition, along with two functional toilets." },
+        { "heading": "Students", "text": "Of the school's 184 students, 88 are boys and 96 are girls — a notable gender balance. The student body includes 172 students from Scheduled Caste families, 24 from Other Backward Classes, and 7 from Muslim families. 162 students belong to Below Poverty Line households." },
+        { "heading": "Facilities", "text": "The school has access to drinking water, hand-washing facilities, electricity, internet connection, a books library, and ramps for students with disabilities." },
+        { "heading": "Significance", "text": "The presence of a well-enrolled primary school in the Musahri tola — a Mahadalit-majority area — reflects the village's commitment to ensuring that education reaches all communities." }
+      ],
+      "related": ["madhya-vidyalaya", "snk-high-school", "gps-paschimibandwar"],
+      "location": { "lat": 25.5002, "lng": 86.1607 },
+      "tags": ["school", "education", "1995", "primary-school", "government", "musahri"]
+    },
+
+    {
+      "id": "adharsh-vikash",
+      "title": "Adharsh Vikash Vidhya Mandir",
+      "subtitle": "A private primary school with upper primary classes",
+      "categories": ["education"],
+      "summary": "A private school in Bandwar offering primary and upper primary education. Established in 2015, it is the newest educational institution in the village.",
+      "photos": [],
+      "infobox": {
+        "Established": "2015",
+        "Type": "Private school",
+        "Classes": "1 to 8",
+        "Medium": "Hindi and English",
+        "Location": "Bandwar"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Adharsh Vikash Vidhya Mandir is the newest educational institution in Bandwar, established in 2015. It is a private school offering primary education (Classes 1–5) with upper primary classes (6–8), and is the only private school in the village." },
+        { "heading": "Why It Matters", "text": "Until 2015, every school in Bandwar was government-run. The opening of Adharsh Vikash Vidhya Mandir gave parents a private alternative — one that many families chose for its perceived better quality of instruction and for its emphasis on English." },
+        { "heading": "Curriculum", "text": "The school follows the Bihar state curriculum, with instruction in both Hindi and English. It offers classes from the primary through the upper primary level, meaning students can complete their education up to Class 8 within the village." },
+        { "heading": "Present Day", "text": "The school has grown steadily since its establishment. It remains one of the few options for parents in Bandwar who wish to send their children to a private school without having to travel to Begusarai." }
+      ],
+      "related": ["madhya-vidyalaya", "snk-high-school", "gps-bandwar-musahri"],
+      "location": { "lat": 25.5006, "lng": 86.1616 },
+      "tags": ["school", "education", "2015", "private-school"]
+    },
+
+    {
+      "id": "vaani-vilas-library",
+      "title": "Vaani Vilas Pustakalaya",
+      "subtitle": "The village library on Bandwar Road",
+      "categories": ["education", "culture"],
+      "summary": "Vaani Vilas Pustakalaya is the village library of Bandwar, located on Bandwar Road. Built with MPLAD funds under the initiative of Girija Singh, it was inaugurated by Rajya Sabha MP Rakesh Sinha ji. The library houses a collection of books in numbered cabinets, along with a reading area decorated with portraits of national leaders.",
+      "hero": "images/education/library-gate.jpg",
+      "photos": [
+        { "src": "images/education/library-gate.jpg", "caption": "The library's entrance gate on Bandwar Road" },
+        { "src": "images/education/library-books.jpg", "caption": "Bookshelves inside the library" },
+        { "src": "images/education/library-reading-area.jpg", "caption": "The reading area, lined with portraits" },
+        { "src": "images/education/library-portraits.jpg", "caption": "Framed portraits of national leaders" }
+      ],
+      "infobox": {
+        "Type": "Village library",
+        "Also known as": "Vaani Vilas Pustakalaya",
+        "Location": "Bandwar Road",
+        "Inaugurated": "5 September 2023",
+        "Inaugurated by": "Rakesh Sinha (Rajya Sabha MP)",
+        "Funded by": "MPLAD fund (₹10 lakh)",
+        "Initiative by": "Girija Singh (resident)"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Vaani Vilas Pustakalaya is the village library of Bandwar, standing on the main Bandwar Road near the Shaheed Ramchandra Dwar. It is a single-storey building, painted white with a red iron gate at the entrance. Inside, it contains a collection of books — including Hindi literature, Bengali works, Islamic texts, and reference material — kept in numbered wooden cabinets and open bookshelves." },
+        { "heading": "Origin", "text": "The library was built under the initiative of Girija Singh — a resident of Bandwar — with funding from the MPLAD (Members of Parliament Local Area Development) fund of Rajya Sabha MP Rakesh Sinha. The total cost of construction was approximately ₹10 lakh. The library was inaugurated on 5 September 2023, and has since become one of the village's most important public institutions." },
+        { "heading": "Rakesh Sinha", "text": "Rakesh Sinha is a Member of Parliament (Rajya Sabha) and a native of Begusarai district — his ancestral village, Mansarpur, is not far from Bandwar. He has been associated with the establishment of libraries across the region, and the Vaani Vilas Pustakalaya is one of several such projects undertaken through his MPLAD fund." },
+        { "heading": "The Reading Area", "text": "The heart of the library is its reading area — a large wooden table with black metal chairs arranged around it. The walls of the reading room are lined with framed portraits of national leaders, including Mahatma Gandhi and Dr. B. R. Ambedkar. The room is well-lit, with ceiling fans and large windows that let in natural light and a view of the green trees outside. The library's collections are kept in wooden cabinets marked with the prefix 'वा.वि.पु.' — an abbreviation of 'Vaani Vilas Pustakalaya' — followed by a number." },
+        { "heading": "The Collection", "text": "The library's bookshelves hold a wide range of titles — from Hindi fiction and poetry to Bengali literature, Islamic texts, and reference works. Some volumes appear to be several decades old, suggesting that the collection has been built over time. The library also holds bound volumes of periodicals and magazines, and a small collection of books on Indian history and politics." },
+        { "heading": "Significance", "text": "For a village of Bandwar's size, having a dedicated public library is significant. In rural India, access to books remains limited — most villages do not have a functioning library, and school and college students often have to travel to district towns to find the reading material they need. The presence of Vaani Vilas Pustakalaya gives Bandwar's residents, and especially its students, a place where they can access books and quiet space to read." },
+        { "heading": "Present Day", "text": "The library is in active use and remains open through the week. It is looked after by the village community, and its reading room receives a steady stream of students and older residents. It stands alongside the other institutions of the village — its schools, temples, and panchayat — as part of Bandwar's public life." }
+      ],
+      "related": ["snk-high-school", "madhya-vidyalaya", "gps-bandwar-musahri"],
+      "location": { "lat": 25.5007, "lng": 86.1618 },
+      "tags": ["library", "education", "reading", "rakesh sinha", "girija singh", "mplad", "culture"]
+    },
+
+    {
+      "id": "shaheed-dwar",
+      "title": "Shaheed Ramchandra Dwar",
+      "subtitle": "The martyrs' gate at the village entrance",
+      "categories": ["landmarks", "history"],
+      "summary": "The main entrance gate to Bandwar village, named in memory of Ramchandra ji — a martyr from the village. Built under the initiative of Girija Singh, a resident of Bandwar.",
+      "hero": "images/history/shaheed-dwar-day.jpg",
+      "photos": [
+        { "src": "images/history/shaheed-dwar-day.jpg", "caption": "The gate during the day" },
+        { "src": "images/history/shaheed-dwar-night.jpg", "caption": "The gate lit at night" }
+      ],
+      "infobox": {
+        "Type": "Memorial gate",
+        "Named after": "Shaheed Ramchandra",
+        "Built by": "Girija Singh (resident)",
+        "Inscription": "Jai Hind · Bharat Mata",
+        "Location": "Village entrance"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Shaheed Ramchandra Dwar is the main entrance gate to Bandwar village. It stands at the point where the road from Begusarai enters the village, and carries the name of a village martyr — Shaheed Ramchandra. The gate is painted blue with white lettering, and is inscribed on both sides with 'Jai Hind' and 'Bharat Mata'." },
+        { "heading": "History", "text": "The gate was built under the initiative of Girija Singh, a resident of Bandwar, in memory of Ramchandra ji. Its name places it among the 'Shaheed Duars' (martyrs' gates) that are found across Begusarai district — a legacy of the region's history of peasant movements and resistance that earned it the name 'Leningrad of Bihar'." },
+        { "heading": "Design", "text": "The gate is built in the form of a large arch, supported by two pillars. The arch and pillars are painted in blue with white trim, and the pillars are topped with gold-coloured finials. A single lamp is mounted at the top." },
+        { "heading": "Daily Life", "text": "The gate is not just a memorial — it is a working part of the village. Every morning and evening, villagers pass through it on their way to work, to the market, or to the fields. During the Janmashtami fair, the area around the gate becomes a hub of activity, with temporary stalls and vendors setting up under and around the arch." },
+        { "heading": "Present Day", "text": "The gate is well-maintained and is one of the most recognisable structures in Bandwar. It has become a landmark that villagers use as a reference point." }
+      ],
+      "related": ["chandrashekhar-chowk", "historic-well", "janmashtami-mela"],
+      "location": { "lat": 25.5015, "lng": 86.1600 },
+      "tags": ["gate", "martyr", "shaheed", "landmark", "entrance"]
+    },
+
+    {
+      "id": "chandrashekhar-chowk",
+      "title": "Chandrashekhar Chowk",
+      "subtitle": "The village square honouring Begusarai's first communist MLA",
+      "categories": ["landmarks", "history"],
+      "summary": "A village square in Bandwar with a statue of Chandrashekhar Singh — the first communist MLA from Barauni, and a defining figure in Begusarai's identity as 'the Leningrad of Bihar'.",
+      "hero": "images/history/chandrashekhar-chowk.jpg",
+      "photos": [
+        { "src": "images/history/chandrashekhar-chowk.jpg", "caption": "The statue of Chandrashekhar Singh under its canopy" }
+      ],
+      "infobox": {
+        "Type": "Village square with memorial",
+        "Named after": "Chandrashekhar Singh",
+        "Chandrashekhar Singh": "First communist MLA, Barauni (1956)",
+        "Location": "Village centre",
+        "Feature": "Canopy with statue"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Chandrashekhar Chowk is a village square in Bandwar, centred around a statue of Chandrashekhar Singh — the first communist MLA to be elected from Barauni, and one of the founding figures of Begusarai's communist movement." },
+        { "heading": "Who Was Chandrashekhar Singh", "text": "Chandrashekhar Singh (1915–1986) was born in Bihat, a village near Bandwar. He was elected as the first communist MLA from the Barauni constituency in 1956, and went on to become a leading figure in the Communist Party of India. His work in the Naokothi land movement helped redistribute thousands of acres of land to the landless, and earned Begusarai the nickname 'Leningrad of Bihar'." },
+        { "heading": "The Memorial", "text": "The memorial consists of a statue of Chandrashekhar Singh standing under a canopy supported by red stone pillars. The canopy is topped with a red tiled roof and decorated with orange flags. The memorial is enclosed by a low iron railing, and a small plaque at the base carries his name and dates." },
+        { "heading": "Significance", "text": "The presence of the memorial in Bandwar reflects the village's connection to the wider Begusarai region's political history. The chowk sits at a crossroads in the village centre, and remains a place where people gather, rest, and pass through on their way to the market or the temples." },
+        { "heading": "Present Day", "text": "The memorial is maintained by the village community. It is repainted periodically and cleaned before important festivals." }
+      ],
+      "related": ["shaheed-dwar", "shivala", "snk-high-school"],
+      "location": { "lat": 25.5008, "lng": 86.1612 },
+      "tags": ["statue", "memorial", "communist", "landmark", "chowk", "history"]
+    },
+
+    {
+      "id": "historic-well",
+      "title": "Historic Well (Chaupal)",
+      "subtitle": "A gathering place older than living memory",
+      "categories": ["landmarks", "culture"],
+      "summary": "Bandwar's historic well has served as both a source of water and a gathering place — a chaupal — for generations. It was the subject of a feature in Prabhat Khabar in July 2026.",
+      "hero": "images/culture/historic-well-chaupal.jpg",
+      "photos": [
+        { "src": "images/culture/historic-well-chaupal.jpg", "caption": "The historic well — the village chaupal" }
+      ],
+      "infobox": {
+        "Type": "Historic well",
+        "Also known as": "Chaupal",
+        "Function": "Water source and gathering place",
+        "Feature": "Prabhat Khabar, July 2026",
+        "Location": "Village centre"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The historic well of Bandwar — locally known simply as the chaupal — is one of the oldest structures in the village. For generations, it has served a dual purpose: as a source of drinking water, and as a place where villagers gather to talk." },
+        { "heading": "The Chaupal Tradition", "text": "In the evenings, as the day's work ends, men and women come to the well. They discuss the harvest, school results, politics, and the world beyond the village. Some of the most important decisions taken in Bandwar over the years have been taken here — not in any formal meeting, but in the slow, unhurried talk that happens at a well." },
+        { "heading": "Recent Renovation", "text": "In recent years, the well has been given a modern appearance. Its surface has been redone, the surrounding area has been repainted in bright colours, and modern lighting has been installed. At night, the entire area around the well is illuminated." },
+        { "heading": "Media Recognition", "text": "In July 2026, the Hindi daily Prabhat Khabar published a feature on the well, describing it as 'still the centre of social dialogue and intellectual discussion in the village'." },
+        { "heading": "Present Day", "text": "The well continues to be used as a place of gathering. The tradition that has been observed here for generations — of conversation, memory, and community — continues into the present." }
+      ],
+      "related": ["shivala", "chandrashekhar-chowk", "burhi-gandak"],
+      "location": { "lat": 25.5011, "lng": 86.1607 },
+      "tags": ["well", "chaupal", "landmark", "gathering", "culture", "water"]
+    },
+
+    {
+      "id": "bandh",
+      "title": "The Bandh",
+      "subtitle": "The embankment that gave Bandwar its name",
+      "categories": ["landmarks", "geography", "history"],
+      "summary": "The bandh is the embankment built along the Burhi Gandak to protect Bandwar from floods. It is widely believed that the village takes its name from this very structure — 'Bandh' becoming 'Bandwar'.",
+      "hero": "images/home/bandh-embankment.jpg",
+      "photos": [
+        { "src": "images/home/bandh-embankment.jpg", "caption": "The embankment along the Burhi Gandak" },
+        { "src": "images/home/burhi-gandak-river.jpg", "caption": "Wildflowers on the river bank" },
+        { "src": "images/home/burhi-gandak-vertical.jpg", "caption": "The embankment and the river" }
+      ],
+      "infobox": {
+        "Type": "Embankment",
+        "Purpose": "Flood protection",
+        "Along": "Burhi Gandak river",
+        "Relation to name": "Source of 'Bandwar'",
+        "Built": "Generations ago"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The bandh is the long embankment that runs parallel to the Burhi Gandak river, along the western edge of Bandwar. It was built by the village community generations ago to keep the river from flooding the village — and it is, in all likelihood, the origin of the village's name." },
+        { "heading": "Why It Was Built", "text": "The Burhi Gandak floods almost every year. Without protection, the village's homes, fields, and roads would be submerged for weeks at a time. The bandh — a raised earthen embankment — redirects the floodwaters and protects the village from the worst of the flooding." },
+        { "heading": "The Name", "text": "The most widely accepted theory about the village's name is that 'Bandwar' is derived from 'Bandh'. In the local dialect, a bandh-waar — a place protected by an embankment — would naturally have been shortened to 'Bandwar'." },
+        { "heading": "The Landscape", "text": "The bandh is one of the most striking features of Bandwar's landscape. From its top, on a clear morning, one can see the entire length of the village on one side, and the wide, still waters of the Burhi Gandak on the other." },
+        { "heading": "Present Day", "text": "The bandh continues to serve its original purpose — flood protection — and has been reinforced over the years by the state's water resources department. But it is also more than that. It is a landmark, a walking path, and the physical embodiment of the village's name." }
+      ],
+      "related": ["burhi-gandak", "shaheed-dwar", "historic-well"],
+      "location": { "lat": 25.5005, "lng": 86.1575 },
+      "tags": ["bandh", "embankment", "flood", "landmark", "geography", "name-origin"]
+    },
+
+    {
+      "id": "chhath-puja",
+      "title": "Chhath Puja",
+      "subtitle": "Bihar's most important festival, celebrated at the bandh",
+      "categories": ["culture", "religion"],
+      "summary": "Chhath Puja is the most important festival in Bihar, dedicated to Surya Dev — the Sun God. In Bandwar, the festival is celebrated at the bandh along the Burhi Gandak, with the entire village gathering on the riverbank to offer prayers.",
+      "hero": "images/culture/chhath-puja-surya-idol.jpg",
+      "photos": [
+        { "src": "images/culture/chhath-puja-surya-idol.jpg", "caption": "Surya Dev idol at the bandh" }
+      ],
+      "infobox": {
+        "Type": "Hindu festival",
+        "Deity": "Surya Dev (Sun God)",
+        "Also known as": "Surya Shashthi",
+        "Duration": "4 days",
+        "When": "Kartik month (October–November)",
+        "Main venue": "The bandh, Burhi Gandak"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Chhath Puja is the most important festival of Bihar — more significant, in popular practice, than Diwali or Holi. It is dedicated to Surya Dev (the Sun God) and Chhathi Maiya (his sister), and is observed over four days with strict fasting and ritual." },
+        { "heading": "Rituals", "text": "The four-day festival begins with Nahay-Khay, when devotees bathe in the river and eat a special meal of rice, chana dal, and kaddu (bottle gourd). The second day is Kharna, when a day-long fast is broken in the evening with roti and kheer. The third day — Sandhya Arghya — is the most important: as the sun sets, devotees stand in the water and offer prayers to the setting sun. The fourth day is Usha Arghya — the same ritual repeated at sunrise, ending the fast." },
+        { "heading": "The Prasad", "text": "The prasad prepared for Chhath is elaborate and strictly vegetarian. It includes thekua (a wheat-and-jaggery biscuit), kheer, fruits (especially sugarcane and banana), and coconut. The prasad is prepared on wood fire in a clean, ritualised manner, and is offered to the sun on bamboo soops (trays)." },
+        { "heading": "At Bandwar", "text": "At Bandwar, Chhath is celebrated by the entire village. Devotees gather at the bandh — the embankment along the Burhi Gandak — before sunrise and sunset. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh." },
+        { "heading": "A Note on Community", "text": "Chhath is unusual among Hindu festivals in that it has no priestly intermediary — devotees pray directly to the sun. In Bandwar, as elsewhere in Bihar, the festival is one of the few occasions when everyone — from the Mahadalit basti to the village centre — stands together on the same riverbank, offering the same prayers." }
+      ],
+      "related": ["janmashtami-mela", "ram-katha-2021", "bandh"],
+      "location": { "lat": 25.5005, "lng": 86.1575 },
+      "tags": ["chhath", "surya dev", "festival", "bihar", "culture", "bandh"]
+    },
+
+    {
+      "id": "ram-katha-2021",
+      "title": "Ram Katha at Thakurbari",
+      "subtitle": "A week of recitation at the village's Ram temple",
+      "categories": ["culture", "religion"],
+      "summary": "Once a year, the Ram Mandir Thakurbari hosts a Ram Katha — a multi-day recitation of the Ramcharitmanas by a trained narrator. The 2021 edition was attended by the entire village.",
+      "hero": "images/culture/ram-katha-2021.jpg",
+      "photos": [
+        { "src": "images/culture/ram-katha-2021.jpg", "caption": "Ram Katha at Thakurbari, 2021" }
+      ],
+      "infobox": {
+        "Type": "Religious gathering",
+        "Occasion": "Ram Katha",
+        "Venue": "Ram Mandir Thakurbari, Bandwar",
+        "Duration": "5–9 days",
+        "Text": "Ramcharitmanas (Tulsidas)"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Ram Katha is a multi-day public recitation of the Ramcharitmanas — Tulsidas's 16th-century retelling of the Ramayana in Awadhi — performed by a trained kathavachak (narrator). Once a year, the Ram Mandir Thakurbari in Bandwar hosts one such Katha, and the entire village gathers to listen." },
+        { "heading": "The 2021 Edition", "text": "The most recent publicly documented Ram Katha at Thakurbari was held in 2021. The temple courtyard was covered with a pink-and-white striped pandal, a stage was set up for the kathavachak, and a red carpet was laid across the ground for the audience. Villagers — men, women, and children — sat on the ground through the recitation, listening for hours at a time." },
+        { "heading": "The Tradition", "text": "Ram Katha is not unique to Bandwar — it is a common practice across North India, especially in the Hindi belt. But the Katha at Thakurbari has particular significance for Bandwar, because the temple where it is held — Ram Mandir Thakurbari — is the village's principal Ram temple." },
+        { "heading": "The Pandals and Preparation", "text": "Preparations for the Katha take several days. A large pandal is erected over the temple courtyard, decorated with flowers and lighting. The villagers contribute to the arrangements — some provide materials, some prepare food, others set up the seating. The festival concludes with a hawan (fire ritual) and the distribution of prasad." },
+        { "heading": "Present Day", "text": "The tradition of Ram Katha at Thakurbari continues. The temple's location, in the centre of the village among trees, makes it an ideal venue for such gatherings." }
+      ],
+      "related": ["chhath-puja", "janmashtami-mela", "ram-mandir-thakurbari"],
+      "location": { "lat": 25.5010, "lng": 86.1606 },
+      "tags": ["ram katha", "ramcharitmanas", "religion", "festival", "thakurbari"]
+    },
+
+    {
+      "id": "kushti",
+      "title": "Kushti — The Mud-Pit Wrestling of Bandwar",
+      "subtitle": "The heart of the Janmashtami fair",
+      "categories": ["culture"],
+      "summary": "Kushti, or mud-pit wrestling, is the defining feature of the Bandwar Janmashtami fair. Wrestlers come from across Bihar — and from Rajasthan, Madhya Pradesh, and Nepal — to compete in the pit that is prepared fresh each year.",
+      "photos": [],
+      "infobox": {
+        "Type": "Traditional wrestling",
+        "Also known as": "Malla-Yuddha, Pehalwani",
+        "Venue": "Mud pit at the Janmashtami fair",
+        "Participants": "Bihar, Rajasthan, MP, Nepal",
+        "Prize": "Honour only",
+        "When": "Janmashtami (August–September)"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Kushti — also called pehalwani or malla-yuddha — is the traditional form of mud-pit wrestling practised across North India. In Bandwar, it is the heart of the annual Janmashtami fair, and the reason wrestlers travel from across the subcontinent to the village each year." },
+        { "heading": "The Pit", "text": "Unlike the mat-based wrestling of modern akhadas, kushti at Bandwar is practised in a pit of wet earth. The pit is dug fresh every year in the days before the fair. Village youths soften the earth, add water, and smooth it with their feet until it has the grip and give that wrestlers need." },
+        { "heading": "The Wrestlers", "text": "Wrestlers come to Bandwar from across the region. Most are from Bihar, but the fair has also historically attracted wrestlers from Rajasthan, Madhya Pradesh, and — across the border — from Nepal. They come because they have heard of the fair, because their fathers and grandfathers wrestled here, because the pit at Bandwar has a reputation." },
+        { "heading": "No Prize Money", "text": "The most remarkable thing about the kushti at Bandwar is that there is no prize money. There is no trophy. There is only the honour of having wrestled at Bandwar — and the crowd, which surrounds the pit three or four deep and shouts itself hoarse for hours." },
+        { "heading": "Origins", "text": "Mud-pit wrestling has been practised in this region for centuries. It is described in classical Indian texts — in the Mahabharata, Bhima's wrestling matches are a central motif — and it has survived in rural India as both a sport and a discipline." },
+        { "heading": "Present Day", "text": "The kushti at the Bandwar Janmashtami fair continues to be held each year. It is not organised by any committee or funded by any sponsor — every household contributes what it can, and every generation passes on the responsibility to the next." }
+      ],
+      "related": ["janmashtami-mela", "chhath-puja", "cricket-tournament"],
+      "location": { "lat": 25.5008, "lng": 86.1608 },
+      "tags": ["kushti", "wrestling", "akhada", "mela", "culture", "sport"]
+    },
+
+    {
+      "id": "cricket-tournament",
+      "title": "Shahid Rajesh Memorial Cricket Tournament",
+      "subtitle": "A tournament played in memory of a martyr",
+      "categories": ["culture"],
+      "summary": "The Shahid Rajesh Memorial Cricket Tournament is played annually at the Bandwar village ground, in memory of a young man from the village who gave his life in service. The 2026 edition was won by Shivam-11.",
+      "photos": [],
+      "infobox": {
+        "Type": "Cricket tournament",
+        "Played at": "Village ground, Bandwar",
+        "Organiser": "Vikram Singh",
+        "Winner 2026": "Shivam-11",
+        "Prize": "₹25,000 (winner), ₹12,500 (runner-up)",
+        "Village teams": "B.C.C. Bandwar 11, S.R.K.C. Bandwar 11"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Shahid Rajesh Memorial Cricket Tournament is played annually at the Bandwar village ground. It is named in memory of Rajesh, a young man from the village who gave his life in service, and is organised by Vikram Singh." },
+        { "heading": "Purpose", "text": "According to its organiser, the tournament is 'not limited to sport alone'. It is, in his words, 'an effort to carry the sacrifice of the martyr Rajesh to a new generation'. The tournament is therefore both a cricket event and a memorial." },
+        { "heading": "The 2026 Edition", "text": "The 2026 edition of the tournament was won by Shivam-11, who defeated Bagras-11 by 74 runs in the final. Shivam-11 batted first and scored 194 runs for the loss of 7 wickets in 15 overs; Bagras-11, in response, were all out for 120 in the 13th over. Nitish Singh was declared Man of the Match." },
+        { "heading": "The Village Teams", "text": "Bandwar also fields its own cricket teams in competitions through the year — B.C.C. Bandwar 11 and S.R.K.C. Bandwar 11. The two teams have played in the Jagdar Premier League and other local competitions, and have won several matches." },
+        { "heading": "Cricket and Village Life", "text": "Cricket is one of the most popular sports in Bandwar. Through the summer months — between the harvest and the monsoon — the village ground becomes a cricket field almost every evening. Boys and young men play matches that go on till dusk." }
+      ],
+      "related": ["kushti", "janmashtami-mela", "shaheed-dwar"],
+      "location": { "lat": 25.5002, "lng": 86.1615 },
+      "tags": ["cricket", "sport", "tournament", "culture", "memorial"]
+    },
+
+    {
+      "id": "post-office",
+      "title": "Banduar Post Office",
+      "subtitle": "The village's branch post office",
+      "categories": ["infrastructure"],
+      "summary": "Banduar Branch Office is the village's post office, operating under the Begusarai postal division. It provides letter mail, registered post, money orders, and savings bank services.",
+      "photos": [],
+      "infobox": {
+        "Type": "Branch Office (BO)",
+        "Also known as": "Banduar BO",
+        "PIN Code": "851131",
+        "Division": "Begusarai",
+        "Services": "Letter mail, registered post, money orders, savings bank",
+        "Nearest Sub Office": "Rajaura S.O."
+      },
+      "content": [
+        { "heading": "Overview", "text": "Banduar Branch Office is the village post office of Bandwar, operating under the Begusarai postal division of the Indian Postal Service. It is a 'Branch Office' — the smallest category of post office — and serves not just Bandwar but also the surrounding panchayat areas." },
+        { "heading": "Services", "text": "The post office offers the standard range of India Post services: letter mail, registered post, money orders, and savings bank accounts. It also handles Aadhaar enrolment and doorstep delivery for the villages in its jurisdiction." },
+        { "heading": "The PIN Code", "text": "Bandwar's PIN code is 851131. It is shared across several villages and localities in the Begusarai block, and is one of 13 PIN codes that cover the Begusarai district's postal network." },
+        { "heading": "A Note on Connectivity", "text": "For a village of Bandwar's size, having a post office within the village is significant. It reduces the need for residents to travel to Begusarai for basic postal services." }
+      ],
+      "related": ["sbi-bank", "petrol-pump", "roads"],
+      "location": { "lat": 25.5005, "lng": 86.1606 },
+      "tags": ["post office", "postal", "infrastructure", "pin code"]
+    },
+
+    {
+      "id": "petrol-pump",
+      "title": "Ram Janki Fuels",
+      "subtitle": "The Indian Oil petrol pump on SH 55",
+      "categories": ["infrastructure", "economy"],
+      "summary": "Ram Janki Fuels is an Indian Oil petrol pump operating on SH 55 near Bandwar. It is the only petrol pump in the immediate area and serves both the village and passing highway traffic.",
+      "hero": "images/village/ram-janki-petrol-pump.jpg",
+      "photos": [
+        { "src": "images/village/ram-janki-petrol-pump.jpg", "caption": "Ram Janki Fuels on SH 55" }
+      ],
+      "infobox": {
+        "Type": "Petrol pump",
+        "Operating as": "Ram Janki Fuels",
+        "Brand": "Indian Oil",
+        "Location": "SH 55, near Bandwar",
+        "Services": "Petrol, diesel, Servo lubricants"
+      },
+      "content": [
+        { "heading": "Overview", "text": "Ram Janki Fuels is an Indian Oil petrol pump operating on State Highway 55, near Bandwar. It is a modern facility with a canopy, four filling stations, and an electronic display of fuel rates. The signboard identifies it as an Indian Oil outlet, with the sub-brand 'Servo' for lubricants." },
+        { "heading": "Location", "text": "The pump is located on SH 55, the state highway that passes through Bandwar and connects the village to Begusarai and other towns in the region. Its position on the highway means that it serves not just the village but also the considerable traffic that passes through." },
+        { "heading": "Why It Matters", "text": "The presence of a petrol pump in the area is a signal of the region's development. Until recently, vehicle owners in Bandwar and the surrounding villages had to travel to Begusarai to refuel. The establishment of Ram Janki Fuels on the highway has reduced that burden." },
+        { "heading": "Employment", "text": "The petrol pump employs a small staff of local workers — attendants who serve customers, handle cash, and maintain the facility. For the village, it represents one of the few organised-sector employment opportunities available locally." }
+      ],
+      "related": ["sbi-bank", "post-office", "roads"],
+      "location": { "lat": 25.4998, "lng": 86.1595 },
+      "tags": ["petrol pump", "indian oil", "infrastructure", "sh55", "highway"]
+    },
+
+    {
+      "id": "jal-jeevan-tank",
+      "title": "Jal Jeevan Mission Water Tower",
+      "subtitle": "A water tower built under the central Jal Jeevan Mission",
+      "categories": ["infrastructure"],
+      "summary": "A water tower near Bandwar, built under the Jal Jeevan Mission. It forms part of the central government's effort to provide piped drinking water to every rural household in India.",
+      "hero": "images/village/jal-jeevan-water-tower.jpg",
+      "photos": [
+        { "src": "images/village/jal-jeevan-water-tower.jpg", "caption": "The Jal Jeevan Mission water tower" }
+      ],
+      "infobox": {
+        "Type": "Water tower",
+        "Built under": "Jal Jeevan Mission",
+        "Location": "Near the village fields",
+        "Purpose": "Piped drinking water supply",
+        "Launched": "2019 (central scheme)"
+      },
+      "content": [
+        { "heading": "Overview", "text": "The Jal Jeevan Mission water tower at Bandwar is a modern structure — a steel frame painted blue and white, topped by two large black water tanks. It stands on the edge of the village's fields, near the embankment along the Burhi Gandak." },
+        { "heading": "The Jal Jeevan Mission", "text": "The Jal Jeevan Mission is a central government scheme launched in 2019, with the goal of providing safe and adequate drinking water to every rural household through individual tap connections. It is one of the most ambitious infrastructure programmes ever undertaken in rural India — and Bandwar is one of the villages it has reached." },
+        { "heading": "What It Means for Bandwar", "text": "For a village where the 2011 Census recorded zero households with piped water connections, the arrival of the Jal Jeevan Mission represents a significant shift. The tower and its associated pipeline network are intended to bring piped water directly to homes — replacing the wells and hand-pumps that villagers have relied on for generations." },
+        { "heading": "Present Day", "text": "The tower is operational and forms part of the village's growing water infrastructure. It stands alongside the agricultural fields, a visible symbol of the government's rural development efforts." }
+      ],
+      "related": ["burhi-gandak", "diarrhea-outbreak", "bandh"],
+      "location": { "lat": 25.4995, "lng": 86.1590 },
+      "tags": ["jal jeevan mission", "water tower", "infrastructure", "water"]
+    },
+
+    {
+      "id": "diarrhea-outbreak",
+      "title": "The September 2025 Diarrhea Outbreak",
+      "subtitle": "A crisis of water and public health",
+      "categories": ["health"],
+      "summary": "In September 2025, an outbreak of diarrheal illness in Bandwar led to the deaths of more than ten people in fifteen days. The outbreak was concentrated in Wards 1 and 2 — the Mahadalit basti — and exposed decades of neglect in the village's water and health infrastructure.",
+      "hero": "images/village/village-lane-musahri.jpg",
+      "photos": [
+        { "src": "images/village/village-lane-musahri.jpg", "caption": "A village lane in the affected ward" }
+      ],
+      "infobox": {
+        "Type": "Public health crisis",
+        "When": "September 2025",
+        "Duration": "15 days",
+        "Deaths": "More than 10",
+        "Most affected": "Wards 1 and 2 (Mahadalit basti)",
+        "Root cause": "Contaminated water and lack of sanitation"
+      },
+      "content": [
+        { "heading": "The Outbreak", "text": "In September 2025, Bandwar experienced an outbreak of diarrheal illness. Over the course of fifteen days, more than ten people died. The deaths were concentrated in Wards 1 and 2 — the Mahadalit basti — the poorest and least-served part of the village." },
+        { "heading": "The Delayed Response", "text": "According to reporting by News18 and Prabhat Khabar, the initial response from the health department was slow. Villagers alleged that the local administration had delegated responsibility to a private doctor who was charging money for government-supplied medicines. Families paid out of their own pockets to have water tanks cleaned." },
+        { "heading": "The Health Camp", "text": "On 29 September 2025, a health camp was finally held at Musahri Tola under the Primary Health Centre, Sadar. In the course of the camp, 293 households were surveyed, 26 patients were treated and recovered, and 3 remained under continued care. ORS, zinc, and metronidazole were distributed to 102 families in the affected wards, and bleaching powder was applied across three wards." },
+        { "heading": "The Root Cause", "text": "The outbreak was caused by contaminated water — the direct result of a village that has, since at least 2011, had no piped drinking water supply, no functional sanitation, and no community toilets. The 2011 Census recorded zero households with treated tap water, zero with untreated tap water, and zero with sanitation access." },
+        { "heading": "Aftermath", "text": "Following the outbreak, the district administration maintained that the situation had been brought under control. But the crisis laid bare a hard truth: a village of more than twenty thousand people had no dedicated health facility of its own, no ambulance service, and no clean piped water." }
+      ],
+      "related": ["jal-jeevan-tank", "burhi-gandak", "roads"],
+      "location": { "lat": 25.5002, "lng": 86.1607 },
+      "tags": ["health", "diarrhea", "outbreak", "water", "crisis", "2025"]
+    },
+
+    {
+      "id": "roads",
+      "title": "Roads and Connectivity",
+      "subtitle": "How Bandwar connects to the world",
+      "categories": ["infrastructure"],
+      "summary": "Bandwar is connected to the wider region by SH 55, by a network of village roads, and by a series of new road projects sanctioned in 2025. The village's isolation has reduced significantly in recent years.",
+      "hero": "images/village/road-construction.jpg",
+      "photos": [
+        { "src": "images/village/road-construction.jpg", "caption": "Bricks and timber on a village road" },
+        { "src": "images/village/village-lane-musahri.jpg", "caption": "A village lane with bamboo fencing" }
+      ],
+      "infobox": {
+        "Highway": "SH 55 (State Highway 55)",
+        "Nearest town": "Begusarai, 18 km",
+        "Nearest railway": "Begusarai (10+ km)",
+        "Bus service": "Public and private",
+        "New projects": "8 sanctioned in 2025"
+      },
+      "content": [
+        { "heading": "SH 55", "text": "State Highway 55 is the main road that connects Bandwar to the rest of the region. It passes through the village and continues on to Begusarai and beyond. It is the primary route for buses, auto-rickshaws, and private vehicles entering and leaving the village." },
+        { "heading": "Bus Service", "text": "Bandwar has both public and private bus services. Public buses connect the village to Begusarai and other nearby towns, and private buses operate on routes that serve the surrounding panchayats. The nearest bus stop is within 5 kilometres of the village centre." },
+        { "heading": "New Road Projects", "text": "In 2025, administrative approval was granted for eight road projects affecting Bandwar and its neighbouring panchayats. The approved routes include: Gandak Bandh to Bandwar Mushahri, Virpur-Sanjat path (up to Saronja Maktab in Virpur block), Jagdar village, Panhas Bharra, and Bhagwanpur-Neema road. Together, these projects are expected to significantly reduce the isolation of the village." },
+        { "heading": "Chhatauna Bridge", "text": "Chhatauna Bridge, on the Burhi Gandak river, connects Bandwar to the northern bank of the river. The bridge is an important link for villagers who need to reach villages on the other side of the river, though its approach road has deteriorated in recent years." },
+        { "heading": "The Bigger Picture", "text": "At the regional level, several major road projects are underway that will benefit Begusarai district as a whole. These include the 35-kilometre bypass road along the Burhi Gandak embankment, the widening of the Begusarai bypass road, the Raxaul-Haldia Expressway, and the four-laning of the Barauni-Muzaffarpur highway." }
+      ],
+      "related": ["sbi-bank", "post-office", "petrol-pump"],
+      "location": { "lat": 25.4998, "lng": 86.1595 },
+      "tags": ["roads", "sh55", "infrastructure", "connectivity", "bus", "highway"]
+    }
+  ]
+}
