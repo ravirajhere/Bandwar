@@ -1,0 +1,42 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — BASE LAYOUT
+     Every page template inherits from this · Build-time merge
+     
+     Variables used:
+       {{head}}              Full rendered <head> block (from head.html)
+       {{nav}}               Full rendered <nav> block (from nav.html)
+       {{footer}}            Full rendered <footer> block (from footer.html)
+       {{bodyClass}}         Page-specific body class (e.g., "page-article")
+       {{bodyAttr}}          Optional data-* attributes
+       {{breadcrumb}}        Optional breadcrumb bar (rendered by page)
+       {{content}}           Main page content (from page template)
+       {{pageScripts}}       Optional page-specific <script> tags
+       {{year}}              Current year (2026)
+     ═══════════════════════════════════════════════════════════════ -->
+<!DOCTYPE html>
+<html lang="{{lang}}" dir="{{dir}}">
+{{head}}
+
+<body class="{{bodyClass}}" {{bodyAttr}}>
+{{nav}}
+
+{{breadcrumb}}
+
+<main id="main">
+{{content}}
+</main>
+
+{{footer}}
+
+<button id="scrollTop" 
+        aria-label="Back to top" 
+        type="button">↑</button>
+
+<!-- ═══ CORE SCRIPTS (every page) ═══ -->
+<script src="/assets/js/core.js?v={{version}}"></script>
+
+<!-- ═══ PAGE-SPECIFIC SCRIPTS (optional) ═══ -->
+{{pageScripts}}
+
+</body>
+</html>
