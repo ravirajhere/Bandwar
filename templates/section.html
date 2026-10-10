@@ -1,0 +1,63 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — SECTION TEMPLATE
+     Extends layout.html · Pre-rendered at build time
+     Used for: /section (all) + /section/{category} (10 categories)
+     
+     Variables used:
+       {{sectionTitle}}         "Religion" or "All Articles"
+       {{sectionIntro}}         Description
+       {{sectionCount}}         "7 articles in this category"
+       {{sectionEyebrow}}       "The Archive" or "Category · Religion"
+       {{searchValue}}          Current search query (usually empty)
+       {{filterChips}}          Pre-rendered filter buttons with counts
+       {{articlesGrid}}         Pre-rendered article cards
+       {{emptyState}}           Conditional (if no articles)
+       {{pagination}}           Pre-rendered pagination (if needed)
+       {{breadcrumb}}           Rendered by build
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ═══ SECTION HEADER ═══ -->
+<header class="section-head">
+  <div class="container-wide">
+
+    <span class="section-num">{{sectionEyebrow}}</span>
+    <h1 class="section-title" id="section-title">{{sectionTitle}}</h1>
+
+    {{sectionIntroBlock}}
+
+    <span class="section-count" id="section-count">{{sectionCount}}</span>
+
+    <!-- ═══ SEARCH (works with JS, but page works without) ═══ -->
+    <div class="section-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+           stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search"
+             id="section-search"
+             placeholder="Search articles — try 'mandir', 'school', '1942'…"
+             aria-label="Search articles"
+             autocomplete="off"
+             value="{{searchValue}}">
+    </div>
+
+    <!-- ═══ FILTER CHIPS (pre-rendered) ═══ -->
+    <div class="section-filters" id="section-filters" role="group" aria-label="Filter by category">
+      {{filterChips}}
+    </div>
+
+  </div>
+</header>
+
+<!-- ═══ ARTICLES GRID (pre-rendered) ═══ -->
+<section class="section-sm">
+  <div class="container-wide">
+    <div class="section-grid" id="section-grid">
+      {{articlesGrid}}
+    </div>
+
+    {{emptyState}}
+    {{pagination}}
+  </div>
+</section>
