@@ -4,7 +4,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
 
-  "buildCommand": "npm run build",
+  "buildCommand": "node scripts/build.cjs --clean && node scripts/generate-sitemaps.cjs",
   "outputDirectory": "dist",
   "installCommand": "npm install",
 
@@ -64,35 +64,11 @@
   ],
 
   "redirects": [
-    {
-      "source": "/map",
-      "destination": "/place",
-      "permanent": true
-    },
-    {
-      "source": "/timeline",
-      "destination": "/time",
-      "permanent": true
-    },
-    {
-      "source": "/gallery",
-      "destination": "/place?view=gallery",
-      "permanent": true
-    },
-    {
-      "source": "/category",
-      "destination": "/section",
-      "permanent": true
-    },
-    {
-      "source": "/need",
-      "destination": "/vision",
-      "permanent": true
-    },
-    {
-      "source": "/article",
-      "destination": "/section",
-      "permanent": false
-    }
+    { "source": "/map", "destination": "/place", "permanent": true },
+    { "source": "/timeline", "destination": "/time", "permanent": true },
+    { "source": "/gallery", "destination": "/place?view=gallery", "permanent": true },
+    { "source": "/category", "destination": "/section", "permanent": true },
+    { "source": "/need", "destination": "/vision", "permanent": true },
+    { "source": "/article", "destination": "/section", "permanent": false }
   ]
 }
