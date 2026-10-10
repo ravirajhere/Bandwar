@@ -1,0 +1,104 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — ABOUT TEMPLATE
+     Trust page · E-E-A-T signals · Extends layout.html
+     Used for: /about
+     
+     Sections:
+       1. Hero           — Mission statement
+       2. Story          — Why this archive exists
+       3. Principles     — What we believe
+       4. Sources        — Where facts come from
+       5. Community      — Who runs it
+       6. License        — Legal clarity
+       7. Contact        — How to reach
+     
+     Variables used:
+       {{aboutTitle}}         "About"
+       {{aboutIntro}}         Mission statement
+       {{storyBlocks}}        Narrative paragraphs
+       {{principlesList}}     Non-political principles
+       {{sourcesList}}        Data sources with links
+       {{communityBlock}}     Committee / contributors
+       {{licenseBlock}}       Code + content license
+       {{contactBlock}}       Full contact info
+       {{breadcrumb}}         Rendered by build
+     ═══════════════════════════════════════════════════════════════ -->
+
+<header class="page-head">
+  <div class="container-wide">
+    <span class="section-num">Meta</span>
+    <h1 class="page-title">{{aboutTitle}}</h1>
+    <p class="page-intro">{{aboutIntro}}</p>
+  </div>
+</header>
+
+<!-- ═══ 1. STORY ═══ -->
+<section class="section" aria-labelledby="story-heading">
+  <div class="container-text">
+    <span class="eyebrow">Why This Archive Exists</span>
+    <h2 class="section-title" id="story-heading">A Village in Its Own Words</h2>
+
+    {{storyBlocks}}
+  </div>
+</section>
+
+<!-- ═══ 2. PRINCIPLES ═══ -->
+<section class="section section-alt" aria-labelledby="principles-heading">
+  <div class="container-text">
+    <span class="eyebrow">Principles</span>
+    <h2 class="section-title" id="principles-heading">What We Believe</h2>
+
+    <ul class="principles-list">
+      {{principlesList}}
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ 3. SOURCES ═══ -->
+<section class="section" aria-labelledby="sources-heading">
+  <div class="container-wide">
+    <div class="container-text">
+      <span class="eyebrow">Sources</span>
+      <h2 class="section-title" id="sources-heading">Where the Facts Come From</h2>
+      <p class="section-intro">
+        Every fact on this archive is either sourced from a public record,
+        verified by a resident, or documented through personal observation.
+        Nothing is invented.
+      </p>
+    </div>
+
+    <ul class="sources-list">
+      {{sourcesList}}
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ 4. COMMUNITY ═══ -->
+<section class="section section-alt" aria-labelledby="community-heading">
+  <div class="container-text">
+    <span class="eyebrow">The Community</span>
+    <h2 class="section-title" id="community-heading">Who Runs This</h2>
+
+    {{communityBlock}}
+  </div>
+</section>
+
+<!-- ═══ 5. LICENSE ═══ -->
+<section class="section" id="license" aria-labelledby="license-heading">
+  <div class="container-text">
+    <span class="eyebrow">License</span>
+    <h2 class="section-title" id="license-heading">Rights &amp; Reuse</h2>
+
+    {{licenseBlock}}
+  </div>
+</section>
+
+<!-- ═══ 6. CONTACT ═══ -->
+<section class="section section-alt" id="contact" aria-labelledby="contact-heading">
+  <div class="container-text">
+    <span class="eyebrow">Contact</span>
+    <h2 class="section-title" id="contact-heading">Get in Touch</h2>
+
+    {{contactBlock}}
+  </div>
+</section>
