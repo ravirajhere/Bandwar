@@ -1,0 +1,109 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — HEAD PARTIAL
+     Injected into every page · Variables from build.cjs
+     
+     Variables used:
+       {{lang}}              en-IN / hi-IN
+       {{dir}}               ltr / rtl
+       {{themeColor}}        #1a1a18
+       {{title}}             Page title (from master.seo.titlePattern)
+       {{description}}       Meta description
+       {{keywords}}          Optional comma-separated
+       {{robots}}            index,follow,... or noindex,follow
+       {{canonical}}         Absolute canonical URL
+       {{ogType}}            website / article / profile
+       {{ogTitle}}           OG title
+       {{ogDescription}}     OG description
+       {{ogImage}}           Absolute OG image URL
+       {{ogImageWidth}}      1200
+       {{ogImageHeight}}     630
+       {{ogImageAlt}}        OG image alt text
+       {{ogLocale}}          en_IN
+       {{ogSiteName}}        Site name
+       {{twitterCard}}       summary_large_image
+       {{twitterTitle}}      Twitter title
+       {{twitterDescription}} Twitter description
+       {{twitterImage}}      Absolute twitter image URL
+       {{verificationGoogle}} Google Search Console code
+       {{schema}}            Complete JSON-LD @graph (pre-rendered)
+       {{faviconSvg}}        Inline SVG favicon
+       {{manifestUrl}}       /manifest.json
+       {{themeCss}}          /assets/css/theme.css?v=X
+       {{styleCss}}          /assets/css/style.css?v=X
+       {{preloadImages}}     Optional <link rel="preload"> for hero
+       {{pageSpecificHead}}  Optional page-specific tags (e.g., Leaflet CSS)
+     ═══════════════════════════════════════════════════════════════ -->
+<!DOCTYPE html>
+<html lang="{{lang}}" dir="{{dir}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="{{themeColor}}">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- ═══ PRIMARY SEO ═══ -->
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+{{keywords}}
+<link rel="canonical" href="{{canonical}}">
+
+<!-- ═══ ROBOTS ═══ -->
+<meta name="robots" content="{{robots}}">
+<meta name="googlebot" content="{{robots}}">
+<meta name="googlebot-image" content="index, follow">
+<meta name="bingbot" content="index, follow">
+
+<!-- ═══ LANGUAGE ALTERNATES ═══ -->
+<link rel="alternate" hreflang="{{lang}}" href="{{canonical}}">
+<link rel="alternate" hreflang="x-default" href="{{canonical}}">
+{{hreflangHindi}}
+
+<!-- ═══ OPEN GRAPH ═══ -->
+<meta property="og:type" content="{{ogType}}">
+<meta property="og:site_name" content="{{ogSiteName}}">
+<meta property="og:title" content="{{ogTitle}}">
+<meta property="og:description" content="{{ogDescription}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{ogImage}}">
+<meta property="og:image:width" content="{{ogImageWidth}}">
+<meta property="og:image:height" content="{{ogImageHeight}}">
+<meta property="og:image:alt" content="{{ogImageAlt}}">
+<meta property="og:locale" content="{{ogLocale}}">
+
+<!-- ═══ TWITTER CARD ═══ -->
+<meta name="twitter:card" content="{{twitterCard}}">
+<meta name="twitter:title" content="{{twitterTitle}}">
+<meta name="twitter:description" content="{{twitterDescription}}">
+<meta name="twitter:image" content="{{twitterImage}}">
+<meta name="twitter:image:alt" content="{{ogImageAlt}}">
+{{twitterSite}}
+
+<!-- ═══ SEARCH CONSOLE VERIFICATION ═══ -->
+<meta name="google-site-verification" content="{{verificationGoogle}}">
+
+<!-- ═══ ICONS ═══ -->
+<link rel="icon" href="{{faviconSvg}}">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="{{manifestUrl}}">
+
+<!-- ═══ RESOURCE HINTS ═══ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- ═══ FONTS ═══ -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet">
+
+<!-- ═══ STYLESHEETS ═══ -->
+<link rel="stylesheet" href="{{themeCss}}">
+<link rel="stylesheet" href="{{styleCss}}">
+{{pageSpecificHead}}
+
+<!-- ═══ HERO IMAGE PRELOAD (LCP optimization) ═══ -->
+{{preloadImages}}
+
+<!-- ═══ STRUCTURED DATA (pre-rendered JSON-LD) ═══ -->
+<script type="application/ld+json" data-prerendered="true">
+{{schema}}
+</script>
+</head>
