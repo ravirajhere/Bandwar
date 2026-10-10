@@ -1,0 +1,221 @@
+/* ═══════════════════════════════════════════════════════════════════
+   BANDWAR — THEME
+   Single source of truth for all design tokens.
+   
+   To restyle the entire site:
+     1. Change any value below
+     2. Everything derives — no other file needs editing
+   
+   Never edit style.css for theme changes.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ═══════ 1. BRAND COLORS — only 5 to define ═══════ */
+  --c-primary:  #1a1a18;   /* ink — main text, dark surfaces */
+  --c-base:     #f7f5ef;   /* paper — main background */
+  --c-surface:  #efece4;   /* paper-alt — cards, subtle sections */
+  --c-accent:   #1f3d2f;   /* forest — links, emphasis */
+  --c-warn:     #a64b2a;   /* ember — warnings, accents */
+  --c-white:    #ffffff;
+
+  /* ═══════ 2. TEXT HIERARCHY (auto-derived) ═══════ */
+  --c-text:         var(--c-primary);
+  --c-text-muted:   color-mix(in srgb, var(--c-primary) 70%, transparent);
+  --c-text-faint:   color-mix(in srgb, var(--c-primary) 50%, transparent);
+  --c-text-ghost:   color-mix(in srgb, var(--c-primary) 30%, transparent);
+  --c-text-hint:    color-mix(in srgb, var(--c-primary) 12%, transparent);
+
+  /* ═══════ 3. SURFACES ═══════ */
+  --c-bg:            var(--c-base);
+  --c-bg-alt:        var(--c-surface);
+  --c-bg-inverse:    var(--c-primary);
+  --c-text-inverse:  var(--c-base);
+
+  /* ═══════ 4. BORDERS ═══════ */
+  --c-border:        var(--c-text-ghost);
+  --c-border-soft:   var(--c-text-hint);
+  --c-border-strong: var(--c-text-muted);
+
+  /* ═══════ 5. OVERLAYS ═══════ */
+  --c-overlay:       color-mix(in srgb, var(--c-primary) 96%, transparent);
+  --c-overlay-soft:  color-mix(in srgb, var(--c-primary) 75%, transparent);
+  --c-overlay-faint: color-mix(in srgb, var(--c-primary) 35%, transparent);
+
+  /* ═══════ 6. TYPOGRAPHY — Families ═══════ */
+  --f-display: 'Fraunces', 'Playfair Display', Georgia, serif;
+  --f-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --f-mono:    'IBM Plex Mono', 'SF Mono', Monaco, 'Courier New', monospace;
+
+  /* ═══════ 7. TYPOGRAPHY — Sizes ═══════ */
+  --fs-2xs:  0.65rem;
+  --fs-xs:   0.75rem;
+  --fs-sm:   0.875rem;
+  --fs-base: 1.0625rem;
+  --fs-md:   1.25rem;
+  --fs-lg:   1.5rem;
+  --fs-xl:   2rem;
+  --fs-2xl:  2.5rem;
+  --fs-3xl:  3rem;
+  --fs-4xl:  4rem;
+  --fs-5xl:  5rem;
+
+  /* ═══════ 8. TYPOGRAPHY — Weights ═══════ */
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* ═══════ 9. TYPOGRAPHY — Line heights ═══════ */
+  --lh-tight:   1.05;
+  --lh-snug:    1.25;
+  --lh-normal:  1.5;
+  --lh-relaxed: 1.55;
+  --lh-body:    1.7;
+  --lh-loose:   1.8;
+
+  /* ═══════ 10. TYPOGRAPHY — Letter spacing ═══════ */
+  --ls-tighter: -0.04em;
+  --ls-tight:   -0.035em;
+  --ls-snug:    -0.02em;
+  --ls-normal:  0;
+  --ls-wide:    0.08em;
+  --ls-wider:   0.14em;
+  --ls-widest:  0.18em;
+
+  /* ═══════ 11. SPACING SCALE ═══════ */
+  --sp-1:  0.25rem;
+  --sp-2:  0.5rem;
+  --sp-3:  0.75rem;
+  --sp-4:  1rem;
+  --sp-5:  1.5rem;
+  --sp-6:  2rem;
+  --sp-7:  3rem;
+  --sp-8:  4rem;
+  --sp-9:  6rem;
+  --sp-10: 8rem;
+  --sp-11: 10rem;
+  --sp-12: 14rem;
+
+  /* ═══════ 12. RADIUS ═══════ */
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   16px;
+  --r-full: 999px;
+
+  /* ═══════ 13. SHADOWS ═══════ */
+  --sh-sm: 0 2px 6px color-mix(in srgb, var(--c-primary) 6%, transparent);
+  --sh-md: 0 6px 20px color-mix(in srgb, var(--c-primary) 8%, transparent);
+  --sh-lg: 0 16px 48px color-mix(in srgb, var(--c-primary) 12%, transparent);
+
+  /* ═══════ 14. MOTION ═══════ */
+  --ease:      cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:  cubic-bezier(0, 0, 0.2, 1);
+  --ease-in:   cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast:  180ms;
+  --dur-base:  320ms;
+  --dur-slow:  600ms;
+
+  /* ═══════ 15. LAYOUT WIDTHS ═══════ */
+  --w-text:  680px;
+  --w-base:  1200px;
+  --w-wide:  1440px;
+  --gutter:  clamp(1.25rem, 4vw, 3rem);
+
+  /* ═══════ 16. Z-INDEX SCALE ═══════ */
+  --z-base:    1;
+  --z-nav:     100;
+  --z-overlay: 900;
+  --z-modal:   1000;
+
+  /* ═══════ 17. LEGACY ALIASES (backward compat) ═══════ */
+  --ink:        var(--c-text);
+  --ink-70:     var(--c-text-muted);
+  --ink-50:     var(--c-text-faint);
+  --ink-30:     var(--c-text-ghost);
+  --ink-12:     var(--c-text-hint);
+  --paper:      var(--c-bg);
+  --paper-alt:  var(--c-bg-alt);
+  --forest:     var(--c-accent);
+  --ember:      var(--c-warn);
+  --white:      var(--c-white);
+
+  --serif:  var(--f-display);
+  --sans:   var(--f-body);
+  --mono:   var(--f-mono);
+
+  --fs-meta:   var(--fs-xs);
+  --fs-small:  var(--fs-sm);
+  --fs-body:   var(--fs-base);
+  --fs-lead:   var(--fs-md);
+
+  --s-1:  var(--sp-1);   --s-2:  var(--sp-2);   --s-3:  var(--sp-3);
+  --s-4:  var(--sp-4);   --s-5:  var(--sp-5);   --s-6:  var(--sp-6);
+  --s-7:  var(--sp-7);   --s-8:  var(--sp-8);   --s-9:  var(--sp-9);
+  --s-10: var(--sp-10);  --s-11: var(--sp-11);  --s-12: var(--sp-12);
+
+  --r-1: var(--r-xs);
+  --r-2: var(--r-sm);
+
+  --container:      var(--w-base);
+  --container-text: var(--w-text);
+  --container-wide: var(--w-wide);
+
+  --t-fast: var(--dur-fast) var(--ease);
+  --t-base: var(--dur-base) var(--ease);
+  --t-slow: var(--dur-slow) var(--ease);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   THEME PRESETS
+   Activate with <html data-theme="dark"> on any page.
+   Only 5 colors per preset — rest derives automatically.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── DARK ── */
+[data-theme="dark"] {
+  --c-primary: #f0ede6;
+  --c-base:    #0e0e0d;
+  --c-surface: #1a1a18;
+  --c-accent:  #7fb39a;
+  --c-warn:    #d68a6b;
+}
+
+/* ── SEPIA ── */
+[data-theme="sepia"] {
+  --c-primary: #3d2817;
+  --c-base:    #f5ecd9;
+  --c-surface: #ebe0c8;
+  --c-accent:  #6b4423;
+  --c-warn:    #a64b2a;
+}
+
+/* ── HIGH CONTRAST ── */
+[data-theme="contrast"] {
+  --c-primary: #000000;
+  --c-base:    #ffffff;
+  --c-surface: #f0f0f0;
+  --c-accent:  #0038a8;
+  --c-warn:    #cc0000;
+}
+
+/* ── INDIGO ── */
+[data-theme="indigo"] {
+  --c-primary: #1a1a3d;
+  --c-base:    #f6f5ff;
+  --c-surface: #ebe9fa;
+  --c-accent:  #4a3fa3;
+  --c-warn:    #c25a3a;
+}
+
+/* ── Auto-dark based on system preference ── */
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"] {
+    --c-primary: #f0ede6;
+    --c-base:    #0e0e0d;
+    --c-surface: #1a1a18;
+    --c-accent:  #7fb39a;
+    --c-warn:    #d68a6b;
+  }
+}
