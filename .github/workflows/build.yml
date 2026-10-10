@@ -1,20 +1,18 @@
-# ═══════════════════════════════════════════════════════════════════
-# BANDWAR — BUILD WORKFLOW
-# Auto-builds site on push to main · Deploys via Vercel hook
-# ═══════════════════════════════════════════════════════════════════
-
-name: Build & Deploy
+name: Build Site
 
 on:
   push:
     branches: [main]
     paths:
-      - 'data/**'
+      - 'data/master.json'
+      - 'data/content.json'
+      - 'data/media.json'
       - 'templates/**'
       - 'css/**'
       - 'js/**'
-      - 'scripts/**'
-      - 'images/**'
+      - 'scripts/build.cjs'
+      - 'scripts/validate.cjs'
+      - 'scripts/generate-sitemaps.cjs'
       - 'package.json'
       - '.github/workflows/build.yml'
 
@@ -27,7 +25,7 @@ jobs:
   build:
     name: Build site
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -43,12 +41,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Validate data & rules
-        run: node scripts/validate.cjs
-        continue-on-error: true
-
-      - name: Optimize images (WebP + AVIF + responsive)
-        run: node scripts/optimize-images.cjs --verbose
+      - name: Validate (informational)
+        run: node scripts/validate.cjs || true
         continue-on-error: true
 
       - name: Build static site
@@ -57,37 +51,7 @@ jobs:
       - name: Generate sitemaps
         run: node scripts/generate-sitemaps.cjs
 
-      - name: Generate manifesto PDF
-        run: node scripts/generate-manifesto.cjs
-        continue-on-error: true
-
-      - name: Commit optimized images
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add images/ .image-cache.json 2>/dev/null || true
-          if ! git diff --cached --quiet; then
-            git commit -m "chore: optimize images [skip ci]"
-            git push
-          else
-            echo "No image changes to commit"
-          fi
-        continue-on-error: true
-
-      - name: Deploy to Vercel
-        if: env.VERCEL_DEPLOY_HOOK != ''
-        env:
-          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
-        run: |
-          if [ -n "$VERCEL_DEPLOY_HOOK" ]; then
-            curl -X POST "$VERCEL_DEPLOY_HOOK"
-            echo "✓ Deployment triggered"
-          else
-            echo "⚠ VERCEL_DEPLOY_HOOK not set — skipping deploy"
-          fi
-        continue-on-error: true
-
-      - name: Upload build artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: dist-${{ github.sha }}
@@ -98,14 +62,8 @@ jobs:
       - name: Build summary
         run: |
           echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           if [ -d "dist" ]; then
             PAGES=$(find dist -name "*.html" | wc -l)
             echo "- **Pages built:** $PAGES" >> $GITHUB_STEP_SUMMARY
-            SIZE=$(du -sh dist 2>/dev/null | cut -f1)
-            echo "- **Total size:** $SIZE" >> $GITHUB_STEP_SUMMARY
           fi
