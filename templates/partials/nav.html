@@ -1,0 +1,40 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — NAV PARTIAL
+     Sticky navigation · Built from master.json nav[]
+     
+     Variables used:
+       {{siteName}}          Short site name (e.g., "Bandwar")
+       {{siteUrl}}           Base URL
+       {{navItems}}          Pre-rendered nav <li> items
+       {{navActive}}         Current page slug (for highlighting)
+       {{showThemeToggle}}   true / false (from features.darkMode)
+       {{themeToggleLabel}}  "Toggle theme"
+     ═══════════════════════════════════════════════════════════════ -->
+<a href="#main" class="skip-link">Skip to content</a>
+
+<nav class="navbar" aria-label="Main navigation" data-page="{{navActive}}">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand" aria-label="{{siteName}} — Home">{{siteName}}</a>
+
+    <div class="nav-actions">
+      {{themeToggle}}
+
+      <button class="nav-toggle"
+              id="navToggle"
+              aria-label="Open menu"
+              aria-expanded="false"
+              aria-controls="navMenu"
+              type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <line x1="3" y1="7" x2="21" y2="7"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="17" x2="21" y2="17"/>
+        </svg>
+      </button>
+    </div>
+
+    <ul class="nav-menu" id="navMenu" role="menubar">
+      {{navItems}}
+    </ul>
+  </div>
+</nav>
