@@ -1,0 +1,118 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — HOMEPAGE TEMPLATE
+     Extends layout.html · Pre-rendered at build time
+     
+     Content sections (from master.json home{}) :
+       1. Hero           — full-bleed hero image + village info
+       2. Stats          — 4 key stats (years, population, area, articles)
+       3. Manifesto Banner — 2035 manifesto download CTA
+       4. Recent         — 6 recent articles
+       5. Pullquote      — memorable quote
+       6. Categories     — 10 category tiles with counts
+       7. About          — short about section
+       8. CTA            — contribute button
+     
+     Variables used:
+       {{heroImage}}         Absolute URL
+       {{heroImageAlt}}      Alt text
+       {{heroLocation}}      "Begusarai District · Bihar · Mithila Region"
+       {{heroTitle}}         "Bandwar"
+       {{heroTagline}}       Full tagline
+       {{heroMeta}}          Pre-rendered meta spans
+       {{statsRow}}          Pre-rendered stat items
+       {{manifestoBanner}}   Pre-rendered manifesto CTA (conditional)
+       {{recentArticles}}    Pre-rendered 6 article cards
+       {{pullquote}}         Pre-rendered pullquote block
+       {{categoryTiles}}     Pre-rendered 10 category tiles
+       {{aboutEyebrow}}      "About This Archive"
+       {{aboutTitle}}        "A Village in Its Own Words"
+       {{aboutParagraphs}}   Pre-rendered <p> tags
+       {{ctaLabel}}          "Contribute to the Archive"
+       {{ctaHref}}           "/contribute"
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ═══ 1. HERO ═══ -->
+<header class="hero">
+  <div class="hero-media">
+    <img src="{{heroImage}}"
+         alt="{{heroImageAlt}}"
+         fetchpriority="high"
+         decoding="async"
+         width="1600"
+         height="900">
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <span class="hero-location">{{heroLocation}}</span>
+    <h1>{{heroTitle}}</h1>
+    <p class="hero-tagline">{{heroTagline}}</p>
+    <div class="hero-meta">
+      {{heroMeta}}
+    </div>
+  </div>
+</header>
+
+<!-- ═══ 2. STATS ROW ═══ -->
+<section class="section-sm" aria-label="Village at a glance">
+  <div class="container-wide">
+    <div class="stats-row">
+      {{statsRow}}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3. MANIFESTO BANNER (conditional) ═══ -->
+{{manifestoBanner}}
+
+<!-- ═══ 4. RECENT ARTICLES ═══ -->
+<section class="section" aria-labelledby="recent-heading">
+  <div class="container-wide">
+    <div class="section-head">
+      <span class="eyebrow">Recently Added</span>
+      <h2 class="section-title" id="recent-heading">New in the Archive</h2>
+    </div>
+    <ul class="recent-list">
+      {{recentArticles}}
+    </ul>
+    <div class="section-foot">
+      <a href="/section" class="read-link">Browse all articles</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5. PULLQUOTE ═══ -->
+<section class="section" aria-label="Memory">
+  <div class="container-text">
+    {{pullquote}}
+  </div>
+</section>
+
+<!-- ═══ 6. CATEGORIES ═══ -->
+<section class="section" aria-labelledby="categories-heading">
+  <div class="container-wide">
+    <div class="section-head">
+      <span class="eyebrow">Browse the Archive</span>
+      <h2 class="section-title" id="categories-heading">Explore by Category</h2>
+    </div>
+    <div class="category-tiles">
+      {{categoryTiles}}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 7. ABOUT ═══ -->
+<section class="section" aria-labelledby="about-heading">
+  <div class="container-text">
+    <span class="eyebrow">{{aboutEyebrow}}</span>
+    <h2 class="section-title" id="about-heading">{{aboutTitle}}</h2>
+
+    <div class="prose">
+      {{aboutParagraphs}}
+    </div>
+
+    <div class="section-foot">
+      <a href="{{ctaHref}}" class="btn btn-primary">{{ctaLabel}}</a>
+    </div>
+  </div>
+</section>
