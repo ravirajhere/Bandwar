@@ -1,0 +1,947 @@
+{
+  "intro": "Bandwar 2035 is a non-political development manifesto — 15 priorities identified by residents, 4 completed projects acknowledged by name, and a 10-year roadmap. This document is updated every year; completed priorities move automatically to the achievements record.",
+
+  "priorities": [
+    {
+      "id": "chhath-ghat",
+      "number": "01",
+      "title": "Chhath Ghat",
+      "ward": "Burhi Gandak Riverbank",
+      "category": "culture",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/home/burhi-gandak-vertical.jpg",
+        "caption": "Unpaved riverbank — no permanent ghat"
+      },
+      "required": {
+        "photo": "images/vision/chhath-ghat-required.jpg",
+        "caption": "Proper Chhath Ghat with steps, railings, and lighting"
+      },
+      "reality": "The village has no proper Chhath Ghat. Every year during Chhath Puja, hundreds of devotees — mostly women — stand on slippery, uneven riverbank steps of the Burhi Gandak to offer arghya to the setting and rising sun. There are no railings, no lighting, no changing rooms, and no safety arrangements. During the September 2025 flood, the riverbank eroded further, making access dangerous.",
+      "vision": "A concrete ghat with safe, non-slip steps leading to the water. Handrails on both sides, separate changing rooms for women, LED lighting for evening and 4 AM aarti, CCTV surveillance, waste disposal bins, and a soak pit for ritual materials. A dedicated drinking water tap and first-aid station for the festival period.",
+      "how": {
+        "scheme": "Namami Gange + MGNREGA + State Tourism",
+        "cost": "₹20-30 lakh",
+        "authority": "NMCG, BUIDCO, Gram Panchayat, District Administration",
+        "timeline": "12 months"
+      },
+      "community": [
+        "Volunteer labour for cleaning and leveling the ghat during off-season",
+        "Chhath Puja Committee can organise ₹500-1000 per household collection",
+        "Local businesses can donate for construction materials",
+        "A 5-member Ghat Monitoring Committee to oversee progress",
+        "Post-festival cleanliness drive involving youth groups"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every Chhath Ghat must have:",
+        "photos": [
+          { "src": "images/vision/chhath-ghat-steps.jpg", "caption": "Safe concrete steps with handrails" },
+          { "src": "images/vision/chhath-ghat-changeroom.jpg", "caption": "Changing rooms and lighting" }
+        ],
+        "checklist": [
+          "Concrete steps to river — safe slope, non-slip surface",
+          "Separate changing rooms for women and men",
+          "Handrails on both sides of the steps",
+          "LED lighting for evening and 4 AM aarti",
+          "CCTV surveillance for safety",
+          "Flower and waste bins at the ghat",
+          "Soak pit nearby for ritual waste",
+          "Security railing during Chhath festival",
+          "Drinking water tap at the ghat",
+          "First-aid kit and lifeguard during festival",
+          "Information board about the ghat and its significance"
+        ]
+      }
+    },
+
+    {
+      "id": "pump",
+      "number": "02",
+      "title": "Ram Janki Fuels (Petrol Pump)",
+      "ward": "SH 55",
+      "category": "infrastructure",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2026,
+      "completed": null,
+      "present": {
+        "photo": "images/village/ram-janki-petrol-pump.jpg",
+        "caption": "IndianOil petrol pump — basic facilities"
+      },
+      "required": {
+        "photo": "images/vision/pump-required.jpg",
+        "caption": "Modernised pump with complete customer facilities"
+      },
+      "reality": "Ram Janki Fuels serves the village and passing highway traffic on SH 55, but its facilities are minimal. There is no air pressure machine, no clean restroom, and no drinking water for customers. During summer, customers wait in the open sun. The convenience store is small and poorly stocked. There is no EV charging infrastructure for the future.",
+      "vision": "A modern petrol pump with digital dispensers, a free air pressure machine, clean restrooms for men and women, an RO drinking water station, a small convenience store, an EV charging point, and a clean waiting area with benches. CCTV coverage across the forecourt and proper LED lighting under the canopy.",
+      "how": {
+        "scheme": "IOCL Dealer Development + PACS Petrol Pump Scheme",
+        "cost": "₹10-15 lakh",
+        "authority": "Indian Oil Corporation + Dealer",
+        "timeline": "6 months"
+      },
+      "community": [
+        "Patronise the local pump for all fuel purchases",
+        "Provide feedback directly to the dealer for improvements",
+        "Report safety hazards (fire, spills) immediately",
+        "Local youth can be trained as attendants for employment",
+        "Support the pump's CSR initiatives for the village"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every petrol pump should have:",
+        "photos": [
+          { "src": "images/vision/pump-store.jpg", "caption": "Convenience store with essentials" },
+          { "src": "images/vision/pump-airwater.jpg", "caption": "Air pump and drinking water station" }
+        ],
+        "checklist": [
+          "Modern digital dispensers with clear display",
+          "Air pressure machine — free for customers",
+          "Clean toilets for men and women",
+          "RO drinking water station",
+          "Small convenience store — snacks, water, essentials",
+          "EV charging point — future-ready infrastructure",
+          "CCTV and fire extinguisher on every pillar",
+          "Proper LED lighting under the canopy",
+          "Digital rate display — always updated",
+          "Clean waiting area with benches"
+        ]
+      }
+    },
+
+    {
+      "id": "thakurbari",
+      "number": "03",
+      "title": "Ram Mandir Thakurbari",
+      "ward": "Village Centre",
+      "category": "religion",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/culture/ram-mandir-thakurbari.jpg",
+        "caption": "Ram Mandir Thakurbari — needs renovation"
+      },
+      "required": {
+        "photo": "images/vision/thakurbari-required.jpg",
+        "caption": "Renovated temple with twin shikharas and full facilities"
+      },
+      "reality": "The Ram Mandir Thakurbari is one of Bandwar's most distinctive temples, with its twin shikharas. But the temple needs renovation — the paint is faded, the courtyard is unpaved, and the facilities for devotees are minimal. During the annual Ram Katha, over a hundred villagers gather, but there is no proper seating, no sound system, and no clean toilets.",
+      "vision": "A fully renovated temple with fresh whitewashed twin shikharas, marble flooring, LED evening lighting, and a sound system for Ram Katha and bhajan. A seating area for 100+ devotees, shoe rack and hand wash at the entrance, drinking water station, clean toilets, a secure donation box, and CCTV surveillance. A pucca room for the priest and a fire extinguisher for safety.",
+      "how": {
+        "scheme": "State Cultural Fund + MPLAD + Community Contribution",
+        "cost": "₹15-25 lakh",
+        "authority": "Art & Culture Department, MP Office, Temple Committee",
+        "timeline": "10 months"
+      },
+      "community": [
+        "Donations of ₹1,000-5,000 per family for renovation",
+        "Shramdaan for painting and cleanliness",
+        "Material donation — cement, paint, marble",
+        "A 7-member Temple Renovation Committee",
+        "Active involvement of the pujari and temple trust"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every temple must have:",
+        "photos": [
+          { "src": "images/vision/thakurbari-hall.jpg", "caption": "Prayer hall with seating for devotees" },
+          { "src": "images/vision/thakurbari-murti.jpg", "caption": "Decorated murti with proper lighting" }
+        ],
+        "checklist": [
+          "Fresh whitewashed twin shikharas with red bands",
+          "Marble flooring throughout the temple hall",
+          "LED lighting for evening aarti and festivals",
+          "Sound system for Ram Katha and bhajan",
+          "Seating area for 100+ devotees",
+          "Shoe rack and hand wash station at the entrance",
+          "RO drinking water station",
+          "Clean toilets for men and women nearby",
+          "Secure donation box with CCTV coverage",
+          "Pucca room for the priest",
+          "Fire extinguisher and emergency exit",
+          "Information plaque about the temple's history"
+        ]
+      }
+    },
+
+    {
+      "id": "krishna-chhota",
+      "number": "04",
+      "title": "Chhota Krishna Mandir",
+      "ward": "Village Centre",
+      "category": "religion",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/culture/chhota-krishna-mandir.jpg",
+        "caption": "Chhota Krishna Mandir — needs upkeep"
+      },
+      "required": {
+        "photo": "images/vision/krishna-chhota-required.jpg",
+        "caption": "Renovated temple with fresh arches and marble"
+      },
+      "reality": "The Chhota Krishna Mandir is the smaller of the village's two Krishna temples. Its distinctive scalloped arches and marble steps are its identity, but the paint has faded, the marble has worn out, and the shrine needs daily upkeep. During Janmashtami and Radha Ashtami, devotees visit in large numbers, but there are no proper facilities — no shoe rack, no hand wash, no seating.",
+      "vision": "A freshly painted temple with bright, restored arches and non-slip marble steps. Clean marble flooring inside the shrine, LED evening lighting, fresh flower decoration daily, and a shoe rack at the entrance. A hand wash station, drinking water tap, secure donation box, and a small tulsi garden as part of the temple's spiritual ambience.",
+      "how": {
+        "scheme": "State Cultural Fund + MPLAD + Community Contribution",
+        "cost": "₹8-12 lakh",
+        "authority": "Art & Culture Department, Gram Panchayat, Temple Committee",
+        "timeline": "8 months"
+      },
+      "community": [
+        "Donations of ₹500-2,000 per family",
+        "Shramdaan for painting and marble work",
+        "Material donation — marble, paint, flowers",
+        "A 5-member Temple Committee for oversight",
+        "Monthly puja fund of ₹100 per household"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every temple must have:",
+        "photos": [
+          { "src": "images/vision/krishna-chhota-shrine.jpg", "caption": "Marble shrine with decorated murti" },
+          { "src": "images/vision/krishna-chhota-arch.jpg", "caption": "Restored colourful arches and steps" }
+        ],
+        "checklist": [
+          "Fresh paint on the colourful scalloped arches",
+          "Marble steps — repaired and non-slip",
+          "Clean marble flooring in the shrine",
+          "LED lighting for evening darshan",
+          "Fresh flower decoration daily",
+          "Shoe rack at the entrance",
+          "Hand wash station",
+          "Drinking water tap",
+          "Secure donation box",
+          "Small garden with tulsi plant"
+        ]
+      }
+    },
+
+    {
+      "id": "krishna-bara",
+      "number": "05",
+      "title": "Bada Krishna Mandir",
+      "ward": "Village Centre",
+      "category": "religion",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/culture/bada-krishna-mandir.jpg",
+        "caption": "Bada Krishna Mandir — needs renovation"
+      },
+      "required": {
+        "photo": "images/vision/krishna-bara-required.jpg",
+        "caption": "Renovated temple with peacock motifs and paved forecourt"
+      },
+      "reality": "The Bada Krishna Mandir is the larger of the two Krishna temples. Its whitewashed exterior, arched entrance, and courtyard handpump make it a key gathering place. But the paint has faded, the courtyard is unpaved, and there are no facilities for visiting devotees. During Janmashtami and Radha Ashtami, crowding creates safety concerns.",
+      "vision": "A fully renovated temple with fresh white paint and blue trim, peacock feather motifs on the pillars (a symbol of Krishna), interlocking paver blocks in the forecourt, a green lawn on one side, and marigold flower pots. LED evening lighting, a sound system for bhajan, seating for 50+ devotees, and full facilities — shoe rack, hand wash, drinking water, and clean toilets. A secure donation box and CCTV surveillance.",
+      "how": {
+        "scheme": "State Cultural Fund + MPLAD + Community Contribution",
+        "cost": "₹15-20 lakh",
+        "authority": "Art & Culture Department, MP Office, Temple Committee",
+        "timeline": "10 months"
+      },
+      "community": [
+        "Donations of ₹1,000-5,000 per family",
+        "Shramdaan for painting and paver block work",
+        "Material donation — paver blocks, paint, marble",
+        "A 7-member Temple Committee for oversight",
+        "Special Janmashtami collection fund"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every temple must have:",
+        "photos": [
+          { "src": "images/vision/krishna-bara-shrine.jpg", "caption": "Decorated shrine with Radha-Krishna idol" },
+          { "src": "images/vision/krishna-bara-forecourt.jpg", "caption": "Paver-block forecourt with garden" }
+        ],
+        "checklist": [
+          "Fresh paint — white with blue trim",
+          "Peacock feather motifs on the pillars",
+          "Interlocking paver blocks in the forecourt",
+          "Green lawn with marigold flower pots",
+          "LED lighting for evening aarti",
+          "Sound system for bhajan",
+          "Seating benches for 50+ devotees",
+          "Shoe rack and hand wash station",
+          "Drinking water station",
+          "Clean toilets nearby",
+          "Secure donation box with CCTV",
+          "Pucca room for the priest"
+        ]
+      }
+    },
+
+    {
+      "id": "durga-mandir",
+      "number": "06",
+      "title": "Maharishi Gautam Aadi Shakti Durga Mandir",
+      "ward": "Village Centre",
+      "category": "religion",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/culture/durga-mandir.jpg",
+        "caption": "Maharishi Gautam Mandir — needs renovation"
+      },
+      "required": {
+        "photo": "images/vision/durga-mandir-required.jpg",
+        "caption": "Renovated temple with five shikharas and carved arches"
+      },
+      "reality": "The Maharishi Gautam Aadi Shakti Durga Mandir is the village's principal Durga temple, painted in distinctive orange with green pillars. But the structure needs significant renovation — the walls need fresh paint, the carved details need restoration, and the temple lacks proper facilities for the large crowds that gather during Chaitra Navratri and Durga Puja.",
+      "vision": "A fully renovated temple with five fresh white shikharas topped with gold kalash, intricate carved stone arches, and a green marble base cladding. Three decorated murtis inside the shrine. LED lighting for Chaitra Navratri, a sound system for bhajan and aarti, seating for 100+ devotees, and complete facilities — shoe rack, hand wash, drinking water, and clean toilets. CCTV surveillance and fire safety.",
+      "how": {
+        "scheme": "State Cultural Fund + MPLAD + PRASHAD Scheme",
+        "cost": "₹20-30 lakh",
+        "authority": "Art & Culture Department, Ministry of Tourism, Temple Committee",
+        "timeline": "12 months"
+      },
+      "community": [
+        "Donations of ₹2,000-10,000 per family",
+        "Shramdaan for carving and painting work",
+        "Material donation — marble, stone, paint",
+        "A 9-member Temple Committee for oversight",
+        "Special Navratri collection fund"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every temple must have:",
+        "photos": [
+          { "src": "images/vision/durga-murti.jpg", "caption": "Decorated murtis with proper lighting" },
+          { "src": "images/vision/durga-arches.jpg", "caption": "Carved stone arches and marble base" }
+        ],
+        "checklist": [
+          "Five fresh white shikharas with gold kalash",
+          "Intricate carved stone arches",
+          "Marble base cladding (green marble)",
+          "Three murtis — decorated with flowers",
+          "LED lighting for Chaitra Navratri and Durga Puja",
+          "Sound system for bhajan and aarti",
+          "Seating area for 100+ devotees",
+          "Shoe rack and hand wash station",
+          "Drinking water station",
+          "Clean toilets for men and women",
+          "CCTV surveillance and donation box",
+          "Fire extinguisher for safety"
+        ]
+      }
+    },
+
+    {
+      "id": "chowk",
+      "number": "07",
+      "title": "Chandrashekhar Chowk",
+      "ward": "Village Centre",
+      "category": "landmarks",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2026,
+      "completed": null,
+      "present": {
+        "photo": "images/history/chandrashekhar-chowk.jpg",
+        "caption": "Chandrashekhar Chowk — statue under canopy"
+      },
+      "required": {
+        "photo": "images/vision/chowk-required.jpg",
+        "caption": "Renovated chowk with proper canopy and garden"
+      },
+      "reality": "Chandrashekhar Chowk honours the memory of Chandrashekhar Singh, Begusarai's first communist MLA. The statue stands under a red-tiled canopy, but the surrounding area lacks maintenance — the pavement is broken, there is no seating for elders, and the evening lighting is poor. The chowk deserves to be a dignified public space.",
+      "vision": "A properly maintained chowk with the statue under a fresh red-tile canopy, marble base, and steel railing. Evening LED lighting that illuminates the statue, a small garden around the pedestal, bench seating for elders, and non-slip paver block pavement. An information plaque explaining Chandrashekhar Singh's legacy, CCTV surveillance, and daily cleaning by the Panchayat.",
+      "how": {
+        "scheme": "MPLAD + 15th Finance Commission + Community Contribution",
+        "cost": "₹10-15 lakh",
+        "authority": "MP Office, Gram Panchayat, Village Committee",
+        "timeline": "6 months"
+      },
+      "community": [
+        "Donations of ₹500-5,000 per family",
+        "Shramdaan for garden and painting work",
+        "Material donation — paver blocks, plants",
+        "A 5-member Memorial Committee for oversight",
+        "Daily cleanliness rotation among households"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every village square must have:",
+        "photos": [
+          { "src": "images/vision/chowk-canopy.jpg", "caption": "Statue with fresh canopy and lighting" },
+          { "src": "images/vision/chowk-garden.jpg", "caption": "Garden and paver-block pavement" }
+        ],
+        "checklist": [
+          "Statue with proper red-tile canopy",
+          "Marble base with steel railing around",
+          "Evening LED lighting — statue illuminated",
+          "Small garden around the pedestal",
+          "Bench seating for elders",
+          "Paver block pavement — non-slip",
+          "Information plaque about Chandrashekhar Singh",
+          "Daily cleaning by the Panchayat",
+          "CCTV surveillance",
+          "Traffic mirror and road markings nearby"
+        ]
+      }
+    },
+
+    {
+      "id": "dwar",
+      "number": "08",
+      "title": "Shaheed Ramchandra Dwar",
+      "ward": "Village Entrance",
+      "category": "landmarks",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2026,
+      "completed": null,
+      "present": {
+        "photo": "images/history/shaheed-dwar-day.jpg",
+        "caption": "Shaheed Dwar — village entrance gate"
+      },
+      "required": {
+        "photo": "images/vision/dwar-required.jpg",
+        "caption": "Fresh blue and gold gate with proper lighting"
+      },
+      "reality": "Shaheed Ramchandra Dwar is the main entrance gate to the village, built in memory of a village martyr. The blue arch with 'Jai Hind' and 'Bande Mataram' is a source of pride, but the paint has faded, the gold lettering has worn, and there is no proper lighting at night. Pedestrians and two-wheelers share the same narrow road, creating safety concerns.",
+      "vision": "A freshly painted gate in blue with gold lettering, topped with gold kalash finials. A tall flagpole with the Tiranga flying high, LED lighting on all four sides, and CCTV surveillance. The approach road is widened for two-way traffic, with a pedestrian footpath on both sides. An information plaque tells the story of Shaheed Ramchandra. A flower garden surrounds the base.",
+      "how": {
+        "scheme": "MPLAD + 15th Finance Commission + Community Contribution",
+        "cost": "₹8-12 lakh",
+        "authority": "MP Office, Gram Panchayat, Village Committee",
+        "timeline": "6 months"
+      },
+      "community": [
+        "Donations of ₹500-3,000 per family",
+        "Shramdaan for painting and garden work",
+        "Material donation — paint, gold foil",
+        "A 5-member Memorial Committee for oversight",
+        "Flag maintenance and dhwaja rotation"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every memorial gate must have:",
+        "photos": [
+          { "src": "images/vision/dwar-night.jpg", "caption": "Gate lit at night with CCTV" },
+          { "src": "images/vision/dwar-road.jpg", "caption": "Widened road with footpath" }
+        ],
+        "checklist": [
+          "Fresh paint — blue with gold lettering",
+          "Tall flagpole with Tiranga flying high",
+          "LED lighting on all four sides",
+          "CCTV surveillance",
+          "Wide enough for two-way traffic",
+          "Pedestrian footpath on both sides",
+          "Information plaque about Shaheed Ramchandra",
+          "Flower garden around the base",
+          "Gold kalash finials on both pillars",
+          "Clean surroundings — daily sweep"
+        ]
+      }
+    },
+
+    {
+      "id": "well",
+      "number": "09",
+      "title": "Historic Well (Chaupal)",
+      "ward": "Village Centre",
+      "category": "culture",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2026,
+      "completed": null,
+      "present": {
+        "photo": "images/culture/historic-well-chaupal.jpg",
+        "caption": "Historic well — recently renovated"
+      },
+      "required": {
+        "photo": "images/vision/well-required.jpg",
+        "caption": "Fully restored well with heritage signage"
+      },
+      "reality": "The historic well — the village's chaupal — has been given a fresh look with clean surfaces and modern lighting. But it still lacks proper drainage around it, seating for the elders who gather here every evening, and a heritage plaque that explains its significance to visitors.",
+      "vision": "A fully restored well with a heritage plaque describing its history, stone-paved surroundings, and seating benches for 15+ elders. LED evening lighting, an iron jaali cover on top for safety, and tulsi and flower pots around the base. A designated photo spot for visitors and daily cleaning by the Panchayat. CCTV coverage for security.",
+      "how": {
+        "scheme": "Jal-Jeevan-Hariyali Abhiyan + MGNREGA + State Heritage Fund",
+        "cost": "₹5-8 lakh",
+        "authority": "PHED, Gram Panchayat, Art & Culture Department",
+        "timeline": "4 months"
+      },
+      "community": [
+        "Shramdaan for de-silting and cleaning",
+        "Donations of ₹500-2,000 per family",
+        "Material donation — stone, railing, plants",
+        "A 5-member Heritage Committee for oversight",
+        "Monthly cleanliness drive"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every historic well must have:",
+        "photos": [
+          { "src": "images/vision/well-railing.jpg", "caption": "Safety railing with iron jaali cover" },
+          { "src": "images/vision/well-seating.jpg", "caption": "Bench seating for elders at the chaupal" }
+        ],
+        "checklist": [
+          "Safety railing around the well",
+          "Heritage plaque — history and significance",
+          "Stone-paved surrounding — non-slip",
+          "Seating benches for 15+ elders",
+          "LED evening lighting",
+          "Iron jaali cover on top — for safety",
+          "Flower pots and tulsi plant",
+          "Designated photo spot for visitors",
+          "Clean surroundings — daily sweep",
+          "CCTV surveillance"
+        ]
+      }
+    },
+
+    {
+      "id": "tank",
+      "number": "10",
+      "title": "Water Tower Coverage",
+      "ward": "All Wards",
+      "category": "infrastructure",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2028,
+      "completed": null,
+      "present": {
+        "photo": "images/village/jal-jeevan-water-tower.jpg",
+        "caption": "Jal Jeevan Mission water tower — partial coverage"
+      },
+      "required": {
+        "photo": "images/vision/tank-required.jpg",
+        "caption": "Complete piped water coverage to every household"
+      },
+      "reality": "The Jal Jeevan Mission water tower has been built near the village fields, but the pipeline network is incomplete. Many households still depend on wells and handpumps. Water quality is not regularly tested, and there is no toll-free helpline for repairs. The September 2025 diarrhea outbreak exposed how critical this gap is.",
+      "vision": "Complete pipeline coverage across the village with every household connected. Monthly water quality testing with public reports, chlorination at the tower, a toll-free repair helpline, and fair monthly meter reading. A grievance redressal counter at the Panchayat, backup power for the pump, and a water tanker for emergencies.",
+      "how": {
+        "scheme": "Jal Jeevan Mission + Har Ghar Nal Ka Jal + 15th Finance Commission",
+        "cost": "₹40-60 lakh",
+        "authority": "Public Health Engineering Department (PHED), Gram Panchayat",
+        "timeline": "18 months"
+      },
+      "community": [
+        "Nominal connection fee of ₹500-1,000 per household",
+        "Shramdaan for trenching work",
+        "Volunteer water quality monitoring",
+        "A 5-member Water Committee for oversight",
+        "Register complaints on the toll-free helpline"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every piped water system must have:",
+        "photos": [
+          { "src": "images/vision/tank-pumphouse.jpg", "caption": "Pump house with chlorination system" },
+          { "src": "images/vision/tank-taps.jpg", "caption": "Household tap connections and public standpipes" }
+        ],
+        "checklist": [
+          "100% household connections — every home",
+          "Monthly water quality testing report — publicly displayed",
+          "Chlorination system at the tower",
+          "Repair helpline — toll-free number",
+          "Monthly meter reading — fair billing",
+          "Grievance redressal counter at the Panchayat",
+          "Backup power for the pump (solar + diesel)",
+          "Water tanker for emergency supply",
+          "Public water quality display (LED board)",
+          "Overhead tank cleaning — quarterly"
+        ]
+      }
+    },
+
+    {
+      "id": "road",
+      "number": "11",
+      "title": "Internal Roads",
+      "ward": "All Wards",
+      "category": "infrastructure",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/village/road-construction.jpg",
+        "caption": "Kacchi lane — waterlogging and dust"
+      },
+      "required": {
+        "photo": "images/vision/road-required.jpg",
+        "caption": "Pucca road with drainage, footpath, and lighting"
+      },
+      "reality": "The village's internal roads are unpaved. During the monsoon, waterlogging makes them impassable — children can't reach school, patients can't reach the main road, and farmers can't take their produce to market. During summer, dust affects the elderly and children. Several road projects have been sanctioned, but work is slow and some stretches remain incomplete.",
+      "vision": "A fully pucca road connecting every ward to the main SH 55, with covered drainage on both sides, LED streetlights every 30-40 metres, and a pedestrian footpath with kerb stones. Yellow centre line on main roads, speed breakers near schools and the chowk, and rainwater harvesting pits every 100 metres.",
+      "how": {
+        "scheme": "PMGSY Phase-IV + MGNREGA + 15th Finance Commission + MPLAD",
+        "cost": "₹15-20 lakh per km",
+        "authority": "Rural Works Department, Gram Panchayat, District Administration",
+        "timeline": "12 months"
+      },
+      "community": [
+        "Register for MGNREGA work — direct employment",
+        "Contribute land (if needed) for road widening",
+        "A 5-member Road Monitoring Committee for oversight",
+        "Monthly social audit of MGNREGA muster rolls",
+        "Submit written applications to the Panchayat"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every village road must have:",
+        "photos": [
+          { "src": "images/vision/road-footpath.jpg", "caption": "Footpath with kerb stones" },
+          { "src": "images/vision/road-drainage.jpg", "caption": "Covered drainage on both sides" }
+        ],
+        "checklist": [
+          "Pucca concrete or asphalt — every lane",
+          "Covered drainage on both sides",
+          "LED streetlights every 30-40 metres",
+          "Yellow centre line on main roads",
+          "Speed breakers near schools and the chowk",
+          "Footpath with kerb stones",
+          "Tyre stoppers in parking zones",
+          "Rainwater harvesting pits every 100 metres",
+          "Proper road signage in Hindi and English",
+          "Quarterly maintenance by the Panchayat"
+        ]
+      }
+    },
+
+    {
+      "id": "school",
+      "number": "12",
+      "title": "Rajkiyakrit Madhya Vidyalaya, Vandwar",
+      "ward": "Village Centre",
+      "category": "education",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2028,
+      "completed": null,
+      "present": {
+        "photo": "images/village/madhya-vidyalaya-building.jpg",
+        "caption": "Rajkiyakrit Madhya Vidyalaya — needs renovation"
+      },
+      "required": {
+        "photo": "images/vision/school-required.jpg",
+        "caption": "Modern school building with full facilities"
+      },
+      "reality": "The government middle school — established in 1955 — operates from a pucca building. But the boundary wall is broken, there is no electricity in some rooms, and there is no separate toilet for girls. The school lacks a computer lab, a library, and a proper playground. Mid-day meals are not provided. The school's infrastructure does not meet the standards of 2026.",
+      "vision": "A fully renovated pucca building with solar-powered classrooms, clean drinking water with RO, separate girls' and boys' toilets, a computer lab with 10+ computers, a library with 500+ books, and a playground with swings, slides, and a cricket pitch. A hygienic mid-day meal kitchen, a first-aid room with a resident nurse, a pucca boundary wall, and CCTV coverage.",
+      "how": {
+        "scheme": "Samagra Shiksha Abhiyan + MPLAD + Khelo India + 15th Finance Commission",
+        "cost": "₹60-80 lakh",
+        "authority": "Education Department, BEPC, MP Office, Gram Panchayat",
+        "timeline": "18 months"
+      },
+      "community": [
+        "Alumni fund — ₹5,000-50,000 from former students",
+        "Shramdaan for painting and cleanliness",
+        "Material donation — benches, fans, computers",
+        "A 9-member School Management Committee (SMC)",
+        "NRI diaspora support and local CSR"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every village school must have:",
+        "photos": [
+          { "src": "images/vision/school-classroom.jpg", "caption": "Modern classroom with benches and blackboards" },
+          { "src": "images/vision/school-lab.jpg", "caption": "Computer lab with 10 working computers" }
+        ],
+        "checklist": [
+          "6+ classrooms with proper benches and blackboards",
+          "1 computer lab — 10+ working computers",
+          "Library — 500+ books (Hindi, English, Maithili)",
+          "Separate girls' and boys' toilets",
+          "Drinking water — RO plus hand wash station",
+          "Solar electricity — fans in every room",
+          "Playground — swings, slides, cricket pitch",
+          "Mid-day meal kitchen — hygienic and fire-safe",
+          "First-aid room with resident nurse",
+          "Pucca boundary wall with gate",
+          "CCTV in corridors and playground",
+          "Digital attendance and smart classes"
+        ]
+      }
+    },
+
+    {
+      "id": "panchayat",
+      "number": "13",
+      "title": "Gram Panchayat Bhawan",
+      "ward": "Village Centre",
+      "category": "infrastructure",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/village/panchayat-bhawan.jpg",
+        "caption": "Gram Panchayat Bhawan — basic infrastructure"
+      },
+      "required": {
+        "photo": "images/vision/panchayat-required.jpg",
+        "caption": "Modern panchayat bhawan with digital services"
+      },
+      "reality": "The Gram Panchayat Bhawan functions, but lacks modern facilities. There is no proper meeting hall for Gram Sabha, no digital service counter, and land records are not digitised. Citizens must travel to Begusarai for basic certificates. The building also lacks drinking water, clean toilets, and disabled access.",
+      "vision": "An upgraded panchayat bhawan with a meeting hall for Gram Sabha (100+ capacity), a digital service counter (Common Service Centre), and digitised land records. Computers, printers, and internet access. Drinking water, clean toilets for men and women, and a ramp for disabled access. Permanent notice board, fireproof record room, and CCTV surveillance.",
+      "how": {
+        "scheme": "Rashtriya Gram Swaraj Abhiyan (RGSA) + 15th Finance Commission + Digital India + MPLAD",
+        "cost": "₹20-30 lakh",
+        "authority": "Panchayati Raj Department, District Administration, MP Office",
+        "timeline": "12 months"
+      },
+      "community": [
+        "Shramdaan for painting and cleanliness",
+        "Donations of ₹1,000-10,000 per family",
+        "Material donation — furniture, computers",
+        "Active participation in Gram Sabha meetings",
+        "Monthly social audit of Panchayat work"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every Gram Panchayat Bhawan must have:",
+        "photos": [
+          { "src": "images/vision/panchayat-hall.jpg", "caption": "Meeting hall for Gram Sabha" },
+          { "src": "images/vision/panchayat-counter.jpg", "caption": "Digital service counter (CSC)" }
+        ],
+        "checklist": [
+          "Meeting hall for Gram Sabha — 100+ capacity",
+          "Digital service counter (Common Service Centre)",
+          "Digitised land records room",
+          "Drinking water plus clean toilets for men and women",
+          "Computers, printer, and internet",
+          "Permanent notice board — weatherproof",
+          "Record room — locked and fireproof",
+          "Ramp for disabled access",
+          "Solar panels and backup power",
+          "Suggestion and complaint drop box",
+          "CCTV surveillance",
+          "Wheelchair available on-premises"
+        ]
+      }
+    },
+
+    {
+      "id": "bank",
+      "number": "14",
+      "title": "State Bank of India — Bandwar Branch",
+      "ward": "Village Centre",
+      "category": "infrastructure",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2027,
+      "completed": null,
+      "present": {
+        "photo": "images/village/sbi-bank-branch-2025.jpg",
+        "caption": "SBI Bandwar branch — current infrastructure"
+      },
+      "required": {
+        "photo": "images/vision/bank-required.jpg",
+        "caption": "Modern SBI branch with full customer facilities"
+      },
+      "reality": "The SBI Bandwar branch is the village's only formal banking facility. It operates from a small building with limited counter space. During peak hours — especially on pension days and after harvest — long queues form outside. There is no proper seating for elderly customers, no dedicated counter for women, and no wheelchair access.",
+      "vision": "An upgraded SBI branch with two or more counters including one dedicated for women, seating for 20+ customers, and air conditioning. A locker facility, a passbook printing kiosk, and a wheelchair-accessible ramp. Drinking water, clean toilets, and a digital display for rates and notices. CCTV surveillance and biometric authentication counters.",
+      "how": {
+        "scheme": "SBI Rural Expansion Programme + MPLAD + State Level Bankers' Committee (SLBC)",
+        "cost": "₹15-20 lakh",
+        "authority": "State Bank of India, Regional Office, MP Office",
+        "timeline": "8 months"
+      },
+      "community": [
+        "Open SBI accounts — every household",
+        "Form women's Self Help Groups linked to the bank",
+        "Provide feedback to the branch manager",
+        "A 3-member Customer Committee for oversight",
+        "Learn UPI and net banking for digital access"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every bank branch must have:",
+        "photos": [
+          { "src": "images/vision/bank-counter.jpg", "caption": "Multiple counters with women's counter" },
+          { "src": "images/vision/bank-waiting.jpg", "caption": "Waiting area with seating and AC" }
+        ],
+        "checklist": [
+          "2+ counters — one dedicated for women",
+          "Seating for 20+ customers",
+          "Air conditioning in main hall",
+          "Drinking water and clean toilet",
+          "Locker facility — safe deposit",
+          "Passbook printing kiosk",
+          "Wheelchair access with ramp",
+          "CCTV surveillance",
+          "Digital display for rates and notices",
+          "Biometric authentication counters",
+          "Loan help desk — agriculture and rural",
+          "ATM right beside the branch"
+        ]
+      }
+    },
+
+    {
+      "id": "atm",
+      "number": "15",
+      "title": "SBI ATM",
+      "ward": "Village Centre",
+      "category": "infrastructure",
+      "status": "pending",
+      "added": "2026",
+      "targetYear": 2026,
+      "completed": null,
+      "present": {
+        "photo": "images/village/sbi-bank-atm.jpg",
+        "caption": "SBI ATM — single unit, frequent cash shortages"
+      },
+      "required": {
+        "photo": "images/vision/atm-required.jpg",
+        "caption": "Multi-ATM facility with cash deposit kiosk"
+      },
+      "reality": "The village has only one ATM, which frequently runs out of cash. During festivals and harvest season, long queues form. There is no cash deposit facility, so villagers must visit the branch during working hours. The kiosk has no air conditioning, and security is a concern at night.",
+      "vision": "A multi-ATM facility with at least two machines, a cash deposit kiosk (CDM), and 24x7 operation. LED lighting inside and outside, CCTV surveillance from multiple angles, and air conditioning. An emergency call button, fraud alert signage, and wheelchair-accessible entry. Backup power via UPS and generator.",
+      "how": {
+        "scheme": "SBI ATM Expansion Programme + Financial Inclusion + MPLAD",
+        "cost": "₹10-15 lakh",
+        "authority": "State Bank of India, District Administration, MP Office",
+        "timeline": "6 months"
+      },
+      "community": [
+        "Use the ATM regularly to demonstrate demand",
+        "Report security concerns to the bank",
+        "Provide feedback through the branch",
+        "A 3-member ATM Monitoring Committee",
+        "Shift to UPI and digital payments"
+      ],
+      "inside": {
+        "intro": "The minimum facilities that every village ATM kiosk must have:",
+        "photos": [
+          { "src": "images/vision/atm-kiosk.jpg", "caption": "Two ATMs with air-conditioned kiosk" },
+          { "src": "images/vision/atm-cashdeposit.jpg", "caption": "Cash deposit kiosk (CDM)" }
+        ],
+        "checklist": [
+          "2+ ATM machines — 24x7 operational",
+          "Cash deposit kiosk (CDM)",
+          "24x7 LED lighting inside and outside",
+          "CCTV surveillance from multiple angles",
+          "Air conditioning in the kiosk",
+          "Clean interior — daily maintenance",
+          "Emergency call button for help",
+          "Fraud alert system and signage",
+          "Glass door with auto-lock",
+          "Backup power — UPS plus generator",
+          "Biometric authentication option",
+          "Wheelchair-accessible entry"
+        ]
+      }
+    }
+  ],
+
+  "achievements": [
+    {
+      "id": "plus-two-school",
+      "icon": "🏫",
+      "title": "Plus Two School Building",
+      "cost": "₹1.96 crore",
+      "date": "March 2025",
+      "completed": "2025",
+      "by": "MLA Kundan Kumar",
+      "byTitle": "Bidhayak, Begusarai",
+      "thankYou": "Shri Kundan Kumar ji",
+      "description": "A new pucca building for Plus Two Vidyalaya Vandwar, extending education in the village beyond Class 10 for the first time. Inaugurated in March 2025.",
+      "photo": null,
+      "facts": {
+        "Funding": "₹1.96 crore",
+        "Led by": "MLA Kundan Kumar",
+        "Completed": "March 2025"
+      }
+    },
+    {
+      "id": "vaani-vilas-library",
+      "icon": "📚",
+      "title": "Vaani Vilas Pustakalaya",
+      "cost": "Approximately ₹25 lakh",
+      "date": "5 September 2023",
+      "completed": "2023",
+      "by": "Rakesh Sinha ji",
+      "byTitle": "Member of Parliament (Rajya Sabha)",
+      "thankYou": "Shri Rakesh Sinha ji",
+      "description": "A village library built with MPLAD funds under the initiative of Girija Singh — with books, a reading area, and portraits of national leaders on the walls.",
+      "photo": "images/education/library-gate.jpg",
+      "facts": {
+        "Funding": "₹25 lakh (MPLAD)",
+        "Led by": "Rakesh Sinha ji (MP)",
+        "Initiative": "Girija Singh",
+        "Completed": "September 2023"
+      }
+    },
+    {
+      "id": "smart-wifi",
+      "icon": "📡",
+      "title": "Smart Gram Panchayat — PM-WANI WiFi",
+      "cost": "Rashtriya Gram Swaraj Abhiyan",
+      "date": "13 February 2024",
+      "completed": "2024",
+      "by": "Giriraj Singh ji",
+      "byTitle": "Union Minister, Government of India",
+      "thankYou": "Shri Giriraj Singh ji",
+      "description": "Begusarai became the first district in Bihar to equip all Gram Panchayats with public WiFi under PM-WANI. Bandwar was among them — bringing the village online.",
+      "photo": "images/education/library-reading-area.jpg",
+      "facts": {
+        "Scheme": "PM-WANI / RGSA",
+        "Led by": "Giriraj Singh ji",
+        "Completed": "February 2024"
+      }
+    },
+    {
+      "id": "road-projects",
+      "icon": "🛣️",
+      "title": "Multiple Road Projects",
+      "cost": "Over ₹11 crore (sanctioned)",
+      "date": "2020–2025",
+      "completed": "2025",
+      "by": "Bidhayak & State Government",
+      "byTitle": "Multiple leaders across years",
+      "thankYou": "All who contributed",
+      "description": "Several road projects — from Gandak Bandh to Vandwar Musahri (₹60 lakh), Vandwar Krishna Mandir Chowk to Mohanpur, Parna PCC Road to Hanuman Mandir, and 8 more roads sanctioned across Begusarai.",
+      "photo": "images/village/road-construction.jpg",
+      "facts": {
+        "Funding": "₹11 crore+ (sanctioned)",
+        "Period": "2020–2025",
+        "Includes": "8+ road projects"
+      }
+    }
+  ],
+
+  "roadmap": [
+    {
+      "phase": 1,
+      "label": "Year 1–3",
+      "title": "Foundations",
+      "focus": "Water, roads, drainage, and emergency infrastructure",
+      "items": [
+        { "icon": "💧", "title": "Water security", "description": "Complete piped water coverage to every household under Jal Jeevan Mission." },
+        { "icon": "🛣️", "title": "Internal roads", "description": "Pucca roads connecting every ward to SH 55 with drainage and streetlights." },
+        { "icon": "🚰", "title": "Drainage", "description": "Covered storm water drainage to prevent waterlogging during monsoon." },
+        { "icon": "🏦", "title": "Banking access", "description": "Upgrade SBI branch and expand ATM facility with cash deposit kiosk." },
+        { "icon": "📡", "title": "Digital services", "description": "Extend PM-WANI WiFi and digitise Gram Panchayat services." }
+      ]
+    },
+    {
+      "phase": 2,
+      "label": "Year 4–6",
+      "title": "Institutions",
+      "focus": "Schools, healthcare, panchayat, and public services",
+      "items": [
+        { "icon": "🏫", "title": "School upgrades", "description": "Modernise Madhya Vidyalaya and S.N.K. High School with labs, libraries, and sports facilities." },
+        { "icon": "🏛️", "title": "Panchayat Bhawan", "description": "Build a proper civic building with Gram Sabha hall and digital service counter." },
+        { "icon": "🏥", "title": "Health facility", "description": "Establish a dedicated primary health centre with ambulance service." },
+        { "icon": "⚡", "title": "Power reliability", "description": "Solar panels on public buildings and streetlight upgrades." }
+      ]
+    },
+    {
+      "phase": 3,
+      "label": "Year 7–10",
+      "title": "Heritage & Culture",
+      "focus": "Ghats, temples, public spaces, and community identity",
+      "items": [
+        { "icon": "🛕", "title": "Temple restoration", "description": "Renovate Bandwar's temples and enhance facilities for devotees and festivals." },
+        { "icon": "🌊", "title": "Chhath Ghat", "description": "Build a proper ghat on the Burhi Gandak for Chhath Puja and community rituals." },
+        { "icon": "🌳", "title": "Public spaces", "description": "Develop parks, gardens, and seating areas at historic landmarks." },
+        { "icon": "📚", "title": "Cultural centre", "description": "A space for the village's arts, history, and community gatherings." },
+        { "icon": "🎭", "title": "Heritage preservation", "description": "Document and preserve the village's historic sites, festivals, and traditions." }
+      ]
+    }
+  ]
+}
