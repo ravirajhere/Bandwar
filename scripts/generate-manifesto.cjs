@@ -6,22 +6,10 @@
      Edition: {currentYear}–{currentYear + 10}
      Auto-shifts each year (2026 → "Bandwar 2036", 2027 → "Bandwar 2037")
    
-   What it does:
-     1. Loads master.json + vision.json
-     2. Categorizes priorities by status (pending/in-progress/done)
-     3. Auto-moves "done" priorities to achievements
-     4. Builds print-optimized HTML (A4 layout)
-     5. Optimizes images on-the-fly with sharp
-     6. Renders to PDF via Puppeteer
-     7. Outputs to assets/pdfs/bandwar-vision-{startYear}-{endYear}.pdf
-   
    Usage:
      node scripts/generate-manifesto.cjs
      node scripts/generate-manifesto.cjs --verbose
-     node scripts/generate-manifesto.cjs --no-images  (skip sharp)
-   
-   Dependencies:
-     npm install --save-dev puppeteer sharp
+     node scripts/generate-manifesto.cjs --no-images
    
    Output:
      assets/pdfs/bandwar-vision-2026-2036.pdf
@@ -100,20 +88,9 @@ function ensureDir(dir) {
   }
 }
 
-function cleanDir(dir) {
-  if (fs.existsSync(dir)) {
-    fs.rmSync(dir, { recursive: true, force: true });
-  }
-  fs.mkdirSync(dir, { recursive: true });
-}
-
 /* ─────────────── IMAGE OPTIMIZATION ─────────────── */
 async function optimizeImage(relPath, options = {}) {
-  const {
-    maxWidth = 1200,
-    quality = 75,
-  } = options;
-
+  const { maxWidth = 1200, quality = 75 } = options;
   if (!relPath) return null;
 
   const fullPath = path.join(ROOT, relPath.replace(/^\//, ''));
@@ -124,22 +101,16 @@ async function optimizeImage(relPath, options = {}) {
 
   try {
     let buffer;
-
     if (sharp) {
-      // Optimize with sharp
       buffer = await sharp(fullPath)
         .resize({ width: maxWidth, withoutEnlargement: true })
         .jpeg({ quality, progressive: true, mozjpeg: true })
         .toBuffer();
     } else {
-      // Read as-is
       buffer = fs.readFileSync(fullPath);
     }
-
     const base64 = buffer.toString('base64');
-    const mime = 'image/jpeg';
-
-    return `data:${mime};base64,${base64}`;
+    return `data:image/jpeg;base64,${base64}`;
   } catch (err) {
     if (VERBOSE) console.log(`    ${COLORS.red}✗ Failed to optimize ${relPath}: ${err.message}${COLORS.reset}`);
     return null;
@@ -147,10 +118,35 @@ async function optimizeImage(relPath, options = {}) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   HELPER — Normalize "how" field (array OR object → array of {label, value})
+   ═══════════════════════════════════════════════════════════════════ */
+function normalizeHow(how) {
+  if (!how) return [];
+  
+  // If array of {label, value} or {label, value, ...}
+  if (Array.isArray(how)) {
+    return how.map(f => ({
+      label: f.label || f.key || '',
+      value: f.value || f.text || ''
+    }));
+  }
+  
+  // If object {scheme: "...", cost: "...", ...}
+  if (typeof how === 'object') {
+    return Object.entries(how).map(([key, value]) => ({
+      label: key,
+      value: String(value)
+    }));
+  }
+  
+  return [];
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    MANIFESTO HTML BUILDER
    ═══════════════════════════════════════════════════════════════════ */
 
-async function buildManifestoHTML(master, vision, options) {
+async function buildManifestoHTML(master, vision) {
   const currentYear = new Date().getFullYear();
   const horizonEnd = currentYear + 10;
   const editionLabel = `${currentYear}–${horizonEnd}`;
@@ -188,34 +184,30 @@ async function buildManifestoHTML(master, vision, options) {
   async function getImage(relPath) {
     if (!relPath) return null;
     if (imageCache.has(relPath)) return imageCache.get(relPath);
-
     const data = await optimizeImage(relPath, { maxWidth: 1400, quality: 75 });
     imageCache.set(relPath, data);
     return data;
   }
 
-  // ─── COVER IMAGE ───
+  // Cover image
   const coverImage = master.home?.hero?.image
     ? await getImage(master.home.hero.image)
     : null;
 
-  // ─── PRIORITY IMAGES ───
+  // Priority images
   for (const need of activePriorities) {
     if (need.present?.photo) await getImage(need.present.photo);
     if (need.required?.photo) await getImage(need.required.photo);
   }
 
-  // ─── ACHIEVEMENT IMAGES ───
+  // Achievement images
   for (const ach of allAchievements) {
     if (ach.photo) await getImage(ach.photo);
   }
 
   console.log(`  ${COLORS.green}✓${COLORS.reset} ${imageCache.size} images loaded`);
 
-  // ─── BUILD SECTIONS ───
-  const totalPages = 4 + activePriorities.length + allAchievements.length + 2;
-
-  /* ─── COVER ─── */
+  // ─── COVER ───
   const coverHTML = `
     <section class="page cover">
       ${coverImage ? `<div class="cover-bg" style="background-image: url('${coverImage}')"></div>` : ''}
@@ -235,7 +227,7 @@ async function buildManifestoHTML(master, vision, options) {
     </section>
   `;
 
-  /* ─── COLOPHON ─── */
+  // ─── COLOPHON ───
   const colophonHTML = `
     <section class="page colophon">
       <div class="section-label">Colophon</div>
@@ -283,11 +275,11 @@ async function buildManifestoHTML(master, vision, options) {
         </div>
       </div>
 
-      <div class="page-number">${'02'}</div>
+      <div class="page-number">02</div>
     </section>
   `;
 
-  /* ─── PREAMBLE ─── */
+  // ─── PREAMBLE ───
   const preambleHTML = `
     <section class="page preamble">
       <div class="section-label">Preamble</div>
@@ -311,7 +303,7 @@ async function buildManifestoHTML(master, vision, options) {
 
         <p>
           This document is not a complaint. It is not a political
-          statement. It is a record. It lists fifteen priorities that
+          statement. It is a record. It lists ${activePriorities.length} priorities that
           villagers have identified — from a dedicated ghat on the
           riverbank to a functioning health facility — and it offers a
           path to each of them.
@@ -326,11 +318,11 @@ async function buildManifestoHTML(master, vision, options) {
         </p>
       </div>
 
-      <div class="page-number">${'03'}</div>
+      <div class="page-number">03</div>
     </section>
   `;
 
-  /* ─── SNAPSHOT ─── */
+  // ─── SNAPSHOT ───
   const snapshotHTML = `
     <section class="page snapshot">
       <div class="section-label">Snapshot</div>
@@ -382,11 +374,11 @@ async function buildManifestoHTML(master, vision, options) {
         </div>
       </div>
 
-      <div class="page-number">${'04'}</div>
+      <div class="page-number">04</div>
     </section>
   `;
 
-  /* ─── PRIORITIES ─── */
+  // ─── PRIORITIES ───
   const priorityPages = [];
   for (let i = 0; i < activePriorities.length; i++) {
     const need = activePriorities[i];
@@ -399,10 +391,12 @@ async function buildManifestoHTML(master, vision, options) {
     const statusText = need.status === 'in-progress' ? 'In Progress' : 'Planned';
     const statusClass = need.status === 'in-progress' ? 'badge-progress' : 'badge-pending';
 
-    const factsHTML = (need.how || []).map(f => `
+    // ✅ FIXED: handle how as array OR object
+    const howEntries = normalizeHow(need.how);
+    const factsHTML = howEntries.map(({ label, value }) => `
       <div class="priority-fact">
-        <span class="priority-fact-label">${esc(f.label)}</span>
-        <span class="priority-fact-value">${esc(f.value)}</span>
+        <span class="priority-fact-label">${esc(label)}</span>
+        <span class="priority-fact-value">${esc(value)}</span>
       </div>
     `).join('');
 
@@ -456,7 +450,7 @@ async function buildManifestoHTML(master, vision, options) {
     `);
   }
 
-  /* ─── ACHIEVEMENTS ─── */
+  // ─── ACHIEVEMENTS ───
   const achievementPages = [];
   for (let i = 0; i < allAchievements.length; i++) {
     const ach = allAchievements[i];
@@ -489,7 +483,7 @@ async function buildManifestoHTML(master, vision, options) {
     `);
   }
 
-  /* ─── ROADMAP ─── */
+  // ─── ROADMAP ───
   const roadmapPages = roadmap.map((phase, i) => {
     const num = String(i + 1).padStart(2, '0');
     const yearStart = currentYear + (phase.phase - 1) * 3;
@@ -516,7 +510,7 @@ async function buildManifestoHTML(master, vision, options) {
     `;
   }).join('');
 
-  /* ─── ADOPTION ─── */
+  // ─── ADOPTION ───
   const adoptionHTML = `
     <section class="page adoption">
       <div class="section-label">Adoption</div>
@@ -568,7 +562,7 @@ async function buildManifestoHTML(master, vision, options) {
     </section>
   `;
 
-  /* ─── BACK COVER ─── */
+  // ─── BACK COVER ───
   const backCoverHTML = `
     <section class="page back-cover">
       <div class="back-cover-content">
@@ -590,24 +584,15 @@ async function buildManifestoHTML(master, vision, options) {
     </section>
   `;
 
-  /* ─── ASSEMBLE FULL HTML ─── */
+  // ─── ASSEMBLE FULL HTML ───
   const html = `<!DOCTYPE html>
 <html lang="en-IN">
 <head>
 <meta charset="UTF-8">
 <title>Bandwar ${horizonEnd} — Manifesto</title>
 <style>
-  @page {
-    size: A4;
-    margin: 0;
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     font-family: Georgia, 'Times New Roman', serif;
     color: #1a1a18;
@@ -616,7 +601,6 @@ async function buildManifestoHTML(master, vision, options) {
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
-
   .page {
     width: 210mm;
     min-height: 297mm;
@@ -627,11 +611,7 @@ async function buildManifestoHTML(master, vision, options) {
     display: flex;
     flex-direction: column;
   }
-
-  .page:last-child {
-    page-break-after: auto;
-  }
-
+  .page:last-child { page-break-after: auto; }
   .section-label {
     font-family: 'Courier New', monospace;
     font-size: 8pt;
@@ -643,7 +623,6 @@ async function buildManifestoHTML(master, vision, options) {
     border-bottom: 1px solid #1f3d2f;
     display: inline-block;
   }
-
   .page-title {
     font-family: Georgia, serif;
     font-size: 22pt;
@@ -653,7 +632,6 @@ async function buildManifestoHTML(master, vision, options) {
     margin-bottom: 8mm;
     color: #1a1a18;
   }
-
   .page-number {
     position: absolute;
     bottom: 15mm;
@@ -664,602 +642,103 @@ async function buildManifestoHTML(master, vision, options) {
     color: #8a8578;
   }
 
-  /* ═══ COVER ═══ */
-  .cover {
-    background: #1a1a18;
-    color: #f7f5ef;
-    padding: 0;
-    justify-content: flex-end;
-    overflow: hidden;
-  }
-
-  .cover-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.4;
-  }
-
-  .cover-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(26,26,24,0.5) 0%, rgba(26,26,24,0.85) 70%, rgba(26,26,24,0.98) 100%);
-  }
-
-  .cover-content {
-    position: relative;
-    z-index: 2;
-    padding: 22mm 20mm 40mm;
-  }
-
-  .cover-brand {
-    font-family: 'Courier New', monospace;
-    font-size: 9pt;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: rgba(247,245,239,0.7);
-    margin-bottom: 4mm;
-  }
-
-  .cover-meta {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: rgba(247,245,239,0.5);
-    margin-bottom: 40mm;
-  }
-
-  .cover-title {
-    font-family: Georgia, serif;
-    font-size: 72pt;
-    font-weight: 400;
-    line-height: 0.92;
-    letter-spacing: -0.04em;
-    color: #f7f5ef;
-    margin-bottom: 8mm;
-  }
-
-  .cover-year {
-    font-style: italic;
-    color: #b8d0c1;
-  }
-
-  .cover-subtitle {
-    font-family: Georgia, serif;
-    font-size: 14pt;
-    font-style: italic;
-    line-height: 1.4;
-    color: rgba(247,245,239,0.85);
-    max-width: 140mm;
-    margin-bottom: 10mm;
-  }
-
-  .cover-edition {
-    font-family: 'Courier New', monospace;
-    font-size: 9pt;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: rgba(247,245,239,0.6);
-    padding-top: 4mm;
-    border-top: 1px solid rgba(247,245,239,0.2);
-    display: inline-block;
-  }
-
-  .cover-footer {
-    position: absolute;
-    bottom: 20mm;
-    left: 20mm;
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(247,245,239,0.4);
-  }
-
-  /* ═══ COLOPHON ═══ */
-  .colophon-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10mm 12mm;
-    flex: 1;
-  }
-
-  .colophon-item {
-    break-inside: avoid;
-  }
-
-  .colophon-label {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #1f3d2f;
-    margin-bottom: 3mm;
-  }
-
-  .colophon-item p {
-    font-size: 10pt;
-    line-height: 1.5;
-    color: #3a3a34;
-  }
-
-  .colophon-sources {
-    list-style: none;
-    font-size: 10pt;
-    line-height: 1.7;
-    color: #3a3a34;
-  }
-
-  .colophon-sources li::before {
-    content: '— ';
-    color: #8a8578;
-  }
-
-  /* ═══ PREAMBLE ═══ */
-  .preamble-body p {
-    font-size: 11pt;
-    line-height: 1.7;
-    color: #3a3a34;
-    margin-bottom: 6mm;
-    max-width: 155mm;
-  }
-
-  .preamble-lead {
-    font-size: 13pt;
-    font-style: italic;
-    color: #1a1a18 !important;
-    line-height: 1.5 !important;
-    margin-bottom: 8mm !important;
-    padding-bottom: 6mm;
-    border-bottom: 1px solid #d4d0c4;
-  }
-
-  /* ═══ SNAPSHOT ═══ */
-  .snapshot-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8mm 6mm;
-    margin-bottom: 15mm;
-  }
-
-  .snapshot-item {
-    padding-top: 4mm;
-    border-top: 1px solid #1f3d2f;
-  }
-
-  .snapshot-value {
-    font-family: Georgia, serif;
-    font-size: 22pt;
-    font-weight: 500;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: #1a1a18;
-    margin-bottom: 3mm;
-  }
-
-  .snapshot-label {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: #8a8578;
-  }
-
-  .snapshot-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6mm 12mm;
-    padding-top: 8mm;
-    border-top: 1px solid #d4d0c4;
-  }
-
-  .snapshot-meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2mm;
-  }
-
-  .snapshot-meta-label {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: #8a8578;
-  }
-
-  .snapshot-meta-value {
-    font-size: 11pt;
-    color: #1a1a18;
-  }
-
-  /* ═══ PRIORITY ═══ */
-  .priority {
-    padding: 18mm 18mm 15mm;
-  }
-
-  .priority-header {
-    margin-bottom: 6mm;
-  }
-
-  .priority-meta {
-    display: flex;
-    align-items: center;
-    gap: 4mm;
-    margin-bottom: 4mm;
-  }
-
-  .priority-num {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #8a8578;
-  }
-
-  .priority-badge {
-    display: inline-block;
-    padding: 1.5mm 3mm;
-    font-family: 'Courier New', monospace;
-    font-size: 7pt;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    border-radius: 8mm;
-  }
-
-  .badge-pending {
-    background: rgba(166,75,42,0.15);
-    color: #a64b2a;
-  }
-
-  .badge-progress {
-    background: rgba(31,61,47,0.15);
-    color: #1f3d2f;
-  }
-
-  .priority-title {
-    font-family: Georgia, serif;
-    font-size: 26pt;
-    font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: #1a1a18;
-    margin-bottom: 3mm;
-  }
-
-  .priority-summary {
-    font-family: Georgia, serif;
-    font-size: 11pt;
-    font-style: italic;
-    color: #6a6560;
-    line-height: 1.4;
-    max-width: 150mm;
-  }
-
-  .priority-images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3mm;
-    margin-bottom: 6mm;
-  }
-
-  .priority-image {
-    margin: 0;
-    overflow: hidden;
-  }
-
-  .priority-image img {
-    width: 100%;
-    height: 55mm;
-    object-fit: cover;
-    display: block;
-  }
-
-  .priority-image figcaption {
-    font-family: 'Courier New', monospace;
-    font-size: 7pt;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #8a8578;
-    padding-top: 2mm;
-    line-height: 1.4;
-  }
-
-  .priority-image-present figcaption::before {
-    content: '● Present · ';
-    color: #a64b2a;
-  }
-
-  .priority-image-required figcaption::before {
-    content: '◆ Vision · ';
-    color: #1f3d2f;
-  }
-
-  .priority-body {
-    display: grid;
-    gap: 5mm;
-  }
-
-  .priority-section-label {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #1f3d2f;
-    margin-bottom: 2mm;
-    padding-bottom: 1.5mm;
-    border-bottom: 1px solid #1f3d2f;
-    display: inline-block;
-  }
-
-  .priority-section p {
-    font-size: 10pt;
-    line-height: 1.55;
-    color: #3a3a34;
-  }
-
-  .priority-facts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3mm 6mm;
-  }
-
-  .priority-fact {
-    display: flex;
-    flex-direction: column;
-    gap: 1mm;
-    padding-top: 2mm;
-    border-top: 1px solid #e0dcd0;
-  }
-
-  .priority-fact-label {
-    font-family: 'Courier New', monospace;
-    font-size: 7pt;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #8a8578;
-  }
-
-  .priority-fact-value {
-    font-size: 10pt;
-    color: #1a1a18;
-    font-weight: 500;
-  }
-
-  /* ═══ ACHIEVEMENT ═══ */
-  .achievement-image {
-    margin: 6mm 0;
-    overflow: hidden;
-  }
-
-  .achievement-image img {
-    width: 100%;
-    max-height: 100mm;
-    object-fit: cover;
-    display: block;
-  }
-
-  .achievement-description {
-    font-size: 11pt;
-    line-height: 1.6;
-    color: #3a3a34;
-    max-width: 155mm;
-    margin-bottom: 8mm;
-  }
-
-  .achievement-facts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40mm, 1fr));
-    gap: 5mm;
-    padding-top: 6mm;
-    border-top: 1px solid #d4d0c4;
-  }
-
-  .achievement-fact {
-    display: flex;
-    flex-direction: column;
-    gap: 2mm;
-  }
-
-  .achievement-fact-label {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: #8a8578;
-  }
-
-  .achievement-fact-value {
-    font-family: Georgia, serif;
-    font-size: 12pt;
-    color: #1a1a18;
-    font-weight: 500;
-  }
-
-  /* ═══ ROADMAP ═══ */
-  .roadmap-years {
-    font-family: 'Courier New', monospace;
-    font-size: 10pt;
-    letter-spacing: 0.14em;
-    color: #8a8578;
-    margin-bottom: 3mm;
-  }
-
-  .roadmap-focus {
-    font-family: Georgia, serif;
-    font-size: 12pt;
-    font-style: italic;
-    color: #6a6560;
-    margin-bottom: 10mm;
-  }
-
-  .roadmap-items {
-    list-style: none;
-    display: grid;
-    gap: 6mm;
-  }
-
-  .roadmap-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 5mm;
-    padding-bottom: 5mm;
-    border-bottom: 1px solid #e0dcd0;
-    align-items: start;
-  }
-
-  .roadmap-item:last-child {
-    border-bottom: none;
-  }
-
-  .roadmap-icon {
-    font-size: 16pt;
-    line-height: 1;
-  }
-
-  .roadmap-item strong {
-    font-family: Georgia, serif;
-    font-size: 12pt;
-    font-weight: 500;
-    color: #1a1a18;
-    display: block;
-    margin-bottom: 1.5mm;
-  }
-
-  .roadmap-item p {
-    font-size: 10pt;
-    line-height: 1.5;
-    color: #6a6560;
-  }
-
-  /* ═══ ADOPTION ═══ */
-  .adoption-lead {
-    font-family: Georgia, serif;
-    font-size: 13pt;
-    font-style: italic;
-    line-height: 1.5;
-    color: #1a1a18;
-    margin-bottom: 8mm;
-    padding-bottom: 6mm;
-    border-bottom: 1px solid #d4d0c4;
-    max-width: 155mm;
-  }
-
-  .adoption p {
-    font-size: 11pt;
-    line-height: 1.6;
-    color: #3a3a34;
-    margin-bottom: 6mm;
-    max-width: 155mm;
-  }
-
-  .signature-lines {
-    margin: 15mm 0 10mm;
-    display: grid;
-    gap: 12mm;
-  }
-
-  .signature-line {
-    display: grid;
-    gap: 2mm;
-  }
-
-  .signature-blank {
-    height: 12mm;
-    border-bottom: 1px solid #1a1a18;
-  }
-
-  .signature-label {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: #8a8578;
-  }
-
-  .adoption-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8mm;
-    padding-top: 8mm;
-    border-top: 1px solid #d4d0c4;
-    margin-top: 10mm;
-  }
-
-  .adoption-meta-label {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: #8a8578;
-    margin-bottom: 2mm;
-  }
-
-  .adoption-meta-value {
-    font-size: 11pt;
-    color: #1a1a18;
-  }
-
-  /* ═══ BACK COVER ═══ */
-  .back-cover {
-    background: #1a1a18;
-    color: #f7f5ef;
-    justify-content: space-between;
-    padding: 0;
-  }
-
-  .back-cover-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 40mm 25mm;
-  }
-
-  .back-cover-quote {
-    font-family: Georgia, serif;
-    font-size: 18pt;
-    font-style: italic;
-    line-height: 1.45;
-    color: rgba(247,245,239,0.92);
-    max-width: 140mm;
-    margin-bottom: 8mm;
-  }
-
-  .back-cover-attribution {
-    font-family: 'Courier New', monospace;
-    font-size: 9pt;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: rgba(247,245,239,0.5);
-  }
-
-  .back-cover-footer {
-    padding: 15mm 25mm;
-    border-top: 1px solid rgba(247,245,239,0.15);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 10mm;
-  }
-
-  .back-cover-brand {
-    font-family: Georgia, serif;
-    font-size: 14pt;
-    font-weight: 500;
-    color: #f7f5ef;
-  }
-
-  .back-cover-info {
-    font-family: 'Courier New', monospace;
-    font-size: 8pt;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    line-height: 1.7;
-    color: rgba(247,245,239,0.5);
-    text-align: right;
-  }
+  /* COVER */
+  .cover { background: #1a1a18; color: #f7f5ef; padding: 0; justify-content: flex-end; overflow: hidden; }
+  .cover-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.4; }
+  .cover-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,26,24,0.5) 0%, rgba(26,26,24,0.85) 70%, rgba(26,26,24,0.98) 100%); }
+  .cover-content { position: relative; z-index: 2; padding: 22mm 20mm 40mm; }
+  .cover-brand { font-family: 'Courier New', monospace; font-size: 9pt; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(247,245,239,0.7); margin-bottom: 4mm; }
+  .cover-meta { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(247,245,239,0.5); margin-bottom: 40mm; }
+  .cover-title { font-family: Georgia, serif; font-size: 72pt; font-weight: 400; line-height: 0.92; letter-spacing: -0.04em; color: #f7f5ef; margin-bottom: 8mm; }
+  .cover-year { font-style: italic; color: #b8d0c1; }
+  .cover-subtitle { font-family: Georgia, serif; font-size: 14pt; font-style: italic; line-height: 1.4; color: rgba(247,245,239,0.85); max-width: 140mm; margin-bottom: 10mm; }
+  .cover-edition { font-family: 'Courier New', monospace; font-size: 9pt; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(247,245,239,0.6); padding-top: 4mm; border-top: 1px solid rgba(247,245,239,0.2); display: inline-block; }
+  .cover-footer { position: absolute; bottom: 20mm; left: 20mm; font-family: 'Courier New', monospace; font-size: 8pt; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(247,245,239,0.4); }
+
+  /* COLOPHON */
+  .colophon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm 12mm; flex: 1; }
+  .colophon-item { break-inside: avoid; }
+  .colophon-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.15em; color: #1f3d2f; margin-bottom: 3mm; }
+  .colophon-item p { font-size: 10pt; line-height: 1.5; color: #3a3a34; }
+  .colophon-sources { list-style: none; font-size: 10pt; line-height: 1.7; color: #3a3a34; }
+  .colophon-sources li::before { content: '— '; color: #8a8578; }
+
+  /* PREAMBLE */
+  .preamble-body p { font-size: 11pt; line-height: 1.7; color: #3a3a34; margin-bottom: 6mm; max-width: 155mm; }
+  .preamble-lead { font-size: 13pt; font-style: italic; color: #1a1a18 !important; line-height: 1.5 !important; margin-bottom: 8mm !important; padding-bottom: 6mm; border-bottom: 1px solid #d4d0c4; }
+
+  /* SNAPSHOT */
+  .snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm 6mm; margin-bottom: 15mm; }
+  .snapshot-item { padding-top: 4mm; border-top: 1px solid #1f3d2f; }
+  .snapshot-value { font-family: Georgia, serif; font-size: 22pt; font-weight: 500; line-height: 1; letter-spacing: -0.02em; color: #1a1a18; margin-bottom: 3mm; }
+  .snapshot-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; }
+  .snapshot-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm 12mm; padding-top: 8mm; border-top: 1px solid #d4d0c4; }
+  .snapshot-meta-item { display: flex; flex-direction: column; gap: 2mm; }
+  .snapshot-meta-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; }
+  .snapshot-meta-value { font-size: 11pt; color: #1a1a18; }
+
+  /* PRIORITY */
+  .priority { padding: 18mm 18mm 15mm; }
+  .priority-header { margin-bottom: 6mm; }
+  .priority-meta { display: flex; align-items: center; gap: 4mm; margin-bottom: 4mm; }
+  .priority-num { font-family: 'Courier New', monospace; font-size: 8pt; letter-spacing: 0.15em; text-transform: uppercase; color: #8a8578; }
+  .priority-badge { display: inline-block; padding: 1.5mm 3mm; font-family: 'Courier New', monospace; font-size: 7pt; text-transform: uppercase; letter-spacing: 0.12em; border-radius: 8mm; }
+  .badge-pending { background: rgba(166,75,42,0.15); color: #a64b2a; }
+  .badge-progress { background: rgba(31,61,47,0.15); color: #1f3d2f; }
+  .priority-title { font-family: Georgia, serif; font-size: 26pt; font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; color: #1a1a18; margin-bottom: 3mm; }
+  .priority-summary { font-family: Georgia, serif; font-size: 11pt; font-style: italic; color: #6a6560; line-height: 1.4; max-width: 150mm; }
+  .priority-images { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-bottom: 6mm; }
+  .priority-image { margin: 0; overflow: hidden; }
+  .priority-image img { width: 100%; height: 55mm; object-fit: cover; display: block; }
+  .priority-image figcaption { font-family: 'Courier New', monospace; font-size: 7pt; text-transform: uppercase; letter-spacing: 0.1em; color: #8a8578; padding-top: 2mm; line-height: 1.4; }
+  .priority-image-present figcaption::before { content: '● Present · '; color: #a64b2a; }
+  .priority-image-required figcaption::before { content: '◆ Vision · '; color: #1f3d2f; }
+  .priority-body { display: grid; gap: 5mm; }
+  .priority-section-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.15em; color: #1f3d2f; margin-bottom: 2mm; padding-bottom: 1.5mm; border-bottom: 1px solid #1f3d2f; display: inline-block; }
+  .priority-section p { font-size: 10pt; line-height: 1.55; color: #3a3a34; }
+  .priority-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; }
+  .priority-fact { display: flex; flex-direction: column; gap: 1mm; padding-top: 2mm; border-top: 1px solid #e0dcd0; }
+  .priority-fact-label { font-family: 'Courier New', monospace; font-size: 7pt; text-transform: uppercase; letter-spacing: 0.12em; color: #8a8578; }
+  .priority-fact-value { font-size: 10pt; color: #1a1a18; font-weight: 500; }
+
+  /* ACHIEVEMENT */
+  .achievement-image { margin: 6mm 0; overflow: hidden; }
+  .achievement-image img { width: 100%; max-height: 100mm; object-fit: cover; display: block; }
+  .achievement-description { font-size: 11pt; line-height: 1.6; color: #3a3a34; max-width: 155mm; margin-bottom: 8mm; }
+  .achievement-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(40mm, 1fr)); gap: 5mm; padding-top: 6mm; border-top: 1px solid #d4d0c4; }
+  .achievement-fact { display: flex; flex-direction: column; gap: 2mm; }
+  .achievement-fact-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; }
+  .achievement-fact-value { font-family: Georgia, serif; font-size: 12pt; color: #1a1a18; font-weight: 500; }
+
+  /* ROADMAP */
+  .roadmap-years { font-family: 'Courier New', monospace; font-size: 10pt; letter-spacing: 0.14em; color: #8a8578; margin-bottom: 3mm; }
+  .roadmap-focus { font-family: Georgia, serif; font-size: 12pt; font-style: italic; color: #6a6560; margin-bottom: 10mm; }
+  .roadmap-items { list-style: none; display: grid; gap: 6mm; }
+  .roadmap-item { display: grid; grid-template-columns: auto 1fr; gap: 5mm; padding-bottom: 5mm; border-bottom: 1px solid #e0dcd0; align-items: start; }
+  .roadmap-item:last-child { border-bottom: none; }
+  .roadmap-icon { font-size: 16pt; line-height: 1; }
+  .roadmap-item strong { font-family: Georgia, serif; font-size: 12pt; font-weight: 500; color: #1a1a18; display: block; margin-bottom: 1.5mm; }
+  .roadmap-item p { font-size: 10pt; line-height: 1.5; color: #6a6560; }
+
+  /* ADOPTION */
+  .adoption-lead { font-family: Georgia, serif; font-size: 13pt; font-style: italic; line-height: 1.5; color: #1a1a18; margin-bottom: 8mm; padding-bottom: 6mm; border-bottom: 1px solid #d4d0c4; max-width: 155mm; }
+  .adoption p { font-size: 11pt; line-height: 1.6; color: #3a3a34; margin-bottom: 6mm; max-width: 155mm; }
+  .signature-lines { margin: 15mm 0 10mm; display: grid; gap: 12mm; }
+  .signature-line { display: grid; gap: 2mm; }
+  .signature-blank { height: 12mm; border-bottom: 1px solid #1a1a18; }
+  .signature-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; }
+  .adoption-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; padding-top: 8mm; border-top: 1px solid #d4d0c4; margin-top: 10mm; }
+  .adoption-meta-label { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.14em; color: #8a8578; margin-bottom: 2mm; }
+  .adoption-meta-value { font-size: 11pt; color: #1a1a18; }
+
+  /* BACK COVER */
+  .back-cover { background: #1a1a18; color: #f7f5ef; justify-content: space-between; padding: 0; }
+  .back-cover-content { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40mm 25mm; }
+  .back-cover-quote { font-family: Georgia, serif; font-size: 18pt; font-style: italic; line-height: 1.45; color: rgba(247,245,239,0.92); max-width: 140mm; margin-bottom: 8mm; }
+  .back-cover-attribution { font-family: 'Courier New', monospace; font-size: 9pt; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(247,245,239,0.5); }
+  .back-cover-footer { padding: 15mm 25mm; border-top: 1px solid rgba(247,245,239,0.15); display: flex; justify-content: space-between; align-items: flex-end; gap: 10mm; }
+  .back-cover-brand { font-family: Georgia, serif; font-size: 14pt; font-weight: 500; color: #f7f5ef; }
+  .back-cover-info { font-family: 'Courier New', monospace; font-size: 8pt; text-transform: uppercase; letter-spacing: 0.12em; line-height: 1.7; color: rgba(247,245,239,0.5); text-align: right; }
 
   @media print {
     html, body { background: white; }
@@ -1317,13 +796,11 @@ async function renderPDF(html, outputPath) {
   try {
     const page = await browser.newPage();
 
-    // Set content
     await page.setContent(html, {
       waitUntil: 'networkidle0',
       timeout: 60000,
     });
 
-    // Wait for images to load
     await page.evaluate(() => {
       return Promise.all(
         Array.from(document.images)
@@ -1335,22 +812,15 @@ async function renderPDF(html, outputPath) {
       );
     });
 
-    // Emulate print media
     await page.emulateMediaType('print');
 
-    // Generate PDF
     console.log(`  ${COLORS.gray}Rendering PDF...${COLORS.reset}`);
     await page.pdf({
       path: outputPath,
       format: 'A4',
       printBackground: true,
       preferCSSPageSize: true,
-      margin: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
+      margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
 
     return true;
