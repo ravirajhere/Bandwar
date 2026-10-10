@@ -1,5 +1,4 @@
 {
-  "$schema": "./master.schema.json",
   "version": "5.0.0",
   "lastUpdated": "2026-10-10",
 
@@ -75,9 +74,9 @@
   },
 
   "seo": {
-    "titlePattern": "{title} — Bandwar Archive",
+    "titlePattern": "{title} — {site} Archive",
     "titlePatternHome": "{siteName}",
-    "defaultDescription": "A community-built digital archive of Bandwar village, Begusarai (Bihar).",
+    "defaultDescription": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — history, temples, schools, culture, and daily life.",
     "ogImage": "/images/home/bandwar-hero.jpg",
     "ogImageWidth": 1200,
     "ogImageHeight": 630,
@@ -98,7 +97,7 @@
       "forbiddenPrefixes": ["img", "photo", "image", "pic"],
       "forbiddenPatterns": ["^\\d+-", "-\\d+-"]
     },
-    "altTextTemplate": "{caption} — {village.name}, {village.district} ({year})",
+    "altTextTemplate": "{caption} — {village}, {district} ({year})",
     "captionMinLength": 30,
     "captionMaxLength": 160,
     "generateWebP": true,
@@ -112,27 +111,9 @@
     "addImageSchema": true,
     "addToImageSitemap": true,
     "license": "https://bandwar.vercel.app/about#license",
+    "acquireLicensePage": "https://bandwar.vercel.app/about#license",
     "creditText": "Bandwar Village Archive",
     "creator": "Bandwar Village Community"
-  },
-
-  "images": {
-    "sizes": {
-      "thumbnail": 400,
-      "card": 800,
-      "hero": 1600,
-      "og": 1200
-    },
-    "formats": {
-      "fallback": "jpg",
-      "modern": ["webp", "avif"]
-    },
-    "aspectRatios": {
-      "hero": "16/9",
-      "card": "4/3",
-      "gallery": "1/1",
-      "portrait": "4/5"
-    }
   },
 
   "contact": {
@@ -172,7 +153,7 @@
 
   "license": {
     "code": "MIT",
-    "content": "© Bandwar Village Community — Not for commercial use",
+    "content": "© Bandwar Village Community",
     "url": "/about#license"
   },
 
@@ -184,39 +165,134 @@
     "areaServed": "Bandwar, Begusarai, Bihar, India"
   },
 
-  "content": {
-    "defaultAuthor": "Bandwar Village Archive",
-    "defaultLanguage": "en-IN",
-    "dateFormat": "YYYY-MM-DD",
-    "timezone": "Asia/Kolkata",
-    "minWordCount": 400,
-    "targetWordCount": 800,
-    "minSectionsPerArticle": 3,
-    "minRelatedArticles": 2,
-    "minTagsPerArticle": 3
+  "home": {
+    "hero": {
+      "image": "/images/home/bandwar-hero.jpg",
+      "alt": "The Burhi Gandak river at dawn, near Bandwar village, Begusarai",
+      "location": "Begusarai District · Bihar · Mithila Region",
+      "title": "Bandwar",
+      "tagline": "A community-built digital archive of a village on the banks of the Burhi Gandak — its history, its temples, its people, and its daily life."
+    },
+    "meta": [
+      { "label": "Latitude · Longitude", "value": "25.5009°N · 86.1606°E" },
+      { "label": "Postal Code", "value": "851131" },
+      { "label": "Population", "value": "12,943" },
+      { "label": "Area", "value": "840 hectares" }
+    ],
+    "stats": [
+      { "value": "2,600", "label": "Years of history" },
+      { "value": "12,943", "label": "Population (2011)" },
+      { "value": "840", "label": "Hectares" },
+      { "value": "{{articleCount}}", "label": "Articles" }
+    ],
+    "pullquote": {
+      "text": "In 1942, this village offered free education, food, and lodging. In 2026, its school has no electricity.",
+      "cite": "Bandwar, September 2025"
+    },
+    "about": {
+      "eyebrow": "About This Archive",
+      "title": "A Village in Its Own Words",
+      "paragraphs": [
+        "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people.",
+        "This archive is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
+        "Every article, every photograph, every fact — contributed or verified by residents of Bandwar and their descendants."
+      ]
+    },
+    "cta": {
+      "label": "Contribute to the Archive",
+      "href": "/contribute"
+    }
   },
 
-  "build": {
-    "outputDir": "dist",
-    "cleanOutput": true,
-    "minifyHTML": true,
-    "minifyCSS": true,
-    "minifyJS": true,
-    "inlineCriticalCSS": true,
-    "generateSitemaps": true,
-    "generateManifesto": true,
-    "validateRules": true,
-    "failOnValidationError": true
-  },
+  "about": {
+    "intro": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life. Kept by the village, for the record.",
 
-  "rules": {
-    "noInlineCSS": true,
-    "noHardcodedColors": true,
-    "noQueryParamURLs": true,
-    "requireAltText": true,
-    "requireImageSitemap": true,
-    "requireSchema": true,
-    "requireCanonical": true,
-    "requireMetaTags": true
+    "story": [
+      "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people.",
+      "This archive is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
+      "Every article, every photograph, every fact — contributed or verified by residents of Bandwar and their descendants."
+    ],
+
+    "principles": [
+      {
+        "icon": "🔒",
+        "title": "Non-political",
+        "description": "We don't endorse parties or candidates. Achievements are credited by name; failures are documented by fact. Never by affiliation."
+      },
+      {
+        "icon": "📖",
+        "title": "Every fact is sourced",
+        "description": "Nothing published without a source — public record, resident verification, or personal observation."
+      },
+      {
+        "icon": "🤝",
+        "title": "Nothing without consent",
+        "description": "Every photograph, memory, and contribution is published only with the explicit consent of the person who shared it."
+      },
+      {
+        "icon": "👥",
+        "title": "Community-led",
+        "description": "This isn't a government project. It isn't a commercial venture. It's a record of a village, kept by the village."
+      },
+      {
+        "icon": "🌐",
+        "title": "Free & open",
+        "description": "The archive is free to read, and the code is open source. Anyone can adapt it for their own village."
+      }
+    ],
+
+    "sources": [
+      {
+        "type": "Government Record",
+        "name": "Census of India, 2011",
+        "url": "https://censusindia.gov.in/",
+        "detail": "Population, households, sanitation"
+      },
+      {
+        "type": "Government Portal",
+        "name": "MGNREGA Public Portal",
+        "url": "https://nrega.nic.in/",
+        "detail": "Employment records, project data"
+      },
+      {
+        "type": "Government Dashboard",
+        "name": "Jal Jeevan Mission",
+        "url": "https://jaljeevanmission.gov.in/",
+        "detail": "Water infrastructure data"
+      },
+      {
+        "type": "Media",
+        "name": "News18, Prabhat Khabar, Hindustan, Dainik Jagran",
+        "detail": "Local coverage 2024–2026"
+      },
+      {
+        "type": "Government Record",
+        "name": "Rajya Sabha Records",
+        "detail": "MPLAD fund allocation"
+      },
+      {
+        "type": "Archaeological",
+        "name": "Archaeological Survey of India",
+        "detail": "Historical context"
+      },
+      {
+        "type": "Primary Research",
+        "name": "Personal Interviews",
+        "detail": "Village elders, 2024–2026"
+      }
+    ],
+
+    "community": {
+      "lead": "The Bandwar Archive is maintained by a committee of residents, former residents, and their descendants. It is a volunteer effort — no one is paid, and nothing is published for profit.",
+      "contributors": "Every photograph, memory, and document shared with the archive is credited by name. Over 40 residents and descendants have contributed since 2024."
+    },
+
+    "committee": [
+      {
+        "role": "Founder",
+        "name": "Ravi Raj",
+        "link": "https://github.com/ravirajhere"
+      }
+    ]
   }
 }
