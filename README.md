@@ -21,7 +21,10 @@
 [![PWA](https://img.shields.io/badge/PWA-Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://bandwar.vercel.app)
 [![Built with Vanilla JS](https://img.shields.io/badge/Built_with-Vanilla_JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://bandwar.vercel.app)
 
-[![Deploy](https://github.com/ravirajhe/Bandwar/actions/workflows/build.yml/badge.svg)](https://github.com/ravirajhe/Bandwar/actions/workflows/build.yml)
+[![Build](https://github.com/ravirajhe/Bandwar/actions/workflows/build.yml/badge.svg)](https://github.com/ravirajhe/Bandwar/actions/workflows/build.yml)
+[![Manifesto](https://github.com/ravirajhe/Bandwar/actions/workflows/manifesto.yml/badge.svg)](https://github.com/ravirajhe/Bandwar/actions/workflows/manifesto.yml)
+[![Optimize Images](https://github.com/ravirajhe/Bandwar/actions/workflows/optimize-images.yml/badge.svg)](https://github.com/ravirajhe/Bandwar/actions/workflows/optimize-images.yml)
+
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge)](CONTRIBUTING.md)
 [![Made with ❤️ in Bihar](https://img.shields.io/badge/Made_with_❤️_in-Bihar,_India-ff9933?style=for-the-badge)]()
 
@@ -44,13 +47,14 @@
 - [Why This Archive Exists](#-why-this-archive-exists)
 - [Screenshots](#-screenshots)
 - [Features](#-features)
-- [Architecture](#-architecture)
+- [Architecture](#️-architecture)
 - [Project Structure](#-project-structure)
 - [Data Model](#-data-model)
 - [The Rolling Horizon Model](#-the-rolling-horizon-model)
-- [SEO Architecture](#-seo-architecture)
+- [SEO & Rich Results](#-seo--rich-results)
 - [Image Pipeline](#-image-pipeline)
-- [Automation](#-automation)
+- [Automation](#️-automation)
+- [Performance](#-performance)
 - [Quick Start](#-quick-start)
 - [How to Add Content](#-how-to-add-content)
 - [Theming](#-theming)
@@ -60,7 +64,7 @@
 - [FAQ](#-faq)
 - [License](#-license)
 - [Contact](#-contact)
-- [Roadmap](#-roadmap)
+- [Roadmap](#️-roadmap)
 
 </details>
 
@@ -120,6 +124,8 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
 
 </div>
 
+> **Note:** Screenshots are being captured. See `docs/screenshots/` (coming soon).
+
 ---
 
 ## ✨ Features
@@ -130,9 +136,9 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
 - **Category browser** — 10 categories with live article counts
 - **Interactive map** — 18 landmarks rendered with Leaflet.js + Esri satellite imagery
 - **2,600-year timeline** — from the Anga Mahajanapada to present, across 4 historical eras
-- **Photo gallery** — curated photographs with category filters and lightbox viewing
-- **Vision page** — development priorities with before/after image sliders
-- **Achievement records** — completed projects with funding details
+- **Photo gallery** — 37 curated photographs with category filters and lightbox viewing
+- **Vision page** — 15 development priorities with before/after image sliders
+- **Achievement records** — 4 completed projects with funding details
 - **Community contributions** — email-based submissions, no backend required
 
 ### 🎨 Design
@@ -150,16 +156,24 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
 - **Open Graph + Twitter Cards** — dynamic per article
 - **hreflang ready** — `en-IN`, `x-default` (Hindi version ready)
 - **Image SEO** — descriptive filenames, alt text, captions, license schema
-- **Google Search Console** verified
+- **Google Search Console** verified — **47 pages discovered** ✅
+- **Rich Results** — All schema types validated by Google
 
 ### ⚡ Performance
 - **Zero runtime dependencies** — pure HTML, CSS, vanilla JavaScript
 - **Sub-second load time** — no frameworks, no bundlers
-- **WebP + AVIF** — modern image formats (60-80% smaller)
+- **WebP + AVIF** — modern image formats (60–80% smaller)
 - **Responsive images** — automatic srcset generation
 - **Lazy loading** — all below-fold images
 - **PWA installable** — works offline via service worker
 - **LCP optimized** — preload hints for hero images
+
+### 📄 Manifesto
+- **Rolling horizon model** — "Bandwar 2036" auto-shifts each year
+- **Auto-generated PDF** — `Vision-Vikshit-Bandwar.pdf`
+- **A4 print-ready** — 34-page document via Puppeteer
+- **Auto-cleanup** — old PDFs removed automatically
+- **Auto-committed** via GitHub Actions
 
 ---
 
@@ -213,15 +227,20 @@ bandwar/
 │
 ├── 📁 .github/
 │   ├── 📁 workflows/
-│   │   ├── build.yml                    # Build + deploy pipeline
-│   │   ├── generate-manifesto.yml       # Auto-regenerate PDF
-│   │   └── generate-sitemaps.yml        # Auto-regenerate sitemaps
-│   └── 📁 ISSUE_TEMPLATE/
+│   │   ├── build.yml                    # Site build + sitemaps (30 sec)
+│   │   ├── manifesto.yml                # PDF regeneration (rare, 3 min)
+│   │   └── optimize-images.yml          # WebP + AVIF (rare, 3 min)
+│   ├── 📁 ISSUE_TEMPLATE/
+│   │   ├── bug_report.md
+│   │   ├── feature_request.md
+│   │   ├── content_correction.md
+│   │   └── new_content.md
+│   └── PULL_REQUEST_TEMPLATE.md
 │
 ├── 📁 data/                             # ⭐ Single source of truth
 │   ├── master.json                      # Site + brand + nav + SEO + features
 │   ├── content.json                     # 30 articles + 10 categories
-│   ├── vision.json                      # Priorities + achievements + roadmap
+│   ├── vision.json                      # 15 priorities + 4 achievements + roadmap
 │   └── media.json                       # Gallery + landmarks + timeline
 │
 ├── 📁 templates/                        # ⭐ Build-time templates
@@ -239,10 +258,10 @@ bandwar/
 │       └── footer.html                  # Footer
 │
 ├── 📁 scripts/                          # Build tools
-│   ├── build.cjs                        # Main build engine
+│   ├── build.cjs                        # Main build engine (44 pages)
 │   ├── validate.cjs                     # Rule enforcement
 │   ├── optimize-images.cjs              # WebP + AVIF + responsive
-│   ├── generate-sitemaps.cjs            # Sitemaps
+│   ├── generate-sitemaps.cjs            # 3 sitemaps
 │   └── generate-manifesto.cjs           # Puppeteer PDF
 │
 ├── 📁 css/                              # Source styles
@@ -269,16 +288,19 @@ bandwar/
 ├── 📁 docs/                             # Documentation
 │   └── screenshots/                     # README screenshots
 │
+├── 📁 assets/
+│   └── 📁 pdfs/
+│       └── Vision-Vikshit-Bandwar.pdf  # Auto-generated manifesto
+│
 ├── 📁 dist/                             # Build output (gitignored)
 │   ├── index.html
 │   ├── article/*.html                   # 30 pages
 │   ├── section/*.html                   # 11 pages
-│   ├── place.html, time.html, ...
-│   ├── sitemap.xml, sitemap-images.xml
+│   ├── place.html, time.html, vision.html, about.html, 404.html
+│   ├── sitemap.xml, sitemap-images.xml, sitemap-index.xml
 │   ├── robots.txt, manifest.json, sw.js
 │   └── assets/                          # Copied CSS/JS/images
 │
-├── 📄 master.json (in data/)            # Site config
 ├── 📄 LICENSE                           # MIT (code) + © Community (content)
 ├── 📄 README.md                         # You are here
 ├── 📄 package.json                      # Scripts + dev deps
@@ -286,7 +308,16 @@ bandwar/
 ├── 📄 robots.txt                        # Crawler directives
 ├── 📄 manifest.json                     # PWA manifest
 ├── 📄 sw.js                             # Service worker
-└── 📄 humans.txt                        # Web credits
+├── 📄 offline.html                      # PWA offline fallback
+├── 📄 humans.txt                        # Web credits
+├── 📄 CHANGELOG.md                      # Version history
+├── 📄 CONTRIBUTING.md                   # Contribution guide
+├── 📄 CODE_OF_CONDUCT.md                # Community standard
+├── 📄 SECURITY.md                       # Security policy
+├── 📄 .gitignore
+├── 📄 .gitattributes
+├── 📄 .editorconfig
+└── 📄 .nvmrc
 ```
 
 ---
@@ -299,18 +330,20 @@ bandwar/
 Site config — the **master key**:
 ```json
 {
-  "site": { "name", "url", "language", "description", ... },
-  "village": { "name", "coordinates", "population", ... },
+  "site": { "name", "url", "language", "description", "edition" },
+  "village": { "name", "coordinates", "population", "pincode" },
   "brand": { "colors", "fonts" },
   "nav": [...],
   "footer": {...},
   "seo": {...},
+  "imageSEO": {...},
   "home": { "hero", "stats", "about", "cta" },
-  "about": { "story", "principles", "sources", ... },
+  "about": { "story", "principles", "sources", "community" },
   "contact": {...},
   "social": {...},
   "features": {...},
-  "license": {...}
+  "license": { "code", "content" },
+  "organization": {...}
 }
 ```
 
@@ -339,9 +372,10 @@ Rolling horizon vision:
 Photos + landmarks + timeline:
 ```json
 {
-  "gallery": [37 photos],
+  "gallery": { "categories": [...], "photos": [37 items] },
   "landmarks": [18 landmarks with coordinates],
-  "timeline": [15 events across 4 eras]
+  "timeline": [16 events across 4 eras],
+  "eras": [4 era definitions]
 }
 ```
 
@@ -349,7 +383,7 @@ Photos + landmarks + timeline:
 
 ## 🔄 The Rolling Horizon Model
 
-**Bandwar 2035** is not fixed. It's a **rolling 10-year horizon** that auto-shifts every year.
+**Bandwar {currentYear + 10}** — not fixed. It's a **rolling 10-year horizon** that auto-shifts every year.
 
 ```
 Year 2026 → "Bandwar 2036" (current year + 10)
@@ -369,7 +403,7 @@ Year 2028 → "Bandwar 2038"
 
 ---
 
-## 🔍 SEO Architecture
+## 🔍 SEO & Rich Results
 
 Every indexable page carries a **complete `<head>`**:
 
@@ -395,6 +429,13 @@ Every indexable page carries a **complete `<head>`**:
 | Vision | Report + ItemList + BreadcrumbList |
 | About | AboutPage + Organization + BreadcrumbList |
 
+### Google Verified ✅
+
+- **Google Search Console:** Verified
+- **Sitemap Discovered:** 47 pages
+- **Rich Results:** Article, Breadcrumb, ImageObject, Organization — all detected
+- **PageSpeed SEO:** 100/100
+
 ### Sitemaps (auto-generated)
 
 - `sitemap.xml` — page URLs (40+ pages)
@@ -408,7 +449,7 @@ Every indexable page carries a **complete `<head>`**:
 **Every image gets:**
 - ✅ **WebP conversion** (60% smaller)
 - ✅ **AVIF conversion** (70% smaller)
-- ✅ **Responsive variants** (400, 800, 1200, 1600px)
+- ✅ **Responsive variants** (400, 800, 1200px)
 - ✅ **Descriptive filenames** (kebab-case)
 - ✅ **Alt text + captions**
 - ✅ **License schema**
@@ -427,19 +468,68 @@ Every indexable page carries a **complete `<head>`**:
 
 ## ⚙️ Automation
 
-**Two workflows keep content in sync:**
+**Three workflows keep everything in sync:**
 
-### `build.yml` — Runs on push to `main`
-1. Validate data + rules
-2. Optimize images (WebP + AVIF + responsive)
-3. Build static site (44 pages)
-4. Generate sitemaps
-5. Generate manifesto PDF
-6. Commit optimized images
-7. Trigger Vercel deploy hook
+### 1. `build.yml` — Fast (~30 sec)
+**Triggers:** Changes to `data/**`, `templates/**`, `css/**`, `js/**`, `scripts/**`, `images/**`
+- Validate data + rules
+- Build static site (44 pages)
+- Generate sitemaps
+- Upload artifact
 
-### `generate-sitemaps.yml` — Runs on data changes
-- Regenerates `sitemap.xml` + `sitemap-images.xml`
+### 2. `manifesto.yml` — Slow but rare (~3 min)
+**Triggers:** Changes to `data/vision.json`, `templates/vision.html`, `scripts/generate-manifesto.cjs`
+- Generate PDF via Puppeteer + sharp
+- Auto-delete old PDFs
+- Commit `Vision-Vikshit-Bandwar.pdf` with `[skip ci]`
+
+### 3. `optimize-images.yml` — Slow but rare (~3 min)
+**Triggers:** Changes to `images/**`
+- Convert to WebP + AVIF
+- Generate responsive variants
+- Commit with `[skip ci]`
+
+**Vercel auto-deploy:**
+- Enabled via `vercel.json` (no `deploymentEnabled: false`)
+- **Ignored Build Step** set to skip `[skip ci]` commits
+- Daily limit: 100/day (safe)
+
+---
+
+## 📊 Performance
+
+### Current Status
+
+| Metric | Mobile | Desktop | Target |
+|---|---|---|---|
+| **Performance** | 68 | 90+ | 85+ |
+| **Accessibility** | 94 | 95 | 90+ |
+| **Best Practices** | 96 | 100 | 90+ |
+| **SEO** | **100** ✅ | **100** ✅ | 100 |
+
+### Core Web Vitals (Mobile)
+
+| Metric | Current | Target | Status |
+|---|---|---|---|
+| **FCP** | 3.3s | < 1.8s | 🟡 In Progress |
+| **LCP** | 8.5s | < 2.5s | 🟡 In Progress |
+| **TBT** | 0ms | < 200ms | ✅ Perfect |
+| **CLS** | 0 | < 0.1 | ✅ Perfect |
+
+### Optimizations Applied
+
+- ✅ Async font loading (`media="print" onload="this.media='all'"`)
+- ✅ Preload hints for fonts + CSS
+- ✅ DNS prefetch for Google Fonts
+- ✅ Reduced responsive image widths (400/800/1200)
+- ✅ Hero preload at 800px (not 1200px)
+- ✅ Font-display swap
+
+### Optimizations Planned
+
+- 🟡 Critical CSS inline
+- 🟡 Reduce unused CSS
+- 🟡 Further image compression
 
 ---
 
@@ -526,9 +616,9 @@ npm run validate
 ### ➕ Add a photo
 
 1. Add image to `images/culture/` (kebab-case name)
-2. Add entry to `data/media.json` under `gallery`
-3. Run `npm run optimize-images`
-4. Commit — image sitemap updates
+2. Add entry to `data/media.json` under `gallery.photos`
+3. Push — `optimize-images.yml` runs automatically
+4. Commits WebP/AVIF variants
 
 ### ➕ Add a landmark
 
@@ -635,11 +725,11 @@ npm run validate
 | **PWA** | Service Worker + Manifest |
 | **PDF Generation** | Puppeteer + sharp (dev only) |
 | **Image Optimization** | sharp (dev only) |
-| **Automation** | GitHub Actions |
+| **Automation** | GitHub Actions (3 workflows) |
 
 **Runtime dependencies:** 0 (all assets self-hosted)
 **Build-time dependencies:** 3 (Puppeteer, sharp, chokidar)
-**Build time:** ~1 second (static site)
+**Build time:** ~30 seconds
 
 ---
 
@@ -675,9 +765,11 @@ git push origin feature/amazing-feature
 feat: add new feature
 fix: resolve bug
 docs: update documentation
-style: formatting
-refactor: code restructure
+perf: performance improvement
+chore: maintenance task
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full details.
 
 ---
 
@@ -717,6 +809,10 @@ The archive is built and maintained by the **Bandwar Village Community**, with t
 ### What is the rolling horizon model?
 
 Instead of a fixed "Bandwar 2035", the vision auto-shifts each year: 2026 → "Bandwar 2036", 2027 → "Bandwar 2037". Completed priorities move automatically from Vision to Achievements.
+
+### What is the Vision-Vikshit-Bandwar.pdf?
+
+It's the auto-generated A4 manifesto — a 34-page PDF document containing 15 development priorities, 4 achievements, and a 10-year roadmap. Regenerated automatically on every `vision.json` change.
 
 ### Is this archive affiliated with the government?
 
@@ -764,22 +860,27 @@ The **content** (articles, photographs, documents) is **© Bandwar Village Commu
 - 30 articles across 7 categories
 - Interactive map with 18 landmarks
 - 2,600-year timeline with 4 eras
-- Photo gallery with lightbox
-- Vision page with before/after sliders
-- Government achievements documented
-- Rolling horizon manifesto (auto-shifting)
-- Complete SEO architecture (schema, sitemaps, meta)
-- Image sitemap (auto-generated, filesystem-checked)
-- Two-file theme system with 4 presets
-- PWA installability with offline cache
-- Clean URLs everywhere
-- Dark mode toggle with localStorage
-- WebP + AVIF image pipeline
-- Responsive images with srcset
+- Photo gallery (37 photos) with lightbox
+- Vision page with 15 before/after sliders
+- 4 government achievements documented
+- **Rolling horizon manifesto** (auto-shifting)
+- **Auto-generated PDF** (`Vision-Vikshit-Bandwar.pdf`)
+- **Complete SEO architecture** (schema, sitemaps, meta)
+- **Image sitemap** (auto-generated, filesystem-checked)
+- **Two-file theme system** with 4 presets
+- **PWA installability** with offline cache
+- **Clean URLs** everywhere
+- **Dark mode toggle** with localStorage
+- **WebP + AVIF image pipeline**
+- **Responsive images** with srcset
+- **Google Search Console** verified — 47 pages discovered
+- **Rich Results** — All schemas validated
+- **3 GitHub workflows** (build, manifesto, images)
 
 ### ⏳ In Progress
+- PageSpeed optimization (async fonts, image compression)
 - AI-generated "required" images for pending priorities
-- Vercel webhook stability monitoring
+- Screenshots for documentation
 
 ### ☐ Planned
 - Hindi version (`hi-IN` with `/hi/` routes)
@@ -790,6 +891,7 @@ The **content** (articles, photographs, documents) is **© Bandwar Village Commu
 - Additional priorities — Drainage, Playground, Piped Water, Library
 - Signature page — printed copy at Panchayat
 - Google Business Profile for local pack
+- Backlinks strategy (Reddit, Quora, Wikipedia)
 
 ---
 
