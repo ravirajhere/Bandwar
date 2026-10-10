@@ -126,7 +126,8 @@ function toAvif(imagePath) {
   return imagePath.replace(/\.(jpe?g|png)$/i, '.avif');
 }
 
-function buildSrcset(imagePath, widths = [400, 800, 1200, 1600]) {
+// ✅ CHANGED: default widths exclude 1600 (mobile waste)
+function buildSrcset(imagePath, widths = [400, 800, 1200]) {
   if (!imagePath) return '';
   const base = imagePath.replace(/\.(jpe?g|png)$/i, '');
   const ext = imagePath.match(/\.(jpe?g|png)$/i)?.[0] || '.jpg';
@@ -904,12 +905,14 @@ function preloadImage(imagePath, master, options = {}) {
     isHero = false,
   } = options;
 
+  // ✅ CHANGED: hero srcset smaller (600/800/1200 instead of 800/1200/1600)
   const srcset = isHero
-    ? buildSrcset(imagePath, [800, 1200, 1600])
+    ? buildSrcset(imagePath, [600, 800, 1200])
     : '';
 
+  // ✅ CHANGED: hero href uses 800px (was 1200px)
   const href = isHero
-    ? `${imagePath.replace(/\.(jpe?g|png)$/i, '-1200$1')}`
+    ? `${imagePath.replace(/\.(jpe?g|png)$/i, '-800$1')}`
     : imagePath;
 
   const hrefAbs = absoluteUrl(href, master.site.url);
