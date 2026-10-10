@@ -133,7 +133,6 @@ function buildSrcset(imagePath, widths = [400, 800, 1200, 1600]) {
   return widths.map(w => `${base}-${w}${ext} ${w}w`).join(', ');
 }
 
-/* ─── Group array by key (safe with non-array) ─── */
 function groupBy(arr, key) {
   if (!Array.isArray(arr)) return {};
   return arr.reduce((acc, item) => {
@@ -1030,7 +1029,7 @@ function renderManifestoBanner(master) {
             <p>15 priorities · 10-year roadmap · Download the PDF</p>
           </div>
           <div class="banner-actions">
-            <a href="/assets/pdfs/bandwar-vision-${currentYear}-${horizonEnd}.pdf" class="btn btn-primary" download>
+            <a href="/assets/pdfs/Vision-Vikshit-Bandwar.pdf" class="btn btn-primary" download>
               📄 Download PDF
             </a>
           </div>
@@ -1418,16 +1417,13 @@ function renderSectionCard(article, content, master) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGE RENDERER — PLACE (FIXED for new media.json structure)
+   PAGE RENDERER — PLACE
    ═══════════════════════════════════════════════════════════════════ */
 function renderPlace(templates, master, content, media) {
   const landmarks = media.landmarks || [];
-
-  // ─── FIX: gallery is now an object with .categories and .photos ───
   const gallery = media.gallery?.photos || [];
   const galleryCategories = media.gallery?.categories || [];
 
-  // ─── STATS ───
   const landmarkGroups = groupBy(landmarks, 'category');
   const mapStats = `
       <div class="map-stat">
@@ -1447,10 +1443,8 @@ function renderPlace(templates, master, content, media) {
         <span class="map-stat-label">Village area</span>
       </div>`;
 
-  // ─── FILTERS (landmarks — uses content categories) ───
   const mapFilters = renderPlaceFilters(landmarks, content.categories, 'place-filter');
 
-  // ─── LANDMARK LIST (SEO) ───
   const landmarkList = landmarks.map(l => {
     const cat = content.categories.find(c => c.id === l.category);
     return `
@@ -1467,7 +1461,6 @@ function renderPlace(templates, master, content, media) {
         </li>`;
   }).join('');
 
-  // ─── MARKERS JSON ───
   const landmarkMarkers = JSON.stringify({
     center: master.village.coordinates,
     zoom: 16,
@@ -1483,7 +1476,6 @@ function renderPlace(templates, master, content, media) {
     })),
   });
 
-  // ─── LEGEND ───
   const mapLegend = Object.entries(landmarkGroups).map(([catId, items]) => {
     const cat = content.categories.find(c => c.id === catId);
     return `
@@ -1494,10 +1486,8 @@ function renderPlace(templates, master, content, media) {
         </div>`;
   }).join('');
 
-  // ─── GALLERY FILTERS (uses gallery categories) ───
   const galleryFilters = renderPlaceFilters(gallery, galleryCategories, 'gallery-filter');
 
-  // ─── GALLERY ITEMS ───
   const galleryItems = gallery.map(photo => `
         <figure class="photo-item" data-cat="${escapeHtml(photo.category || '')}">
           <picture>
@@ -1554,7 +1544,6 @@ function renderPlace(templates, master, content, media) {
   });
 }
 
-/* ─── Place filters (uses 'category' key now) ─── */
 function renderPlaceFilters(items, categories, className) {
   const groups = groupBy(items, 'category');
   const allLabel = 'All';
@@ -1748,7 +1737,7 @@ function renderVision(templates, master, content, vision) {
             <p>${editionLabel} · ${activePriorities.length} priorities · ${allAchievements.length} achievements</p>
           </div>
           <div class="banner-actions">
-            <a href="/assets/pdfs/bandwar-vision-${currentYear}-${horizonEnd}.pdf" class="btn btn-primary" download>
+            <a href="/assets/pdfs/Vision-Vikshit-Bandwar.pdf" class="btn btn-primary" download>
               📄 Download PDF
             </a>
           </div>
@@ -2086,11 +2075,9 @@ function render404(templates, master) {
 function copyAssets() {
   console.log(`${COLORS.gray}  Copying assets...${COLORS.reset}`);
 
-  // CSS
   copyFile('css/theme.css', 'assets/css/theme.css');
   copyFile('css/style.css', 'assets/css/style.css');
 
-  // JS
   const jsFiles = ['core.js', 'articles.js', 'sections.js', 'places.js', 'time.js', 'vision.js'];
   jsFiles.forEach(f => {
     if (fs.existsSync(path.join(ROOT, 'js', f))) {
@@ -2098,12 +2085,10 @@ function copyAssets() {
     }
   });
 
-  // Vendor (Leaflet)
   if (fs.existsSync(path.join(ROOT, 'vendor/leaflet'))) {
     copyDir('vendor/leaflet', 'assets/vendor/leaflet');
   }
 
-  // Images
   if (fs.existsSync(path.join(ROOT, 'images'))) {
     copyDir('images', 'images', (rel) => {
       if (rel.includes('_source/')) return false;
@@ -2111,12 +2096,10 @@ function copyAssets() {
     });
   }
 
-  // PDFs
   if (fs.existsSync(path.join(ROOT, 'assets/pdfs'))) {
     copyDir('assets/pdfs', 'assets/pdfs');
   }
 
-  // Static root files
   const staticFiles = [
     'robots.txt',
     'manifest.json',
@@ -2169,7 +2152,6 @@ function main() {
 
   const { master, content, vision, media, categories, articles } = data;
 
-  // Resolve {{articleCount}} placeholder
   if (master.home?.stats) {
     master.home.stats = master.home.stats.map(stat => {
       if (stat.value === '{{articleCount}}') {
@@ -2182,12 +2164,10 @@ function main() {
   console.log('');
   console.log(`${COLORS.bold}Rendering pages...${COLORS.reset}`);
 
-  // Home
   writeFile('index.html', renderHome(templates, master, content));
   trackPage('home');
   console.log(`  ${COLORS.green}✓${COLORS.reset} index.html`);
 
-  // Articles
   articles.forEach(article => {
     const html = renderArticle(templates, master, content, article);
     writeFile(`article/${article.id}.html`, html);
@@ -2195,7 +2175,6 @@ function main() {
   });
   console.log(`  ${COLORS.green}✓${COLORS.reset} article/*.html (${articles.length} pages)`);
 
-  // Sections
   const allSection = renderSection(templates, master, content, null);
   writeFile(allSection.path, allSection.html);
   trackPage('section');
@@ -2207,36 +2186,29 @@ function main() {
   });
   console.log(`  ${COLORS.green}✓${COLORS.reset} section/*.html (${categories.length + 1} pages)`);
 
-  // Place
   writeFile('place.html', renderPlace(templates, master, content, media));
   trackPage('place');
   console.log(`  ${COLORS.green}✓${COLORS.reset} place.html`);
 
-  // Time
   writeFile('time.html', renderTime(templates, master, content, media));
   trackPage('time');
   console.log(`  ${COLORS.green}✓${COLORS.reset} time.html`);
 
-  // Vision
   writeFile('vision.html', renderVision(templates, master, content, vision));
   trackPage('vision');
   console.log(`  ${COLORS.green}✓${COLORS.reset} vision.html`);
 
-  // About
   writeFile('about.html', renderAbout(templates, master));
   trackPage('about');
   console.log(`  ${COLORS.green}✓${COLORS.reset} about.html`);
 
-  // 404
   writeFile('404.html', render404(templates, master));
   trackPage('error');
   console.log(`  ${COLORS.green}✓${COLORS.reset} 404.html`);
 
-  // Copy assets
   console.log('');
   copyAssets();
 
-  // Summary
   const elapsed = ((Date.now() - stats.startTime) / 1000).toFixed(2);
 
   console.log('');
