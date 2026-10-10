@@ -1,0 +1,37 @@
+{
+  "name": "bandwar-website",
+  "version": "5.0.0",
+  "private": true,
+  "description": "Bandwar — A Village Archive. Community-built digital archive of Bandwar village, Begusarai, Bihar. Static site + server-side PDF generation.",
+  "license": "MIT",
+  "author": "Bandwar Village Community",
+  "homepage": "https://bandwar.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ravirajhe/Bandwar.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "npm run validate && npm run build:site && npm run build:sitemaps",
+    "build:site": "node scripts/build.cjs --clean",
+    "build:sitemaps": "node scripts/generate-sitemaps.cjs",
+    "build:manifesto": "node scripts/generate-manifesto.cjs",
+    "build:full": "npm run optimize-images && npm run build && npm run build:manifesto",
+    "validate": "node scripts/validate.cjs",
+    "validate:strict": "node scripts/validate.cjs --strict",
+    "optimize-images": "node scripts/optimize-images.cjs",
+    "optimize-images:clean": "node scripts/optimize-images.cjs --clean",
+    "optimize-images:dry": "node scripts/optimize-images.cjs --dry-run",
+    "dev": "node scripts/build.cjs --watch",
+    "serve": "node scripts/build.cjs && npx serve dist -p 8000",
+    "serve:python": "python3 -m http.server 8000 --directory dist",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\" && echo 'Cleaned dist/'"
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.3",
+    "puppeteer": "^23.11.1",
+    "sharp": "^0.33.5"
+  }
+}
