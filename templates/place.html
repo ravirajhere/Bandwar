@@ -1,0 +1,133 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — PLACE TEMPLATE
+     Map + Gallery · Extends layout.html · Pre-rendered
+     
+     Two views (tabs):
+       1. Map      — Leaflet interactive + pre-rendered landmark list
+       2. Gallery  — Pre-rendered photo grid
+     
+     Variables used:
+       {{placeTitle}}          "Places"
+       {{placeIntro}}          Description
+       {{mapStats}}            Pre-rendered stat blocks
+       {{mapFilters}}          Pre-rendered filter chips (categories)
+       {{landmarkList}}        Pre-rendered <ul> for SEO fallback
+       {{landmarkMarkers}}     JSON data (embedded as <script>)
+       {{mapLegend}}           Pre-rendered legend items
+       {{galleryFilters}}      Pre-rendered filter chips
+       {{galleryItems}}        Pre-rendered <figure> elements
+       {{galleryCount}}        Total photo count
+       {{leafletCSS}}          Conditional — only if features.map
+       {{pageScripts}}         Conditional JS (places.js + Leaflet)
+     ═══════════════════════════════════════════════════════════════ -->
+
+<header class="place-head">
+  <div class="container-wide">
+    <span class="section-num">Explore</span>
+    <h1 class="place-title">{{placeTitle}}</h1>
+    <p class="place-intro">{{placeIntro}}</p>
+
+    <!-- ═══ TABS ═══ -->
+    <div class="place-tabs" role="tablist" aria-label="View mode">
+      <button class="place-tab active"
+              data-tab="map"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-map"
+              type="button">
+        🗺️ Map
+        <span class="place-tab-count">{{landmarkCount}}</span>
+      </button>
+      <button class="place-tab"
+              data-tab="gallery"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-gallery"
+              type="button">
+        📸 Gallery
+        <span class="place-tab-count">{{galleryCount}}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ MAP PANEL ═══ -->
+<section class="place-panel active"
+         id="panel-map"
+         data-panel="map"
+         role="tabpanel"
+         aria-labelledby="tab-map">
+  <div class="container-wide place-map-wrap">
+
+    <!-- Stats row (pre-rendered) -->
+    <div class="map-stats-row">
+      {{mapStats}}
+    </div>
+
+    <!-- Filter chips (pre-rendered) -->
+    <div class="map-filters" id="map-filters" role="group" aria-label="Filter landmarks">
+      {{mapFilters}}
+    </div>
+
+    <!-- Interactive map (Leaflet renders here) -->
+    <div class="place-map"
+         id="village-map"
+         aria-label="Interactive map of Bandwar village landmarks">
+      <noscript>
+        <p class="map-noscript">
+          The interactive map requires JavaScript.
+          See the landmark list below.
+        </p>
+      </noscript>
+    </div>
+
+    <!-- ═══ SEO FALLBACK: Pre-rendered landmark list ═══ -->
+    <section class="landmark-list-section" aria-labelledby="landmarks-heading">
+      <h2 class="landmark-list-heading" id="landmarks-heading">
+        Landmarks of Bandwar
+        <small>{{landmarkCount}} places across the village</small>
+      </h2>
+
+      <ul class="landmark-list" id="landmark-list">
+        {{landmarkList}}
+      </ul>
+    </section>
+
+    <!-- Legend -->
+    <div class="map-legend-section">
+      <h4 class="map-legend-title">Legend</h4>
+      <div class="map-legend-grid">
+        {{mapLegend}}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GALLERY PANEL ═══ -->
+<section class="place-panel"
+         id="panel-gallery"
+         data-panel="gallery"
+         role="tabpanel"
+         aria-labelledby="tab-gallery"
+         hidden>
+  <div class="container-wide place-gallery-wrap">
+
+    <!-- Filter chips (pre-rendered) -->
+    <div class="gallery-filters"
+         id="gallery-filters"
+         role="group"
+         aria-label="Filter photographs">
+      {{galleryFilters}}
+    </div>
+
+    <!-- Photo grid (pre-rendered) -->
+    <div class="place-gallery" id="photo-grid" aria-live="polite">
+      {{galleryItems}}
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LANDMARK DATA (for Leaflet — parsed by JS) ═══ -->
+<script type="application/json" id="landmark-data">
+{{landmarkMarkers}}
+</script>
