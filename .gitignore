@@ -1,0 +1,80 @@
+# ═══════════════════════════════════════════════════════════════════
+# BANDWAR — .gitignore
+# ═══════════════════════════════════════════════════════════════════
+
+# ─── BUILD OUTPUT ───
+dist/
+build/
+.cache/
+
+# ─── IMAGE PIPELINE ───
+.image-cache.json
+
+# WebP/AVIF (regenerated)
+images/**/*.webp
+images/**/*.avif
+
+# Responsive variants (regenerated)
+images/**/*-400.jpg
+images/**/*-800.jpg
+images/**/*-1200.jpg
+images/**/*-1600.jpg
+images/**/*-400.webp
+images/**/*-800.webp
+images/**/*-1200.webp
+images/**/*-1600.webp
+images/**/*-400.avif
+images/**/*-800.avif
+images/**/*-1200.avif
+images/**/*-1600.avif
+
+# Source-only folders
+images/_source/
+images/_draft/
+
+# ─── NODE ───
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ─── ENV ───
+.env
+.env.local
+.env.*.local
+*.env
+
+# ─── OS ───
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── EDITOR ───
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ─── LOGS ───
+*.log
+logs/
+
+# ─── TEMP ───
+*.tmp
+*.bak
+*.orig
+
+# ─── VERCEL ───
+.vercel/
+.now/
+
+# ─── TESTING ───
+coverage/
+.nyc_output/
