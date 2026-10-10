@@ -1,42 +1,21 @@
-<!-- ═══════════════════════════════════════════════════════════════
-     BANDWAR — TIME TEMPLATE
-     2,600 years of Bandwar history · Pre-rendered timeline
-     Extends layout.html · Used for: /time
-     
-     Variables used:
-       {{timeTitle}}          "Time"
-       {{timeIntro}}          Description
-       {{timeSpan}}           "2,600 years"
-       {{timeStats}}          Pre-rendered stat tiles
-       {{eraFilters}}         Pre-rendered era filter chips
-       {{erasContainer}}      Pre-rendered eras with all events
-       {{recentEvents}}       Recent events block (optional)
-       {{pageScripts}}        time.js for era filtering
-     ═══════════════════════════════════════════════════════════════ -->
-
 <header class="time-head">
   <div class="container-wide">
     <span class="section-num">History</span>
     <h1 class="time-title">{{timeTitle}}</h1>
     <p class="time-intro">{{timeIntro}}</p>
 
-    <!-- ═══ STATS ROW ═══ -->
     <div class="time-stats">
       {{timeStats}}
     </div>
 
-    <!-- ═══ ERA FILTERS ═══ -->
     <div class="time-filters" id="time-filters" role="group" aria-label="Filter by era">
       {{eraFilters}}
     </div>
   </div>
 </header>
 
-<!-- ═══ TIMELINE (pre-rendered) ═══ -->
 <section class="time-timeline">
   <div class="container-text">
-
     {{erasContainer}}
-
   </div>
 </section>
