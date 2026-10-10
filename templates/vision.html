@@ -1,32 +1,3 @@
-<!-- ═══════════════════════════════════════════════════════════════
-     BANDWAR — VISION TEMPLATE (Rolling Horizon)
-     Non-political development plan · Auto-shifts every year
-     Extends layout.html · Used for: /vision
-     
-     Rolling Horizon Model:
-       - Title: "Bandwar {horizonEnd}" (auto: current year + 10)
-       - Edition: {currentYear}-{horizonEnd}
-       - Roadmap: relative phases (Year 1-3, 4-6, 7-10)
-       - Priorities: auto-categorized by status (pending/in-progress/done)
-       - Archive: yearly editions preserved
-     
-     Variables used:
-       {{visionTitle}}          "Vision"
-       {{horizonEnd}}           "2036" (current year + 10)
-       {{editionLabel}}         "2026–2036 Edition"
-       {{currentYear}}          "2026"
-       {{visionIntro}}          Description with dynamic year
-       {{visionStats}}          Pre-rendered stat tiles
-       {{manifestoBanner}}      PDF download CTA
-       {{needsBlocks}}          Pre-rendered active priorities (status: pending/in-progress)
-       {{thanksBlocks}}         Pre-rendered completed (status: done)
-       {{roadmapPhases}}        Pre-rendered 3 relative phases
-       {{archiveLinks}}         Links to previous editions
-       {{contributeCTA}}        Pre-rendered CTA
-       {{pageScripts}}          vision.js
-     ═══════════════════════════════════════════════════════════════ -->
-
-<!-- ═══ 1. HERO ═══ -->
 <header class="vision-head">
   <div class="container-wide">
     <span class="section-num">Bandwar · {{editionLabel}}</span>
@@ -41,10 +12,8 @@
   </div>
 </header>
 
-<!-- ═══ 2. MANIFESTO CTA (conditional) ═══ -->
 {{manifestoBanner}}
 
-<!-- ═══ 3. NEEDS — ACTIVE PRIORITIES ═══ -->
 <section class="vision-section" aria-labelledby="needs-heading">
   <div class="container-wide">
     <header class="vision-section-head">
@@ -66,7 +35,6 @@
   </div>
 </section>
 
-<!-- ═══ 4. ACHIEVEMENTS — WHAT HAS BEEN DONE ═══ -->
 <section class="vision-section vision-section-alt" aria-labelledby="thanks-heading">
   <div class="container-wide">
     <header class="vision-section-head">
@@ -88,7 +56,6 @@
   </div>
 </section>
 
-<!-- ═══ 5. ROADMAP (relative phases) ═══ -->
 <section class="vision-section" aria-labelledby="roadmap-heading">
   <div class="container-wide">
     <header class="vision-section-head">
@@ -108,7 +75,6 @@
   </div>
 </section>
 
-<!-- ═══ 6. ARCHIVE — Previous Editions ═══ -->
 <section class="vision-archive" id="archive" aria-labelledby="archive-heading">
   <div class="container-wide">
     <header class="vision-section-head">
@@ -128,7 +94,6 @@
   </div>
 </section>
 
-<!-- ═══ 7. CONTRIBUTE CTA ═══ -->
 <section class="vision-cta-section">
   <div class="container-text">
     {{contributeCTA}}
