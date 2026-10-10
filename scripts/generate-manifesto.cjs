@@ -12,7 +12,8 @@
      node scripts/generate-manifesto.cjs --no-images
    
    Output:
-     assets/pdfs/bandwar-vision-2026-2036.pdf
+     assets/pdfs/Vision-Vikshit-Bandwar.pdf
+     (Old PDFs are automatically removed — no archive kept)
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -28,6 +29,9 @@ const TMP_DIR = path.join(os.tmpdir(), 'bandwar-manifesto');
 const ARGS = process.argv.slice(2);
 const VERBOSE = ARGS.includes('--verbose');
 const NO_IMAGES = ARGS.includes('--no-images');
+
+// ✅ FIXED filename — no year, no archive
+const OUTPUT_FILENAME = 'Vision-Vikshit-Bandwar.pdf';
 
 const COLORS = {
   reset: '\x1b[0m',
@@ -86,6 +90,24 @@ function ensureDir(dir) {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
+}
+
+/* ─────────────── CLEAN OLD PDFS ─────────────── */
+function cleanOldPDFs() {
+  if (!fs.existsSync(PDF_DIR)) return;
+  
+  const files = fs.readdirSync(PDF_DIR).filter(f => f.toLowerCase().endsWith('.pdf'));
+  if (files.length === 0) return;
+  
+  console.log(`  ${COLORS.gray}Cleaning old PDFs...${COLORS.reset}`);
+  files.forEach(f => {
+    try {
+      fs.unlinkSync(path.join(PDF_DIR, f));
+      console.log(`    ${COLORS.gray}✓ Removed: ${f}${COLORS.reset}`);
+    } catch (err) {
+      console.log(`    ${COLORS.yellow}⚠ Could not remove: ${f} — ${err.message}${COLORS.reset}`);
+    }
+  });
 }
 
 /* ─────────────── IMAGE OPTIMIZATION ─────────────── */
@@ -182,7 +204,7 @@ async function buildManifestoHTML(master, vision) {
   async function getImage(relPath) {
     if (!relPath) return null;
     if (imageCache.has(relPath)) return imageCache.get(relPath);
-    // ✅ COMPRESSED: maxWidth 800, quality 60 (was 1400, 75)
+    // ✅ COMPRESSED: maxWidth 800, quality 60
     const data = await optimizeImage(relPath, { maxWidth: 800, quality: 60 });
     imageCache.set(relPath, data);
     return data;
@@ -841,14 +863,17 @@ async function main() {
   console.log(`  ${COLORS.green}✓${COLORS.reset} vision.json   ${COLORS.gray}(${priorityCount} priorities, ${achievementCount} achievements, ${roadmapCount} roadmap phases)${COLORS.reset}`);
   console.log('');
 
+  // ✅ CLEAN OLD PDFs BEFORE GENERATING NEW
+  ensureDir(PDF_DIR);
+  cleanOldPDFs();
+
   console.log(`${COLORS.bold}Building manifesto HTML...${COLORS.reset}`);
   const { html, stats } = await buildManifestoHTML(master, vision);
   console.log(`  ${COLORS.green}✓${COLORS.reset} HTML built (${(html.length / 1024 / 1024).toFixed(2)} MB)`);
   console.log('');
 
-  ensureDir(PDF_DIR);
-
-  const outputFile = `bandwar-vision-${stats.currentYear}-${stats.horizonEnd}.pdf`;
+  // ✅ FIXED FILENAME
+  const outputFile = OUTPUT_FILENAME;
   const outputPath = path.join(PDF_DIR, outputFile);
 
   console.log(`${COLORS.bold}Generating PDF...${COLORS.reset}`);
