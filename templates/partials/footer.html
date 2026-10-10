@@ -1,0 +1,68 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — FOOTER PARTIAL
+     Site footer · Built from master.json footer{}
+     
+     Variables used:
+       {{siteName}}          Short name (e.g., "Bandwar")
+       {{siteFullName}}      Full name (e.g., "Bandwar — A Village Archive")
+       {{siteDescription}}   Site description
+       {{footerSections}}    Pre-rendered <li> for sections
+       {{footerExplore}}     Pre-rendered <li> for explore links
+       {{footerCopyright}}   Copyright line (year auto-injected)
+       {{footerCredit}}      Credit line ("Made with ❤️ ...")
+       {{contactEmail}}      Contact email
+       {{villageName}}       Village name
+       {{villageDistrict}}   District
+       {{villageState}}      State
+       {{villagePincode}}    PIN code
+       {{socialLinks}}       Pre-rendered social links (if any)
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="container-wide">
+    <div class="footer-grid">
+
+      <!-- ═══ COLUMN 1: BRAND + DESCRIPTION ═══ -->
+      <div class="footer-brand-col">
+        <div class="footer-brand">{{siteFullName}}</div>
+        <p class="footer-desc">{{siteDescription}}</p>
+
+        {{socialLinks}}
+
+        <address class="footer-address" aria-label="Village location">
+          <span class="footer-address-line">
+            📍 {{villageName}}, {{villageDistrict}}
+          </span>
+          <span class="footer-address-line">
+            {{villageState}}, India — {{villagePincode}}
+          </span>
+          <a href="mailto:{{contactEmail}}" class="footer-email">
+            ✉️ {{contactEmail}}
+          </a>
+        </address>
+      </div>
+
+      <!-- ═══ COLUMN 2: SECTIONS ═══ -->
+      <div class="footer-col">
+        <h4>Sections</h4>
+        <ul>
+          {{footerSections}}
+        </ul>
+      </div>
+
+      <!-- ═══ COLUMN 3: EXPLORE ═══ -->
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          {{footerExplore}}
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- ═══ BOTTOM BAR ═══ -->
+    <div class="footer-bottom">
+      <span>{{footerCopyright}}</span>
+      <span class="footer-credit">{{footerCredit}}</span>
+    </div>
+  </div>
+</footer>
