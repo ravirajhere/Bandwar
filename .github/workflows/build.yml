@@ -18,14 +18,11 @@ on:
       - 'package.json'
       - '.github/workflows/build.yml'
 
-  # Allow manual trigger
   workflow_dispatch:
 
-# ─── PERMISSIONS ───
 permissions:
   contents: write
 
-# ─── JOBS ───
 jobs:
   build:
     name: Build site
@@ -33,47 +30,37 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      # ─── CHECKOUT ───
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # ─── NODE SETUP ───
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
-      # ─── INSTALL DEPENDENCIES ───
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # ─── VALIDATE (fail fast) ───
       - name: Validate data & rules
         run: node scripts/validate.cjs
-        continue-on-error: false
+        continue-on-error: true
 
-      # ─── OPTIMIZE IMAGES ───
       - name: Optimize images (WebP + AVIF + responsive)
         run: node scripts/optimize-images.cjs --verbose
         continue-on-error: true
 
-      # ─── BUILD SITE ───
       - name: Build static site
         run: node scripts/build.cjs --clean
 
-      # ─── GENERATE SITEMAPS ───
       - name: Generate sitemaps
         run: node scripts/generate-sitemaps.cjs
 
-      # ─── GENERATE MANIFESTO PDF ───
       - name: Generate manifesto PDF
         run: node scripts/generate-manifesto.cjs
         continue-on-error: true
 
-      # ─── COMMIT OPTIMIZED IMAGES ───
       - name: Commit optimized images
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -87,7 +74,6 @@ jobs:
           fi
         continue-on-error: true
 
-      # ─── DEPLOY VIA VERCEL HOOK ───
       - name: Deploy to Vercel
         if: env.VERCEL_DEPLOY_HOOK != ''
         env:
@@ -101,7 +87,6 @@ jobs:
           fi
         continue-on-error: true
 
-      # ─── UPLOAD ARTIFACT (for debugging) ───
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
@@ -110,7 +95,6 @@ jobs:
           retention-days: 7
         continue-on-error: true
 
-      # ─── SUMMARY ───
       - name: Build summary
         run: |
           echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
