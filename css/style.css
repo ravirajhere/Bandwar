@@ -32,6 +32,24 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════
+   0. FONT DISPLAY (Performance)
+   Tells browser to show fallback font immediately, then swap
+   when web font loads. Improves FCP significantly.
+   ═══════════════════════════════════════════════════════════════════ */
+@font-face {
+  font-family: 'Fraunces';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    1. RESET
    ═══════════════════════════════════════════════════════════════════ */
 *, *::before, *::after {
