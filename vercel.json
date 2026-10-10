@@ -4,6 +4,10 @@
   "cleanUrls": true,
   "trailingSlash": false,
 
+  "git": {
+    "deploymentEnabled": false
+  },
+
   "buildCommand": "node scripts/build.cjs --clean && node scripts/generate-sitemaps.cjs",
   "outputDirectory": "dist",
   "installCommand": "npm install",
