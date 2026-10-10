@@ -1,0 +1,81 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDWAR — ARTICLE TEMPLATE
+     Extends layout.html · Pre-rendered at build time
+     Used for: /article/{slug} for all 30+ articles
+     
+     Variables used:
+       {{articleId}}         "shivala"
+       {{articleTitle}}      "Shivala"
+       {{articleSubtitle}}   "The village's Shiva temple"
+       {{articleSummary}}    Full summary
+       {{categoryEyebrow}}   "🛕 Religion · 3 min read · 2026"
+       {{heroFigure}}        Full <figure> with hero image (conditional)
+       {{factsBlock}}        Full facts table (conditional)
+       {{contentSections}}   Pre-rendered <section> blocks
+       {{photosBlock}}       Full photos grid (conditional)
+       {{relatedBlock}}      Full related articles block (conditional)
+       {{tagsBlock}}         Full tags block (conditional)
+       {{metaFooter}}        Location + category footer
+       {{breadcrumb}}        Breadcrumb bar (rendered by build)
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ═══ HERO IMAGE (conditional) ═══ -->
+{{heroFigure}}
+
+<article class="article" data-article-id="{{articleId}}">
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="article-intro container-text">
+    <div class="article-eyebrow">
+      {{categoryEyebrow}}
+    </div>
+
+    <h1 class="article-title">{{articleTitle}}</h1>
+
+    {{articleSubtitleBlock}}
+  </header>
+
+  <!-- ═══ FACTS BLOCK (conditional) ═══ -->
+  {{factsBlock}}
+
+  <!-- ═══ LEAD / SUMMARY ═══ -->
+  <div class="container-text">
+    <p class="article-lead">{{articleSummary}}</p>
+  </div>
+
+  <!-- ═══ CONTENT SECTIONS ═══ -->
+  <div class="container-text article-body">
+    {{contentSections}}
+  </div>
+
+  <!-- ═══ PHOTOS GRID (conditional) ═══ -->
+  {{photosBlock}}
+
+  <!-- ═══ VOICE QUOTE (conditional) ═══ -->
+  {{voiceQuoteBlock}}
+
+  <!-- ═══ RELATED ARTICLES (conditional) ═══ -->
+  {{relatedBlock}}
+
+  <!-- ═══ TAGS (conditional) ═══ -->
+  {{tagsBlock}}
+
+  <!-- ═══ META FOOTER ═══ -->
+  <div class="container-text">
+    <div class="article-meta-foot">
+      {{metaFooter}}
+    </div>
+  </div>
+
+</article>
+
+<!-- ═══ PAGE NAVIGATION ═══ -->
+<div class="container-wide">
+  <nav class="page-nav" aria-label="Page navigation">
+    <a href="/section">
+      <span class="label">Explore</span>
+      <span class="title">← Full Archive</span>
+    </a>
+    {{nextArticle}}
+  </nav>
+</div>
