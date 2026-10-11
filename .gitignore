@@ -10,25 +10,7 @@ build/
 # ─── IMAGE PIPELINE ───
 .image-cache.json
 
-# WebP/AVIF (regenerated)
-images/**/*.webp
-images/**/*.avif
-
-# Responsive variants (regenerated)
-images/**/*-400.jpg
-images/**/*-800.jpg
-images/**/*-1200.jpg
-images/**/*-1600.jpg
-images/**/*-400.webp
-images/**/*-800.webp
-images/**/*-1200.webp
-images/**/*-1600.webp
-images/**/*-400.avif
-images/**/*-800.avif
-images/**/*-1200.avif
-images/**/*-1600.avif
-
-# Source-only folders
+# Source-only folders (not for public deploy)
 images/_source/
 images/_draft/
 
