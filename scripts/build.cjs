@@ -1,6 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — BUILD ENGINE
    Static site generator · Pre-renders every page from JSON data
+   v5.2 — Path cleaning + font copy
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -109,11 +110,16 @@ function readingTime(wordCount) {
   return Math.max(1, Math.round(wordCount / 220));
 }
 
-function absoluteUrl(relPath, baseUrl) {
-  if (!relPath) return baseUrl;
-  if (relPath.startsWith('http')) return relPath;
-  const clean = String(relPath).replace(/^\//, '');
-  return `${baseUrl.replace(/\/$/, '')}/${clean}`;
+/* ✅ PATH HELPERS — double-slash fix */
+
+function cleanPath(p) {
+  if (!p) return '';
+  return String(p).replace(/^\/+/, '');
+}
+
+function imgUrl(p) {
+  if (!p) return '';
+  return '/' + cleanPath(p);
 }
 
 function toWebp(imagePath) {
@@ -126,12 +132,37 @@ function toAvif(imagePath) {
   return imagePath.replace(/\.(jpe?g|png)$/i, '.avif');
 }
 
-// ✅ CHANGED: default widths exclude 1600 (mobile waste)
+function webpUrl(p) {
+  if (!p) return '';
+  return imgUrl(toWebp(p));
+}
+
+function avifUrl(p) {
+  if (!p) return '';
+  return imgUrl(toAvif(p));
+}
+
+function absoluteUrl(relPath, baseUrl) {
+  if (!relPath) return baseUrl;
+  if (relPath.startsWith('http')) return relPath;
+  const clean = cleanPath(relPath);
+  return `${baseUrl.replace(/\/$/, '')}/${clean}`;
+}
+
+/* ✅ srcset returns root-relative URLs (with leading slash) */
 function buildSrcset(imagePath, widths = [400, 800, 1200]) {
   if (!imagePath) return '';
-  const base = imagePath.replace(/\.(jpe?g|png)$/i, '');
-  const ext = imagePath.match(/\.(jpe?g|png)$/i)?.[0] || '.jpg';
-  return widths.map(w => `${base}-${w}${ext} ${w}w`).join(', ');
+  const clean = cleanPath(imagePath);
+  const base = clean.replace(/\.(jpe?g|png)$/i, '');
+  const ext = clean.match(/\.(jpe?g|png)$/i)?.[0] || '.jpg';
+  return widths.map(w => `/${base}-${w}${ext} ${w}w`).join(', ');
+}
+
+function buildWebpSrcset(imagePath, widths = [400, 800, 1200]) {
+  if (!imagePath) return '';
+  const clean = cleanPath(imagePath);
+  const base = clean.replace(/\.(jpe?g|png)$/i, '');
+  return widths.map(w => `/${base}-${w}.webp ${w}w`).join(', ');
 }
 
 function groupBy(arr, key) {
@@ -905,24 +936,31 @@ function preloadImage(imagePath, master, options = {}) {
     isHero = false,
   } = options;
 
-  // ✅ CHANGED: hero srcset smaller (600/800/1200 instead of 800/1200/1600)
-  const srcset = isHero
-    ? buildSrcset(imagePath, [600, 800, 1200])
-    : '';
+  if (isHero) {
+    // Mobile: 400px preload, Desktop: 800px preload
+    const clean = cleanPath(imagePath);
+    const base = clean.replace(/\.(jpe?g|png)$/i, '');
+    const ext = clean.match(/\.(jpe?g|png)$/i)?.[0] || '.jpg';
 
-  // ✅ CHANGED: hero href uses 800px (was 1200px)
-  const href = isHero
-    ? `${imagePath.replace(/\.(jpe?g|png)$/i, '-800$1')}`
-    : imagePath;
+    const mobileHref = absoluteUrl(`/${base}-400${ext}`, master.site.url);
+    const desktopHref = absoluteUrl(`/${base}-800${ext}`, master.site.url);
+    const webpSrcset = buildWebpSrcset(imagePath, [400, 800, 1200])
+      .split(', ')
+      .map(s => {
+        const [url, size] = s.split(' ');
+        return `${absoluteUrl(url, master.site.url)} ${size}`;
+      })
+      .join(', ');
 
-  const hrefAbs = absoluteUrl(href, master.site.url);
+    return `<link rel="preload" as="image" href="${mobileHref}" imagesrcset="${webpSrcset}" imagesizes="100vw" media="(max-width: 600px)" fetchpriority="${fetchpriority}" type="image/webp">
+<link rel="preload" as="image" href="${desktopHref}" imagesrcset="${webpSrcset}" imagesizes="100vw" media="(min-width: 601px)" fetchpriority="${fetchpriority}" type="image/webp">`;
+  }
 
+  const hrefAbs = absoluteUrl(imagePath, master.site.url);
   let link = `<link rel="preload" as="image" href="${hrefAbs}" fetchpriority="${fetchpriority}"`;
-  if (srcset) link += ` imagesrcset="${srcset}" imagesizes="100vw"`;
   if (media) link += ` media="${media}"`;
   if (type) link += ` type="${type}"`;
   link += `>`;
-
   return link;
 }
 
@@ -987,7 +1025,7 @@ function renderHome(templates, master, content) {
     .join('\n      ');
 
   const pageContent = replaceAll(templates.index, {
-    heroImage: '/' + heroImage.replace(/^\//, ''),
+    heroImage: imgUrl(heroImage),
     heroImageAlt: escapeHtml(hero.alt),
     heroLocation: escapeHtml(hero.location),
     heroTitle: escapeHtml(hero.title),
@@ -1142,19 +1180,21 @@ function renderArticle(templates, master, content, article) {
   });
 }
 
+/* ✅ FIXED — clean paths, correct srcset */
 function renderHeroFigure(article, master) {
   const hero = article.hero;
-  const webp = toWebp(hero);
-  const srcset = buildSrcset(hero);
   const alt = `${article.title} — Bandwar village, Begusarai, Bihar`;
+
+  const webpSrcset = buildWebpSrcset(hero, [400, 800, 1200]);
+  const jpgSrcset = buildSrcset(hero, [400, 800, 1200]);
 
   return `
     <figure class="article-hero">
       <picture>
-        <source srcset="/${webp}" type="image/webp">
-        <img src="/${hero.replace(/^\//, '')}"
+        <source srcset="${webpSrcset}" type="image/webp" sizes="100vw">
+        <img src="${imgUrl(hero)}"
              alt="${escapeHtml(alt)}"
-             srcset="${srcset.split(', ').map(s => '/' + s).join(', ')}"
+             srcset="${jpgSrcset}"
              sizes="100vw"
              fetchpriority="high"
              decoding="async"
@@ -1182,6 +1222,7 @@ function renderFactsBlock(infobox) {
     </div>`.trim();
 }
 
+/* ✅ FIXED — webpUrl use karta hai */
 function renderPhotosBlock(article, master) {
   const photos = (article.photos || []).filter(p => p.src && p.src !== article.hero);
   if (!photos.length) return '';
@@ -1196,8 +1237,8 @@ function renderPhotosBlock(article, master) {
         ${photos.map(photo => `
           <figure class="article-photo">
             <picture>
-              <source srcset="/${toWebp(photo.src)}" type="image/webp">
-              <img src="/${photo.src.replace(/^\//, '')}"
+              <source srcset="${webpUrl(photo.src)}" type="image/webp">
+              <img src="${imgUrl(photo.src)}"
                    alt="${escapeHtml(photo.caption || article.title)}"
                    loading="lazy"
                    decoding="async"
@@ -1390,11 +1431,11 @@ function renderFilterChips(categories, articles, activeCategory, isAll) {
   return chips.join('\n      ');
 }
 
+/* ✅ FIXED — webpUrl + imgUrl */
 function renderSectionCard(article, content, master) {
   const { categories } = content;
   const cat = primaryCategory(article, categories);
   const hero = article.hero || master.seo.ogImage;
-  const webp = toWebp(hero);
   const summary = article.summary || '';
   const truncated = summary.length > 140 ? summary.slice(0, 140) + '…' : summary;
 
@@ -1402,8 +1443,8 @@ function renderSectionCard(article, content, master) {
       <a class="section-card" href="/article/${escapeHtml(article.id)}">
         <div class="section-card-img">
           <picture>
-            <source srcset="/${webp}" type="image/webp">
-            <img src="/${hero.replace(/^\//, '')}"
+            <source srcset="${webpUrl(hero)}" type="image/webp">
+            <img src="${imgUrl(hero)}"
                  alt="${escapeHtml(article.title)}"
                  loading="lazy"
                  decoding="async"
@@ -1449,10 +1490,11 @@ function renderPlace(templates, master, content, media) {
 
   const mapFilters = renderPlaceFilters(landmarks, content.categories, 'place-filter');
 
+  /* ✅ FIXED — data-cat added */
   const landmarkList = landmarks.map(l => {
     const cat = content.categories.find(c => c.id === l.category);
     return `
-        <li class="landmark-item">
+        <li class="landmark-item" data-cat="${escapeHtml(l.category || '')}">
           <a href="/article/${escapeHtml(l.article || l.id)}" class="landmark-link">
             <span class="landmark-icon" aria-hidden="true">${cat?.icon || '📍'}</span>
             <div class="landmark-body">
@@ -1476,7 +1518,7 @@ function renderPlace(templates, master, content, media) {
       lng: l.lng,
       icon: l.icon || content.categories.find(c => c.id === l.category)?.icon || '📍',
       article: l.article || l.id,
-      photo: l.photo ? '/' + l.photo.replace(/^\//, '') : null,
+      photo: l.photo ? imgUrl(l.photo) : null,
     })),
   });
 
@@ -1492,11 +1534,12 @@ function renderPlace(templates, master, content, media) {
 
   const galleryFilters = renderPlaceFilters(gallery, galleryCategories, 'gallery-filter');
 
+  /* ✅ FIXED — webpUrl + imgUrl */
   const galleryItems = gallery.map(photo => `
         <figure class="photo-item" data-cat="${escapeHtml(photo.category || '')}">
           <picture>
-            <source srcset="/${toWebp(photo.src)}" type="image/webp">
-            <img src="/${photo.src.replace(/^\//, '')}"
+            <source srcset="${webpUrl(photo.src)}" type="image/webp">
+            <img src="${imgUrl(photo.src)}"
                  alt="${escapeHtml(photo.caption || 'Photograph of Bandwar')}"
                  loading="lazy"
                  decoding="async"
@@ -1749,6 +1792,7 @@ function renderVision(templates, master, content, vision) {
       </div>
     </section>`.trim() : '';
 
+  /* ✅ FIXED — ba-slider source paths */
   const needsBlocks = activePriorities.map((need, i) => {
     const num = String(i + 1).padStart(2, '0');
     const total = String(activePriorities.length).padStart(2, '0');
@@ -1759,14 +1803,14 @@ function renderVision(templates, master, content, vision) {
     const slider = need.present?.photo && need.required?.photo ? `
         <div class="ba-slider" data-ba-slider aria-label="Before and after for ${escapeHtml(need.title)}">
           <picture>
-            <source srcset="/${toWebp(need.present.photo)}" type="image/webp">
-            <img class="ba-before" src="/${need.present.photo.replace(/^\//, '')}"
+            <source srcset="${webpUrl(need.present.photo)}" type="image/webp">
+            <img class="ba-before" src="${imgUrl(need.present.photo)}"
                  alt="${escapeHtml(need.present.caption || 'Present: ' + need.title)}"
                  loading="lazy">
           </picture>
           <picture>
-            <source srcset="/${toWebp(need.required.photo)}" type="image/webp">
-            <img class="ba-after" src="/${need.required.photo.replace(/^\//, '')}"
+            <source srcset="${webpUrl(need.required.photo)}" type="image/webp">
+            <img class="ba-after" src="${imgUrl(need.required.photo)}"
                  alt="${escapeHtml(need.required.caption || 'Vision: ' + need.title)}"
                  loading="lazy">
           </picture>
@@ -1817,13 +1861,14 @@ function renderVision(templates, master, content, vision) {
       </article>`;
   }).join('\n');
 
+  /* ✅ FIXED — achievement image paths */
   const thanksBlocks = allAchievements.map(ach => `
       <article class="achievement">
         ${ach.photo ? `
           <div class="achievement-img">
             <picture>
-              <source srcset="/${toWebp(ach.photo)}" type="image/webp">
-              <img src="/${ach.photo.replace(/^\//, '')}"
+              <source srcset="${webpUrl(ach.photo)}" type="image/webp">
+              <img src="${imgUrl(ach.photo)}"
                    alt="${escapeHtml(ach.title)}"
                    loading="lazy"
                    decoding="async">
@@ -2100,6 +2145,14 @@ function copyAssets() {
     });
   }
 
+  /* ✅ NEW — Copy self-hosted fonts */
+  if (fs.existsSync(path.join(ROOT, 'fonts'))) {
+    copyDir('fonts', 'fonts');
+    console.log(`  ${COLORS.green}✓${COLORS.reset} fonts/`);
+  } else {
+    console.log(`  ${COLORS.yellow}⚠ fonts/ folder not found — skipping${COLORS.reset}`);
+  }
+
   if (fs.existsSync(path.join(ROOT, 'assets/pdfs'))) {
     copyDir('assets/pdfs', 'assets/pdfs');
   }
@@ -2141,7 +2194,7 @@ function trackPage(type) {
    ═══════════════════════════════════════════════════════════════════ */
 function main() {
   console.log('');
-  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build${COLORS.reset}`);
+  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.2${COLORS.reset}`);
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
