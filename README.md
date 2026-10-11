@@ -9,7 +9,7 @@
 
 <div align="center">
 
-# 🏘️ Bandwar — A Village Archive
+# 🏘️ Bandwar — Village Archive
 
 ### A community-built archive of **Bandwar village, Begusarai, Bihar**
 
