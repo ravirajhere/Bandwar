@@ -11,7 +11,7 @@
 
 # 🏘️ Bandwar — Village Archive
 
-### A community-built archive of **Bandwar village, Begusarai, Bihar**
+### Community-built archive of **Bandwar village, Begusarai, Bihar**
 
 *Documenting 2,600 years of history on the banks of the Burhi Gandak*
 
