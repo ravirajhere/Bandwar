@@ -8,6 +8,10 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
 
+  "git": {
+    "deploymentEnabled": false
+  },
+
   "headers": [
     {
       "source": "/(.*)",
