@@ -1,0 +1,196 @@
+{
+  "articles": [
+    {
+      "id": "janmashtami-mela",
+      "title": "Janmashtami Mela",
+      "subtitle": "A fair running for over 200 years",
+      "categories": ["culture", "religion"],
+      "summary": "The Bandwar Krishna Janmashtami Mela is a fair held annually in Bandwar, running for over two hundred years. It is considered the oldest Janmashtami fair in Bihar and features mud-pit wrestling with participants from across the region. Held at the village ground near the [[historic-well|chaupal]], the fair is closely tied to the [[krishna-mandir-bada|Bada Krishna Mandir]] and the [[krishna-mandir-chhota|Chhota Krishna Mandir]], where the religious observances begin.",
+      "hero": "images/culture/janmashtami-mela.jpg",
+      "photos": [
+        { "src": "images/culture/janmashtami-mela.jpg", "caption": "The Janmashtami Mela at the village ground" }
+      ],
+      "infobox": {
+        "Also known as": "Bandwar Krishna Janmashtami Mela",
+        "Type": "Religious and cultural fair",
+        "Occasion": "Janmashtami",
+        "Duration": "2-3 days",
+        "Age": "200+ years",
+        "Location": "Village ground",
+        "Main attraction": "Mud-pit wrestling ([[kushti|kushti]])"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "A 200-Year-Old Tradition", "text": "According to local record-keepers and village elders, the fair has been held continuously for over two centuries. It predates the district of Begusarai itself (established 1972), and even the independence of India. If the elders' reckoning is correct, the Janmashtami Mela was already an old fair when the [[snk-high-school|S.N.K. gurukul]] was founded in 1942. The fair has survived the transition from British rule to independence, the partition of the subcontinent, and the many changes that have transformed rural Bihar over the past two centuries — a record of continuity that very few institutions in the region can match." },
+        { "heading": "The Mud-Pit Wrestling", "text": "At the heart of the fair is mud-pit wrestling, or [[kushti|kushti]]. The pit is prepared fresh each year by village youths — the earth is softened, watered, and smoothed by foot. Wrestlers come from across Bihar, and also from Rajasthan, Madhya Pradesh, and Nepal. There is no prize money — only the honour of having wrestled at Bandwar. The wrestling matches begin in the afternoon and continue into the evening, with the pit illuminated by floodlights that have replaced the traditional torches of earlier decades. The crowd that gathers around the pit — three or four deep — is one of the largest that Bandwar sees in the course of the year." },
+        { "heading": "Local Belief", "text": "Villagers believe that a wish made at the Janmashtami fair does not go unanswered. The fair is not organised by any committee — every household contributes what it can, and the tradition sustains itself. There is no entry fee, no ticketing, and no formal sponsorship. Families give what they can afford — some contribute money, some contribute grain, and some contribute their labour to prepare the fairground. This model of collective, voluntary support is what has kept the fair alive for two centuries, and it reflects the village's commitment to maintaining its oldest traditions." },
+        { "heading": "Recognition", "text": "Local news outlets have described it as 'the oldest Janmashtami fair in Bihar'. The fair continues to be a defining feature of Bandwar's cultural identity, and it is mentioned in most accounts of the village's history. Journalists writing about the fair often note that it is one of the few fairs in the region that has not been commercialised — no branded stalls, no corporate sponsorship, no ticketed entry. The fair remains, in this sense, a truly village institution." },
+        { "heading": "The Temple Connection", "text": "The fair is closely connected to the village's two Krishna temples — the [[krishna-mandir-bada|Bada Krishna Mandir]] and the [[krishna-mandir-chhota|Chhota Krishna Mandir]]. On the day of Janmashtami, both temples remain open through the night, and a special abhishek (ritual bath) is performed on the idols at midnight — the hour of Krishna's birth. Villagers move between the temples and the fairground through the day and night, and the fair's schedule is timed to coincide with the temple rituals. The fair is, in effect, an extension of the temples' Janmashtami celebrations." },
+        { "heading": "Present Day", "text": "The fair continues to be held every year, and remains a defining event in the village calendar. Preparations begin days in advance — the fairground is cleaned, the wrestling pit is prepared, and households begin gathering their contributions. In recent years, the fair has received coverage in local media, and its reputation has spread beyond the immediate region. But at its core, the fair remains what it has been for two centuries: a village fair, organised by the village, for the village." }
+      ],
+      "faqs": [
+        { "q": "How old is the Bandwar Janmashtami Mela?", "a": "According to village elders and local record-keepers, the fair has been held continuously for over 200 years. It predates the district of Begusarai (established 1972) and India's independence (1947)." },
+        { "q": "What is the main attraction of the Janmashtami Mela?", "a": "The main attraction is mud-pit wrestling (kushti). Wrestlers come from across Bihar, Rajasthan, Madhya Pradesh, and Nepal to compete in the pit, which is prepared fresh each year. There is no prize money — only the honour of having wrestled at Bandwar." },
+        { "q": "Where is the Bandwar Janmashtami Mela held?", "a": "The fair is held at the village ground in Bandwar, near the historic well (chaupal). It is closely connected to the village's two Krishna temples — Bada Krishna Mandir and Chhota Krishna Mandir — where religious observances begin." },
+        { "q": "Who organises the Janmashtami Mela?", "a": "No single committee or organisation runs the fair — every household in the village contributes what it can. There is no entry fee, no ticketing, and no formal sponsorship, which is why the tradition has survived for over two centuries." },
+        { "q": "Is the Janmashtami Mela mentioned in the news?", "a": "Yes — local news outlets have described it as 'the oldest Janmashtami fair in Bihar'. It is one of the few fairs in the region that has not been commercialised, and it remains a defining feature of Bandwar's cultural identity." }
+      ],
+      "related": ["kushti", "chhath-puja", "ram-katha-2021", "krishna-mandir-bada", "krishna-mandir-chhota", "historic-well"],
+      "location": { "lat": 25.5008, "lng": 86.1608 },
+      "tags": ["festival", "janmashtami", "mela", "wrestling", "kushti", "culture", "bandwar mela", "begusarai fair", "krishna janmashtami"]
+    },
+
+    {
+      "id": "chhath-puja",
+      "title": "Chhath Puja",
+      "subtitle": "Bihar's most important festival, celebrated at the bandh",
+      "categories": ["culture", "religion"],
+      "summary": "Chhath Puja is the most important festival in Bihar, dedicated to Surya Dev — the Sun God. In Bandwar, the festival is celebrated at the [[bandh|bandh]] along the [[burhi-gandak|Burhi Gandak]], with the entire village gathering on the riverbank to offer prayers. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh, and the village observes four days of fasting and ritual.",
+      "hero": "images/culture/chhath-puja-surya-idol.jpg",
+      "photos": [
+        { "src": "images/culture/chhath-puja-surya-idol.jpg", "caption": "Surya Dev idol at the bandh" }
+      ],
+      "infobox": {
+        "Type": "Hindu festival",
+        "Deity": "Surya Dev (Sun God)",
+        "Also known as": "Surya Shashthi",
+        "Duration": "4 days",
+        "When": "Kartik month (October–November)",
+        "Main venue": "The bandh, Burhi Gandak"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "Chhath Puja is the most important festival of Bihar — more significant, in popular practice, than Diwali or Holi. It is dedicated to Surya Dev (the Sun God) and Chhathi Maiya (his sister), and is observed over four days with strict fasting and ritual. The festival has no priestly intermediary — devotees pray directly to the sun. In Bandwar, the festival is celebrated at the [[bandh|bandh]] along the [[burhi-gandak|Burhi Gandak]], and it is the single largest gathering of the village in the course of the year." },
+        { "heading": "Rituals", "text": "The four-day festival begins with Nahay-Khay, when devotees bathe in the river and eat a special meal of rice, chana dal, and kaddu (bottle gourd). The second day is Kharna, when a day-long fast is broken in the evening with roti and kheer. The third day — Sandhya Arghya — is the most important: as the sun sets, devotees stand in the water and offer prayers to the setting sun. The fourth day is Usha Arghya — the same ritual repeated at sunrise, ending the fast. Throughout the four days, devotees observe strict rules of cleanliness and abstinence, and the festival's rituals are considered among the most demanding of any Hindu observance." },
+        { "heading": "The Prasad", "text": "The prasad prepared for Chhath is elaborate and strictly vegetarian. It includes thekua (a wheat-and-jaggery biscuit), kheer, fruits (especially sugarcane and banana), and coconut. The prasad is prepared on wood fire in a clean, ritualised manner, and is offered to the sun on bamboo soops (trays). The preparation of thekua is a family activity — women typically gather in the days before the festival to make the biscuits in large batches, and the thekua from different households is exchanged as a gesture of goodwill." },
+        { "heading": "At Bandwar", "text": "At Bandwar, Chhath is celebrated by the entire village. Devotees gather at the [[bandh|bandh]] — the embankment along the [[burhi-gandak|Burhi Gandak]] — before sunrise and sunset. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh. The festival draws villagers from across Bandwar, and also from the surrounding villages, many of whom come to offer prayers at the same spot their parents and grandparents used. The evening arghya is the more crowded of the two — thousands of villagers stand on the slope of the bandh and in the shallow water below, and the scene is one of the most striking sights of the rural Bihar festival calendar." },
+        { "heading": "A Note on Community", "text": "Chhath is unusual among Hindu festivals in that it has no priestly intermediary — devotees pray directly to the sun. In Bandwar, as elsewhere in Bihar, the festival is one of the few occasions when everyone — from the Mahadalit basti to the village centre — stands together on the same riverbank, offering the same prayers. The festival's rituals are observed by rich and poor alike, and the shared space of the [[bandh|bandh]] becomes, for those few days, a space of unusual equality. This aspect of Chhath — its refusal of hierarchy — is one of the reasons it has become, over the past few decades, one of Bihar's most widely observed festivals." }
+      ],
+      "faqs": [
+        { "q": "What is Chhath Puja?", "a": "Chhath Puja is the most important festival of Bihar, dedicated to Surya Dev (the Sun God) and Chhathi Maiya. It is observed over four days with strict fasting and ritual, and is celebrated at the bandh along the Burhi Gandak in Bandwar." },
+        { "q": "When is Chhath Puja celebrated?", "a": "Chhath Puja falls in the Kartik month of the Hindu calendar, usually in October or November. It begins on the sixth day after Diwali and lasts for four days." },
+        { "q": "Where is Chhath celebrated in Bandwar?", "a": "Chhath is celebrated at the bandh — the embankment along the Burhi Gandak river, on the western edge of Bandwar. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh for the festival." },
+        { "q": "Why does Chhath have no priest?", "a": "Chhath is unusual among Hindu festivals in that it has no priestly intermediary — devotees pray directly to the sun. This is one of the reasons the festival is observed across caste and community lines in Bihar." },
+        { "q": "What prasad is prepared for Chhath?", "a": "The prasad includes thekua (a wheat-and-jaggery biscuit), kheer, fruits (especially sugarcane and banana), and coconut. It is prepared on wood fire in a clean, ritualised manner, and offered to the sun on bamboo soops (trays)." }
+      ],
+      "related": ["janmashtami-mela", "ram-katha-2021", "bandh", "burhi-gandak", "historic-well", "jal-jeevan-tank"],
+      "location": { "lat": 25.5005, "lng": 86.1575 },
+      "tags": ["chhath", "surya dev", "festival", "bihar", "culture", "bandh", "chhath puja", "surya shashthi", "kartik"]
+    },
+
+    {
+      "id": "ram-katha-2021",
+      "title": "Ram Katha at Thakurbari",
+      "subtitle": "A week of recitation at the village's Ram temple",
+      "categories": ["culture", "religion"],
+      "summary": "Once a year, the [[ram-mandir-thakurbari|Ram Mandir Thakurbari]] hosts a Ram Katha — a multi-day recitation of the Ramcharitmanas by a trained narrator. The 2021 edition was attended by the entire village, and was held under a pink-and-white striped pandal in the temple courtyard. The Katha is one of the most important religious events in the village calendar, and reflects the deep Vaishnavite tradition of the Mithila region.",
+      "hero": "images/culture/ram-katha-2021.jpg",
+      "photos": [
+        { "src": "images/culture/ram-katha-2021.jpg", "caption": "Ram Katha at Thakurbari, 2021" }
+      ],
+      "infobox": {
+        "Type": "Religious gathering",
+        "Occasion": "Ram Katha",
+        "Venue": "Ram Mandir Thakurbari, Bandwar",
+        "Duration": "5–9 days",
+        "Text": "Ramcharitmanas (Tulsidas)",
+        "Recent edition": "2021"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "Ram Katha is a multi-day public recitation of the Ramcharitmanas — Tulsidas's 16th-century retelling of the Ramayana in Awadhi — performed by a trained kathavachak (narrator). Once a year, the [[ram-mandir-thakurbari|Ram Mandir Thakurbari]] in Bandwar hosts one such Katha, and the entire village gathers to listen. Ram Katha is not unique to Bandwar — it is a common practice across North India, especially in the Hindi belt — but the Katha at Thakurbari has particular significance for Bandwar, because the temple where it is held is the village's principal Ram temple." },
+        { "heading": "The 2021 Edition", "text": "The most recent publicly documented Ram Katha at Thakurbari was held in 2021. The temple courtyard was covered with a pink-and-white striped pandal, a stage was set up for the kathavachak, and a red carpet was laid across the ground for the audience. Villagers — men, women, and children — sat on the ground through the recitation, listening for hours at a time. The Katha ran for several days, and its sessions were held in the morning and evening, with breaks in between for meals and rest." },
+        { "heading": "The Tradition", "text": "Ram Katha has been held at Thakurbari for many years, though the exact number of editions is not documented. The recitation typically covers the seven kandas (books) of the Ramcharitmanas — Bala Kanda, Ayodhya Kanda, Aranya Kanda, Kishkindha Kanda, Sundara Kanda, Lanka Kanda, and Uttara Kanda — over the course of the Katha's duration. The Sundara Kanda, which narrates Hanuman's journey to Lanka, is the most attended session, and it is often scheduled for the evening, when the largest crowd can gather. The Katha's conclusion — the final day, which typically falls on a Sunday — is followed by a hawan (fire ritual) and the distribution of prasad." },
+        { "heading": "The Pandals and Preparation", "text": "Preparations for the Katha take several days. A large pandal is erected over the temple courtyard, decorated with flowers and lighting. The villagers contribute to the arrangements — some provide materials, some prepare food, others set up the seating. The festival concludes with a hawan (fire ritual) and the distribution of prasad. The collective nature of the preparations reflects the same community spirit that organises the [[janmashtami-mela|Janmashtami Mela]] — no single committee runs the Katha, and every household contributes what it can." },
+        { "heading": "Present Day", "text": "The tradition of Ram Katha at Thakurbari continues. The temple's location, in the centre of the village among trees, makes it an ideal venue for such gatherings. The Katha has not been held every year without interruption — there have been years when the Katha was not held, due to various reasons — but it remains one of the village's most important religious events. Villagers who have moved away from Bandwar often return for the Katha, and it is one of the occasions on which the village's diaspora reunites." }
+      ],
+      "faqs": [
+        { "q": "What is Ram Katha?", "a": "Ram Katha is a multi-day public recitation of the Ramcharitmanas — Tulsidas's 16th-century retelling of the Ramayana in Awadhi — performed by a trained narrator (kathavachak). It is a common religious practice across North India." },
+        { "q": "Where is Ram Katha held in Bandwar?", "a": "Ram Katha is held at the Ram Mandir Thakurbari, the village's principal Ram temple, in the centre of Bandwar. A large pandal is set up in the temple courtyard for the recitation." },
+        { "q": "When was the most recent Ram Katha held?", "a": "The most recent publicly documented Ram Katha at Thakurbari was held in 2021. It ran for several days, with sessions in the morning and evening, and was attended by the entire village." },
+        { "q": "How long does Ram Katha last?", "a": "Ram Katha typically runs for 5 to 9 days, covering the seven kandas (books) of the Ramcharitmanas. The Sundara Kanda session — narrating Hanuman's journey to Lanka — is usually the most attended." },
+        { "q": "Who organises Ram Katha at Thakurbari?", "a": "The Katha is organised by the village community of Bandwar. No single committee runs it — villagers contribute materials, food, and labour, and the arrangements are made collectively." }
+      ],
+      "related": ["ram-mandir-thakurbari", "chhath-puja", "janmashtami-mela", "hanuman-mandir", "shivala", "historic-well"],
+      "location": { "lat": 25.5010, "lng": 86.1606 },
+      "tags": ["ram katha", "ramcharitmanas", "religion", "festival", "thakurbari", "tulsidas", "bandwar festival", "mithila religion", "vaishnavite"]
+    },
+
+    {
+      "id": "kushti",
+      "title": "Kushti — The Mud-Pit Wrestling of Bandwar",
+      "subtitle": "The heart of the Janmashtami fair",
+      "categories": ["culture"],
+      "summary": "Kushti, or mud-pit wrestling, is the defining feature of the Bandwar [[janmashtami-mela|Janmashtami fair]]. Wrestlers come from across Bihar — and from Rajasthan, Madhya Pradesh, and Nepal — to compete in the pit that is prepared fresh each year. There is no prize money — only the honour of having wrestled at Bandwar.",
+      "hero": "images/culture/kushti.jpg",
+      "photos": [
+        { "src": "images/culture/kushti.jpg", "caption": "Mud-pit wrestling at the Janmashtami fair" }
+      ],
+      "infobox": {
+        "Type": "Traditional wrestling",
+        "Also known as": "Malla-Yuddha, Pehalwani",
+        "Venue": "Mud pit at the Janmashtami fair",
+        "Participants": "Bihar, Rajasthan, MP, Nepal",
+        "Prize": "Honour only",
+        "When": "Janmashtami (August–September)"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "Kushti — also called pehalwani or malla-yuddha — is the traditional form of mud-pit wrestling practised across North India. In Bandwar, it is the heart of the annual [[janmashtami-mela|Janmashtami fair]], and the reason wrestlers travel from across the subcontinent to the village each year. The kushti at Bandwar is not a modern sport — it is a continuation of a wrestling tradition that is described in classical Indian texts, and that has survived in rural India as both a sport and a discipline." },
+        { "heading": "The Pit", "text": "Unlike the mat-based wrestling of modern akhadas, kushti at Bandwar is practised in a pit of wet earth. The pit is dug fresh every year in the days before the fair. Village youths soften the earth, add water, and smooth it with their feet until it has the grip and give that wrestlers need. The preparation of the pit is itself a ritual — it is done slowly, carefully, and in the days leading up to the fair, and it is often watched by village elders who remember how it was done in their own youth. The pit is typically rectangular, and its size varies from year to year depending on the number of wrestlers expected." },
+        { "heading": "The Wrestlers", "text": "Wrestlers come to Bandwar from across the region. Most are from Bihar, but the fair has also historically attracted wrestlers from Rajasthan, Madhya Pradesh, and — across the border — from Nepal. They come because they have heard of the fair, because their fathers and grandfathers wrestled here, because the pit at Bandwar has a reputation. The wrestlers are typically young men in their twenties, but older wrestlers — some in their forties — also participate, and the matches between experienced wrestlers are often the most watched. The wrestling is not organised by weight class — matches are set up on the spot, based on the wrestlers' mutual agreement and the crowd's interest." },
+        { "heading": "No Prize Money", "text": "The most remarkable thing about the kushti at Bandwar is that there is no prize money. There is no trophy. There is only the honour of having wrestled at Bandwar — and the crowd, which surrounds the pit three or four deep and shouts itself hoarse for hours. This absence of monetary incentive is what gives the Bandwar kushti its particular character: the wrestlers are there because they want to be, not because they are being paid. The winning wrestlers are celebrated locally, and their names are remembered in the village for years afterwards." },
+        { "heading": "Origins", "text": "Mud-pit wrestling has been practised in this region for centuries. It is described in classical Indian texts — in the Mahabharata, Bhima's wrestling matches are a central motif — and it has survived in rural India as both a sport and a discipline. The kushti at Bandwar is part of this longer tradition, and it is one of the few places in the region where the classical form of mud-pit wrestling is still practised at scale. The wrestlers who come to Bandwar often practise in their own village akhadas through the year, and the fair is their annual opportunity to test themselves against wrestlers from beyond their own circle." },
+        { "heading": "Present Day", "text": "The kushti at the Bandwar Janmashtami fair continues to be held each year. It is not organised by any committee or funded by any sponsor — every household contributes what it can, and every generation passes on the responsibility to the next. In recent years, some local media coverage of the fair has highlighted the kushti, and the wrestlers who participate have occasionally been interviewed. But the tradition itself remains unchanged — a mud pit, a crowd, and the simple honour of having wrestled at Bandwar." }
+      ],
+      "faqs": [
+        { "q": "What is kushti?", "a": "Kushti — also called pehalwani or malla-yuddha — is the traditional form of mud-pit wrestling practised across North India. In Bandwar, it is the main attraction of the annual Janmashtami fair." },
+        { "q": "Where do wrestlers come from for the Bandwar kushti?", "a": "Wrestlers come to Bandwar from across Bihar, and also from Rajasthan, Madhya Pradesh, and Nepal. They come because their fathers and grandfathers wrestled at Bandwar, and because the pit has a reputation." },
+        { "q": "Is there prize money in the Bandwar kushti?", "a": "No — there is no prize money or trophy. The only reward is the honour of having wrestled at Bandwar, and the recognition of the crowd. This absence of monetary incentive is what gives the kushti its particular character." },
+        { "q": "When does the Bandwar kushti take place?", "a": "The kushti takes place during the Janmashtami fair, which falls in August or September. The mud pit is prepared fresh each year in the days before the fair, and matches run from the afternoon into the evening." },
+        { "q": "Who prepares the wrestling pit?", "a": "The pit is prepared by village youths, who soften the earth, add water, and smooth it with their feet. The preparation is a collective effort, and it is often watched by village elders who remember how it was done in their own youth." }
+      ],
+      "related": ["janmashtami-mela", "chhath-puja", "cricket-tournament", "krishna-mandir-bada", "historic-well", "shaheed-dwar"],
+      "location": { "lat": 25.5008, "lng": 86.1608 },
+      "tags": ["kushti", "wrestling", "akhada", "mela", "culture", "sport", "mud pit", "pehalwani", "malla yuddha", "bandwar wrestling"]
+    },
+
+    {
+      "id": "cricket-tournament",
+      "title": "Shahid Rajesh Memorial Cricket Tournament",
+      "subtitle": "A tournament played in memory of a martyr",
+      "categories": ["culture"],
+      "summary": "The Shahid Rajesh Memorial Cricket Tournament is played annually at the Bandwar village ground, in memory of a young man from the village who gave his life in service. The 2026 edition was won by Shivam-11, who defeated Bagras-11 by 74 runs in the final. The tournament is organised by Vikram Singh, and is one of the village's most important sporting events.",
+      "hero": "images/culture/cricket-tournament.jpg",
+      "photos": [
+        { "src": "images/culture/cricket-tournament.jpg", "caption": "The Shahid Rajesh Memorial Cricket Tournament at the village ground" }
+      ],
+      "infobox": {
+        "Type": "Cricket tournament",
+        "Played at": "Village ground, Bandwar",
+        "Organiser": "Vikram Singh",
+        "Winner 2026": "Shivam-11",
+        "Prize": "₹25,000 (winner), ₹12,500 (runner-up)",
+        "Village teams": "B.C.C. Bandwar 11, S.R.K.C. Bandwar 11"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "The Shahid Rajesh Memorial Cricket Tournament is played annually at the Bandwar village ground. It is named in memory of Rajesh, a young man from the village who gave his life in service, and is organised by Vikram Singh. The tournament is one of the few organised sporting events in Bandwar, and it draws teams from across the region. Like the [[kushti|mud-pit wrestling]] at the [[janmashtami-mela|Janmashtami fair]], the cricket tournament is a way for the village to test itself against the wider region — and to invite the wider region into the village." },
+        { "heading": "Purpose", "text": "According to its organiser, the tournament is 'not limited to sport alone'. It is, in his words, 'an effort to carry the sacrifice of the martyr Rajesh to a new generation'. The tournament is therefore both a cricket event and a memorial — a way of keeping the memory of a young man alive through an annual sporting tradition. The prize distribution ceremony typically includes a few words about the martyr whose name the tournament carries, and the winners' trophy is often presented with a short speech about his life." },
+        { "heading": "The 2026 Edition", "text": "The 2026 edition of the tournament was won by Shivam-11, who defeated Bagras-11 by 74 runs in the final. Shivam-11 batted first and scored 194 runs for the loss of 7 wickets in 15 overs; Bagras-11, in response, were all out for 120 in the 13th over. Nitish Singh was declared Man of the Match. The prize money for the 2026 edition was ₹25,000 for the winner and ₹12,500 for the runner-up — a modest amount by professional standards, but a significant one in a village setting, and one that attracts competitive teams from across the region." },
+        { "heading": "The Village Teams", "text": "Bandwar also fields its own cricket teams in competitions through the year — B.C.C. Bandwar 11 and S.R.K.C. Bandwar 11. The two teams have played in the Jagdar Premier League and other local competitions, and have won several matches. The teams practise at the village ground during the summer months, and the more serious players are known across the region. Several of Bandwar's cricket players have gone on to play at higher levels — the district and state level — and the village takes pride in their achievements." },
+        { "heading": "Cricket and Village Life", "text": "Cricket is one of the most popular sports in Bandwar. Through the summer months — between the harvest and the monsoon — the village ground becomes a cricket field almost every evening. Boys and young men play matches that go on till dusk. The Shahid Rajesh Memorial tournament is the culmination of this cricketing culture — it is the event that the village's players train for through the year, and it brings together teams from across the region in a competition that is watched by most of the village. Like the [[janmashtami-mela|Janmashtami Mela]], it has become one of the occasions on which the village's community life is most visible." }
+      ],
+      "faqs": [
+        { "q": "What is the Shahid Rajesh Memorial Cricket Tournament?", "a": "It is an annual cricket tournament played at the Bandwar village ground, in memory of Rajesh — a young man from the village who gave his life in service. It is organised by Vikram Singh and draws teams from across the region." },
+        { "q": "Who won the 2026 Shahid Rajesh Memorial Cricket Tournament?", "a": "Shivam-11 won the 2026 edition, defeating Bagras-11 by 74 runs in the final. Shivam-11 scored 194/7 in 15 overs, while Bagras-11 were all out for 120. Nitish Singh was declared Man of the Match." },
+        { "q": "What are the prize amounts in the tournament?", "a": "The prize money for the 2026 edition was ₹25,000 for the winner and ₹12,500 for the runner-up. The amounts vary from year to year, depending on the sponsorships and contributions collected by the organiser." },
+        { "q": "What are Bandwar's own cricket teams?", "a": "Bandwar fields two cricket teams — B.C.C. Bandwar 11 and S.R.K.C. Bandwar 11. The teams have played in the Jagdar Premier League and other local competitions, and have won several matches." },
+        { "q": "Where is the tournament played?", "a": "The tournament is played at the Bandwar village ground, which is also used for evening cricket through the summer months. The ground is one of the few open spaces in the village, and is a popular gathering place for young people." }
+      ],
+      "related": ["kushti", "janmashtami-mela", "shaheed-dwar", "chhath-puja", "historic-well", "roads"],
+      "location": { "lat": 25.5002, "lng": 86.1615 },
+      "tags": ["cricket", "sport", "tournament", "culture", "memorial", "shahid rajesh", "bandwar cricket", "jagdar premier league", "village cricket"]
+    }
+  ]
+}
