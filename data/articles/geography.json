@@ -1,0 +1,106 @@
+{
+  "articles": [
+    {
+      "id": "burhi-gandak",
+      "title": "Burhi Gandak River",
+      "subtitle": "The river that named the village — Bandwar's lifeline and its oldest adversary",
+      "categories": ["geography", "history"],
+      "summary": "The Burhi Gandak is a flood-prone river that flows along the western edge of Bandwar, in Begusarai district, Bihar. It is the largest tributary of the Ganga in the region, and its annual floods shaped the village's geography, its agriculture, and — most importantly — its name. The embankment built along the river, the [[bandh|bandh]], is widely believed to be the source of the village's name: Bandwar.",
+      "hero": "images/home/bandwar-hero.jpg",
+      "photos": [
+        { "src": "images/home/bandwar-hero.jpg", "caption": "The Burhi Gandak at dawn, seen from the Bandwar embankment" },
+        { "src": "images/home/burhi-gandak-river.jpg", "caption": "Wildflowers on the river bank at sunset" },
+        { "src": "images/home/bandh-embankment.jpg", "caption": "The bandh along the river" },
+        { "src": "images/home/burhi-gandak-vertical.jpg", "caption": "The embankment and the river" }
+      ],
+      "infobox": {
+        "Type": "River",
+        "Length": "~320 km",
+        "Source": "Someshwar Hills, Nepal",
+        "Flows through": "West Champaran, Muzaffarpur, Samastipur, Begusarai, Khagaria",
+        "Relation to Bandwar": "Flows along western edge of the village",
+        "Flood risk": "High — classified as flood-prone",
+        "Local name origin": "Source of the name 'Bandwar'",
+        "Nearest bridge": "Chhatauna Bridge"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        {
+          "heading": "Origin of the Name",
+          "text": "The name 'Burhi Gandak' means 'old Gandak'. The river is believed to be an old channel of the Gandak, which shifted course over centuries. As the Gandak moved eastward, it left behind this channel — older, slower, and shallower — which continues to flow through the plains of North Bihar. It is the largest tributary of the Ganga in the region, draining a basin that includes parts of Nepal's Terai and much of the Gandak's former floodplain. In the local imagination, the Burhi Gandak is not a minor stream but a river in its own right — a mother river that both feeds and threatens the villages on its banks."
+        },
+        {
+          "heading": "Course Through Bandwar",
+          "text": "At Bandwar, the Burhi Gandak flows along the western edge of the village. Its course is slow and meandering — typical of rivers in the Ganga plain — and its waters are muddy for most of the year. The river forms the natural boundary between Bandwar and the villages to its west, and its western bank is visible from the [[bandh|bandh]] that runs parallel to it. The Chhatauna Bridge — an important crossing point for villagers travelling to the north bank — spans the river a short distance downstream. In the dry season, the river narrows considerably, and parts of its bed are exposed — a landscape of sand, water, and small islands."
+        },
+        {
+          "heading": "The Bandh",
+          "text": "Because the Burhi Gandak floods almost every year, villagers built an embankment — a [[bandh|bandh]] — parallel to the river to protect their homes. It is from this bandh that the village is believed to have taken its name: Bandwar. The embankment, raised earthen and reinforced over generations, redirects floodwaters and protects the village from the worst of the annual flooding. It is the single most important piece of infrastructure in Bandwar — the physical boundary between the village and the river that would otherwise consume it. To walk along the bandh at dawn, with the village on one side and the river on the other, is to see the village's relationship with the Burhi Gandak in its clearest form."
+        },
+        {
+          "heading": "Flood Risk",
+          "text": "The river is classified as highly flood-prone. The district administration's flood hazard maps place Begusarai in the high-risk category, and the Burhi Gandak is one of the principal reasons. The river's floods are the product of a combination of factors: heavy monsoon rainfall in its catchment, the flatness of the terrain, and the river's own tendency to shift course. The village has experienced flooding repeatedly over the decades, though the [[bandh|bandh]] has mitigated much of the damage. Even so, the flood season — typically from July to September — is a period of vigilance for Bandwar's residents. Families in low-lying parts of the village move their belongings to higher ground, and the bandh is watched through the night during peak flow. The [[diarrhea-outbreak|September 2025 diarrhea outbreak]] — which claimed more than ten lives — was a direct consequence of the same water insecurity that the river's floods create."
+        },
+        {
+          "heading": "The Landscape",
+          "text": "At dawn and dusk, the river offers a striking view — its still waters, the green embankment, and the dense tree cover on the opposite bank. It has become a familiar landmark for anyone visiting Bandwar. The light at these hours transforms the river into something almost abstract: a wide, silver sheet, interrupted only by the silhouettes of trees and the occasional boat. Wildflowers grow along the bank in the cooler months, and local birds — including kingfishers and egrets — are a common sight. For photographers visiting the village, the Burhi Gandak at dawn is the defining image of Bandwar. It is also the setting for the village's [[chhath-puja|Chhath Puja]] celebrations, when the entire village gathers on the [[bandh|bandh]] to offer prayers to Surya Dev."
+        },
+        {
+          "heading": "Agriculture and the River",
+          "text": "The river is central to the agricultural life of Bandwar. Its floodwaters deposit silt across the fields during the monsoon, enriching the soil for the rabi crop that follows. The fields along the river's edge — locally known as the diara lands — are among the most fertile in the village, producing wheat, maize, and pulses. But the river is also an uncertain ally: in years of extreme flooding, the same waters that enrich the soil can destroy an entire season's crop. Bandwar's farmers live with this uncertainty, planting with the river's cycle in mind and adjusting their cropping patterns according to the monsoon's behaviour. The river's fish — including rohu, catla, and small local species — provide an important source of protein for households along its banks."
+        },
+        {
+          "heading": "Present Day",
+          "text": "The Burhi Gandak continues to flow along Bandwar's western edge, and the [[bandh|bandh]] continues to hold it back. The river's role in the village's life has not diminished — if anything, it has grown more important as the region's climate becomes more erratic. The [[jal-jeevan-tank|Jal Jeevan Mission water tower]] now stands near the river's edge, drawing on groundwater that is itself connected to the river's aquifer. The [[chhath-puja|Chhath Puja]] celebrations continue to be held at the bandh each year, drawing the entire village together on the riverbank. And the name of the village — Bandwar — remains a permanent reminder that, in this part of Bihar, the river is not just a feature of the landscape. It is the landscape."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Why is the river called 'Burhi Gandak'?",
+          "a": "'Burhi Gandak' means 'old Gandak'. The river is believed to be an old channel of the Gandak river, which shifted course over centuries. As the Gandak moved eastward, it left behind this channel — older, slower, and shallower — which continues to flow through the plains of North Bihar as the Burhi Gandak."
+        },
+        {
+          "q": "Does the Burhi Gandak flood Bandwar?",
+          "a": "Yes — the river is classified as highly flood-prone, and Bandwar has experienced flooding repeatedly. The embankment (bandh) built along the river has mitigated much of the damage, but the flood season remains a period of vigilance for the village."
+        },
+        {
+          "q": "How did the Burhi Gandak give Bandwar its name?",
+          "a": "The most widely accepted theory is that 'Bandwar' derives from 'Bandh'. In the local dialect, a bandh-waar — a place protected by an embankment — would naturally have been shortened to 'Bandwar'. The bandh was built by the village community generations ago to keep the river from flooding the village."
+        },
+        {
+          "q": "Where does the Burhi Gandak originate?",
+          "a": "The Burhi Gandak originates in the Someshwar Hills of Nepal, and flows south through West Champaran, Muzaffarpur, Samastipur, Begusarai, and Khagaria districts before joining the Ganga. Its total length is approximately 320 kilometres."
+        },
+        {
+          "q": "What is the Chhatauna Bridge?",
+          "a": "Chhatauna Bridge is a bridge over the Burhi Gandak near Bandwar, connecting the village to the north bank of the river. It is an important crossing point for villagers who need to reach villages on the other side, though its approach road has deteriorated in recent years."
+        },
+        {
+          "q": "What grows in the fields along the river?",
+          "a": "The fields along the river's edge — locally known as the diara lands — are among the most fertile in the village. They produce wheat, maize, and pulses, enriched by the silt that the river's floodwaters deposit during the monsoon."
+        }
+      ],
+      "related": [
+        "bandh",
+        "chhath-puja",
+        "jal-jeevan-tank",
+        "diarrhea-outbreak",
+        "shivala",
+        "historic-well"
+      ],
+      "location": { "lat": 25.5009, "lng": 86.1590 },
+      "tags": [
+        "river",
+        "burhi-gandak",
+        "geography",
+        "flood",
+        "bandh",
+        "nature",
+        "begusarai river",
+        "bihar river",
+        "ganga tributary",
+        "chhatauna bridge"
+      ]
+    }
+  ]
+}
