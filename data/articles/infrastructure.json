@@ -1,0 +1,193 @@
+{
+  "articles": [
+    {
+      "id": "sbi-bank",
+      "title": "State Bank of India — Bandwar Branch",
+      "subtitle": "The village's only bank branch",
+      "categories": ["infrastructure", "economy"],
+      "summary": "The Bandwar branch of the State Bank of India provides banking services to the village and surrounding areas. It operates with the IFSC code SBIN0015585, and is the only formal banking facility in the village. It serves not just Bandwar but also the surrounding panchayats, and stands a short distance from the [[shaheed-dwar|Shaheed Ramchandra Dwar]] and the [[post-office|post office]].",
+      "hero": "images/village/sbi-bank-branch-2025.jpg",
+      "photos": [
+        { "src": "images/village/sbi-bank-branch-2015.jpg", "caption": "The branch in 2015" },
+        { "src": "images/village/sbi-bank-branch-2025.jpg", "caption": "The branch in 2025, after renovation" },
+        { "src": "images/village/sbi-bank-atm.jpg", "caption": "The SBI ATM at the branch" }
+      ],
+      "infobox": {
+        "Bank": "State Bank of India",
+        "Branch": "Bandwar",
+        "IFSC Code": "SBIN0015585",
+        "Hours": "Mon-Fri 10:00-16:00",
+        "Saturday": "10:00-16:00 (2nd & 4th off)",
+        "Services": "Savings, Loans, NEFT/RTGS/UPI, Lockers"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "The State Bank of India has operated a branch in Bandwar for over a decade. It is the only formal banking facility in the village, and serves not just Bandwar but also the surrounding panchayats. The branch stands on the main Bandwar Road, near the [[shaheed-dwar|Shaheed Ramchandra Dwar]] — the entrance gate to the village — and within a short walk of the [[post-office|post office]]. Its location at the entrance to Bandwar makes it one of the first institutions that visitors to the village encounter." },
+        { "heading": "Services", "text": "The branch offers savings accounts, loans, mutual funds, foreign exchange, lockers, and agricultural & rural banking. NEFT, RTGS, and UPI services are available. An ATM is also operational at the branch, which is used not just by the bank's customers but also by residents of the surrounding villages. The bank's agricultural lending programme is particularly important for Bandwar's farmers, who use it to finance the purchase of seeds, fertilisers, and equipment. The branch also administers several central and state government welfare schemes — including direct benefit transfers for MGNREGA wages and various pension schemes." },
+        { "heading": "Renovation", "text": "Between 2015 and 2025, the branch underwent renovation. While the building itself remained the same, the exterior colour scheme was changed from its original beige to the current blue and white. The renovation was part of a broader SBI initiative to modernise its rural branches, and it included the installation of new computers, an updated security system, and a dedicated customer service desk. The post-renovation branch has a more modern appearance and better facilities for customers." },
+        { "heading": "Impact", "text": "The presence of a bank branch in a village of Bandwar's size is significant. It reduces the need for residents to travel 18 kilometres to Begusarai town for basic financial services. Before the branch opened, villagers had to make the trip to Begusarai or Barauni for savings, withdrawals, and loan applications. The branch's presence has also encouraged the formalisation of financial transactions in the village — pensions, MGNREGA wages, and various government subsidies are now deposited directly into bank accounts, which are managed through the local branch. The branch's ATM, in particular, has reduced the dependence on cash-based transactions." },
+        { "heading": "Context", "text": "The SBI Bandwar branch is one of the few formal financial institutions in the area. Along with the [[post-office|post office]] — which offers postal savings and money order services — it forms the backbone of the village's financial infrastructure. The presence of both institutions in Bandwar reflects the village's relatively developed status compared to other villages in the region. Many villages of similar size in Begusarai district still do not have a dedicated bank branch." }
+      ],
+      "faqs": [
+        { "q": "What is the IFSC code of the SBI Bandwar branch?", "a": "The IFSC code of the State Bank of India's Bandwar branch is SBIN0015585. The branch provides savings, loans, NEFT/RTGS/UPI, and locker services." },
+        { "q": "What are the working hours of the SBI Bandwar branch?", "a": "The branch operates Monday to Friday from 10:00 AM to 4:00 PM, and on Saturdays from 10:00 AM to 4:00 PM (with the 2nd and 4th Saturdays off)." },
+        { "q": "Does the SBI Bandwar branch have an ATM?", "a": "Yes — there is an SBI ATM at the branch, which is used by the bank's customers as well as residents of the surrounding villages. It has reduced the village's dependence on cash-based transactions." },
+        { "q": "When was the SBI Bandwar branch established?", "a": "The SBI has operated a branch in Bandwar for over a decade. The branch underwent renovation between 2015 and 2025, and its exterior colour scheme was changed from beige to blue and white during this period." },
+        { "q": "Is the SBI Bandwar branch the only bank in the village?", "a": "Yes — it is the only formal banking facility in Bandwar. It serves the village and the surrounding panchayats, and is complemented by the postal services offered at the village post office." }
+      ],
+      "related": ["post-office", "petrol-pump", "roads", "shaheed-dwar", "vaani-vilas-library", "jal-jeevan-tank"],
+      "location": { "lat": 25.5005, "lng": 86.1600 },
+      "tags": ["bank", "sbi", "infrastructure", "finance", "atm", "sbi bandwar", "ifsc sbin0015585", "begusarai bank", "rural banking"]
+    },
+
+    {
+      "id": "post-office",
+      "title": "Banduar Post Office",
+      "subtitle": "The village's branch post office",
+      "categories": ["infrastructure"],
+      "summary": "Banduar Branch Office is the village's post office, operating under the Begusarai postal division. It provides letter mail, registered post, money orders, and savings bank services. Along with the [[sbi-bank|SBI Bandwar branch]], it forms the backbone of the village's financial and communication infrastructure.",
+      "hero": "images/village/post-office.jpg",
+      "photos": [
+        { "src": "images/village/post-office.jpg", "caption": "The Banduar Branch Post Office" }
+      ],
+      "infobox": {
+        "Type": "Branch Office (BO)",
+        "Also known as": "Banduar BO",
+        "PIN Code": "851131",
+        "Division": "Begusarai",
+        "Services": "Letter mail, registered post, money orders, savings bank",
+        "Nearest Sub Office": "Rajaura S.O."
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "Banduar Branch Office is the village post office of Bandwar, operating under the Begusarai postal division of the Indian Postal Service. It is a 'Branch Office' — the smallest category of post office — and serves not just Bandwar but also the surrounding panchayat areas. The post office is a small, single-room facility, but it plays an outsized role in the village's life — it is where pensions are disbursed, where money orders are received, and where letters and parcels from relatives working in other states are delivered." },
+        { "heading": "Services", "text": "The post office offers the standard range of India Post services: letter mail, registered post, money orders, and savings bank accounts. It also handles Aadhaar enrolment and doorstep delivery for the villages in its jurisdiction. In a village where a significant number of households depend on remittances from family members working in other states, the money order service is particularly important. The post office also serves as a distribution point for various government schemes, including the disbursement of pensions and the delivery of government documents." },
+        { "heading": "The PIN Code", "text": "Bandwar's PIN code is 851131. It is shared across several villages and localities in the Begusarai block, and is one of 13 PIN codes that cover the Begusarai district's postal network. The PIN code is used not just for postal deliveries but also as a means of identifying the village in government databases, e-commerce platforms, and digital services. When Bandwar residents register for Aadhaar, PAN, or other official documents, 851131 is the PIN code they use." },
+        { "heading": "A Note on Connectivity", "text": "For a village of Bandwar's size, having a post office within the village is significant. It reduces the need for residents to travel to Begusarai for basic postal services. Along with the [[sbi-bank|SBI Bandwar branch]] — which handles formal banking — and the [[vaani-vilas-library|Vaani Vilas Pustakalaya]] — which handles books — the post office forms part of the village's small but functioning public infrastructure. The post office is located a short distance from the [[shaheed-dwar|Shaheed Ramchandra Dwar]], and is easily accessible from most parts of the village." },
+        { "heading": "The Postman", "text": "The village postman is a familiar figure in Bandwar. He delivers letters, money orders, and parcels on foot or by bicycle, and is often the first to bring news — of a relative's letter, a government notice, or an examination result — to households across the village. The postman's rounds are a small but steady thread connecting Bandwar to the wider world, and his arrival is awaited in many homes." }
+      ],
+      "faqs": [
+        { "q": "What is Bandwar's PIN code?", "a": "Bandwar's PIN code is 851131. It is shared across several villages and localities in the Begusarai block and is one of 13 PIN codes covering the Begusarai district's postal network." },
+        { "q": "What is the Banduar Branch Office?", "a": "Banduar Branch Office is the village post office of Bandwar, operating under the Begusarai postal division of the Indian Postal Service. It is a 'Branch Office' (BO) — the smallest category of post office." },
+        { "q": "What services does the Bandwar post office offer?", "a": "The post office offers letter mail, registered post, money orders, savings bank accounts, Aadhaar enrolment, and doorstep delivery. It also serves as a distribution point for government schemes and pensions." },
+        { "q": "Which post office supervises Banduar BO?", "a": "Banduar Branch Office operates under the Rajaura Sub Office (S.O.), which is part of the Begusarai postal division. The division is responsible for postal services across the district." },
+        { "q": "Is the post office important for Bandwar residents?", "a": "Yes — for a village of Bandwar's size, having a post office within the village is significant. It reduces the need for residents to travel to Begusarai for basic postal services, and is particularly important for money orders from family members working in other states." }
+      ],
+      "related": ["sbi-bank", "petrol-pump", "roads", "shaheed-dwar", "vaani-vilas-library", "jal-jeevan-tank"],
+      "location": { "lat": 25.5005, "lng": 86.1606 },
+      "tags": ["post office", "postal", "infrastructure", "pin code", "banduar bo", "india post", "begusarai postal", "851131"]
+    },
+
+    {
+      "id": "petrol-pump",
+      "title": "Ram Janki Fuels",
+      "subtitle": "The Indian Oil petrol pump on SH 55",
+      "categories": ["infrastructure", "economy"],
+      "summary": "Ram Janki Fuels is an Indian Oil petrol pump operating on SH 55 near Bandwar. It is the only petrol pump in the immediate area and serves both the village and passing highway traffic. It represents one of the few organised-sector employment opportunities available locally, and stands as a marker of the region's improving connectivity.",
+      "hero": "images/village/ram-janki-petrol-pump.jpg",
+      "photos": [
+        { "src": "images/village/ram-janki-petrol-pump.jpg", "caption": "Ram Janki Fuels on SH 55" }
+      ],
+      "infobox": {
+        "Type": "Petrol pump",
+        "Operating as": "Ram Janki Fuels",
+        "Brand": "Indian Oil",
+        "Location": "SH 55, near Bandwar",
+        "Services": "Petrol, diesel, Servo lubricants",
+        "Facilities": "Canopy, 4 filling stations, electronic display"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "Ram Janki Fuels is an Indian Oil petrol pump operating on State Highway 55, near Bandwar. It is a modern facility with a canopy, four filling stations, and an electronic display of fuel rates. The signboard identifies it as an Indian Oil outlet, with the sub-brand 'Servo' for lubricants. The pump is a landmark on the highway — its tall canopy is visible from a distance, and its well-lit forecourt serves as a meeting point for travellers passing through the region." },
+        { "heading": "Location", "text": "The pump is located on [[roads|SH 55]], the state highway that passes through Bandwar and connects the village to Begusarai and other towns in the region. Its position on the highway means that it serves not just the village but also the considerable traffic that passes through — trucks, buses, private cars, and agricultural vehicles. The pump's location makes it a convenient stop for travellers, and it has become a familiar sight for anyone who travels the highway regularly." },
+        { "heading": "Why It Matters", "text": "The presence of a petrol pump in the area is a signal of the region's development. Until recently, vehicle owners in Bandwar and the surrounding villages had to travel to Begusarai to refuel. The establishment of Ram Janki Fuels on the highway has reduced that burden — and it has made the village a stopping point for highway traffic, which brings some economic activity into the area. The pump's presence also reflects the growing number of vehicles in the region, as rising incomes and improving roads have made vehicle ownership more common." },
+        { "heading": "Employment", "text": "The petrol pump employs a small staff of local workers — attendants who serve customers, handle cash, and maintain the facility. For the village, it represents one of the few organised-sector employment opportunities available locally. The pump's workers are typically from Bandwar and the surrounding villages, and their jobs provide a steady income that is not dependent on agriculture — a rarity in rural Bihar. The pump's manager is often a local resident, and the pump's operations are tied into the region's business networks." },
+        { "heading": "The Indian Oil Connection", "text": "Ram Janki Fuels operates as an Indian Oil dealer — one of the thousands of such dealers across India who retail the company's fuel and lubricant products. The Indian Oil brand guarantees a supply of petrol and diesel at regulated prices, and the 'Servo' sub-brand provides a range of lubricants and other automotive products. The pump's association with Indian Oil gives it a degree of stability and standardisation that independent fuel retailers often lack." }
+      ],
+      "faqs": [
+        { "q": "What is the name of the petrol pump near Bandwar?", "a": "The petrol pump near Bandwar is called Ram Janki Fuels. It operates as an Indian Oil dealer on State Highway 55 (SH 55), and is the only petrol pump in the immediate area." },
+        { "q": "What is the significance of Ram Janki Fuels for Bandwar?", "a": "The presence of a petrol pump near Bandwar is a signal of the region's development. It provides local employment and reduces the need for vehicle owners in Bandwar and surrounding villages to travel to Begusarai for fuel." },
+        { "q": "Is Ram Janki Fuels on the main highway?", "a": "Yes — the pump is located on State Highway 55 (SH 55), the main road that passes through Bandwar and connects the village to Begusarai and other towns in the region. It serves both the village and passing highway traffic." },
+        { "q": "Does Ram Janki Fuels provide employment to locals?", "a": "Yes — the pump employs a small staff of local workers — attendants, cashiers, and maintenance staff — from Bandwar and the surrounding villages. It represents one of the few organised-sector employment opportunities in the area." }
+      ],
+      "related": ["sbi-bank", "post-office", "roads", "jal-jeevan-tank", "diarrhea-outbreak", "shaheed-dwar"],
+      "location": { "lat": 25.4998, "lng": 86.1595 },
+      "tags": ["petrol pump", "indian oil", "infrastructure", "sh55", "highway", "ram janki fuels", "servo", "begusarai highway", "fuel station"]
+    },
+
+    {
+      "id": "jal-jeevan-tank",
+      "title": "Jal Jeevan Mission Water Tower",
+      "subtitle": "A water tower built under the central Jal Jeevan Mission",
+      "categories": ["infrastructure"],
+      "summary": "A water tower near Bandwar, built under the Jal Jeevan Mission. It forms part of the central government's effort to provide piped drinking water to every rural household in India. The tower stands near the [[bandh|bandh]] and the [[burhi-gandak|Burhi Gandak]], drawing on groundwater connected to the river's aquifer. It represents one of the most significant infrastructural changes in Bandwar's recent history.",
+      "hero": "images/village/jal-jeevan-water-tower.jpg",
+      "photos": [
+        { "src": "images/village/jal-jeevan-water-tower.jpg", "caption": "The Jal Jeevan Mission water tower" }
+      ],
+      "infobox": {
+        "Type": "Water tower",
+        "Built under": "Jal Jeevan Mission",
+        "Location": "Near the village fields",
+        "Purpose": "Piped drinking water supply",
+        "Launched": "2019 (central scheme)"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "Overview", "text": "The Jal Jeevan Mission water tower at Bandwar is a modern structure — a steel frame painted blue and white, topped by two large black water tanks. It stands on the edge of the village's fields, near the embankment along the [[burhi-gandak|Burhi Gandak]]. The tower is one of the most visible changes in Bandwar's landscape in the past decade — its two tanks are visible from the [[bandh|bandh]] and from many parts of the village, and it has become a familiar landmark for residents." },
+        { "heading": "The Jal Jeevan Mission", "text": "The Jal Jeevan Mission is a central government scheme launched in 2019, with the goal of providing safe and adequate drinking water to every rural household through individual tap connections. It is one of the most ambitious infrastructure programmes ever undertaken in rural India — and Bandwar is one of the villages it has reached. The mission's target was to provide functional household tap connections (FHTCs) to all rural households by 2024, and it has been extended in phases since. The scheme is funded jointly by the central and state governments, and its implementation in Bandwar is managed by the state's Public Health Engineering Department (PHED)." },
+        { "heading": "What It Means for Bandwar", "text": "For a village where the 2011 Census recorded zero households with piped water connections, the arrival of the Jal Jeevan Mission represents a significant shift. The tower and its associated pipeline network are intended to bring piped water directly to homes — replacing the wells and hand-pumps that villagers have relied on for generations. The change has been gradual — the pipeline network has been extended through the village over several years, and not all households have been connected yet — but its significance is clear. Safe drinking water has been one of the village's most persistent problems, and the Jal Jeevan Mission is the first serious attempt to address it at scale." },
+        { "heading": "The 2025 Diarrhea Outbreak", "text": "The Jal Jeevan Mission's importance became especially clear in September 2025, when the village experienced a [[diarrhea-outbreak|diarrhea outbreak]] that killed more than ten people in fifteen days. The outbreak was traced to contaminated water — a direct consequence of the village's long-standing lack of clean piped water. The water tower's pipeline network had not yet reached all parts of the village at the time of the outbreak, and the affected wards — Wards 1 and 2, the Mahadalit basti — were among the last to be connected. The outbreak was a reminder of how urgent the village's water infrastructure needs had become." },
+        { "heading": "Present Day", "text": "The tower is operational and forms part of the village's growing water infrastructure. It stands alongside the agricultural fields, a visible symbol of the government's rural development efforts. The pipeline network connected to the tower continues to expand, and more households are being connected to the system each year. The tower's location near the [[bandh|bandh]] allows it to draw on the same groundwater aquifer that has supplied the village's wells for generations — but with the crucial difference that the water is now treated and piped directly into homes." }
+      ],
+      "faqs": [
+        { "q": "What is the Jal Jeevan Mission?", "a": "The Jal Jeevan Mission is a central government scheme launched in 2019 to provide safe and adequate drinking water to every rural household in India through individual tap connections. Bandwar's water tower was built under this scheme." },
+        { "q": "Where is the Jal Jeevan water tower in Bandwar?", "a": "The water tower stands on the edge of Bandwar's fields, near the embankment (bandh) along the Burhi Gandak river. Its two black water tanks are visible from many parts of the village." },
+        { "q": "What did the village use for water before the Jal Jeevan Mission?", "a": "Before the Jal Jeevan Mission, Bandwar residents relied on wells and hand-pumps for their water. The 2011 Census recorded zero households with piped water connections — the Jal Jeevan Mission represents the first serious attempt to provide piped water at scale." },
+        { "q": "How is the Jal Jeevan water tower related to the 2025 diarrhea outbreak?", "a": "The September 2025 diarrhea outbreak in Bandwar was traced to contaminated water. The water tower's pipeline network had not yet reached all parts of the village, and the affected wards — Wards 1 and 2 — were among the last to be connected. The outbreak underscored the urgency of expanding clean piped water access." },
+        { "q": "Is the water tower operational?", "a": "Yes — the tower is operational and its pipeline network continues to expand. It draws on the same groundwater aquifer that has supplied Bandwar's wells for generations, but the water is now treated and piped directly into homes." }
+      ],
+      "related": ["burhi-gandak", "diarrhea-outbreak", "bandh", "roads", "sbi-bank", "historic-well"],
+      "location": { "lat": 25.4995, "lng": 86.1590 },
+      "tags": ["jal jeevan mission", "water tower", "infrastructure", "water", "piped water", "begusarai water", "rural water supply", "phed"]
+    },
+
+    {
+      "id": "roads",
+      "title": "Roads and Connectivity",
+      "subtitle": "How Bandwar connects to the world",
+      "categories": ["infrastructure"],
+      "summary": "Bandwar is connected to the wider region by SH 55, by a network of village roads, and by a series of new road projects sanctioned in 2025. The village's isolation has reduced significantly in recent years, and the road network is one of the most important factors in the village's economic and social life.",
+      "hero": "images/village/road-construction.jpg",
+      "photos": [
+        { "src": "images/village/road-construction.jpg", "caption": "Bricks and timber on a village road" },
+        { "src": "images/village/village-lane-musahri.jpg", "caption": "A village lane with bamboo fencing" }
+      ],
+      "infobox": {
+        "Highway": "SH 55 (State Highway 55)",
+        "Nearest town": "Begusarai, 18 km",
+        "Nearest railway": "Begusarai (10+ km)",
+        "Bus service": "Public and private",
+        "New projects": "8 sanctioned in 2025"
+      },
+      "lastUpdated": "2026-10-15",
+      "content": [
+        { "heading": "SH 55", "text": "State Highway 55 is the main road that connects Bandwar to the rest of the region. It passes through the village and continues on to Begusarai and beyond. It is the primary route for buses, auto-rickshaws, and private vehicles entering and leaving the village. The [[petrol-pump|Ram Janki Fuels petrol pump]] operates on SH 55, and the [[sbi-bank|SBI Bandwar branch]] is located near the highway's entry into the village. SH 55 is a two-lane road for most of its length, and it is the lifeline of Bandwar's connectivity to the outside world." },
+        { "heading": "Bus Service", "text": "Bandwar has both public and private bus services. Public buses connect the village to Begusarai and other nearby towns, and private buses operate on routes that serve the surrounding panchayats. The nearest bus stop is within 5 kilometres of the village centre. Bus services are particularly important for students commuting to colleges and schools in Begusarai, and for workers commuting to jobs in the district. The bus service has improved significantly over the past decade, and the frequency of buses has increased." },
+        { "heading": "New Road Projects", "text": "In 2025, administrative approval was granted for eight road projects affecting Bandwar and its neighbouring panchayats. The approved routes include: Gandak Bandh to Bandwar Mushahri, Virpur-Sanjat path (up to Saronja Maktab in Virpur block), Jagdar village, Panhas Bharra, and Bhagwanpur-Neema road. Together, these projects are expected to significantly reduce the isolation of the village. The most important of these — for Bandwar residents — is the Gandak Bandh to Bandwar Mushahri road, which will provide direct road access to the [[gps-bandwar-musahri|Musahri tola school]] and the surrounding habitation. The road to Jagdar village is also significant, as it opens up a new connection to the west of the village." },
+        { "heading": "Chhatauna Bridge", "text": "Chhatauna Bridge, on the [[burhi-gandak|Burhi Gandak]] river, connects Bandwar to the northern bank of the river. The bridge is an important link for villagers who need to reach villages on the other side of the river, though its approach road has deteriorated in recent years. The bridge is a single-lane structure, and during the monsoon months its approach road often becomes difficult to navigate. Improvements to the bridge and its approach road are among the road projects that villagers have been advocating for." },
+        { "heading": "The Bigger Picture", "text": "At the regional level, several major road projects are underway that will benefit Begusarai district as a whole. These include the 35-kilometre bypass road along the Burhi Gandak embankment, the widening of the Begusarai bypass road, the Raxaul-Haldia Expressway, and the four-laning of the Barauni-Muzaffarpur highway. These projects — when completed — will reduce travel times between Bandwar and major cities like Patna, Muzaffarpur, and Kolkata. The Raxaul-Haldia Expressway, in particular, is expected to pass through or near Begusarai, and its completion will bring significant new connectivity to the region." }
+      ],
+      "faqs": [
+        { "q": "What is the main road connecting Bandwar to the region?", "a": "State Highway 55 (SH 55) is the main road connecting Bandwar to the rest of the region. It passes through the village and continues on to Begusarai and beyond, and is the primary route for buses, auto-rickshaws, and private vehicles." },
+        { "q": "How far is Bandwar from Begusarai town?", "a": "Bandwar is approximately 18 kilometres from Begusarai town, the district headquarters. The nearest railway station is in Begusarai, a little over 10 kilometres away." },
+        { "q": "What new road projects have been sanctioned for Bandwar?", "a": "In 2025, administrative approval was granted for eight road projects affecting Bandwar and its neighbouring panchayats. These include the Gandak Bandh to Bandwar Mushahri road, the Virpur-Sanjat path, and roads to Jagdar, Panhas Bharra, and Bhagwanpur-Neema." },
+        { "q": "What is Chhatauna Bridge?", "a": "Chhatauna Bridge is a bridge over the Burhi Gandak river, connecting Bandwar to the northern bank. It is a single-lane structure, and its approach road has deteriorated in recent years." },
+        { "q": "What major road projects are coming to the Begusarai region?", "a": "Major projects include the 35-kilometre bypass road along the Burhi Gandak embankment, the widening of the Begusarai bypass road, the Raxaul-Haldia Expressway, and the four-laning of the Barauni-Muzaffarpur highway." }
+      ],
+      "related": ["sbi-bank", "post-office", "petrol-pump", "jal-jeevan-tank", "burhi-gandak", "bandh"],
+      "location": { "lat": 25.4998, "lng": 86.1595 },
+      "tags": ["roads", "sh55", "infrastructure", "connectivity", "bus", "highway", "chhatauna bridge", "raxaul haldia expressway", "begusarai roads"]
+    }
+  ]
+}
