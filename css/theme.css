@@ -1,13 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════════
-   BANDWAR — THEME
+   BANDWAR — THEME v2.0  "Terracotta Editorial"
    Single source of truth for all design tokens.
-   
-   To restyle the entire site:
-     1. Change any value below
-     2. Everything derives — no other file needs editing
-   
-   Never edit style.css for theme changes.
+
+   Restyle karne ke liye:
+     1. Neeche koi bhi value badlo
+     2. Baaki sab auto-derive ho jayega — kisi aur file ko chhune ki zarurat nahi
+
+   style.css ko theme change ke liye kabhi edit mat karo.
    ═══════════════════════════════════════════════════════════════════ */
+
 /* ═══════════════════════════════════════════════════════════════════
    SELF-HOSTED FONTS (fonts/ folder se load hote hain)
    ═══════════════════════════════════════════════════════════════════ */
@@ -56,25 +57,27 @@
   src: url('/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 :root {
-  /* ═══════ 1. BRAND COLORS — only 5 to define ═══════ */
-  --c-primary:  #1a1a18;   /* ink — main text, dark surfaces */
-  --c-base:     #f7f5ef;   /* paper — main background */
-  --c-surface:  #efece4;   /* paper-alt — cards, subtle sections */
-  --c-accent:   #1f3d2f;   /* forest — links, emphasis */
-  --c-warn:     #a64b2a;   /* ember — warnings, accents */
+  /* ═══════ 1. BRAND COLORS — sirf 5 define karo ═══════ */
+  --c-primary:  #1f1b16;   /* espresso — main text, dark surfaces */
+  --c-base:     #faf6ee;   /* ivory — main background */
+  --c-surface:  #f0e9db;   /* aged paper — cards, subtle sections */
+  --c-accent:   #a13d2d;   /* terracotta — links, emphasis */
+  --c-warn:     #c47f17;   /* amber — warnings, accents */
   --c-white:    #ffffff;
 
   /* ═══════ 2. TEXT HIERARCHY (auto-derived) ═══════ */
   --c-text:         var(--c-primary);
-  --c-text-muted:   color-mix(in srgb, var(--c-primary) 70%, transparent);
-  --c-text-faint:   color-mix(in srgb, var(--c-primary) 50%, transparent);
-  --c-text-ghost:   color-mix(in srgb, var(--c-primary) 30%, transparent);
+  --c-text-muted:   color-mix(in srgb, var(--c-primary) 72%, transparent);
+  --c-text-faint:   color-mix(in srgb, var(--c-primary) 52%, transparent);
+  --c-text-ghost:   color-mix(in srgb, var(--c-primary) 32%, transparent);
   --c-text-hint:    color-mix(in srgb, var(--c-primary) 12%, transparent);
 
   /* ═══════ 3. SURFACES ═══════ */
   --c-bg:            var(--c-base);
   --c-bg-alt:        var(--c-surface);
+  --c-bg-raised:     color-mix(in srgb, var(--c-surface) 60%, var(--c-white));
   --c-bg-inverse:    var(--c-primary);
   --c-text-inverse:  var(--c-base);
 
@@ -82,18 +85,24 @@
   --c-border:        var(--c-text-ghost);
   --c-border-soft:   var(--c-text-hint);
   --c-border-strong: var(--c-text-muted);
+  --c-border-accent: color-mix(in srgb, var(--c-accent) 45%, transparent);
 
   /* ═══════ 5. OVERLAYS ═══════ */
   --c-overlay:       color-mix(in srgb, var(--c-primary) 96%, transparent);
   --c-overlay-soft:  color-mix(in srgb, var(--c-primary) 75%, transparent);
   --c-overlay-faint: color-mix(in srgb, var(--c-primary) 35%, transparent);
 
-  /* ═══════ 6. TYPOGRAPHY — Families ═══════ */
+  /* ═══════ 6. ACCENT DERIVATIVES ═══════ */
+  --c-accent-soft:   color-mix(in srgb, var(--c-accent) 12%, transparent);
+  --c-accent-hover:  color-mix(in srgb, var(--c-accent) 85%, var(--c-primary));
+  --c-accent-on:     var(--c-base);   /* text on accent surfaces */
+
+  /* ═══════ 7. TYPOGRAPHY — Families ═══════ */
   --f-display: 'Fraunces', 'Playfair Display', Georgia, serif;
   --f-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --f-mono:    'IBM Plex Mono', 'SF Mono', Monaco, 'Courier New', monospace;
 
-  /* ═══════ 7. TYPOGRAPHY — Sizes ═══════ */
+  /* ═══════ 8. TYPOGRAPHY — Sizes ═══════ */
   --fs-2xs:  0.65rem;
   --fs-xs:   0.75rem;
   --fs-sm:   0.875rem;
@@ -106,14 +115,14 @@
   --fs-4xl:  4rem;
   --fs-5xl:  5rem;
 
-  /* ═══════ 8. TYPOGRAPHY — Weights ═══════ */
+  /* ═══════ 9. TYPOGRAPHY — Weights ═══════ */
   --fw-light:    300;
   --fw-regular:  400;
   --fw-medium:   500;
   --fw-semibold: 600;
   --fw-bold:     700;
 
-  /* ═══════ 9. TYPOGRAPHY — Line heights ═══════ */
+  /* ═══════ 10. TYPOGRAPHY — Line heights ═══════ */
   --lh-tight:   1.05;
   --lh-snug:    1.25;
   --lh-normal:  1.5;
@@ -121,7 +130,7 @@
   --lh-body:    1.7;
   --lh-loose:   1.8;
 
-  /* ═══════ 10. TYPOGRAPHY — Letter spacing ═══════ */
+  /* ═══════ 11. TYPOGRAPHY — Letter spacing ═══════ */
   --ls-tighter: -0.04em;
   --ls-tight:   -0.035em;
   --ls-snug:    -0.02em;
@@ -130,7 +139,7 @@
   --ls-wider:   0.14em;
   --ls-widest:  0.18em;
 
-  /* ═══════ 11. SPACING SCALE ═══════ */
+  /* ═══════ 12. SPACING SCALE ═══════ */
   --sp-1:  0.25rem;
   --sp-2:  0.5rem;
   --sp-3:  0.75rem;
@@ -144,19 +153,20 @@
   --sp-11: 10rem;
   --sp-12: 14rem;
 
-  /* ═══════ 12. RADIUS ═══════ */
-  --r-xs:   2px;
-  --r-sm:   4px;
-  --r-md:   8px;
-  --r-lg:   16px;
+  /* ═══════ 13. RADIUS ═══════ */
+  --r-xs:   3px;
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   18px;
   --r-full: 999px;
 
-  /* ═══════ 13. SHADOWS ═══════ */
-  --sh-sm: 0 2px 6px color-mix(in srgb, var(--c-primary) 6%, transparent);
-  --sh-md: 0 6px 20px color-mix(in srgb, var(--c-primary) 8%, transparent);
-  --sh-lg: 0 16px 48px color-mix(in srgb, var(--c-primary) 12%, transparent);
+  /* ═══════ 14. SHADOWS — warm-tinted, subtle ═══════ */
+  --sh-sm: 0 2px 6px  color-mix(in srgb, var(--c-primary) 6%, transparent);
+  --sh-md: 0 8px 24px color-mix(in srgb, var(--c-primary) 9%, transparent);
+  --sh-lg: 0 20px 56px color-mix(in srgb, var(--c-primary) 14%, transparent);
+  --sh-accent: 0 8px 28px color-mix(in srgb, var(--c-accent) 22%, transparent);
 
-  /* ═══════ 14. MOTION ═══════ */
+  /* ═══════ 15. MOTION ═══════ */
   --ease:      cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out:  cubic-bezier(0, 0, 0.2, 1);
   --ease-in:   cubic-bezier(0.4, 0, 1, 1);
@@ -164,19 +174,19 @@
   --dur-base:  320ms;
   --dur-slow:  600ms;
 
-  /* ═══════ 15. LAYOUT WIDTHS ═══════ */
+  /* ═══════ 16. LAYOUT WIDTHS ═══════ */
   --w-text:  680px;
   --w-base:  1200px;
   --w-wide:  1440px;
   --gutter:  clamp(1.25rem, 4vw, 3rem);
 
-  /* ═══════ 16. Z-INDEX SCALE ═══════ */
+  /* ═══════ 17. Z-INDEX SCALE ═══════ */
   --z-base:    1;
   --z-nav:     100;
   --z-overlay: 900;
   --z-modal:   1000;
 
-  /* ═══════ 17. LEGACY ALIASES (backward compat) ═══════ */
+  /* ═══════ 18. LEGACY ALIASES (backward compat) ═══════ */
   --ink:        var(--c-text);
   --ink-70:     var(--c-text-muted);
   --ink-50:     var(--c-text-faint);
@@ -216,29 +226,29 @@
 
 /* ═══════════════════════════════════════════════════════════════════
    THEME PRESETS
-   Activate with <html data-theme="dark"> on any page.
-   Only 5 colors per preset — rest derives automatically.
+   Kisi bhi page pe <html data-theme="dark"> laga do.
+   Har preset mein sirf 5 colors — baaki auto-derive.
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── DARK ── */
+/* ── DARK — warm charcoal, sage accent ── */
 [data-theme="dark"] {
-  --c-primary: #f0ede6;
-  --c-base:    #0e0e0d;
-  --c-surface: #1a1a18;
-  --c-accent:  #7fb39a;
-  --c-warn:    #d68a6b;
+  --c-primary: #ece7de;
+  --c-base:    #14120f;
+  --c-surface: #1e1b17;
+  --c-accent:  #d4a373;   /* warm sand */
+  --c-warn:    #e07a5f;
 }
 
-/* ── SEPIA ── */
+/* ── SEPIA — vintage book ── */
 [data-theme="sepia"] {
   --c-primary: #3d2817;
   --c-base:    #f5ecd9;
   --c-surface: #ebe0c8;
-  --c-accent:  #6b4423;
-  --c-warn:    #a64b2a;
+  --c-accent:  #8b3a1f;
+  --c-warn:    #a16207;
 }
 
-/* ── HIGH CONTRAST ── */
+/* ── HIGH CONTRAST — accessible, punchy ── */
 [data-theme="contrast"] {
   --c-primary: #000000;
   --c-base:    #ffffff;
@@ -247,22 +257,31 @@
   --c-warn:    #cc0000;
 }
 
-/* ── INDIGO ── */
-[data-theme="indigo"] {
-  --c-primary: #1a1a3d;
-  --c-base:    #f6f5ff;
-  --c-surface: #ebe9fa;
-  --c-accent:  #4a3fa3;
-  --c-warn:    #c25a3a;
+/* ── OCEAN — cool, modern ── */
+[data-theme="ocean"] {
+  --c-primary: #0f2233;
+  --c-base:    #f4f8fb;
+  --c-surface: #e3eef5;
+  --c-accent:  #2d5c8f;
+  --c-warn:    #c1440e;
+}
+
+/* ── FOREST — deep green, editorial ── */
+[data-theme="forest"] {
+  --c-primary: #1a1f1c;
+  --c-base:    #f7f6f0;
+  --c-surface: #e8ebe4;
+  --c-accent:  #3d6b4f;
+  --c-warn:    #b3541e;
 }
 
 /* ── Auto-dark based on system preference ── */
 @media (prefers-color-scheme: dark) {
   [data-theme="auto"] {
-    --c-primary: #f0ede6;
-    --c-base:    #0e0e0d;
-    --c-surface: #1a1a18;
-    --c-accent:  #7fb39a;
-    --c-warn:    #d68a6b;
+    --c-primary: #ece7de;
+    --c-base:    #14120f;
+    --c-surface: #1e1b17;
+    --c-accent:  #d4a373;
+    --c-warn:    #e07a5f;
   }
 }
