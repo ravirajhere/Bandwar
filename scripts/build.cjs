@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — BUILD ENGINE
    Static site generator · Pre-renders every page from JSON data
-   v5.2 — Path cleaning + font copy
+   v5.3 — Category-wise data + inline links + FAQ schema
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -41,14 +41,42 @@ function loadJSON(relPath) {
   }
 }
 
+/* ✅ UPDATED — Load categories from separate file, articles from directory */
 function loadAllData() {
   console.log(`${COLORS.gray}  Loading data files...${COLORS.reset}`);
+
   const master = loadJSON('data/master.json');
-  const content = loadJSON('data/content.json');
   const vision = loadJSON('data/vision.json');
   const media = loadJSON('data/media.json');
-  const categories = content.categories || [];
-  const articles = content.articles || [];
+
+  // Categories from separate file
+  const categories = loadJSON('data/categories.json').categories || [];
+  console.log(`${COLORS.gray}    → ${categories.length} categories${COLORS.reset}`);
+
+  // Articles from data/articles/*.json
+  const articlesDir = path.join(ROOT, 'data', 'articles');
+  const articles = [];
+
+  if (fs.existsSync(articlesDir)) {
+    const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.json')).sort();
+    files.forEach(file => {
+      const data = loadJSON(`data/articles/${file}`);
+      if (data.articles && Array.isArray(data.articles)) {
+        // Add source file reference for debugging
+        data.articles.forEach(a => { a._sourceFile = file; });
+        articles.push(...data.articles);
+      } else {
+        console.log(`${COLORS.yellow}    ⚠ ${file} — no "articles" array found${COLORS.reset}`);
+      }
+    });
+    console.log(`${COLORS.gray}    → ${articles.length} articles from ${files.length} files${COLORS.reset}`);
+  } else {
+    console.log(`${COLORS.yellow}    ⚠ data/articles/ folder not found${COLORS.reset}`);
+  }
+
+  // Backwards-compatible content object (used by renderers)
+  const content = { categories, articles };
+
   return { master, content, vision, media, categories, articles };
 }
 
@@ -91,6 +119,20 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+/* ✅ NEW — Inline link parser for [[article-id|display text]] syntax */
+function parseInlineLinks(text, articles) {
+  if (!text) return '';
+  const escaped = escapeHtml(text);
+  return escaped.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g, (match, id, label) => {
+    const exists = articles.some(a => a.id === id);
+    if (!exists) {
+      console.log(`${COLORS.yellow}      ⚠ Inline link target not found: "${id}"${COLORS.reset}`);
+      return label;
+    }
+    return `<a href="/article/${encodeURIComponent(id)}" class="inline-link">${label}</a>`;
+  });
 }
 
 function slugify(str) {
@@ -176,11 +218,12 @@ function groupBy(arr, key) {
   }, {});
 }
 
+/* ✅ UPDATED — falls back to lastUpdated */
 function sortByDate(articles) {
   if (!Array.isArray(articles)) return [];
   return [...articles].sort((a, b) => {
-    const da = a.datePublished || '';
-    const db = b.datePublished || '';
+    const da = a.datePublished || a.lastUpdated || '';
+    const db = b.datePublished || b.lastUpdated || '';
     return db.localeCompare(da);
   });
 }
@@ -387,6 +430,7 @@ function buildHomeSchema(master, content) {
   };
 }
 
+/* ✅ UPDATED — FAQ schema + lastUpdated */
 function buildArticleSchema(article, master, categories) {
   const url = `${master.site.url}/article/${article.id}`;
   const text = [
@@ -398,9 +442,9 @@ function buildArticleSchema(article, master, categories) {
   const datePub = article.datePublished
     ? new Date(article.datePublished).toISOString()
     : `${master.site.established || '2024'}-01-01T00:00:00+05:30`;
-  const dateMod = article.dateModified
-    ? new Date(article.dateModified).toISOString()
-    : new Date(master.lastUpdated).toISOString();
+
+  const dateModSource = article.lastUpdated || article.dateModified || master.lastUpdated;
+  const dateMod = new Date(dateModSource).toISOString();
 
   const images = [];
   if (article.hero) {
@@ -451,18 +495,32 @@ function buildArticleSchema(article, master, categories) {
     })
   };
 
+  /* ✅ NEW — FAQPage schema */
+  const faqNode = article.faqs && article.faqs.length ? {
+    '@type': 'FAQPage',
+    '@id': `${url}#faq`,
+    'mainEntity': article.faqs.map(faq => ({
+      '@type': 'Question',
+      'name': faq.q,
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': faq.a
+      }
+    }))
+  } : null;
+
+  const graph = [articleNode, ...images];
+  if (faqNode) graph.push(faqNode);
+  graph.push(buildOrganizationNode(master));
+  graph.push(buildBreadcrumbNode([
+    { name: master.site.shortName, url: '/' },
+    { name: 'Archive', url: '/section' },
+    { name: article.title, url: `/article/${article.id}` }
+  ], master.site.url));
+
   return {
     '@context': 'https://schema.org',
-    '@graph': [
-      articleNode,
-      ...images,
-      buildOrganizationNode(master),
-      buildBreadcrumbNode([
-        { name: master.site.shortName, url: '/' },
-        { name: 'Archive', url: '/section' },
-        { name: article.title, url: `/article/${article.id}` }
-      ], master.site.url)
-    ]
+    '@graph': graph
   };
 }
 
@@ -937,7 +995,6 @@ function preloadImage(imagePath, master, options = {}) {
   } = options;
 
   if (isHero) {
-    // Mobile: 400px preload, Desktop: 800px preload
     const clean = cleanPath(imagePath);
     const base = clean.replace(/\.(jpe?g|png)$/i, '');
     const ext = clean.match(/\.(jpe?g|png)$/i)?.[0] || '.jpg';
@@ -1084,7 +1141,7 @@ function renderManifestoBanner(master) {
    PAGE RENDERER — ARTICLE
    ═══════════════════════════════════════════════════════════════════ */
 function renderArticle(templates, master, content, article) {
-  const { categories } = content;
+  const { categories, articles } = content;
   const articleUrlFull = articleUrl(article.id, master);
 
   const text = [
@@ -1098,9 +1155,9 @@ function renderArticle(templates, master, content, article) {
   const primaryCat = cats[0] || null;
   const catText = cats.map(c => c.title).join(' · ');
 
-  const year = article.datePublished
-    ? new Date(article.datePublished).getFullYear()
-    : new Date().getFullYear();
+  const year = (article.datePublished && new Date(article.datePublished).getFullYear())
+    || (article.lastUpdated && new Date(article.lastUpdated).getFullYear())
+    || new Date().getFullYear();
 
   const categoryEyebrow = `
       <span>${primaryCat ? (primaryCat.icon || '') + ' ' + escapeHtml(primaryCat.title) : 'Archive'}</span>
@@ -1116,20 +1173,26 @@ function renderArticle(templates, master, content, article) {
   const heroFigure = article.hero ? renderHeroFigure(article, master) : '';
   const factsBlock = article.infobox ? renderFactsBlock(article.infobox) : '';
 
+  /* ✅ UPDATED — inline links in content sections */
   const contentSections = (article.content || []).map((section, i, arr) => {
     const num = String(i + 1).padStart(2, '0');
     const total = String(arr.length).padStart(2, '0');
     const anchor = slugify(section.heading);
+    const sectionText = parseInlineLinks(section.text, articles);
     return `
     <section class="article-section" id="${escapeHtml(anchor)}">
       <span class="article-section-num">${num} / ${total}</span>
       <h2>${escapeHtml(section.heading)}</h2>
-      <p>${escapeHtml(section.text)}</p>
+      <p>${sectionText}</p>
     </section>`;
   }).join('\n');
 
   const photosBlock = renderPhotosBlock(article, master);
   const voiceQuoteBlock = article.quote ? renderVoiceQuote(article.quote) : '';
+
+  /* ✅ NEW — FAQ block */
+  const faqsBlock = renderFaqs(article, articles);
+
   const relatedBlock = renderRelated(article, content, master);
   const tagsBlock = renderTags(article);
 
@@ -1145,13 +1208,15 @@ function renderArticle(templates, master, content, article) {
     articleTitle: escapeHtml(article.title),
     articleSubtitle: escapeHtml(article.subtitle || ''),
     articleSubtitleBlock,
-    articleSummary: escapeHtml(article.summary || ''),
+    /* ✅ Inline links in summary too */
+    articleSummary: parseInlineLinks(article.summary || '', articles),
     categoryEyebrow,
     heroFigure,
     factsBlock,
     contentSections,
     photosBlock,
     voiceQuoteBlock,
+    faqsBlock,
     relatedBlock,
     tagsBlock,
     metaFooter,
@@ -1161,7 +1226,7 @@ function renderArticle(templates, master, content, article) {
   return renderLayout(templates, master, {
     slug: `article-${article.id}`,
     title: `${article.title} — ${master.site.shortName} Archive`,
-    description: article.summary || master.seo.defaultDescription,
+    description: stripInlineLinks(article.summary) || master.seo.defaultDescription,
     canonical: articleUrlFull,
     ogImage: article.hero || master.seo.ogImage,
     ogType: 'article',
@@ -1180,7 +1245,39 @@ function renderArticle(templates, master, content, article) {
   });
 }
 
-/* ✅ FIXED — clean paths, correct srcset */
+/* ✅ NEW — strip [[id|text]] for meta description */
+function stripInlineLinks(text) {
+  if (!text) return '';
+  return String(text).replace(/\[\[[^|\]]+\|([^\]]+)\]\]/g, '$1');
+}
+
+/* ✅ NEW — render FAQs block */
+function renderFaqs(article, articles) {
+  if (!article.faqs || !article.faqs.length) return '';
+
+  const items = article.faqs.map((faq, i) => `
+        <details class="article-faq"${i === 0 ? ' open' : ''}>
+          <summary class="article-faq-q">
+            <span>${escapeHtml(faq.q)}</span>
+            <span class="article-faq-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="article-faq-a">
+            <p>${parseInlineLinks(faq.a, articles)}</p>
+          </div>
+        </details>`).join('\n');
+
+  return `
+    <section class="article-faqs container-text">
+      <h2 class="article-faqs-title">
+        Frequently Asked Questions
+        <small>${article.faqs.length} ${article.faqs.length === 1 ? 'question' : 'questions'}</small>
+      </h2>
+      <div class="article-faqs-list">
+        ${items}
+      </div>
+    </section>`.trim();
+}
+
 function renderHeroFigure(article, master) {
   const hero = article.hero;
   const alt = `${article.title} — Bandwar village, Begusarai, Bihar`;
@@ -1222,7 +1319,6 @@ function renderFactsBlock(infobox) {
     </div>`.trim();
 }
 
-/* ✅ FIXED — webpUrl use karta hai */
 function renderPhotosBlock(article, master) {
   const photos = (article.photos || []).filter(p => p.src && p.src !== article.hero);
   if (!photos.length) return '';
@@ -1274,7 +1370,7 @@ function renderRelated(article, content, master) {
 
   const cards = related.map(rel => {
     const cat = primaryCategory(rel, categories);
-    const summary = (rel.summary || '').slice(0, 160);
+    const summary = stripInlineLinks(rel.summary || '').slice(0, 160);
     return `
         <a class="article-related-card" href="/article/${escapeHtml(rel.id)}">
           <div>
@@ -1431,12 +1527,11 @@ function renderFilterChips(categories, articles, activeCategory, isAll) {
   return chips.join('\n      ');
 }
 
-/* ✅ FIXED — webpUrl + imgUrl */
 function renderSectionCard(article, content, master) {
   const { categories } = content;
   const cat = primaryCategory(article, categories);
   const hero = article.hero || master.seo.ogImage;
-  const summary = article.summary || '';
+  const summary = stripInlineLinks(article.summary || '');
   const truncated = summary.length > 140 ? summary.slice(0, 140) + '…' : summary;
 
   return `
@@ -1490,7 +1585,6 @@ function renderPlace(templates, master, content, media) {
 
   const mapFilters = renderPlaceFilters(landmarks, content.categories, 'place-filter');
 
-  /* ✅ FIXED — data-cat added */
   const landmarkList = landmarks.map(l => {
     const cat = content.categories.find(c => c.id === l.category);
     return `
@@ -1534,7 +1628,6 @@ function renderPlace(templates, master, content, media) {
 
   const galleryFilters = renderPlaceFilters(gallery, galleryCategories, 'gallery-filter');
 
-  /* ✅ FIXED — webpUrl + imgUrl */
   const galleryItems = gallery.map(photo => `
         <figure class="photo-item" data-cat="${escapeHtml(photo.category || '')}">
           <picture>
@@ -1792,7 +1885,6 @@ function renderVision(templates, master, content, vision) {
       </div>
     </section>`.trim() : '';
 
-  /* ✅ FIXED — ba-slider source paths */
   const needsBlocks = activePriorities.map((need, i) => {
     const num = String(i + 1).padStart(2, '0');
     const total = String(activePriorities.length).padStart(2, '0');
@@ -1861,7 +1953,6 @@ function renderVision(templates, master, content, vision) {
       </article>`;
   }).join('\n');
 
-  /* ✅ FIXED — achievement image paths */
   const thanksBlocks = allAchievements.map(ach => `
       <article class="achievement">
         ${ach.photo ? `
@@ -2145,7 +2236,6 @@ function copyAssets() {
     });
   }
 
-  /* ✅ NEW — Copy self-hosted fonts */
   if (fs.existsSync(path.join(ROOT, 'fonts'))) {
     copyDir('fonts', 'fonts');
     console.log(`  ${COLORS.green}✓${COLORS.reset} fonts/`);
@@ -2194,7 +2284,7 @@ function trackPage(type) {
    ═══════════════════════════════════════════════════════════════════ */
 function main() {
   console.log('');
-  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.2${COLORS.reset}`);
+  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.3${COLORS.reset}`);
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
