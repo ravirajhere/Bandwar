@@ -1,0 +1,14 @@
+{
+  "categories": [
+    { "id": "history", "title": "History", "icon": "📜", "description": "From Anga Mahajanapada to the 1942 Gurukul" },
+    { "id": "religion", "title": "Religion", "icon": "🛕", "description": "Temples, festivals, and faith" },
+    { "id": "education", "title": "Education", "icon": "🏫", "description": "Schools, teachers, and learning" },
+    { "id": "health", "title": "Health", "icon": "🏥", "description": "Medical facilities and health records" },
+    { "id": "economy", "title": "Economy", "icon": "💰", "description": "Agriculture, businesses, and employment" },
+    { "id": "infrastructure", "title": "Infrastructure", "icon": "🏗️", "description": "Roads, banks, and utilities" },
+    { "id": "culture", "title": "Culture", "icon": "🎉", "description": "Festivals, sports, and daily life" },
+    { "id": "geography", "title": "Geography", "icon": "🌊", "description": "River, land, and climate" },
+    { "id": "people", "title": "People", "icon": "👥", "description": "Notable personalities and elders" },
+    { "id": "landmarks", "title": "Landmarks", "icon": "🚩", "description": "Notable places in the village" }
+  ]
+}
