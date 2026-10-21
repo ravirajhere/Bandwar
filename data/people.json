@@ -1,0 +1,28 @@
+{
+  "people": [
+    {
+      "id": "chandrashekhar-singh",
+      "name": "Chandrashekhar Singh",
+      "role": "Communist Leader & Former Minister",
+      "locality": "Bandwar",
+      "bio": "A towering leader of the CPI, known for laying the foundation of the communist movement in Begusarai.",
+      "photo": "images/people/chandrashekhar-singh.jpg"
+    },
+    {
+      "id": "sukhdev-singh",
+      "name": "Sukhdev Singh",
+      "role": "Freedom Fighter & Activist",
+      "locality": "Bandwar",
+      "bio": "A dedicated freedom fighter and communist activist who fought for the rights of the peasantry.",
+      "photo": "images/people/sukhdev-singh.jpg"
+    },
+    {
+      "id": "your-third-person",
+      "name": "Third Person Name",
+      "role": "Teacher / Doctor",
+      "locality": "Ward 1",
+      "bio": "Short description of the person.",
+      "photo": "images/people/third-person.jpg"
+    }
+  ]
+}
