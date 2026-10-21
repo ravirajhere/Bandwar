@@ -1,6 +1,5 @@
 import { getVisionData } from "@/lib/data";
 import { PriorityCard } from "@/components/vision/PriorityCard";
-import Image from "next/image";
 
 export const metadata = {
   title: "Vision 2035 | Bandwar Archive",
@@ -55,7 +54,8 @@ export default function VisionPage() {
             <div className="h-px bg-[#1a1a18]/20 flex-grow"></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {vision.achievements.map((ach) => (
+            {/* 👇 Yahan 'ach: any' add kar diya hai */}
+            {vision.achievements.map((ach: any) => (
               <div key={ach.id} className="bg-white p-6 rounded-2xl border border-[#1a1a18]/10 shadow-sm flex flex-col h-full">
                 <div className="text-4xl mb-4">{ach.icon}</div>
                 <h3 className="font-serif text-xl font-bold text-[#1a1a18] mb-2">{ach.title}</h3>
@@ -78,7 +78,8 @@ export default function VisionPage() {
           </div>
           
           <div className="space-y-8">
-            {vision.roadmap.map((phase) => (
+            {/* 👇 Yahan 'phase: any' add kar diya hai */}
+            {vision.roadmap.map((phase: any) => (
               <div key={phase.phase} className="bg-white border border-[#1a1a18]/10 rounded-2xl p-6 md:p-8 shadow-sm">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-4 border-b border-[#1a1a18]/10 gap-4">
                   <div>
@@ -92,7 +93,8 @@ export default function VisionPage() {
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {phase.items.map((item, idx) => (
+                  {/* 👇 Yahan 'item: any, idx: number' add kar diya hai (Yahi tera main error tha) */}
+                  {phase.items.map((item: any, idx: number) => (
                     <div key={idx} className="flex gap-3">
                       <span className="text-2xl">{item.icon}</span>
                       <div>
