@@ -1,12 +1,6 @@
 import { getMediaData } from "@/lib/data";
 import { GalleryGrid } from "@/components/place/GalleryGrid";
-import dynamic from "next/dynamic";
-
-// Map ko lazy load kar rahe hain taaki page speed 95+ rahe
-const LandmarkMap = dynamic(() => import("@/components/place/LandmarkMap"), { 
-  ssr: false,
-  loading: () => <div className="h-[500px] bg-[#efece4] animate-pulse rounded-xl flex items-center justify-center">Loading Map...</div>
-});
+import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper"; // 👈 Naya wrapper import
 
 export const metadata = {
   title: "Places & Gallery | Bandwar Archive",
@@ -39,7 +33,8 @@ export default function PlacePage() {
             <h2 className="font-serif text-3xl font-bold text-[#1a1a18]">Village Map</h2>
             <div className="h-px bg-[#1a1a18]/20 flex-grow"></div>
           </div>
-          <LandmarkMap landmarks={media.landmarks} />
+          {/* 👇 Wrapper use kar rahe hain 👇 */}
+          <LandmarkMapWrapper landmarks={media.landmarks || []} />
         </section>
 
         {/* 2. Gallery Section */}
