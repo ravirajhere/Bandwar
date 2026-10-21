@@ -1,317 +1,107 @@
-/* ==========================================================================
-   1. DESIGN TOKENS (From master.json)
-   ========================================================================== */
-:root {
-  /* Brand Colors */
-  --bg-base: #f7f5ef;
-  --bg-surface: #efece4;
-  --text-primary: #1a1a18;
-  --text-muted: #5a5a56;
-  --accent-green: #1f3d2f;
-  --accent-terra: #a64b2a;
-  --white: #ffffff;
-  
-  /* Border & Shadows */
-  --border-color: rgba(0, 0, 0, 0.08);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  /* Typography */
-  --font-display: var(--font-fraunces), serif;
-  --font-body: var(--font-inter), sans-serif;
-  --font-mono: var(--font-plex-mono), monospace;
-
-  /* Spacing Scale (8px base) */
-  --space-1: 0.5rem;   /* 8px */
-  --space-2: 1rem;     /* 16px */
-  --space-3: 1.5rem;   /* 24px */
-  --space-4: 2rem;     /* 32px */
-  --space-6: 3rem;     /* 48px */
-  --space-8: 4rem;     /* 64px */
-  --space-12: 6rem;    /* 96px */
-
-  /* Layout */
-  --max-width: 1100px;
-  --border-radius: 4px; /* Sharp editorial look */
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
+/* =========================================
+   1. BASE STYLES (Global Reset & Fonts)
+   ========================================= */
+@layer base {
   :root {
-    --bg-base: #121212;
-    --bg-surface: #1e1e1e;
-    --text-primary: #f0f0f0;
-    --text-muted: #a0a0a0;
-    --white: #242424;
-    --border-color: rgba(255, 255, 255, 0.1);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-    --accent-green: #4ade80; /* Brighter green for dark mode */
-    --accent-terra: #f87171; /* Brighter red/terra for dark mode */
+    /* Fallback colors agar kabhi Tailwind load na ho */
+    --background: #f7f5ef;
+    --foreground: #1a1a18;
+  }
+
+  html {
+    /* Vision page ke anchor links (jaise #priorities) pe click karne pe smooth scroll hoga */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    /* Font smoothing taaki text retina display pe ekdum crisp dikhe */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Text select karne pe tera terracotta (warn) color aayega */
+  ::selection {
+    background-color: #a64b2a;
+    color: #ffffff;
+  }
+
+  /* Images ko default block display taaki niche extra space na bache */
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
   }
 }
 
-/* ==========================================================================
-   2. RESET & BASE STYLES
-   ========================================================================== */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  line-height: 1.7;
-  font-size: 1rem;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ==========================================================================
-   3. TYPOGRAPHY (Editorial Style)
-   ========================================================================== */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.2;
-  color: var(--text-primary);
-  margin-bottom: var(--space-2);
-}
-
-h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); }
-h2 { font-size: clamp(2rem, 4vw, 2.5rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 1.75rem); }
-h4 { font-size: 1.25rem; }
-
-p {
-  margin-bottom: var(--space-3);
-}
-
-p:last-child {
-  margin-bottom: 0;
-}
-
-a {
-  color: var(--accent-green);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--accent-terra);
-}
-
-blockquote {
-  border-left: 4px solid var(--accent-green);
-  padding-left: var(--space-4);
-  margin: var(--space-4) 0;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.25rem;
-  color: var(--text-muted);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-hr {
-  border: 0;
-  border-top: 1px solid var(--border-color);
-  margin: var(--space-6) 0;
-}
-
-/* ==========================================================================
-   4. LAYOUT & GRID UTILITIES (Solo Editor Friendly)
-   ========================================================================== */
-.container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-3);
-}
-
-.section-padding {
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-8);
-}
-
-/* Auto-responsive Grids */
-.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4); }
-.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); }
-.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-3); }
-
-/* Flex Utilities */
-.flex { display: flex; }
-.flex-col { display: flex; flex-direction: column; }
-.flex-between { display: flex; justify-content: space-between; align-items: center; }
-.flex-center { display: flex; align-items: center; justify-content: center; }
-.gap-1 { gap: var(--space-1); }
-.gap-2 { gap: var(--space-2); }
-.gap-4 { gap: var(--space-4); }
-
-/* Text Utilities */
-.text-center { text-align: center; }
-.text-muted { color: var(--text-muted); }
-.text-accent { color: var(--accent-green); }
-.text-sm { font-size: 0.875rem; }
-.text-lg { font-size: 1.125rem; }
-.font-bold { font-weight: bold; }
-.uppercase { text-transform: uppercase; letter-spacing: 0.05em; }
-
-/* ==========================================================================
-   5. UI COMPONENTS (Cards, Buttons, Badges)
-   ========================================================================== */
-/* Cards */
-.card {
-  background-color: var(--bg-surface);
-  padding: var(--space-4);
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-2) var(--space-4);
-  background-color: var(--accent-green);
-  color: var(--white);
-  border-radius: var(--border-radius);
-  font-weight: 500;
-  font-size: 1rem;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease, opacity 0.2s ease;
-}
-
-.btn:hover {
-  background-color: var(--accent-terra);
-  color: var(--white);
-}
-
-.btn-outline {
-  background-color: transparent;
-  color: var(--text-primary);
-  border: 1px solid var(--text-primary);
-}
-
-.btn-outline:hover {
-  background-color: var(--text-primary);
-  color: var(--bg-base);
-}
-
-/* Section Titles */
-.section-title {
-  font-size: 1.75rem;
-  font-family: var(--font-display);
-  margin-bottom: var(--space-4);
-  padding-bottom: var(--space-2);
-  border-bottom: 2px solid var(--accent-green);
-  display: inline-block;
-}
-
-/* Tags & Badges */
-.badge {
-  display: inline-block;
-  padding: 2px 8px;
-  font-size: 0.75rem;
-  border-radius: 12px;
-  background-color: var(--bg-surface);
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
-}
-
-/* ==========================================================================
-   6. ACCORDIONS (For FAQs & Vision Page)
-   ========================================================================== */
-details {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  margin-bottom: var(--space-2);
-  overflow: hidden;
-}
-
-summary {
-  padding: var(--space-3) var(--space-4);
-  cursor: pointer;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 500;
-  list-style: none; /* Hide default arrow */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-summary::-webkit-details-marker {
-  display: none;
-}
-
-summary::after {
-  content: "+";
-  font-size: 1.5rem;
-  color: var(--accent-green);
-  line-height: 1;
-}
-
-details[open] summary::after {
-  content: "−";
-}
-
-details[open] summary {
-  border-bottom: 1px solid var(--border-color);
-  background-color: rgba(0,0,0,0.02);
-}
-
-/* Dark mode override for open summary */
-@media (prefers-color-scheme: dark) {
-  details[open] summary {
-    background-color: rgba(255,255,255,0.02);
+/* =========================================
+   2. CUSTOM COMPONENTS (Agar future mein chahiye)
+   ========================================= */
+@layer components {
+  /* Container for maximum width */
+  .container-custom {
+    @apply max-w-6xl mx-auto px-4 md:px-6;
   }
 }
 
-details > div, details > p {
-  padding: var(--space-4);
+/* =========================================
+   3. CUSTOM UTILITIES & ANIMATIONS
+   ========================================= */
+@layer utilities {
+  /* Text ki max lines limit karne ke liye (Article Cards mein use ho raha hai) */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Map ke Leaflet popup ko hamare theme ke hisaab se style karna */
+  .leaflet-popup-content-wrapper {
+    @apply rounded-xl shadow-lg border border-[#1a1a18]/10 !bg-white !text-[#1a1a18];
+  }
+  
+  .leaflet-popup-tip {
+    @apply !bg-white;
+  }
 }
 
-/* ==========================================================================
-   7. SCROLLBAR (Optional, for that premium feel)
-   ========================================================================== */
+/* =========================================
+   4. CUSTOM SCROLLBAR (Desktop ke liye premium look)
+   ========================================= */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--bg-base);
+  background: #f7f5ef;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
-  border-radius: 4px;
+  background: #d4d0c5;
+  border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-green);
+  background: #a64b2a; /* Hover karne pe terracotta color */
 }
