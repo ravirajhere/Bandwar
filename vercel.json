@@ -1,15 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
 
-  "cleanUrls": true,
-  "trailingSlash": false,
-
-  "buildCommand": "node scripts/build.cjs --clean && node scripts/generate-sitemaps.cjs",
-  "outputDirectory": "dist",
-  "installCommand": "npm install",
-
   "git": {
-    "deploymentEnabled": false
+    "deploymentEnabled": true
   },
 
   "headers": [
@@ -30,21 +23,9 @@
       ]
     },
     {
-      "source": "/assets/vendor/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    },
-    {
       "source": "/assets/pdfs/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=604800" }
-      ]
-    },
-    {
-      "source": "/(.*)\\.(css|js)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400, must-revalidate" }
       ]
     },
     {
@@ -58,22 +39,15 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
       ]
-    },
-    {
-      "source": "/(.*)\\.html",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
     }
   ],
 
   "redirects": [
     { "source": "/map", "destination": "/place", "permanent": true },
     { "source": "/timeline", "destination": "/time", "permanent": true },
-    { "source": "/gallery", "destination": "/place?view=gallery", "permanent": true },
+    { "source": "/gallery", "destination": "/place", "permanent": true },
     { "source": "/category", "destination": "/section", "permanent": true },
     { "source": "/need", "destination": "/vision", "permanent": true },
-    { "source": "/article", "destination": "/section", "permanent": false },
-    { "source": "/contribute", "destination": "/about#contact", "permanent": true }
+    { "source": "/contribute", "destination": "/about", "permanent": true }
   ]
 }
