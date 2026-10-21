@@ -29,7 +29,8 @@
 [![Made with ❤️ in Bihar](https://img.shields.io/badge/Made_with_❤️_in-Bihar,_India-ff9933?style=for-the-badge)]()
 
 **[🌐 Live Site](https://bandwar.vercel.app)** ·
-**[📖 About](https://bandwar.vercel.app/about)** ·
+**[👥 People](https://bandwar.vercel.app/people)** ·
+**[🚆 How to Reach](https://bandwar.vercel.app/reach)** ·
 **[🗺️ Explore Map](https://bandwar.vercel.app/place)** ·
 **[📅 Timeline](https://bandwar.vercel.app/time)** ·
 **[🔮 Vision](https://bandwar.vercel.app/vision)**
@@ -89,10 +90,10 @@ Most Indian villages have no written history. Their past lives in the memories o
 Bandwar Archive changes that. It captures:
 
 - 📜 **2,600 years of history** — from the Anga Mahajanapada era to the present
-- 🛕 **Sacred spaces** — Shivala, Ram Mandir Thakurbari, Durga Mandir, and more
-- 🎓 **Educational institutions** — S.N.K. High School and the Vaani Vilas Pustakalaya
+- 👥 **People of Bandwar** — a directory of notable residents, leaders, and a submission form to add your own name.
+- 🚆 **Travel Guide** — detailed directions for NRIs and tourists via Air, Train, and Road.
 - 🗺️ **Geographic landmarks** — 18 mapped locations with satellite coordinates
-- 👥 **Community memory** — oral histories, photographs, and documents from residents
+- 🛕 **Sacred spaces** — Shivala, Ram Mandir Thakurbari, Durga Mandir, and more
 - 🔮 **A rolling 10-year vision** — a non-political manifesto of development priorities
 
 Every fact is sourced. Every photograph is credited. Nothing is published without consent.
@@ -102,47 +103,37 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
 ## ✨ Features
 
 ### 📚 Content & Architecture
-- **30 in-depth articles** across categories, split into a **modular data structure**
+- **30+ in-depth articles** across categories, split into a **modular data structure**
+- **People of Bandwar** — Notable figures directory with an interactive email-based submission form.
+- **How to Reach** — Comprehensive travel guide (Air, Train, Road, Stay) optimized for visitors.
 - **Live full-text search** — instant results across every article
 - **Interactive map** — 18 landmarks rendered with Leaflet.js + Esri satellite imagery
 - **2,600-year timeline** — from the Anga Mahajanapada to present, across 4 historical eras
 - **Photo gallery** — curated photographs with category filters and lightbox viewing
 - **Vision page** — 15 development priorities with before/after image sliders
-- **Achievement records** — 4 completed projects with funding details
 - **FAQ Accordion** — Interactive `details`/`summary` elements with `FAQPage` Schema
 
-### 🎨 Design
-- **Two-file theming** — `theme.css` (tokens) + `style.css` (components)
-- **5-color override** — change 5 lines to completely restyle the site
-- **Theme presets built-in** — dark, sepia, contrast, indigo
-- **Editorial layout** — typography-first, no cards, no gradients
-- **Accessibility** — `.sr-only` classes for hidden screen-reader text and image captions
+### 🎨 Design (Modern Heritage v3.0)
+- **Paper Grain Texture** — Subtle SVG noise for a tactile, physical book feel.
+- **Glassmorphism Navbar** — Frosted glass effect for a premium, modern interface.
+- **Fluid Typography** — Seamless scaling from mobile to desktop using `clamp()`.
+- **Two-file theming** — `theme.css` (tokens) + `style.css` (components).
+- **5-color override** — change 5 lines to completely restyle the site.
+- **Accessibility** — `.sr-only` classes for hidden screen-reader text and image captions.
 
-### 🔍 SEO & Discoverability (Latest Updates)
-- **Complete Schema.org `@graph`** — Article, Place, Organization, WebSite, FAQPage, BreadcrumbList
-- **Google Search Name Fix** — WebSite Schema `name` and `alternateName` optimized to prevent "Vercel" from showing as the site name.
-- **Google Image SEO** — Hero images wrapped in `<figure>` with hidden `<figcaption class="sr-only">` for better image context.
-- **Auto-generated sitemaps** — pages + images, filesystem-checked (zero 404s)
-- **Image Sitemap Titles** — `<image:title>` and `<image:caption>` tags added for Google Images
-- **Static pre-rendered HTML** — full content in Wave 1 (no JS dependency for content)
-- **Canonical URLs** — per-article, per-page, clean (no `.html`)
-- **Open Graph + Twitter Cards** — dynamic per article
-- **hreflang ready** — `en-IN`, `x-default` (Hindi version ready)
+### 🔍 SEO & Discoverability
+- **Complete Schema.org `@graph`** — Article, Place, Organization, WebSite, FAQPage, BreadcrumbList.
+- **Google Search Name Fix** — Optimized `alternateName` to prevent "Vercel" from showing as the site name.
+- **Google Image SEO** — Hero images wrapped in `<figure>` with hidden `<figcaption>`.
+- **Auto-generated sitemaps** — 3 sitemaps (Pages, Images, Index) updated to include People & Reach.
+- **Static pre-rendered HTML** — full content in Wave 1 (no JS dependency for content).
+- **Canonical URLs** — per-article, per-page, clean (no `.html`).
 
 ### ⚡ Performance
-- **Zero runtime dependencies** — pure HTML, CSS, vanilla JavaScript
-- **Sub-second load time** — no frameworks, no bundlers
-- **WebP + AVIF** — modern image formats (60–80% smaller)
-- **Responsive images** — automatic srcset generation
-- **Lazy loading** — all below-fold images
-- **PWA installable** — works offline via service worker
-- **LCP optimized** — preload hints for hero images
-
-### 📄 Manifesto
-- **Rolling horizon model** — "Bandwar 2036" auto-shifts each year
-- **Auto-generated PDF** — `Vision-Vikshit-Bandwar.pdf`
-- **A4 print-ready** — 34-page document via Puppeteer
-- **Auto-cleanup** — old PDFs removed automatically
+- **Zero runtime dependencies** — pure HTML, CSS, vanilla JavaScript.
+- **WebP + AVIF** — modern image formats (60–80% smaller).
+- **Lazy loading** — all below-fold images.
+- **PWA installable** — works offline via service worker.
 
 ---
 
@@ -153,6 +144,7 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
                 │          data/                         │
                 │  (Single source of truth for content)  │
                 │  master · categories · articles/*      │
+                │  people · reach                        │
                 └────────────────┬───────────────────────┘
                                  │
                 ┌────────────────┼───────────────────────┐
@@ -201,23 +193,19 @@ bandwar/
 │
 ├── 📁 data/                             # ⭐ Single source of truth
 │   ├── 📁 articles/                     # Modular article storage
-│   │   ├── culture.json
-│   │   ├── education.json
-│   │   ├── geography.json
-│   │   ├── health.json
-│   │   ├── infrastructure.json
-│   │   ├── landmarks.json
-│   │   └── religion.json
 │   ├── categories.json                  # Category metadata
 │   ├── master.json                      # Site config, brand, nav, SEO
-│   ├── vision.json                      # 15 priorities + 4 achievements
-│   └── media.json                       # Gallery + landmarks + timeline
+│   ├── media.json                       # Gallery + landmarks + timeline
+│   ├── people.json                      # Notable people directory
+│   ├── reach.json                       # Travel & stay guide
+│   └── vision.json                      # 15 priorities + 4 achievements
 │
 ├── 📁 templates/                        # ⭐ Build-time templates
 │   ├── layout.html                      # Base layout
 │   ├── index.html                       # Homepage
 │   ├── article.html                     # Article page
-│   ├── section.html                     # Category browser
+│   ├── people.html                      # People directory + form
+│   ├── reach.html                       # Travel guide
 │   ├── place.html                       # Map + gallery
 │   ├── time.html                        # Timeline
 │   ├── vision.html                      # Vision + manifesto
@@ -225,40 +213,22 @@ bandwar/
 │   └── 📁 partials/                     # Head, Nav, Footer
 │
 ├── 📁 scripts/                          # Build tools
-│   ├── build.cjs                        # Main build engine (v5.4)
+│   ├── build.cjs                        # Main build engine (v5.7)
 │   ├── validate.cjs                     # Rule enforcement
 │   ├── optimize-images.cjs              # WebP/AVIF + Auto-Cleanup
-│   ├── generate-sitemaps.cjs            # 3 sitemaps
+│   ├── generate-sitemaps.cjs            # 3 sitemaps (v2.1)
 │   └── generate-manifesto.cjs           # Puppeteer PDF
 │
 ├── 📁 css/
-│   ├── theme.css                        # ⚙️ ALL design tokens
-│   └── style.css                        # Components (uses only tokens)
+│   ├── theme.css                        # ⚙️ ALL design tokens (v3.0)
+│   └── style.css                        # Components (v6.0)
 │
-├── 📁 js/
-│   ├── core.js                          # Nav, footer, theme, PWA
-│   ├── articles.js                      # Article interactivity
-│   ├── sections.js                      # Search + filter
-│   ├── places.js                        # Leaflet map + gallery
-│   ├── time.js                          # Timeline filter
-│   └── vision.js                        # Before/after sliders
+├── 📁 js/                               # Vanilla JS modules
 │
 ├── 📁 images/                           # Source images (originals)
-│   ├── home/
-│   ├── culture/
-│   ├── village/
-│   ├── vision/
-│   ├── education/
-│   └── icons/                           # PWA icons
 │
 ├── 📄 package.json                      # Scripts + dev deps
 ├── 📄 vercel.json                       # Deployment config
-├── 📄 robots.txt                        # Crawler directives
-├── 📄 manifest.json                     # PWA manifest
-├── 📄 sw.js                             # Service worker
-├── 📄 humans.txt                        # Web credits
-├── 📄 CHANGELOG.md                      # Version history
-├── 📄 CONTRIBUTING.md                   # Contribution guide
 └── 📄 LICENSE                           # MIT (code) + © Community (content)
 ```
 
@@ -266,139 +236,42 @@ bandwar/
 
 ## 📚 Data Model
 
-**5 modular data sources, split for scalability:**
+**7 modular data sources, split for scalability:**
 
 ### `data/master.json`
-Site config — the **master key**:
-```json
-{
-  "site": { "name", "url", "language", "description", "edition" },
-  "village": { "name", "coordinates", "population", "pincode" },
-  "brand": { "colors", "fonts" },
-  "nav": [...],
-  "seo": {...},
-  "imageSEO": {...},
-  "home": { "hero", "stats", "about", "cta" }
-}
-```
+Site config, navigation, SEO, brand colors, home page sections, and about page content.
 
-### `data/categories.json`
-```json
-{
-  "categories": [
-    { "id": "culture", "title": "Culture", "icon": "🎭", "description": "..." }
-  ]
-}
-```
+### `data/categories.json` & `data/articles/`
+Categories are separated, and articles are split into category-specific files (`culture.json`, `education.json`, etc.) for easier management and fewer Git conflicts.
 
-### `data/articles/` (Directory)
-Articles are split into category-specific files for easier management and fewer Git conflicts:
-- `culture.json`, `education.json`, `geography.json`, `health.json`, `infrastructure.json`, `landmarks.json`, `religion.json`.
+### `data/people.json`
+A directory of notable individuals from Bandwar (politicians, teachers, authors) with their roles, locality, and bios.
 
-*Adding a new article means just adding it to the relevant JSON file. The build script auto-merges them.*
+### `data/reach.json`
+Structured travel guide data including Air, Train, Road instructions, local transport, and where to stay in Begusarai.
 
-### `data/vision.json`
-Rolling horizon vision, 15 development priorities (with `status: pending/done`), and achievements.
-
-### `data/media.json`
-Photo gallery, 18 landmark coordinates, and 2,600-year timeline events.
+### `data/vision.json` & `data/media.json`
+Rolling horizon vision, development priorities, gallery photos, and timeline events.
 
 ---
 
-## 🔄 The Rolling Horizon Model
+## 🔍 SEO & Sitemaps (Latest Updates)
 
-**Bandwar {currentYear + 10}** — not fixed. It's a **rolling 10-year horizon** that auto-shifts every year.
-
-```text
-Year 2026 → "Bandwar 2036" (current year + 10)
-Year 2027 → "Bandwar 2037"
-```
-
-### How it works:
-1. Priorities have a `status` field: `pending` / `in-progress` / `done`
-2. Build script **auto-categorizes**:
-   - `pending` + `in-progress` → **Needs section**
-   - `done` + `completed: "2028"` → **Achievements section**
-3. Roadmap uses **relative phases** (Year 1-3, 4-6, 7-10)
-4. Previous editions **preserved** at `/vision/{year}-{end}`
-
-**Zero manual work every year.**
-
----
-
-## 🔍 SEO & Rich Results (Latest Updates)
-
-Every indexable page carries a **complete `<head>`** with unique meta tags, canonical URLs, Open Graph, Twitter Cards, and JSON-LD schemas pre-rendered.
-
-### 🆕 Recent SEO Fixes
-1. **Google Site Name Fix**: Added `alternateName` to the `WebSite` schema and shortened `site.name` in `master.json` to prevent Google from displaying "Vercel" as the site name in search results.
-2. **Google Image Search Fix**: Added hidden `<figcaption class="sr-only">` tags to hero images and `<image:title>` tags to the Image Sitemap. Google now extracts proper image titles instead of the page title.
-3. **Inline Link Parsing**: `[[article-id|display text]]` syntax is now natively parsed in article texts and FAQs, stripping brackets for clean meta descriptions.
-
-### Schema per page
-
-| Page | Schema Types |
-|---|---|
-| Homepage | WebSite + Place + Organization + ImageObject + BreadcrumbList |
-| Article | Article + FAQPage + ImageObject[] + BreadcrumbList + contentLocation |
-| Section | CollectionPage + ItemList + BreadcrumbList |
-| Place | CollectionPage + ItemList[Place] + BreadcrumbList |
-| Time | CollectionPage + ItemList[Event] + BreadcrumbList |
-| Vision | Report + ItemList + BreadcrumbList |
-| About | AboutPage + Organization + BreadcrumbList |
+Every indexable page carries a **complete `<head>`** with JSON-LD schemas pre-rendered.
 
 ### Sitemaps (auto-generated)
-- `sitemap.xml` — page URLs
-- `sitemap-images.xml` — 100+ images with explicit `<image:caption>` and `<image:title>`
-- `sitemap-index.xml` — master index
+- `sitemap.xml` — page URLs (Includes new `/people` and `/reach` pages).
+- `sitemap-images.xml` — 100+ images with explicit `<image:caption>` and `<image:title>` tags.
+- `sitemap-index.xml` — master index for Google Search Console.
 
 ---
 
 ## 🎨 Image Pipeline & Auto-Cleanup
 
 **Every image gets:**
-- ✅ **WebP conversion** (60% smaller)
-- ✅ **AVIF conversion** (70% smaller)
+- ✅ **WebP + AVIF conversion** (60-80% smaller)
 - ✅ **Responsive variants** (400, 800, 1200, 1600px)
-- ✅ **Descriptive filenames** (kebab-case)
-- ✅ **Auto-cleanup**: If an original `.jpg` is renamed or deleted, the `optimize-images.cjs` script now auto-deletes the orphaned `.webp`, `.avif`, and responsive variants.
-
-**Naming convention:**
-```text
-✅ burhi-gandak-river-dawn.jpg
-✅ bada-krishna-mandir-idol.jpg
-❌ 01-river.jpg
-❌ IMG_2847.jpg
-```
-
----
-
-## ⚙️ Automation
-
-**Three workflows keep everything in sync:**
-
-### 1. `build.yml` — Fast (~30 sec)
-**Triggers:** Changes to `data/**`, `templates/**`, `css/**`, `js/**`
-- Validate data + rules
-- Build static site
-- Generate sitemaps
-
-### 2. `manifesto.yml` — Slow but rare (~3 min)
-**Triggers:** Changes to `data/vision.json`
-- Generate PDF via Puppeteer + sharp
-- Auto-delete old PDFs
-- Commit with `[skip ci]`
-
-### 3. `optimize-images.yml` — Slow but rare (~3 min)
-**Triggers:** Changes to `images/**`
-- Convert to WebP + AVIF
-- Generate responsive variants
-- Run cleanup script to delete orphaned images
-- Commit with `[skip ci]`
-
-**Vercel auto-deploy:**
-- Enabled via `vercel.json`.
-- **Ignored Build Step** is configured to skip `[skip ci]` commits (saves build minutes).
+- ✅ **Auto-cleanup**: If an original `.jpg` is renamed or deleted, the `optimize-images.cjs` script now auto-deletes the orphaned `.webp`, `.avif`, and responsive variants to keep the repo clean.
 
 ---
 
@@ -427,40 +300,24 @@ npm run serve
 
 Open [http://localhost:8000](http://localhost:8000).
 
-### Available Commands
-
-| Command | What it does |
-|---|---|
-| `npm run build` | Full build (validate + site + sitemaps) |
-| `npm run build:full` | Includes image optimization + PDF |
-| `npm run dev` | Watch mode (rebuilds on change) |
-| `npm run validate` | Check rules (inline CSS, naming, etc.) |
-| `npm run optimize-images` | Convert to WebP/AVIF + auto-cleanup |
-| `npm run clean` | Delete dist/ |
-
 ---
 
 ## 📝 How to Add Content
 
+### ➕ Add a notable person
+1. Open `data/people.json`.
+2. Add an object with `name`, `role`, `locality`, `bio`, and `photo`.
+3. Push — the `/people` page updates automatically.
+
 ### ➕ Add a new article
-1. Open the relevant file in `data/articles/` (e.g., `religion.json`).
+1. Open the relevant file in `data/articles/`.
 2. Add a new object to the `articles` array.
-3. Commit — **site, sitemap, and SEO all update automatically.**
-
-### ➕ Add a photo
-1. Add image to `images/culture/` (kebab-case name).
-2. Add entry to `data/media.json` under `gallery.photos`.
-3. Push — `optimize-images.yml` runs automatically and generates optimized versions.
-
-### ➕ Add a vision priority
-1. Add entry to `data/vision.json` under `priorities`.
-2. Set `status: "pending"` (or `in-progress`).
-3. Commit — vision page + manifesto PDF regenerate.
+3. Commit — site, sitemap, and SEO all update automatically.
 
 ### 🎨 Change the entire theme
 1. Open `data/master.json`.
 2. Change the 5 brand colors under `"brand": { "colors": { ... } }`.
-3. Rebuild — **whole site restyles.**
+3. Rebuild — the whole site restyles instantly.
 
 ---
 
@@ -469,39 +326,20 @@ Open [http://localhost:8000](http://localhost:8000).
 | Layer | Technology |
 |---|---|
 | **Markup** | HTML5 (pre-rendered) |
-| **Styling** | CSS3 with custom properties |
+| **Styling** | CSS3 (Custom properties, Fluid Typography, Glassmorphism) |
 | **Scripting** | Vanilla JavaScript (no framework) |
-| **Maps** | Leaflet.js + Esri Satellite |
+| **Maps** | Leaflet.js + Esri Satellite (via CDN) |
 | **Hosting** | Vercel |
-| **Fonts** | Google Fonts (Fraunces, Inter, IBM Plex Mono) |
-| **PWA** | Service Worker + Manifest |
+| **Fonts** | Self-hosted (Fraunces, Inter, IBM Plex Mono) |
 | **PDF Generation** | Puppeteer + sharp |
-| **Image Optimization** | sharp |
 | **Automation** | GitHub Actions (3 workflows) |
 
 **Runtime dependencies:** 0 (all assets self-hosted)
-**Build-time dependencies:** 3 (Puppeteer, sharp, chokidar)
-
----
-
-## 🤝 Contributing
-
-We're actively looking for:
-- 📷 **Photographs**
-- 📖 **Memories**
-- 📜 **Documents**
-- 🚧 **Updates**
-- ✏️ **Corrections**
-
-**How to submit:**
-1. **📧 Email** — [bandwar.archive@gmail.com](mailto:bandwar.archive@gmail.com)
-2. **🏛️ In person** — Gram Panchayat office, Bandwar
 
 ---
 
 ## 📚 Data Sources
 
-All facts in this archive are sourced from verifiable records:
 - Census of India, 2011
 - MGNREGA Public Portal
 - Jal Jeevan Mission dashboard
@@ -512,43 +350,12 @@ All facts in this archive are sourced from verifiable records:
 
 ---
 
-## ❓ FAQ
-
-### What is Bandwar village?
-**Bandwar** is a village in **Begusarai district, Bihar, India**, located on the banks of the **Burhi Gandak river** in the historic **Mithila region**.
-
-### Is this archive affiliated with the government?
-**No.** This is a **community project**. Not affiliated with any government body, political party, or commercial organization.
-
-### Is the code open source?
-**Yes.** The code is released under the **MIT License**. Anyone can fork, modify, and adapt it for their own village archive.
-
-### Can I build a similar archive for my village?
-**Absolutely.** That's why the code is open source. Fork this repo, replace the JSON data with your village's content, and deploy.
-
----
-
-## 📜 License
-
-**📖 Content** — © Bandwar Village Community and contributors. Not for commercial use without permission. See [about](https://bandwar.vercel.app/about#license).
-
-**💻 Code** — Released under the **MIT License**. Free to use, modify, and adapt.
-
----
-
-## 📧 Contact
-
-- **📧 Email:** [bandwar.archive@gmail.com](mailto:bandwar.archive@gmail.com)
-- **📍 Location:** Bandwar, Begusarai, Bihar — 851131, India
-- **🌐 Coordinates:** 25.5009°N, 86.1606°E
-- **🐙 GitHub:** [github.com/ravirajhe/Bandwar](https://github.com/ravirajhe/Bandwar)
-- **🌐 Live Site:** [bandwar.vercel.app](https://bandwar.vercel.app)
-
----
-
 ## 🗺️ Roadmap
 
 ### ✅ Done
+- **People of Bandwar Page** (Directory + Email Submission form)
+- **How to Reach Bandwar Page** (Travel Guide with real data)
+- **Modern Heritage CSS Design** (Paper texture, Glass navbar, Fluid text)
 - Modular data architecture (Category-wise JSON split)
 - Google Site Name search fix (Vercel → Bandwar)
 - Google Image SEO fix (figcaption + image sitemaps)
@@ -556,24 +363,20 @@ All facts in this archive are sourced from verifiable records:
 - Image auto-cleanup logic (orphaned files)
 - Interactive map with 18 landmarks
 - 2,600-year timeline
-- Rolling horizon manifesto
 - Auto-generated PDF (`Vision-Vikshit-Bandwar.pdf`)
-- Complete SEO architecture (schema, sitemaps, meta)
+- Complete SEO architecture
 - PWA installability with offline cache
-- Dark mode toggle with localStorage
-- WebP + AVIF image pipeline
 
 ### ⏳ In Progress
 - PageSpeed optimization (async fonts, critical CSS)
 - AI-generated "required" images for pending priorities
-- Screenshots for documentation
 
 ### ☐ Planned
+- **Village Directory** (Mechanics, Doctors, Shops) — *Next Priority*
+- **Emergency Contacts** (Ambulance, Mukhiya, Police)
 - Hindi version (`hi-IN` with `/hi/` routes)
 - Voice recordings of elders — audio archive
-- Alumni registry for S.N.K. High School
 - Flood memory map — historic flood records
-- English Wikipedia article for Bandwar
 
 ---
 
