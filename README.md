@@ -45,14 +45,13 @@
 
 - [What is Bandwar?](#-what-is-bandwar)
 - [Why This Archive Exists](#-why-this-archive-exists)
-- [Screenshots](#-screenshots)
 - [Features](#-features)
 - [Architecture](#️-architecture)
 - [Project Structure](#-project-structure)
 - [Data Model](#-data-model)
 - [The Rolling Horizon Model](#-the-rolling-horizon-model)
 - [SEO & Rich Results](#-seo--rich-results)
-- [Image Pipeline](#-image-pipeline)
+- [Image Pipeline & Auto-Cleanup](#-image-pipeline--auto-cleanup)
 - [Automation](#️-automation)
 - [Performance](#-performance)
 - [Quick Start](#-quick-start)
@@ -100,64 +99,35 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
 
 ---
 
-## 📸 Screenshots
-
-<div align="center">
-
-### 🏠 Homepage — Hero, Stats, and Categories
-<img src="docs/screenshots/home.png" alt="Bandwar homepage with hero image and village statistics" width="800"/>
-
-### 🗺️ Interactive Map — 18 Landmarks
-<img src="docs/screenshots/map.png" alt="Interactive Leaflet map showing 18 landmarks in Bandwar village" width="800"/>
-
-### 📅 Timeline — 2,600 Years
-<img src="docs/screenshots/timeline.png" alt="Bandwar timeline from Anga Mahajanapada to present day" width="800"/>
-
-### 🔮 Vision — Before/After Sliders
-<img src="docs/screenshots/vision.png" alt="Vision page with development priorities" width="800"/>
-
-### 📄 Bandwar Manifesto — A4 PDF
-<img src="docs/screenshots/manifesto.png" alt="Bandwar manifesto PDF preview" width="800"/>
-
-### 📱 Mobile + Dark Mode
-<img src="docs/screenshots/mobile-dark.png" alt="Bandwar archive on mobile in dark mode" width="300"/>
-
-</div>
-
-> **Note:** Screenshots are being captured. See `docs/screenshots/` (coming soon).
-
----
-
 ## ✨ Features
 
-### 📚 Content
-- **30 in-depth articles** on history, religion, education, culture, infrastructure, and health
+### 📚 Content & Architecture
+- **30 in-depth articles** across categories, split into a **modular data structure**
 - **Live full-text search** — instant results across every article
-- **Category browser** — 10 categories with live article counts
 - **Interactive map** — 18 landmarks rendered with Leaflet.js + Esri satellite imagery
 - **2,600-year timeline** — from the Anga Mahajanapada to present, across 4 historical eras
-- **Photo gallery** — 37 curated photographs with category filters and lightbox viewing
+- **Photo gallery** — curated photographs with category filters and lightbox viewing
 - **Vision page** — 15 development priorities with before/after image sliders
 - **Achievement records** — 4 completed projects with funding details
-- **Community contributions** — email-based submissions, no backend required
+- **FAQ Accordion** — Interactive `details`/`summary` elements with `FAQPage` Schema
 
 ### 🎨 Design
 - **Two-file theming** — `theme.css` (tokens) + `style.css` (components)
 - **5-color override** — change 5 lines to completely restyle the site
 - **Theme presets built-in** — dark, sepia, contrast, indigo
-- **User-toggleable** — dark mode switch persisted to localStorage
 - **Editorial layout** — typography-first, no cards, no gradients
+- **Accessibility** — `.sr-only` classes for hidden screen-reader text and image captions
 
-### 🔍 SEO & Discoverability
-- **Complete Schema.org `@graph`** — Article, Place, Organization, WebSite, ImageObject, BreadcrumbList
+### 🔍 SEO & Discoverability (Latest Updates)
+- **Complete Schema.org `@graph`** — Article, Place, Organization, WebSite, FAQPage, BreadcrumbList
+- **Google Search Name Fix** — WebSite Schema `name` and `alternateName` optimized to prevent "Vercel" from showing as the site name.
+- **Google Image SEO** — Hero images wrapped in `<figure>` with hidden `<figcaption class="sr-only">` for better image context.
 - **Auto-generated sitemaps** — pages + images, filesystem-checked (zero 404s)
+- **Image Sitemap Titles** — `<image:title>` and `<image:caption>` tags added for Google Images
 - **Static pre-rendered HTML** — full content in Wave 1 (no JS dependency for content)
 - **Canonical URLs** — per-article, per-page, clean (no `.html`)
 - **Open Graph + Twitter Cards** — dynamic per article
 - **hreflang ready** — `en-IN`, `x-default` (Hindi version ready)
-- **Image SEO** — descriptive filenames, alt text, captions, license schema
-- **Google Search Console** verified — **47 pages discovered** ✅
-- **Rich Results** — All schema types validated by Google
 
 ### ⚡ Performance
 - **Zero runtime dependencies** — pure HTML, CSS, vanilla JavaScript
@@ -173,17 +143,16 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
 - **Auto-generated PDF** — `Vision-Vikshit-Bandwar.pdf`
 - **A4 print-ready** — 34-page document via Puppeteer
 - **Auto-cleanup** — old PDFs removed automatically
-- **Auto-committed** via GitHub Actions
 
 ---
 
 ## 🏗️ Architecture
 
-```
+```text
                 ┌────────────────────────────────────────┐
-                │          data/*.json                   │
+                │          data/                         │
                 │  (Single source of truth for content)  │
-                │   master · content · vision · media    │
+                │  master · categories · articles/*      │
                 └────────────────┬───────────────────────┘
                                  │
                 ┌────────────────┼───────────────────────┐
@@ -206,7 +175,7 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
                                 │
                                 ▼
                    ┌──────────────────────────┐
-                   │  dist/ (44 static pages) │
+                   │  dist/ (static pages)    │
                    └────────────┬─────────────┘
                                 │
                                 ▼
@@ -222,25 +191,26 @@ Every fact is sourced. Every photograph is credited. Nothing is published withou
 
 ## 📂 Project Structure
 
-```
+```text
 bandwar/
 │
-├── 📁 .github/
-│   ├── 📁 workflows/
-│   │   ├── build.yml                    # Site build + sitemaps (30 sec)
-│   │   ├── manifesto.yml                # PDF regeneration (rare, 3 min)
-│   │   └── optimize-images.yml          # WebP + AVIF (rare, 3 min)
-│   ├── 📁 ISSUE_TEMPLATE/
-│   │   ├── bug_report.md
-│   │   ├── feature_request.md
-│   │   ├── content_correction.md
-│   │   └── new_content.md
-│   └── PULL_REQUEST_TEMPLATE.md
+├── 📁 .github/workflows/                # CI/CD Pipelines
+│   ├── build.yml                        # Site build + sitemaps
+│   ├── manifesto.yml                    # PDF regeneration
+│   └── optimize-images.yml              # WebP + AVIF + Cleanup
 │
 ├── 📁 data/                             # ⭐ Single source of truth
-│   ├── master.json                      # Site + brand + nav + SEO + features
-│   ├── content.json                     # 30 articles + 10 categories
-│   ├── vision.json                      # 15 priorities + 4 achievements + roadmap
+│   ├── 📁 articles/                     # Modular article storage
+│   │   ├── culture.json
+│   │   ├── education.json
+│   │   ├── geography.json
+│   │   ├── health.json
+│   │   ├── infrastructure.json
+│   │   ├── landmarks.json
+│   │   └── religion.json
+│   ├── categories.json                  # Category metadata
+│   ├── master.json                      # Site config, brand, nav, SEO
+│   ├── vision.json                      # 15 priorities + 4 achievements
 │   └── media.json                       # Gallery + landmarks + timeline
 │
 ├── 📁 templates/                        # ⭐ Build-time templates
@@ -252,79 +222,51 @@ bandwar/
 │   ├── time.html                        # Timeline
 │   ├── vision.html                      # Vision + manifesto
 │   ├── about.html                       # About + sources + license
-│   └── 📁 partials/
-│       ├── head.html                    # SEO meta block
-│       ├── nav.html                     # Navigation
-│       └── footer.html                  # Footer
+│   └── 📁 partials/                     # Head, Nav, Footer
 │
 ├── 📁 scripts/                          # Build tools
-│   ├── build.cjs                        # Main build engine (44 pages)
+│   ├── build.cjs                        # Main build engine (v5.4)
 │   ├── validate.cjs                     # Rule enforcement
-│   ├── optimize-images.cjs              # WebP + AVIF + responsive
+│   ├── optimize-images.cjs              # WebP/AVIF + Auto-Cleanup
 │   ├── generate-sitemaps.cjs            # 3 sitemaps
 │   └── generate-manifesto.cjs           # Puppeteer PDF
 │
-├── 📁 css/                              # Source styles
+├── 📁 css/
 │   ├── theme.css                        # ⚙️ ALL design tokens
 │   └── style.css                        # Components (uses only tokens)
 │
-├── 📁 js/                               # Vanilla JavaScript
-│   ├── core.js                          # Navbar, footer, theme, PWA
+├── 📁 js/
+│   ├── core.js                          # Nav, footer, theme, PWA
 │   ├── articles.js                      # Article interactivity
 │   ├── sections.js                      # Search + filter
 │   ├── places.js                        # Leaflet map + gallery
 │   ├── time.js                          # Timeline filter
 │   └── vision.js                        # Before/after sliders
 │
-├── 📁 images/                           # Source images
-│   ├── home/                            # Homepage images
-│   ├── culture/                         # Temples, festivals
-│   ├── village/                         # Current state photos
-│   ├── vision/                          # Before/after slider images
-│   ├── education/                       # Schools, library
-│   ├── history/                         # Historical images
-│   └── icons/                           # PWA icons (48–512px)
+├── 📁 images/                           # Source images (originals)
+│   ├── home/
+│   ├── culture/
+│   ├── village/
+│   ├── vision/
+│   ├── education/
+│   └── icons/                           # PWA icons
 │
-├── 📁 docs/                             # Documentation
-│   └── screenshots/                     # README screenshots
-│
-├── 📁 assets/
-│   └── 📁 pdfs/
-│       └── Vision-Vikshit-Bandwar.pdf  # Auto-generated manifesto
-│
-├── 📁 dist/                             # Build output (gitignored)
-│   ├── index.html
-│   ├── article/*.html                   # 30 pages
-│   ├── section/*.html                   # 11 pages
-│   ├── place.html, time.html, vision.html, about.html, 404.html
-│   ├── sitemap.xml, sitemap-images.xml, sitemap-index.xml
-│   ├── robots.txt, manifest.json, sw.js
-│   └── assets/                          # Copied CSS/JS/images
-│
-├── 📄 LICENSE                           # MIT (code) + © Community (content)
-├── 📄 README.md                         # You are here
 ├── 📄 package.json                      # Scripts + dev deps
 ├── 📄 vercel.json                       # Deployment config
 ├── 📄 robots.txt                        # Crawler directives
 ├── 📄 manifest.json                     # PWA manifest
 ├── 📄 sw.js                             # Service worker
-├── 📄 offline.html                      # PWA offline fallback
 ├── 📄 humans.txt                        # Web credits
 ├── 📄 CHANGELOG.md                      # Version history
 ├── 📄 CONTRIBUTING.md                   # Contribution guide
-├── 📄 CODE_OF_CONDUCT.md                # Community standard
-├── 📄 SECURITY.md                       # Security policy
-├── 📄 .gitignore
-├── 📄 .gitattributes
-├── 📄 .editorconfig
-└── 📄 .nvmrc
+└── 📄 LICENSE                           # MIT (code) + © Community (content)
 ```
 
 ---
 
 ## 📚 Data Model
 
-**4 data files, one source of truth each:**
+**5 modular data sources, split for scalability:**
 
 ### `data/master.json`
 Site config — the **master key**:
@@ -334,50 +276,32 @@ Site config — the **master key**:
   "village": { "name", "coordinates", "population", "pincode" },
   "brand": { "colors", "fonts" },
   "nav": [...],
-  "footer": {...},
   "seo": {...},
   "imageSEO": {...},
-  "home": { "hero", "stats", "about", "cta" },
-  "about": { "story", "principles", "sources", "community" },
-  "contact": {...},
-  "social": {...},
-  "features": {...},
-  "license": { "code", "content" },
-  "organization": {...}
+  "home": { "hero", "stats", "about", "cta" }
 }
 ```
 
-**Change `site.name` → 30+ files auto-update.**
-
-### `data/content.json`
-Articles + categories:
+### `data/categories.json`
 ```json
 {
-  "categories": [10 items],
-  "articles": [30 items with id, title, categories, content, related, ...]
+  "categories": [
+    { "id": "culture", "title": "Culture", "icon": "🎭", "description": "..." }
+  ]
 }
 ```
+
+### `data/articles/` (Directory)
+Articles are split into category-specific files for easier management and fewer Git conflicts:
+- `culture.json`, `education.json`, `geography.json`, `health.json`, `infrastructure.json`, `landmarks.json`, `religion.json`.
+
+*Adding a new article means just adding it to the relevant JSON file. The build script auto-merges them.*
 
 ### `data/vision.json`
-Rolling horizon vision:
-```json
-{
-  "priorities": [15 items with status: pending/in-progress/done],
-  "achievements": [4 items],
-  "roadmap": [3 phases with relative years]
-}
-```
+Rolling horizon vision, 15 development priorities (with `status: pending/done`), and achievements.
 
 ### `data/media.json`
-Photos + landmarks + timeline:
-```json
-{
-  "gallery": { "categories": [...], "photos": [37 items] },
-  "landmarks": [18 landmarks with coordinates],
-  "timeline": [16 events across 4 eras],
-  "eras": [4 era definitions]
-}
-```
+Photo gallery, 18 landmark coordinates, and 2,600-year timeline events.
 
 ---
 
@@ -385,10 +309,9 @@ Photos + landmarks + timeline:
 
 **Bandwar {currentYear + 10}** — not fixed. It's a **rolling 10-year horizon** that auto-shifts every year.
 
-```
+```text
 Year 2026 → "Bandwar 2036" (current year + 10)
 Year 2027 → "Bandwar 2037"
-Year 2028 → "Bandwar 2038"
 ```
 
 ### How it works:
@@ -403,65 +326,49 @@ Year 2028 → "Bandwar 2038"
 
 ---
 
-## 🔍 SEO & Rich Results
+## 🔍 SEO & Rich Results (Latest Updates)
 
-Every indexable page carries a **complete `<head>`**:
+Every indexable page carries a **complete `<head>`** with unique meta tags, canonical URLs, Open Graph, Twitter Cards, and JSON-LD schemas pre-rendered.
 
-| Element | Status |
-|---|---|
-| Primary SEO (title, description) | ✅ Unique per page |
-| Canonical URL | ✅ Absolute, clean |
-| Open Graph | ✅ Full set |
-| Twitter Cards | ✅ summary_large_image |
-| hreflang | ✅ en-IN + x-default |
-| Robots meta | ✅ max-image-preview:large |
-| JSON-LD @graph | ✅ Pre-rendered in HTML |
+### 🆕 Recent SEO Fixes
+1. **Google Site Name Fix**: Added `alternateName` to the `WebSite` schema and shortened `site.name` in `master.json` to prevent Google from displaying "Vercel" as the site name in search results.
+2. **Google Image Search Fix**: Added hidden `<figcaption class="sr-only">` tags to hero images and `<image:title>` tags to the Image Sitemap. Google now extracts proper image titles instead of the page title.
+3. **Inline Link Parsing**: `[[article-id|display text]]` syntax is now natively parsed in article texts and FAQs, stripping brackets for clean meta descriptions.
 
 ### Schema per page
 
 | Page | Schema Types |
 |---|---|
 | Homepage | WebSite + Place + Organization + ImageObject + BreadcrumbList |
-| Article | Article + ImageObject[] + BreadcrumbList + contentLocation |
+| Article | Article + FAQPage + ImageObject[] + BreadcrumbList + contentLocation |
 | Section | CollectionPage + ItemList + BreadcrumbList |
 | Place | CollectionPage + ItemList[Place] + BreadcrumbList |
 | Time | CollectionPage + ItemList[Event] + BreadcrumbList |
 | Vision | Report + ItemList + BreadcrumbList |
 | About | AboutPage + Organization + BreadcrumbList |
 
-### Google Verified ✅
-
-- **Google Search Console:** Verified
-- **Sitemap Discovered:** 47 pages
-- **Rich Results:** Article, Breadcrumb, ImageObject, Organization — all detected
-- **PageSpeed SEO:** 100/100
-
 ### Sitemaps (auto-generated)
-
-- `sitemap.xml` — page URLs (40+ pages)
-- `sitemap-images.xml` — 100+ images with captions
+- `sitemap.xml` — page URLs
+- `sitemap-images.xml` — 100+ images with explicit `<image:caption>` and `<image:title>`
 - `sitemap-index.xml` — master index
 
 ---
 
-## 🎨 Image Pipeline
+## 🎨 Image Pipeline & Auto-Cleanup
 
 **Every image gets:**
 - ✅ **WebP conversion** (60% smaller)
 - ✅ **AVIF conversion** (70% smaller)
-- ✅ **Responsive variants** (400, 800, 1200px)
+- ✅ **Responsive variants** (400, 800, 1200, 1600px)
 - ✅ **Descriptive filenames** (kebab-case)
-- ✅ **Alt text + captions**
-- ✅ **License schema**
-- ✅ **Image sitemap entry**
+- ✅ **Auto-cleanup**: If an original `.jpg` is renamed or deleted, the `optimize-images.cjs` script now auto-deletes the orphaned `.webp`, `.avif`, and responsive variants.
 
 **Naming convention:**
-```
+```text
 ✅ burhi-gandak-river-dawn.jpg
 ✅ bada-krishna-mandir-idol.jpg
 ❌ 01-river.jpg
 ❌ IMG_2847.jpg
-❌ hero.jpg
 ```
 
 ---
@@ -471,75 +378,35 @@ Every indexable page carries a **complete `<head>`**:
 **Three workflows keep everything in sync:**
 
 ### 1. `build.yml` — Fast (~30 sec)
-**Triggers:** Changes to `data/**`, `templates/**`, `css/**`, `js/**`, `scripts/**`, `images/**`
+**Triggers:** Changes to `data/**`, `templates/**`, `css/**`, `js/**`
 - Validate data + rules
-- Build static site (44 pages)
+- Build static site
 - Generate sitemaps
-- Upload artifact
 
 ### 2. `manifesto.yml` — Slow but rare (~3 min)
-**Triggers:** Changes to `data/vision.json`, `templates/vision.html`, `scripts/generate-manifesto.cjs`
+**Triggers:** Changes to `data/vision.json`
 - Generate PDF via Puppeteer + sharp
 - Auto-delete old PDFs
-- Commit `Vision-Vikshit-Bandwar.pdf` with `[skip ci]`
+- Commit with `[skip ci]`
 
 ### 3. `optimize-images.yml` — Slow but rare (~3 min)
 **Triggers:** Changes to `images/**`
 - Convert to WebP + AVIF
 - Generate responsive variants
+- Run cleanup script to delete orphaned images
 - Commit with `[skip ci]`
 
 **Vercel auto-deploy:**
-- Enabled via `vercel.json` (no `deploymentEnabled: false`)
-- **Ignored Build Step** set to skip `[skip ci]` commits
-- Daily limit: 100/day (safe)
-
----
-
-## 📊 Performance
-
-### Current Status
-
-| Metric | Mobile | Desktop | Target |
-|---|---|---|---|
-| **Performance** | 68 | 90+ | 85+ |
-| **Accessibility** | 94 | 95 | 90+ |
-| **Best Practices** | 96 | 100 | 90+ |
-| **SEO** | **100** ✅ | **100** ✅ | 100 |
-
-### Core Web Vitals (Mobile)
-
-| Metric | Current | Target | Status |
-|---|---|---|---|
-| **FCP** | 3.3s | < 1.8s | 🟡 In Progress |
-| **LCP** | 8.5s | < 2.5s | 🟡 In Progress |
-| **TBT** | 0ms | < 200ms | ✅ Perfect |
-| **CLS** | 0 | < 0.1 | ✅ Perfect |
-
-### Optimizations Applied
-
-- ✅ Async font loading (`media="print" onload="this.media='all'"`)
-- ✅ Preload hints for fonts + CSS
-- ✅ DNS prefetch for Google Fonts
-- ✅ Reduced responsive image widths (400/800/1200)
-- ✅ Hero preload at 800px (not 1200px)
-- ✅ Font-display swap
-
-### Optimizations Planned
-
-- 🟡 Critical CSS inline
-- 🟡 Reduce unused CSS
-- 🟡 Further image compression
+- Enabled via `vercel.json`.
+- **Ignored Build Step** is configured to skip `[skip ci]` commits (saves build minutes).
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
 - **Node.js** >= 20
 - **Git** >= 2.x
-- (Optional) Vercel account for deployment
 
 ### Installation
 
@@ -565,150 +432,35 @@ Open [http://localhost:8000](http://localhost:8000).
 | Command | What it does |
 |---|---|
 | `npm run build` | Full build (validate + site + sitemaps) |
-| `npm run build:site` | Build site only |
 | `npm run build:full` | Includes image optimization + PDF |
 | `npm run dev` | Watch mode (rebuilds on change) |
-| `npm run serve` | Build + serve dist/ locally |
 | `npm run validate` | Check rules (inline CSS, naming, etc.) |
-| `npm run optimize-images` | Convert to WebP/AVIF + responsive |
+| `npm run optimize-images` | Convert to WebP/AVIF + auto-cleanup |
 | `npm run clean` | Delete dist/ |
-
-### Verification
-
-```bash
-# Run validation
-npm run validate
-# Expected: ✓ Passed · ⚠ Warnings (content) · ✗ Errors (0)
-```
 
 ---
 
 ## 📝 How to Add Content
 
 ### ➕ Add a new article
-
-1. Open `data/content.json`
-2. Add a new object to the `articles` array:
-
-```json
-{
-  "id": "new-temple",
-  "title": "New Temple",
-  "subtitle": "Short description",
-  "categories": ["religion"],
-  "summary": "One-paragraph summary...",
-  "hero": "images/culture/new-temple.jpg",
-  "photos": [],
-  "infobox": { "Type": "Hindu temple" },
-  "content": [
-    { "heading": "History", "text": "..." }
-  ],
-  "related": ["shivala"],
-  "location": { "lat": 25.5012, "lng": 86.1610 },
-  "tags": ["temple"]
-}
-```
-
-3. Commit — **site, sitemap, and SEO all update automatically**
-
-**⏱️ Time: 2 minutes · Files edited: 1**
+1. Open the relevant file in `data/articles/` (e.g., `religion.json`).
+2. Add a new object to the `articles` array.
+3. Commit — **site, sitemap, and SEO all update automatically.**
 
 ### ➕ Add a photo
-
-1. Add image to `images/culture/` (kebab-case name)
-2. Add entry to `data/media.json` under `gallery.photos`
-3. Push — `optimize-images.yml` runs automatically
-4. Commits WebP/AVIF variants
-
-### ➕ Add a landmark
-
-1. Add entry to `data/media.json` under `landmarks` with lat/lng
-2. Commit — map and Place schema update
-
-### ➕ Add a timeline event
-
-1. Add entry to `data/media.json` under `timeline`
-2. Commit — timeline and Event schema update
+1. Add image to `images/culture/` (kebab-case name).
+2. Add entry to `data/media.json` under `gallery.photos`.
+3. Push — `optimize-images.yml` runs automatically and generates optimized versions.
 
 ### ➕ Add a vision priority
-
-1. Add entry to `data/vision.json` under `priorities`
-2. Set `status: "pending"` (or `in-progress`)
-3. Commit — vision page + manifesto PDF regenerate
-
-### ➕ Mark a priority as complete
-
-1. Open `data/vision.json`
-2. Change priority's `status` to `"done"` and set `"completed": "2028"`
-3. Commit — **automatically moves to Achievements section**
+1. Add entry to `data/vision.json` under `priorities`.
+2. Set `status: "pending"` (or `in-progress`).
+3. Commit — vision page + manifesto PDF regenerate.
 
 ### 🎨 Change the entire theme
-
-1. Open `data/master.json`
-2. Change the 5 brand colors:
-
-```json
-"brand": {
-  "colors": {
-    "primary": "#YOUR_INK",
-    "base": "#YOUR_PAPER",
-    "surface": "#YOUR_CARD",
-    "accent": "#YOUR_ACCENT",
-    "warn": "#YOUR_WARN"
-  }
-}
-```
-
-3. Rebuild — **whole site restyles**
-
-**⏱️ Time: 5 minutes · Files edited: 1**
-
----
-
-## 🎨 Theming
-
-### Two-file system
-
-The entire visual identity lives in **`css/theme.css`**:
-
-```css
-:root {
-  --c-primary:  #1a1a18;   /* ink — main text */
-  --c-base:     #f7f5ef;   /* paper — background */
-  --c-surface:  #efece4;   /* cards, subtle sections */
-  --c-accent:   #1f3d2f;   /* forest — links, emphasis */
-  --c-warn:     #a64b2a;   /* ember — accents */
-}
-```
-
-Everything else — text hierarchies, borders, surfaces, shadows — derives automatically via `color-mix()`.
-
-### Built-in theme presets
-
-Activate with `<html data-theme="dark">`:
-
-| Preset | Description |
-|---|---|
-| `dark` | Ink-on-paper inverted — for night reading |
-| `sepia` | Warm brown tones — antique feel |
-| `contrast` | High-contrast for accessibility |
-| `indigo` | Alternate brand palette |
-
-### Rule for developers
-
-**Never write hardcoded values in `style.css`.** Always use tokens:
-
-```css
-/* ❌ Never */                /* ✅ Always */
-color: #1a1a18;                color: var(--c-text);
-font-family: 'Fraunces';       font-family: var(--f-display);
-padding: 16px;                 padding: var(--sp-4);
-```
-
-Verify with:
-```bash
-npm run validate
-```
+1. Open `data/master.json`.
+2. Change the 5 brand colors under `"brand": { "colors": { ... } }`.
+3. Rebuild — **whole site restyles.**
 
 ---
 
@@ -719,70 +471,42 @@ npm run validate
 | **Markup** | HTML5 (pre-rendered) |
 | **Styling** | CSS3 with custom properties |
 | **Scripting** | Vanilla JavaScript (no framework) |
-| **Maps** | Leaflet.js + Esri Satellite (self-hosted) |
+| **Maps** | Leaflet.js + Esri Satellite |
 | **Hosting** | Vercel |
 | **Fonts** | Google Fonts (Fraunces, Inter, IBM Plex Mono) |
 | **PWA** | Service Worker + Manifest |
-| **PDF Generation** | Puppeteer + sharp (dev only) |
-| **Image Optimization** | sharp (dev only) |
+| **PDF Generation** | Puppeteer + sharp |
+| **Image Optimization** | sharp |
 | **Automation** | GitHub Actions (3 workflows) |
 
 **Runtime dependencies:** 0 (all assets self-hosted)
 **Build-time dependencies:** 3 (Puppeteer, sharp, chokidar)
-**Build time:** ~30 seconds
 
 ---
 
 ## 🤝 Contributing
 
 We're actively looking for:
+- 📷 **Photographs**
+- 📖 **Memories**
+- 📜 **Documents**
+- 🚧 **Updates**
+- ✏️ **Corrections**
 
-- 📷 **Photographs** — old or new, personal or public
-- 📖 **Memories** — written accounts from elders
-- 📜 **Documents** — land records, letters, government papers
-- 🚧 **Updates** — project progress
-- ✏️ **Corrections** — errors in names, dates, facts
-
-### How to submit
-
+**How to submit:**
 1. **📧 Email** — [bandwar.archive@gmail.com](mailto:bandwar.archive@gmail.com)
 2. **🏛️ In person** — Gram Panchayat office, Bandwar
-3. **👥 Via committee** — Any member of the Bandwar Archive committee
-
-Every contribution is credited. Nothing is published without consent.
-
-### For developers
-
-```bash
-# Fork → Clone → Branch → Commit → Push → PR
-git checkout -b feature/amazing-feature
-git commit -m "feat: add amazing feature"
-git push origin feature/amazing-feature
-```
-
-**Commit format:**
-```
-feat: add new feature
-fix: resolve bug
-docs: update documentation
-perf: performance improvement
-chore: maintenance task
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full details.
 
 ---
 
 ## 📚 Data Sources
 
 All facts in this archive are sourced from verifiable records:
-
 - Census of India, 2011
 - MGNREGA Public Portal
 - Jal Jeevan Mission dashboard
-- **News18, Prabhat Khabar, Hindustan, Dainik Jagran**
+- News18, Prabhat Khabar, Hindustan, Dainik Jagran
 - Rajya Sabha records
-- Local residents and village elders
 - Archaeological Survey of India
 - Personal interviews, 2024–2026
 
@@ -791,48 +515,16 @@ All facts in this archive are sourced from verifiable records:
 ## ❓ FAQ
 
 ### What is Bandwar village?
-
-**Bandwar** is a village in **Begusarai district, Bihar, India**, located on the banks of the **Burhi Gandak river** in the historic **Mithila region**. Its PIN code is **851131**.
-
-### Where is Bandwar located?
-
-Bandwar is at coordinates **25.5009°N, 86.1606°E**, in Begusarai district — approximately 130 km east of Patna.
-
-### What is the Bandwar Archive?
-
-The **Bandwar Archive** is a community-built digital repository documenting the village's history, culture, temples, schools, landmarks, and people.
-
-### Who built this website?
-
-The archive is built and maintained by the **Bandwar Village Community**, with technical implementation by [Ravi Raj](https://github.com/ravirajhe). Every contributor is credited.
-
-### What is the rolling horizon model?
-
-Instead of a fixed "Bandwar 2035", the vision auto-shifts each year: 2026 → "Bandwar 2036", 2027 → "Bandwar 2037". Completed priorities move automatically from Vision to Achievements.
-
-### What is the Vision-Vikshit-Bandwar.pdf?
-
-It's the auto-generated A4 manifesto — a 34-page PDF document containing 15 development priorities, 4 achievements, and a 10-year roadmap. Regenerated automatically on every `vision.json` change.
+**Bandwar** is a village in **Begusarai district, Bihar, India**, located on the banks of the **Burhi Gandak river** in the historic **Mithila region**.
 
 ### Is this archive affiliated with the government?
-
 **No.** This is a **community project**. Not affiliated with any government body, political party, or commercial organization.
 
 ### Is the code open source?
-
 **Yes.** The code is released under the **MIT License**. Anyone can fork, modify, and adapt it for their own village archive.
 
-### Is the content free to use?
-
-The **content** (articles, photographs, documents) is **© Bandwar Village Community** and is not for commercial use without permission. Contact [bandwar.archive@gmail.com](mailto:bandwar.archive@gmail.com) for usage requests.
-
 ### Can I build a similar archive for my village?
-
 **Absolutely.** That's why the code is open source. Fork this repo, replace the JSON data with your village's content, and deploy.
-
-### Is there a Hindi version?
-
-**Not yet.** A Hindi version (`hi-IN` with `/hi/` routes) is on the roadmap. The hreflang tags are already in place.
 
 ---
 
@@ -857,28 +549,22 @@ The **content** (articles, photographs, documents) is **© Bandwar Village Commu
 ## 🗺️ Roadmap
 
 ### ✅ Done
-- 30 articles across 7 categories
+- Modular data architecture (Category-wise JSON split)
+- Google Site Name search fix (Vercel → Bandwar)
+- Google Image SEO fix (figcaption + image sitemaps)
+- FAQ Schema generation
+- Image auto-cleanup logic (orphaned files)
 - Interactive map with 18 landmarks
-- 2,600-year timeline with 4 eras
-- Photo gallery (37 photos) with lightbox
-- Vision page with 15 before/after sliders
-- 4 government achievements documented
-- **Rolling horizon manifesto** (auto-shifting)
-- **Auto-generated PDF** (`Vision-Vikshit-Bandwar.pdf`)
-- **Complete SEO architecture** (schema, sitemaps, meta)
-- **Image sitemap** (auto-generated, filesystem-checked)
-- **Two-file theme system** with 4 presets
-- **PWA installability** with offline cache
-- **Clean URLs** everywhere
-- **Dark mode toggle** with localStorage
-- **WebP + AVIF image pipeline**
-- **Responsive images** with srcset
-- **Google Search Console** verified — 47 pages discovered
-- **Rich Results** — All schemas validated
-- **3 GitHub workflows** (build, manifesto, images)
+- 2,600-year timeline
+- Rolling horizon manifesto
+- Auto-generated PDF (`Vision-Vikshit-Bandwar.pdf`)
+- Complete SEO architecture (schema, sitemaps, meta)
+- PWA installability with offline cache
+- Dark mode toggle with localStorage
+- WebP + AVIF image pipeline
 
 ### ⏳ In Progress
-- PageSpeed optimization (async fonts, image compression)
+- PageSpeed optimization (async fonts, critical CSS)
 - AI-generated "required" images for pending priorities
 - Screenshots for documentation
 
@@ -888,10 +574,6 @@ The **content** (articles, photographs, documents) is **© Bandwar Village Commu
 - Alumni registry for S.N.K. High School
 - Flood memory map — historic flood records
 - English Wikipedia article for Bandwar
-- Additional priorities — Drainage, Playground, Piped Water, Library
-- Signature page — printed copy at Panchayat
-- Google Business Profile for local pack
-- Backlinks strategy (Reddit, Quora, Wikipedia)
 
 ---
 
@@ -901,7 +583,7 @@ The **content** (articles, photographs, documents) is **© Bandwar Village Commu
 
 **[⭐ Star this repo](https://github.com/ravirajhe/Bandwar)** ·
 **[🌐 Visit the site](https://bandwar.vercel.app)** ·
-**[📧 Contribute](mailto:bandwar.archive@gmail.com)**
+**[📧 Contribute](mailto:ravirajbandwar@gmail.com)**
 
 *Made with ❤️ in Bihar, India*
 
