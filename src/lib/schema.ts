@@ -118,3 +118,20 @@ export const VisionSchema = z.object({
 });
 
 export type VisionData = z.infer<typeof VisionSchema>;
+
+// 5. People Schema
+export const PersonSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  role: z.string(),
+  locality: z.string(),
+  bio: z.string(),
+  photo: z.string().optional(),
+});
+
+export const PeopleDataSchema = z.object({
+  people: z.array(PersonSchema),
+});
+
+export type Person = z.infer<typeof PersonSchema>;
+export type PeopleData = z.infer<typeof PeopleDataSchema>;
