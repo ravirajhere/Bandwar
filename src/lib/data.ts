@@ -1,92 +1,67 @@
 import fs from "fs";
 import path from "path";
 import { 
-  MasterSchema, 
-  ArticleListSchema, 
-  MediaSchema, 
-  VisionSchema, 
-  PeopleDataSchema, // 👈 Naya import
-  MasterConfig, 
-  Article, 
-  Media,
-  VisionData,
-  PeopleData // 👈 Naya type
+  MasterSchema, ArticleListSchema, MediaSchema, VisionSchema, 
+  PeopleDataSchema, CategoriesDataSchema,
+  MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData
 } from "./schema";
 
-// Ye function JSON file read karta hai
 const readJsonFile = (filePath: string) => {
   const fullPath = path.join(process.cwd(), "data", filePath);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  return JSON.parse(fileContents);
+  return JSON.parse(fs.readFileSync(fullPath, "utf8"));
 };
 
-// 1. Master Data (Nav, Footer, SEO)
 export function getMasterData(): MasterConfig {
   const rawData = readJsonFile("master.json");
   const parsed = MasterSchema.safeParse(rawData);
-  if (!parsed.success) {
-    console.error("❌ master.json mein error hai:", parsed.error.format());
-    throw new Error("Invalid master.json");
-  }
+  if (!parsed.success) throw new Error("Invalid master.json: " + JSON.stringify(parsed.error.format()));
   return parsed.data;
 }
 
-// 2. Saare Articles (education, culture, etc. se)
 export function getAllArticles(): Article[] {
   const articlesDir = path.join(process.cwd(), "data", "articles");
   const fileNames = fs.readdirSync(articlesDir);
   let allArticles: Article[] = [];
-
   for (const fileName of fileNames) {
     if (fileName.endsWith(".json")) {
       const rawData = readJsonFile(`articles/${fileName}`);
       const parsed = ArticleListSchema.safeParse(rawData);
-      
-      if (!parsed.success) {
-        console.error(`❌ ${fileName} mein error hai:`, parsed.error.format());
-        throw new Error(`Invalid ${fileName}`);
-      }
+      if (!parsed.success) throw new Error(`Invalid ${fileName}: ` + JSON.stringify(parsed.error.format()));
       allArticles = [...allArticles, ...parsed.data.articles];
     }
   }
   return allArticles;
 }
 
-// 3. Ek Single Article (ID ke basis par)
 export function getArticleById(id: string): Article | undefined {
-  const articles = getAllArticles();
-  return articles.find((a) => a.id === id);
+  return getAllArticles().find((a) => a.id === id);
 }
 
-// 4. Media, Timeline, Map Data
 export function getMediaData(): Media {
   const rawData = readJsonFile("media.json");
   const parsed = MediaSchema.safeParse(rawData);
-  if (!parsed.success) {
-    console.error("❌ media.json mein error hai:", parsed.error.format());
-    throw new Error("Invalid media.json");
-  }
+  if (!parsed.success) throw new Error("Invalid media.json: " + JSON.stringify(parsed.error.format()));
   return parsed.data;
 }
 
-// 5. Vision 2035 Manifesto Data
 export function getVisionData(): VisionData {
   const rawData = readJsonFile("vision.json");
   const parsed = VisionSchema.safeParse(rawData);
-  if (!parsed.success) {
-    console.error("❌ vision.json mein error hai:", parsed.error.format());
-    throw new Error("Invalid vision.json");
-  }
+  if (!parsed.success) throw new Error("Invalid vision.json: " + JSON.stringify(parsed.error.format()));
   return parsed.data;
 }
 
-// 6. People Directory Data
 export function getPeopleData(): PeopleData {
   const rawData = readJsonFile("people.json");
   const parsed = PeopleDataSchema.safeParse(rawData);
-  if (!parsed.success) {
-    console.error("❌ people.json mein error hai:", parsed.error.format());
-    throw new Error("Invalid people.json");
-  }
+  if (!parsed.success) throw new Error("Invalid people.json: " + JSON.stringify(parsed.error.format()));
+  return parsed.data;
+}
+
+// 👇 Naya function
+export function getCategoriesData(): CategoriesData {
+  const rawData = readJsonFile("categories.json");
+  const parsed = CategoriesDataSchema.safeParse(rawData);
+  if (!parsed.success) throw new Error("Invalid categories.json: " + JSON.stringify(parsed.error.format()));
   return parsed.data;
 }
