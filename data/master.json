@@ -3,7 +3,7 @@
   "lastUpdated": "2026-10-10",
 
   "site": {
-    "name": "Bandwar — A Village Archive",
+    "name": "Bandwar Archive",
     "shortName": "Bandwar",
     "tagline": "A community-built digital archive",
     "description": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — history, temples, schools, culture, and daily life.",
@@ -77,7 +77,7 @@
     "titlePattern": "{title} — {site} Archive",
     "titlePatternHome": "{siteName}",
     "defaultDescription": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — history, temples, schools, culture, and daily life.",
-    "ogImage": "/images/home/bandwar-hero.jpg",
+    "ogImage": "/images/home/burhi-gandak-river-dawn-bandwar.jpg",
     "ogImageWidth": 1200,
     "ogImageHeight": 630,
     "twitterHandle": null,
@@ -167,7 +167,7 @@
 
   "home": {
     "hero": {
-      "image": "/images/home/bandwar-hero.jpg",
+      "image": "/images/home/burhi-gandak-river-dawn-bandwar.jpg",
       "alt": "The Burhi Gandak river at dawn, near Bandwar village, Begusarai",
       "location": "Begusarai District · Bihar · Mithila Region",
       "title": "Bandwar",
@@ -289,8 +289,8 @@
 
     "committee": [
       {
-        "role": "Founder",
-        "name": "Ravi Raj",
+        "role": "Editor",
+        "name": "RAVI RAJ",
         "link": "https://github.com/ravirajhere"
       }
     ]
