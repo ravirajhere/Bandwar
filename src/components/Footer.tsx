@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import master from '../../data/master.json'; // <--- Yahan path fix kiya gaya hai
+import master from '../../data/master.json'; // <--- Path sahi kiya gaya hai
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
