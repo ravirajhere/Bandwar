@@ -1,6 +1,15 @@
 import fs from "fs";
 import path from "path";
-import { MasterSchema, ArticleListSchema, MediaSchema, MasterConfig, Article, Media } from "./schema";
+import { 
+  MasterSchema, 
+  ArticleListSchema, 
+  MediaSchema, 
+  VisionSchema, 
+  MasterConfig, 
+  Article, 
+  Media,
+  VisionData
+} from "./schema";
 
 // Ye function JSON file read karta hai
 const readJsonFile = (filePath: string) => {
@@ -54,6 +63,17 @@ export function getMediaData(): Media {
   if (!parsed.success) {
     console.error("❌ media.json mein error hai:", parsed.error.format());
     throw new Error("Invalid media.json");
+  }
+  return parsed.data;
+}
+
+// 5. Vision 2035 Manifesto Data
+export function getVisionData(): VisionData {
+  const rawData = readJsonFile("vision.json");
+  const parsed = VisionSchema.safeParse(rawData);
+  if (!parsed.success) {
+    console.error("❌ vision.json mein error hai:", parsed.error.format());
+    throw new Error("Invalid vision.json");
   }
   return parsed.data;
 }
