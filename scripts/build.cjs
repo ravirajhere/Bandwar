@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — BUILD ENGINE
    Static site generator · Pre-renders every page from JSON data
-   v5.4 — Category-wise data + inline links + FAQ schema + SEO fixes
+   v5.5 — Category-wise data + inline links + FAQ schema + SEO/Map fixes
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -1644,11 +1644,12 @@ function renderPlace(templates, master, content, media) {
           </figcaption>
         </figure>`).join('\n');
 
+  /* ✅ MAP FIX: Using CDN instead of local vendor folder */
   const pageSpecificHead = master.features.map ? `
-    <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css" media="print" onload="this.media='all'">` : '';
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>` : '';
 
   const pageScripts = master.features.map ? `
-    <script src="/assets/vendor/leaflet/leaflet.js" defer></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="/assets/js/places.js" defer></script>` : '<script src="/assets/js/places.js" defer></script>';
 
   const pageContent = replaceAll(templates.place, {
@@ -2284,7 +2285,7 @@ function trackPage(type) {
    ═══════════════════════════════════════════════════════════════════ */
 function main() {
   console.log('');
-  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.4${COLORS.reset}`);
+  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.5${COLORS.reset}`);
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
