@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import master from '../../../data/master.json';
+import master from '../../data/master.json'; // <--- Yahan path fix kiya gaya hai
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const copyright = master.footer.copyright.replace('{year}', currentYear.toString());
+  const copyright = master.footer?.copyright?.replace('{year}', currentYear.toString()) || `© ${currentYear} Bandwar Community`;
 
   return (
     <footer className="site-footer">
@@ -16,7 +16,7 @@ export default function Footer() {
           <div>
             <h3>Sections</h3>
             <ul>
-              {master.footer.sections.map((item: any) => (
+              {master.footer?.sections?.map((item: any) => (
                 <li key={item.href}><Link href={item.href}>{item.label}</Link></li>
               ))}
             </ul>
