@@ -1,21 +1,42 @@
-import './globals.css';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import type { Metadata } from "next";
+import { Inter, Fraunces } from "next/font/google";
+import "./globals.css";
+import { getMasterData } from "@/lib/data";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
-export const metadata = {
-  title: 'Bandwar Archive',
-  description: 'Community-built digital archive of Bandwar village.',
-};
+// Master.json se fonts load kar rahe hain
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces" });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export async function generateMetadata(): Promise<Metadata> {
+  const config = getMasterData();
+  return {
+    title: {
+      default: config.site.name,
+      template: `%s | ${config.site.name}`,
+    },
+    description: config.site.description,
+    metadataBase: new URL(config.site.url),
+  };
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Har page pe master.json ka data available hoga
+  const config = getMasterData();
+
   return (
-    <html lang="en">
-      <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Navbar />
-        <main id="main" style={{ flex: 1 }}>
+    <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
+      <body className="bg-[#f7f5ef] text-[#1a1a18] font-sans antialiased min-h-screen flex flex-col">
+        <Header config={config} />
+        <main className="flex-grow">
           {children}
         </main>
-        <Footer />
+        <Footer config={config} />
       </body>
     </html>
   );
