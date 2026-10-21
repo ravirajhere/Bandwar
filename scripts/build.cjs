@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — BUILD ENGINE
    Static site generator · Pre-renders every page from JSON data
-   v5.6 — Category-wise data + inline links + FAQ schema + SEO/Map + People
+   v5.7 — Added People & Reach pages
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -41,20 +41,18 @@ function loadJSON(relPath) {
   }
 }
 
-/* ✅ Load categories from separate file, articles from directory */
 function loadAllData() {
   console.log(`${COLORS.gray}  Loading data files...${COLORS.reset}`);
 
   const master = loadJSON('data/master.json');
   const vision = loadJSON('data/vision.json');
   const media = loadJSON('data/media.json');
-  const people = loadJSON('data/people.json').people || []; // ✅ People data
+  const people = loadJSON('data/people.json').people || [];
+  const reach = loadJSON('data/reach.json');
 
-  // Categories from separate file
   const categories = loadJSON('data/categories.json').categories || [];
   console.log(`${COLORS.gray}    → ${categories.length} categories${COLORS.reset}`);
 
-  // Articles from data/articles/*.json
   const articlesDir = path.join(ROOT, 'data', 'articles');
   const articles = [];
 
@@ -63,7 +61,6 @@ function loadAllData() {
     files.forEach(file => {
       const data = loadJSON(`data/articles/${file}`);
       if (data.articles && Array.isArray(data.articles)) {
-        // Add source file reference for debugging
         data.articles.forEach(a => { a._sourceFile = file; });
         articles.push(...data.articles);
       } else {
@@ -75,10 +72,9 @@ function loadAllData() {
     console.log(`${COLORS.yellow}    ⚠ data/articles/ folder not found${COLORS.reset}`);
   }
 
-  // Backwards-compatible content object (used by renderers)
   const content = { categories, articles };
 
-  return { master, content, vision, media, categories, articles, people };
+  return { master, content, vision, media, categories, articles, people, reach };
 }
 
 /* ─────────────── TEMPLATE LOADING ─────────────── */
@@ -105,7 +101,8 @@ function loadAllTemplates() {
     time: loadTemplate('time.html'),
     vision: loadTemplate('vision.html'),
     about: loadTemplate('about.html'),
-    people: loadTemplate('people.html'), // ✅ People template
+    people: loadTemplate('people.html'),
+    reach: loadTemplate('reach.html'),
   };
 }
 
@@ -123,13 +120,11 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-/* ✅ NEW — strip [[id|text]] for meta description and schema */
 function stripInlineLinks(text) {
   if (!text) return '';
   return String(text).replace(/\[\[[^|\]]+\|([^\]]+)\]\]/g, '$1');
 }
 
-/* ✅ FIXED — Inline link parser trims spaces to prevent broken links */
 function parseInlineLinks(text, articles) {
   if (!text) return '';
   const escaped = escapeHtml(text);
@@ -162,8 +157,6 @@ function readingTime(wordCount) {
   return Math.max(1, Math.round(wordCount / 220));
 }
 
-/* ✅ PATH HELPERS — double-slash fix */
-
 function cleanPath(p) {
   if (!p) return '';
   return String(p).replace(/^\/+/, '');
@@ -179,19 +172,9 @@ function toWebp(imagePath) {
   return imagePath.replace(/\.(jpe?g|png)$/i, '.webp');
 }
 
-function toAvif(imagePath) {
-  if (!imagePath) return '';
-  return imagePath.replace(/\.(jpe?g|png)$/i, '.avif');
-}
-
 function webpUrl(p) {
   if (!p) return '';
   return imgUrl(toWebp(p));
-}
-
-function avifUrl(p) {
-  if (!p) return '';
-  return imgUrl(toAvif(p));
 }
 
 function absoluteUrl(relPath, baseUrl) {
@@ -201,7 +184,6 @@ function absoluteUrl(relPath, baseUrl) {
   return `${baseUrl.replace(/\/$/, '')}/${clean}`;
 }
 
-/* ✅ srcset returns root-relative URLs (with leading slash) */
 function buildSrcset(imagePath, widths = [400, 800, 1200]) {
   if (!imagePath) return '';
   const clean = cleanPath(imagePath);
@@ -245,14 +227,6 @@ function primaryCategory(article, categories) {
 function getCategories(article, categories) {
   if (!article.categories) return [];
   return article.categories.map(id => categories.find(c => c.id === id)).filter(Boolean);
-}
-
-function exists(relPath) {
-  try {
-    return fs.statSync(path.join(ROOT, relPath)).isFile();
-  } catch {
-    return false;
-  }
 }
 
 function writeFile(relPath, content) {
@@ -338,7 +312,6 @@ function buildOrganizationNode(master) {
   };
 }
 
-/* ✅ FIXED — Google Site Name fix (Vercel hatane ke liye) */
 function buildWebsiteNode(master) {
   return {
     '@type': 'WebSite',
@@ -441,7 +414,6 @@ function buildHomeSchema(master, content) {
   };
 }
 
-/* ✅ FIXED — FAQ schema + description strip */
 function buildArticleSchema(article, master, categories) {
   const url = `${master.site.url}/article/${article.id}`;
   const text = [
@@ -1278,7 +1250,6 @@ function renderFaqs(article, articles) {
     </section>`.trim();
 }
 
-/* ✅ FIXED — Added sr-only figcaption for Google Images */
 function renderHeroFigure(article, master) {
   const hero = article.hero;
   const alt = `${article.title} — Bandwar village, Begusarai, Bihar`;
@@ -1646,7 +1617,6 @@ function renderPlace(templates, master, content, media) {
           </figcaption>
         </figure>`).join('\n');
 
-  /* ✅ MAP FIX: Using CDN instead of local vendor folder */
   const pageSpecificHead = master.features.map ? `
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>` : '';
 
@@ -2181,7 +2151,7 @@ function renderAbout(templates, master) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAGE RENDERER — PEOPLE (NEW)
+   PAGE RENDERER — PEOPLE
    ═══════════════════════════════════════════════════════════════════ */
 function renderPeople(templates, master, people) {
   const peopleList = people.map(person => `
@@ -2216,6 +2186,41 @@ function renderPeople(templates, master, people) {
     breadcrumb: renderBreadcrumb([
       { name: master.site.shortName, url: '/' },
       { name: 'People', url: '/people' },
+    ], master),
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE RENDERER — REACH (NEW)
+   ═══════════════════════════════════════════════════════════════════ */
+function renderReach(templates, master, reach) {
+  const reachOptions = reach.options.map(opt => `
+    <div style="display: flex; gap: var(--sp-4); margin-bottom: var(--sp-6); padding-bottom: var(--sp-6); border-bottom: 1px solid var(--c-border-soft);">
+      <div style="font-size: 2rem;">${opt.icon}</div>
+      <div>
+        <h3 style="font-family: var(--f-display); font-size: var(--fs-lg); margin-bottom: var(--sp-2); color: var(--c-text);">${escapeHtml(opt.mode)}</h3>
+        <p style="color: var(--c-text-muted); line-height: var(--lh-relaxed); margin: 0;">${escapeHtml(opt.details)}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const pageContent = replaceAll(templates.reach, {
+    reachIntro: escapeHtml(reach.intro),
+    reachOptions,
+  });
+
+  return renderLayout(templates, master, {
+    slug: 'reach',
+    title: `How to Reach Bandwar — ${master.site.shortName}`,
+    description: `Travel guide on how to reach Bandwar village in Begusarai, Bihar by air, train, and road.`,
+    canonical: buildCanonical('/reach', master),
+    ogImage: master.seo.ogImage,
+    ogType: 'website',
+    content: pageContent,
+    bodyAttr: 'data-page="reach"',
+    breadcrumb: renderBreadcrumb([
+      { name: master.site.shortName, url: '/' },
+      { name: 'Reach Bandwar', url: '/reach' },
     ], master),
   });
 }
@@ -2311,7 +2316,7 @@ const stats = {
   startTime: Date.now(),
   pages: {
     home: 0, article: 0, section: 0, place: 0,
-    time: 0, vision: 0, about: 0, people: 0, error: 0,
+    time: 0, vision: 0, about: 0, people: 0, reach: 0, error: 0,
   },
   total: 0,
   warnings: [],
@@ -2327,7 +2332,7 @@ function trackPage(type) {
    ═══════════════════════════════════════════════════════════════════ */
 function main() {
   console.log('');
-  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.6${COLORS.reset}`);
+  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.7${COLORS.reset}`);
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
@@ -2340,7 +2345,7 @@ function main() {
   const data = loadAllData();
   const templates = loadAllTemplates();
 
-  const { master, content, vision, media, categories, articles, people } = data;
+  const { master, content, vision, media, categories, articles, people, reach } = data;
 
   if (master.home?.stats) {
     master.home.stats = master.home.stats.map(stat => {
@@ -2396,6 +2401,10 @@ function main() {
   trackPage('people');
   console.log(`  ${COLORS.green}✓${COLORS.reset} people.html`);
 
+  writeFile('reach.html', renderReach(templates, master, reach));
+  trackPage('reach');
+  console.log(`  ${COLORS.green}✓${COLORS.reset} reach.html`);
+
   writeFile('404.html', render404(templates, master));
   trackPage('error');
   console.log(`  ${COLORS.green}✓${COLORS.reset} 404.html`);
@@ -2416,6 +2425,7 @@ function main() {
   console.log(`  ${COLORS.gray}  Vision:    ${stats.pages.vision}${COLORS.reset}`);
   console.log(`  ${COLORS.gray}  About:     ${stats.pages.about}${COLORS.reset}`);
   console.log(`  ${COLORS.gray}  People:    ${stats.pages.people}${COLORS.reset}`);
+  console.log(`  ${COLORS.gray}  Reach:     ${stats.pages.reach}${COLORS.reset}`);
   console.log(`  ${COLORS.gray}  Error:     ${stats.pages.error}${COLORS.reset}`);
   console.log('');
   console.log(`  ${COLORS.blue}⏱  Built in ${elapsed}s${COLORS.reset}`);
