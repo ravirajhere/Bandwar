@@ -1,114 +1,60 @@
-// src/components/Navbar.tsx
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { MasterConfig } from "@/lib/schema";
 
-export default function Navbar({ navLinks }: { navLinks: { label: string; href: string; icon: string }[] }) {
+export function Navbar({ config }: { config: MasterConfig }) {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
 
   return (
-    <header style={{
-      position: "sticky",
-      top: 0,
-      zIndex: 50,
-      backgroundColor: "var(--bg-base)",
-      borderBottom: "1px solid var(--border-color)",
-      backdropFilter: "blur(8px)",
-      backgroundColor: "rgba(247, 245, 239, 0.9)" // For light mode transparency
-    }}>
-      <div className="container flex-between" style={{ height: "64px" }}>
-        
-        {/* Logo / Brand Name */}
-        <Link href="/" style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", fontWeight: "bold", color: "var(--text-primary)" }}>
-          Bandwar<span style={{ color: "var(--accent-green)" }}>.</span>
+    <header className="sticky top-0 z-50 bg-[#f7f5ef]/90 backdrop-blur-md border-b border-[#1a1a18]/10">
+      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        {/* Logo / Site Name */}
+        <Link href="/" className="font-serif text-2xl font-bold text-[#1a1a18] tracking-tight">
+          {config.site.name}
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav style={{ display: "none", gap: "var(--space-3)", alignItems: "center" }} className="desktop-nav">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-            return (
-              <Link
-                key={link.label}
-                href={link.href}
-                style={{
-                  fontSize: "0.95rem",
-                  fontWeight: isActive ? 600 : 400,
-                  color: isActive ? "var(--accent-green)" : "var(--text-primary)",
-                  borderBottom: isActive ? "2px solid var(--accent-green)" : "2px solid transparent",
-                  paddingBottom: "4px",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-6">
+          {config.nav.map((item) => (
+            <Link 
+              key={item.href} 
+              href={item.href}
+              className="text-sm font-medium text-[#1a1a18]/70 hover:text-[#1f3d2f] transition-colors flex items-center gap-1.5"
+            >
+              <span className="text-base">{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Mobile Menu Button */}
-        <button
+        <button 
+          className="md:hidden p-2 text-[#1a1a18]"
           onClick={() => setIsOpen(!isOpen)}
-          style={{
-            display: "flex",
-            background: "none",
-            border: "none",
-            fontSize: "1.5rem",
-            cursor: "pointer",
-            color: "var(--text-primary)"
-          }}
-          className="mobile-menu-btn"
           aria-label="Toggle menu"
         >
           {isOpen ? "✕" : "☰"}
         </button>
       </div>
 
-      {/* Mobile Navigation Dropdown */}
+      {/* Mobile Nav Dropdown */}
       {isOpen && (
-        <nav style={{
-          position: "absolute",
-          top: "64px",
-          left: 0,
-          right: 0,
-          backgroundColor: "var(--bg-base)",
-          borderBottom: "1px solid var(--border-color)",
-          padding: "var(--space-3)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "var(--space-3)",
-          boxShadow: "var(--shadow-md)"
-        }}>
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
+        <nav className="md:hidden bg-[#f7f5ef] border-b border-[#1a1a18]/10 px-4 pt-2 pb-4 flex flex-col gap-3">
+          {config.nav.map((item) => (
+            <Link 
+              key={item.href} 
+              href={item.href}
               onClick={() => setIsOpen(false)}
-              style={{
-                fontSize: "1.1rem",
-                fontWeight: pathname === link.href ? 600 : 400,
-                color: pathname === link.href ? "var(--accent-green)" : "var(--text-primary)",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px"
-              }}
+              className="text-base font-medium text-[#1a1a18]/80 py-2 flex items-center gap-2 border-b border-[#1a1a18]/5 last:border-0"
             >
-              <span>{link.icon}</span> {link.label}
+              <span>{item.icon}</span>
+              {item.label}
             </Link>
           ))}
         </nav>
       )}
-
-      {/* Simple CSS injection for hiding/showing desktop nav */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @media (min-width: 768px) {
-          .desktop-nav { display: flex !important; }
-          .mobile-menu-btn { display: none !important; }
-        }
-      `}} />
     </header>
   );
 }
