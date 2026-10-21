@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — BUILD ENGINE
    Static site generator · Pre-renders every page from JSON data
-   v5.5 — Category-wise data + inline links + FAQ schema + SEO/Map fixes
+   v5.6 — Category-wise data + inline links + FAQ schema + SEO/Map + People
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -48,6 +48,7 @@ function loadAllData() {
   const master = loadJSON('data/master.json');
   const vision = loadJSON('data/vision.json');
   const media = loadJSON('data/media.json');
+  const people = loadJSON('data/people.json').people || []; // ✅ People data
 
   // Categories from separate file
   const categories = loadJSON('data/categories.json').categories || [];
@@ -77,7 +78,7 @@ function loadAllData() {
   // Backwards-compatible content object (used by renderers)
   const content = { categories, articles };
 
-  return { master, content, vision, media, categories, articles };
+  return { master, content, vision, media, categories, articles, people };
 }
 
 /* ─────────────── TEMPLATE LOADING ─────────────── */
@@ -104,6 +105,7 @@ function loadAllTemplates() {
     time: loadTemplate('time.html'),
     vision: loadTemplate('vision.html'),
     about: loadTemplate('about.html'),
+    people: loadTemplate('people.html'), // ✅ People template
   };
 }
 
@@ -2179,6 +2181,46 @@ function renderAbout(templates, master) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   PAGE RENDERER — PEOPLE (NEW)
+   ═══════════════════════════════════════════════════════════════════ */
+function renderPeople(templates, master, people) {
+  const peopleList = people.map(person => `
+    <div class="section-card" style="padding: var(--sp-4);">
+      ${person.photo ? `
+      <div class="section-card-img">
+        <picture>
+          <source srcset="${webpUrl(person.photo)}" type="image/webp">
+          <img src="${imgUrl(person.photo)}" alt="${escapeHtml(person.name)}" loading="lazy" decoding="async" style="border-radius: var(--r-sm);">
+        </picture>
+      </div>` : ''}
+      <div class="section-card-body">
+        <h3 class="section-card-title">${escapeHtml(person.name)}</h3>
+        <div class="section-card-cat">${escapeHtml(person.role)}</div>
+        <p class="section-card-summary">${escapeHtml(person.bio)}</p>
+        <span class="landmark-coords" style="margin-top: var(--sp-3); display: block;">📍 ${escapeHtml(person.locality)}</span>
+      </div>
+    </div>
+  `).join('');
+
+  const pageContent = replaceAll(templates.people, { peopleList });
+
+  return renderLayout(templates, master, {
+    slug: 'people',
+    title: `People of Bandwar — ${master.site.shortName} Archive`,
+    description: `Meet the residents, leaders, and notable figures of Bandwar village, Begusarai.`,
+    canonical: buildCanonical('/people', master),
+    ogImage: master.seo.ogImage,
+    ogType: 'website',
+    content: pageContent,
+    bodyAttr: 'data-page="people"',
+    breadcrumb: renderBreadcrumb([
+      { name: master.site.shortName, url: '/' },
+      { name: 'People', url: '/people' },
+    ], master),
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    PAGE RENDERER — 404
    ═══════════════════════════════════════════════════════════════════ */
 function render404(templates, master) {
@@ -2269,7 +2311,7 @@ const stats = {
   startTime: Date.now(),
   pages: {
     home: 0, article: 0, section: 0, place: 0,
-    time: 0, vision: 0, about: 0, error: 0,
+    time: 0, vision: 0, about: 0, people: 0, error: 0,
   },
   total: 0,
   warnings: [],
@@ -2285,7 +2327,7 @@ function trackPage(type) {
    ═══════════════════════════════════════════════════════════════════ */
 function main() {
   console.log('');
-  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.5${COLORS.reset}`);
+  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.6${COLORS.reset}`);
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
@@ -2298,7 +2340,7 @@ function main() {
   const data = loadAllData();
   const templates = loadAllTemplates();
 
-  const { master, content, vision, media, categories, articles } = data;
+  const { master, content, vision, media, categories, articles, people } = data;
 
   if (master.home?.stats) {
     master.home.stats = master.home.stats.map(stat => {
@@ -2350,6 +2392,10 @@ function main() {
   trackPage('about');
   console.log(`  ${COLORS.green}✓${COLORS.reset} about.html`);
 
+  writeFile('people.html', renderPeople(templates, master, people));
+  trackPage('people');
+  console.log(`  ${COLORS.green}✓${COLORS.reset} people.html`);
+
   writeFile('404.html', render404(templates, master));
   trackPage('error');
   console.log(`  ${COLORS.green}✓${COLORS.reset} 404.html`);
@@ -2369,6 +2415,7 @@ function main() {
   console.log(`  ${COLORS.gray}  Time:      ${stats.pages.time}${COLORS.reset}`);
   console.log(`  ${COLORS.gray}  Vision:    ${stats.pages.vision}${COLORS.reset}`);
   console.log(`  ${COLORS.gray}  About:     ${stats.pages.about}${COLORS.reset}`);
+  console.log(`  ${COLORS.gray}  People:    ${stats.pages.people}${COLORS.reset}`);
   console.log(`  ${COLORS.gray}  Error:     ${stats.pages.error}${COLORS.reset}`);
   console.log('');
   console.log(`  ${COLORS.blue}⏱  Built in ${elapsed}s${COLORS.reset}`);
