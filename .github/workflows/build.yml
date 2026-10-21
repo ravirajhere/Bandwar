@@ -4,9 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'data/master.json'
-      - 'data/content.json'
-      - 'data/media.json'
+      - 'data/**'
       - 'templates/**'
       - 'css/**'
       - 'js/**'
