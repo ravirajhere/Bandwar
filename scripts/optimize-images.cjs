@@ -1,45 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
-   BANDWAR — IMAGE OPTIMIZER
+   BANDWAR — IMAGE OPTIMIZER (v2.0 with Auto-Cleanup)
    Converts images to WebP + AVIF, generates responsive sizes,
-   and updates all data JSON files with the new paths.
-   
-   What it does:
-     1. Reads master.json imageSEO config
-     2. Scans images/ folder (recursive)
-     3. For each image:
-        - Converts to WebP (quality 78)
-        - Converts to AVIF (quality 65)
-        - Generates responsive widths (400/800/1200/1600)
-        - Skips if already optimized (hash check)
-     4. Reports stats (files, savings)
-   
-   Usage:
-     node scripts/optimize-images.cjs                  # Full run
-     node scripts/optimize-images.cjs --clean          # Wipe optimized cache
-     node scripts/optimize-images.cjs --dry-run        # Show what would happen
-     node scripts/optimize-images.cjs --verbose        # Detailed output
-     node scripts/optimize-images.cjs --only-webp      # Skip AVIF
-     node scripts/optimize-images.cjs --only-avif      # Skip WebP
-   
-   Dependencies:
-     npm install --save-dev sharp
-   
-   Note:
-     Original .jpg/.png files are PRESERVED as fallback.
-     New files are written alongside with new extensions.
-     
-     Example:
-       images/culture/shivala.jpg
-       images/culture/shivala.webp          ← new
-       images/culture/shivala.avif          ← new
-       images/culture/shivala-400.jpg       ← new
-       images/culture/shivala-400.webp      ← new
-       images/culture/shivala-800.jpg       ← new
-       images/culture/shivala-800.webp      ← new
-       images/culture/shivala-1200.jpg      ← new
-       images/culture/shivala-1200.webp     ← new
-       images/culture/shivala-1600.jpg      ← new
-       images/culture/shivala-1600.webp     ← new
+   cleans up orphaned files, and updates all data JSON files.
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -53,7 +15,7 @@ const ROOT = path.resolve(__dirname, '..');
 const IMAGES_DIR = path.join(ROOT, 'images');
 const CACHE_FILE = path.join(ROOT, '.image-cache.json');
 const IMAGE_EXTENSIONS = /\.(jpe?g|png)$/i;
-const SKIP_FOLDERS = ['icons'];  // PWA icons ko skip karo (chhoti files, different purpose)
+const SKIP_FOLDERS = ['icons'];  // PWA icons ko skip karo
 
 const ARGS = process.argv.slice(2);
 const CLEAN = ARGS.includes('--clean');
@@ -80,10 +42,7 @@ try {
 } catch (err) {
   console.error('');
   console.error(`${COLORS.red}${COLORS.bold}✗ sharp is not installed${COLORS.reset}`);
-  console.error('');
-  console.error(`  Install it first:`);
-  console.error(`    ${COLORS.blue}npm install --save-dev sharp${COLORS.reset}`);
-  console.error('');
+  console.error(`\n  Install it first:\n    ${COLORS.blue}npm install --save-dev sharp${COLORS.reset}\n`);
   process.exit(1);
 }
 
@@ -147,6 +106,60 @@ function isCached(relPath, hash) {
   );
 }
 
+/* ✅ NEW: Auto-delete orphaned generated images */
+function cleanupOrphanedImages(dir) {
+  let deletedCount = 0;
+  if (!fs.existsSync(dir)) return 0;
+  
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+
+  entries.forEach(entry => {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      deletedCount += cleanupOrphanedImages(fullPath);
+      return;
+    }
+
+    const ext = path.extname(entry.name).toLowerCase();
+    
+    // Hum sirf generated files check kar rahe hain
+    const isGenerated = ext === '.webp' || ext === '.avif' || /-\d+\.(jpe?g|png)$/i.test(entry.name);
+    
+    if (isGenerated) {
+      // Original base name nikaalo (e.g., bandwar-hero-400.webp -> bandwar-hero)
+      let baseName = entry.name.replace(/-\d+\.(webp|avif|jpe?g|png)$/i, ''); 
+      baseName = baseName.replace(/\.(webp|avif|jpe?g|png)$/i, ''); 
+
+      // Check karo ki kya original source exist karta hai?
+      const hasJpg = fs.existsSync(path.join(dir, `${baseName}.jpg`)) || fs.existsSync(path.join(dir, `${baseName}.JPG`));
+      const hasPng = fs.existsSync(path.join(dir, `${baseName}.png`)) || fs.existsSync(path.join(dir, `${baseName}.PNG`));
+      const hasJpeg = fs.existsSync(path.join(dir, `${baseName}.jpeg`)) || fs.existsSync(path.join(dir, `${baseName}.JPEG`));
+
+      // Agar original source nahi hai, toh delete kar do
+      if (!hasJpg && !hasPng && !hasJpeg) {
+        if (!DRY_RUN) fs.unlinkSync(fullPath);
+        if (VERBOSE) console.log(`  ${COLORS.yellow}🗑️  Deleted orphaned: ${entry.name}${COLORS.reset}`);
+        deletedCount++;
+      }
+    }
+  });
+  
+  return deletedCount;
+}
+
+/* ✅ NEW: Remove deleted files from cache */
+function pruneCache() {
+  let pruned = 0;
+  Object.keys(cache.files).forEach(relPath => {
+    if (!fs.existsSync(path.join(ROOT, relPath))) {
+      delete cache.files[relPath];
+      pruned++;
+    }
+  });
+  return pruned;
+}
+
 /* ─────────────── SCAN IMAGES ─────────────── */
 function scanImages() {
   const results = [];
@@ -165,14 +178,14 @@ function scanImages() {
 
       if (entry.isDirectory()) {
         if (SKIP_FOLDERS.includes(entry.name)) return;
-        if (entry.name.startsWith('_')) return;  // _source, _draft, etc.
+        if (entry.name.startsWith('_')) return;
         walk(full, rel);
         return;
       }
 
       // Only process JPG/PNG, skip already-optimized variants
       if (!IMAGE_EXTENSIONS.test(entry.name)) return;
-      if (/-\d+\.(jpe?g|png)$/i.test(entry.name)) return;  // Skip responsive variants
+      if (/-\d+\.(jpe?g|png)$/i.test(entry.name)) return;
 
       results.push({
         absPath: full,
@@ -191,135 +204,81 @@ function scanImages() {
 async function optimizeImage(image, stats) {
   const { absPath, relPath, dir, name } = image;
 
-  // ─── Hash check ───
   const hash = fileHash(absPath);
   if (isCached(relPath, hash)) {
     stats.skipped++;
-    if (VERBOSE) {
-      console.log(`  ${COLORS.gray}↷${COLORS.reset} ${relPath} ${COLORS.dim}(cached)${COLORS.reset}`);
-    }
     return;
   }
 
-  // ─── Original stats ───
   const originalSize = fs.statSync(absPath).size;
   stats.originalBytes += originalSize;
-
   const outputs = [];
 
   try {
     const metadata = await sharp(absPath).metadata();
-    const { width: origWidth = 0, height: origHeight = 0 } = metadata;
+    const { width: origWidth = 0 } = metadata;
 
-    // ─── 1. FULL-SIZE WEBP ───
+    // 1. WEBP
     if (CONFIG.generateWebP) {
       const outPath = path.join(dir, `${name}.webp`);
       const relOut = `${path.dirname(relPath)}/${name}.webp`;
+      if (!DRY_RUN) await sharp(absPath).webp({ quality: CONFIG.webpQuality, effort: 4 }).toFile(outPath);
       
-      if (!DRY_RUN) {
-        await sharp(absPath)
-          .webp({ quality: CONFIG.webpQuality, effort: 4 })
-          .toFile(outPath);
-      }
       const size = DRY_RUN ? 0 : fs.statSync(outPath).size;
       outputs.push(relOut);
       stats.webpCount++;
-      stats.webpBytes += size;
-      stats.webpSaved += originalSize - size;
-
-      if (VERBOSE) {
-        const pct = ((1 - size / originalSize) * 100).toFixed(0);
-        console.log(`    ${COLORS.green}✓${COLORS.reset} ${relOut} ${COLORS.dim}(-${pct}%)${COLORS.reset}`);
-      }
+      stats.webpSaved += (originalSize - size);
     }
 
-    // ─── 2. FULL-SIZE AVIF ───
+    // 2. AVIF
     if (CONFIG.generateAVIF) {
       const outPath = path.join(dir, `${name}.avif`);
       const relOut = `${path.dirname(relPath)}/${name}.avif`;
+      if (!DRY_RUN) await sharp(absPath).avif({ quality: CONFIG.avifQuality, effort: 4 }).toFile(outPath);
       
-      if (!DRY_RUN) {
-        await sharp(absPath)
-          .avif({ quality: CONFIG.avifQuality, effort: 4 })
-          .toFile(outPath);
-      }
       const size = DRY_RUN ? 0 : fs.statSync(outPath).size;
       outputs.push(relOut);
       stats.avifCount++;
-      stats.avifBytes += size;
-      stats.avifSaved += originalSize - size;
-
-      if (VERBOSE) {
-        const pct = ((1 - size / originalSize) * 100).toFixed(0);
-        console.log(`    ${COLORS.green}✓${COLORS.reset} ${relOut} ${COLORS.dim}(-${pct}%)${COLORS.reset}`);
-      }
+      stats.avifSaved += (originalSize - size);
     }
 
-    // ─── 3. RESPONSIVE VARIANTS ───
+    // 3. RESPONSIVE VARIANTS
     if (CONFIG.generateResponsive && origWidth > 0) {
       for (const w of CONFIG.widths) {
-        // Skip if width larger than original
         if (w >= origWidth) continue;
-
         const resizedName = `${name}-${w}`;
         
-        // JPG responsive
+        // JPG
         const jpgPath = path.join(dir, `${resizedName}.jpg`);
-        const relJpg = `${path.dirname(relPath)}/${resizedName}.jpg`;
-        if (!DRY_RUN) {
-          await sharp(absPath)
-            .resize({ width: w, withoutEnlargement: true })
-            .jpeg({ quality: CONFIG.jpgQuality, progressive: true, mozjpeg: true })
-            .toFile(jpgPath);
-        }
-        outputs.push(relJpg);
+        if (!DRY_RUN) await sharp(absPath).resize({ width: w }).jpeg({ quality: CONFIG.jpgQuality, progressive: true, mozjpeg: true }).toFile(jpgPath);
+        outputs.push(`${path.dirname(relPath)}/${resizedName}.jpg`);
 
-        // WebP responsive
+        // WebP
         if (CONFIG.generateWebP) {
           const webpPath = path.join(dir, `${resizedName}.webp`);
-          const relWebp = `${path.dirname(relPath)}/${resizedName}.webp`;
-          if (!DRY_RUN) {
-            await sharp(absPath)
-              .resize({ width: w, withoutEnlargement: true })
-              .webp({ quality: CONFIG.webpQuality, effort: 4 })
-              .toFile(webpPath);
-          }
-          outputs.push(relWebp);
+          if (!DRY_RUN) await sharp(absPath).resize({ width: w }).webp({ quality: CONFIG.webpQuality, effort: 4 }).toFile(webpPath);
+          outputs.push(`${path.dirname(relPath)}/${resizedName}.webp`);
         }
 
-        // AVIF responsive
+        // AVIF
         if (CONFIG.generateAVIF) {
           const avifPath = path.join(dir, `${resizedName}.avif`);
-          const relAvif = `${path.dirname(relPath)}/${resizedName}.avif`;
-          if (!DRY_RUN) {
-            await sharp(absPath)
-              .resize({ width: w, withoutEnlargement: true })
-              .avif({ quality: CONFIG.avifQuality, effort: 4 })
-              .toFile(avifPath);
-          }
-          outputs.push(relAvif);
+          if (!DRY_RUN) await sharp(absPath).resize({ width: w }).avif({ quality: CONFIG.avifQuality, effort: 4 }).toFile(avifPath);
+          outputs.push(`${path.dirname(relPath)}/${resizedName}.avif`);
         }
 
         stats.responsiveCount += CONFIG.generateWebP ? 2 : 1;
       }
     }
 
-    // ─── 4. UPDATE CACHE ───
-    cache.files[relPath] = {
-      hash,
-      mtime: fs.statSync(absPath).mtime.toISOString(),
-      outputs,
-      originalSize,
-      width: origWidth,
-      height: origHeight,
-    };
-
+    // 4. UPDATE CACHE
+    cache.files[relPath] = { hash, outputs, originalSize };
     stats.processed++;
 
     if (!VERBOSE) {
-      const icon = '🎨';
-      const sizeKB = (originalSize / 1024).toFixed(0);
-      console.log(`  ${COLORS.green}✓${COLORS.reset} ${icon} ${relPath} ${COLORS.dim}(${sizeKB} KB → ${outputs.length} outputs)${COLORS.reset}`);
+      console.log(`  ${COLORS.green}✓${COLORS.reset} 🎨 ${relPath} ${COLORS.dim}(${outputs.length} outputs)${COLORS.reset}`);
+    } else {
+      console.log(`  ${COLORS.green}✓${COLORS.reset} 🎨 ${relPath}`);
     }
 
   } catch (err) {
@@ -330,217 +289,83 @@ async function optimizeImage(image, stats) {
 
 /* ─────────────── VERIFY OUTPUT ─────────────── */
 function verifyOutputs() {
-  console.log('');
-  console.log(`${COLORS.bold}Verifying outputs...${COLORS.reset}`);
-
   let missing = 0;
   let present = 0;
 
   Object.entries(cache.files).forEach(([relPath, entry]) => {
     entry.outputs.forEach(out => {
-      if (!fs.existsSync(path.join(ROOT, out))) {
-        missing++;
-        console.log(`  ${COLORS.red}✗ Missing: ${out}${COLORS.reset}`);
-      } else {
-        present++;
-      }
+      if (!fs.existsSync(path.join(ROOT, out))) missing++;
+      else present++;
     });
   });
 
-  console.log(`  ${COLORS.green}✓${COLORS.reset} ${present} files present`);
   if (missing > 0) {
-    console.log(`  ${COLORS.red}✗ ${missing} files missing${COLORS.reset}`);
+    console.log(`\n  ${COLORS.red}✗ ${missing} files missing (they will be regenerated next run)${COLORS.reset}`);
   }
-  return missing === 0;
 }
 
 /* ─────────────── REPORT ─────────────── */
 function printReport(stats, elapsed) {
   console.log('');
   console.log(`${COLORS.bold}═══ Image Optimization Summary ═══${COLORS.reset}`);
-  console.log('');
-
-  // Processing
-  console.log(`  ${COLORS.bold}Processing${COLORS.reset}`);
-  console.log(`    Total scanned:   ${stats.totalScanned}`);
-  console.log(`    ${COLORS.green}Processed:       ${stats.processed}${COLORS.reset}`);
-  console.log(`    ${COLORS.gray}Skipped (cached): ${stats.skipped}${COLORS.reset}`);
-  if (stats.errors > 0) {
-    console.log(`    ${COLORS.red}Errors:          ${stats.errors}${COLORS.reset}`);
-  }
-
-  console.log('');
-
-  // WebP
-  if (CONFIG.generateWebP) {
-    const saved = stats.webpSaved;
-    const orig = stats.originalBytes;
-    const pct = orig > 0 ? ((saved / orig) * 100).toFixed(1) : '0';
-    console.log(`  ${COLORS.bold}WebP${COLORS.reset}`);
-    console.log(`    Generated:       ${stats.webpCount} files`);
-    console.log(`    ${COLORS.green}Saved:           ${formatBytes(saved)} (${pct}% smaller)${COLORS.reset}`);
-  }
-
-  console.log('');
-
-  // AVIF
-  if (CONFIG.generateAVIF) {
-    const saved = stats.avifSaved;
-    const orig = stats.originalBytes;
-    const pct = orig > 0 ? ((saved / orig) * 100).toFixed(1) : '0';
-    console.log(`  ${COLORS.bold}AVIF${COLORS.reset}`);
-    console.log(`    Generated:       ${stats.avifCount} files`);
-    console.log(`    ${COLORS.green}Saved:           ${formatBytes(saved)} (${pct}% smaller)${COLORS.reset}`);
-  }
-
-  console.log('');
-
-  // Responsive
-  if (CONFIG.generateResponsive) {
-    console.log(`  ${COLORS.bold}Responsive${COLORS.reset}`);
-    console.log(`    Generated:       ${stats.responsiveCount} variants`);
-    console.log(`    Widths:          ${CONFIG.widths.join(', ')}px`);
-  }
-
-  console.log('');
-
-  // Totals
+  console.log(`  Processed:       ${COLORS.green}${stats.processed}${COLORS.reset}`);
+  console.log(`  Skipped:         ${COLORS.gray}${stats.skipped}${COLORS.reset}`);
+  if (stats.errors > 0) console.log(`  Errors:          ${COLORS.red}${stats.errors}${COLORS.reset}`);
+  
+  if (CONFIG.generateWebP) console.log(`  WebP Generated:  ${stats.webpCount} files`);
+  if (CONFIG.generateAVIF) console.log(`  AVIF Generated:  ${stats.avifCount} files`);
+  if (CONFIG.generateResponsive) console.log(`  Responsive:      ${stats.responsiveCount} variants`);
+  
   const totalOutputs = stats.webpCount + stats.avifCount + stats.responsiveCount;
-  console.log(`  ${COLORS.bold}Total outputs:   ${COLORS.blue}${totalOutputs} files${COLORS.reset}`);
-  console.log(`  ${COLORS.bold}Time:            ${COLORS.blue}${elapsed}s${COLORS.reset}`);
-  console.log('');
-
-  // Errors
-  if (stats.errors > 0) {
-    console.log(`  ${COLORS.red}${COLORS.bold}⚠ ${stats.errors} errors — check output above${COLORS.reset}`);
-    console.log('');
-  }
-
-  // Dry run note
-  if (DRY_RUN) {
-    console.log(`  ${COLORS.yellow}${COLORS.bold}⚠ DRY RUN — no files were written${COLORS.reset}`);
-    console.log('');
-  }
-}
-
-/* ─────────────── FORMAT BYTES ─────────────── */
-function formatBytes(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+  console.log(`\n  ${COLORS.bold}Total outputs:   ${COLORS.blue}${totalOutputs} files${COLORS.reset}`);
+  console.log(`  Time:            ${COLORS.blue}${elapsed}s${COLORS.reset}\n`);
 }
 
 /* ─────────────── MAIN ─────────────── */
 async function main() {
   const startTime = Date.now();
+  console.log(`\n${COLORS.blue}${COLORS.bold}▶ Bandwar Image Optimizer v2.0${COLORS.reset}\n`);
 
-  console.log('');
-  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Image Optimizer${COLORS.reset}`);
-  console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
-  console.log('');
-
-  // ─── CLEAN MODE ───
   if (CLEAN) {
-    console.log(`${COLORS.yellow}Cleaning cached files...${COLORS.reset}`);
-    let deleted = 0;
-    if (fs.existsSync(CACHE_FILE)) {
-      const oldCache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
-      Object.values(oldCache.files || {}).forEach(entry => {
-        (entry.outputs || []).forEach(out => {
-          const full = path.join(ROOT, out);
-          if (fs.existsSync(full)) {
-            fs.unlinkSync(full);
-            deleted++;
-          }
-        });
-      });
-      fs.unlinkSync(CACHE_FILE);
-    }
-    console.log(`  ${COLORS.green}✓${COLORS.reset} Deleted ${deleted} files`);
-    console.log('');
-    if (ARGS.length === 1) {
-      console.log(`${COLORS.gray}Run again without --clean to rebuild.${COLORS.reset}`);
-      console.log('');
-      return;
-    }
+    console.log(`${COLORS.yellow}Cleaning cache...${COLORS.reset}`);
+    if (fs.existsSync(CACHE_FILE)) fs.unlinkSync(CACHE_FILE);
+    console.log(`  ${COLORS.green}✓${COLORS.reset} Cache wiped\n`);
+    if (ARGS.length === 1) return;
   }
 
-  // ─── LOAD CACHE ───
   loadCache();
 
-  // ─── CONFIG DISPLAY ───
-  console.log(`${COLORS.bold}Config${COLORS.reset}`);
-  console.log(`  WebP:        ${CONFIG.generateWebP ? `${COLORS.green}✓${COLORS.reset} (q=${CONFIG.webpQuality})` : `${COLORS.gray}✗${COLORS.reset}`}`);
-  console.log(`  AVIF:        ${CONFIG.generateAVIF ? `${COLORS.green}✓${COLORS.reset} (q=${CONFIG.avifQuality})` : `${COLORS.gray}✗${COLORS.reset}`}`);
-  console.log(`  Responsive:  ${CONFIG.generateResponsive ? `${COLORS.green}✓${COLORS.reset} [${CONFIG.widths.join(', ')}]` : `${COLORS.gray}✗${COLORS.reset}`}`);
-  console.log(`  Cache:       ${Object.keys(cache.files).length} entries`);
-  console.log('');
+  // ✅ 1. Prune old cache entries
+  const pruned = pruneCache();
 
-  // ─── SCAN ───
-  console.log(`${COLORS.bold}Scanning images/...${COLORS.reset}`);
+  // ✅ 2. Delete orphaned files
+  console.log(`${COLORS.bold}Scanning for orphaned images...${COLORS.reset}`);
+  const orphaned = cleanupOrphanedImages(IMAGES_DIR);
+  if (orphaned > 0) console.log(`  ${COLORS.green}✓${COLORS.reset} Deleted ${orphaned} orphaned files`);
+  else console.log(`  ${COLORS.gray}None found${COLORS.reset}`);
+  if (pruned > 0) console.log(`  ${COLORS.green}✓${COLORS.reset} Pruned ${pruned} entries from cache`);
+
+  console.log(`\n${COLORS.bold}Scanning source images...${COLORS.reset}`);
   const images = scanImages();
-  console.log(`  ${COLORS.green}✓${COLORS.reset} Found ${images.length} source images`);
-  console.log('');
+  console.log(`  ${COLORS.green}✓${COLORS.reset} Found ${images.length} source images\n`);
 
-  // ─── STATS ───
-  const stats = {
-    totalScanned: images.length,
-    processed: 0,
-    skipped: 0,
-    errors: 0,
-    originalBytes: 0,
-    webpCount: 0,
-    webpBytes: 0,
-    webpSaved: 0,
-    avifCount: 0,
-    avifBytes: 0,
-    avifSaved: 0,
-    responsiveCount: 0,
-  };
+  const stats = { processed: 0, skipped: 0, errors: 0, originalBytes: 0, webpCount: 0, webpSaved: 0, avifCount: 0, avifSaved: 0, responsiveCount: 0 };
 
-  // ─── PROCESS ───
   console.log(`${COLORS.bold}Processing...${COLORS.reset}`);
   for (const image of images) {
     await optimizeImage(image, stats);
-    // Save cache periodically (in case of crash)
-    if ((stats.processed + stats.skipped) % 20 === 0) {
-      saveCache();
-    }
+    if ((stats.processed + stats.skipped) % 20 === 0) saveCache();
   }
 
-  // ─── SAVE CACHE ───
   saveCache();
+  if (!DRY_RUN && stats.processed > 0) verifyOutputs();
 
-  // ─── VERIFY ───
-  if (!DRY_RUN && stats.processed > 0) {
-    verifyOutputs();
-  }
-
-  // ─── REPORT ───
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
   printReport(stats, elapsed);
-
-  console.log(`${COLORS.green}${COLORS.bold}Image optimization complete.${COLORS.reset}`);
-  console.log('');
-
-  // ─── HINTS ───
-  if (!DRY_RUN && stats.processed > 0) {
-    console.log(`${COLORS.gray}Next steps:${COLORS.reset}`);
-    console.log(`${COLORS.gray}  1. Run: ${COLORS.reset}${COLORS.blue}node scripts/build.cjs --clean${COLORS.reset}`);
-    console.log(`${COLORS.gray}  2. Commit new .webp/.avif files to Git${COLORS.reset}`);
-    console.log(`${COLORS.gray}  3. Deploy via Vercel${COLORS.reset}`);
-    console.log('');
-  }
+  console.log(`${COLORS.green}${COLORS.bold}Done.${COLORS.reset}\n`);
 }
 
 main().catch(err => {
-  console.error('');
-  console.error(`${COLORS.red}${COLORS.bold}✗ Optimizer failed:${COLORS.reset}`);
-  console.error(`${COLORS.red}  ${err.message}${COLORS.reset}`);
-  if (VERBOSE) {
-    console.error('');
-    console.error(err.stack);
-  }
-  console.error('');
+  console.error(`\n${COLORS.red}✗ Optimizer failed: ${err.message}${COLORS.reset}\n`);
   process.exit(1);
 });
