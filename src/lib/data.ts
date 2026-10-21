@@ -5,10 +5,12 @@ import {
   ArticleListSchema, 
   MediaSchema, 
   VisionSchema, 
+  PeopleDataSchema, // 👈 Naya import
   MasterConfig, 
   Article, 
   Media,
-  VisionData
+  VisionData,
+  PeopleData // 👈 Naya type
 } from "./schema";
 
 // Ye function JSON file read karta hai
@@ -74,6 +76,17 @@ export function getVisionData(): VisionData {
   if (!parsed.success) {
     console.error("❌ vision.json mein error hai:", parsed.error.format());
     throw new Error("Invalid vision.json");
+  }
+  return parsed.data;
+}
+
+// 6. People Directory Data
+export function getPeopleData(): PeopleData {
+  const rawData = readJsonFile("people.json");
+  const parsed = PeopleDataSchema.safeParse(rawData);
+  if (!parsed.success) {
+    console.error("❌ people.json mein error hai:", parsed.error.format());
+    throw new Error("Invalid people.json");
   }
   return parsed.data;
 }
