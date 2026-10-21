@@ -9,7 +9,7 @@
   "installCommand": "npm install",
 
   "git": {
-    "deploymentEnabled": true
+    "deploymentEnabled": false
   },
 
   "headers": [
