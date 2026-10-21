@@ -1,92 +1,111 @@
-// src/app/page.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { getMasterConfig, getAllArticles } from "@/lib/content"; // Ensure getMasterConfig is added
-import ArticleCard from "@/components/ArticleCard";
+import { getMasterData } from "@/lib/data";
 
-export default function HomePage() {
-  const config = getMasterConfig(); // You need to create this function in content.ts
-  const allArticles = getAllArticles();
-  
-  // Get 3 latest articles automatically
-  const latestArticles = allArticles
-    .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime())
-    .slice(0, 3);
+export default function Home() {
+  const config = getMasterData();
+  const home = config.home;
 
-  const { hero, meta, stats, pullquote, about, cta } = config.home;
-  const heroImage = hero.image.startsWith('/') ? hero.image : `/${hero.image}`;
+  if (!home) return null;
 
   return (
-    <div>
+    <div className="flex flex-col">
       {/* 1. HERO SECTION */}
-      <section style={{ position: "relative", height: "80vh", minHeight: "600px", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", color: "white" }}>
-        <Image src={heroImage} alt={hero.alt} fill priority style={{ objectFit: "cover", zIndex: -1 }} />
-        <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(0,0,0,0.5)", zIndex: 0 }}></div>
-        
-        <div className="container" style={{ position: "relative", zIndex: 1, maxWidth: "800px" }}>
-          <p style={{ fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "var(--space-2)", fontWeight: "bold" }}>{hero.location}</p>
-          <h1 style={{ fontSize: "clamp(3rem, 8vw, 6rem)", color: "white", lineHeight: 1, marginBottom: "var(--space-3)" }}>{hero.title}</h1>
-          <p style={{ fontSize: "1.25rem", lineHeight: 1.6, marginBottom: "var(--space-6)", color: "#eee" }}>{hero.tagline}</p>
-          <Link href={cta.href} className="btn" style={{ backgroundColor: "var(--accent-terra)" }}>{cta.label}</Link>
+      <section className="relative w-full h-[85vh] min-h-[600px] flex items-center justify-center">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={home.hero.image}
+            alt={home.hero.alt}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a18]/90 via-[#1a1a18]/40 to-transparent" />
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
+          <span className="inline-block py-1 px-3 rounded-full bg-[#a64b2a]/20 border border-[#a64b2a]/50 text-[#f7f5ef] text-sm font-medium tracking-widest uppercase mb-6 backdrop-blur-sm">
+            {home.hero.location}
+          </span>
+          <h1 className="font-serif text-6xl md:text-8xl font-bold text-white mb-6 tracking-tight drop-shadow-lg">
+            {home.hero.title}
+          </h1>
+          <p className="text-lg md:text-2xl text-[#f7f5ef]/90 leading-relaxed font-light max-w-3xl mx-auto drop-shadow-md">
+            {home.hero.tagline}
+          </p>
         </div>
       </section>
 
-      {/* 2. META & STATS BAR */}
-      <section style={{ backgroundColor: "var(--accent-green)", color: "var(--white)", padding: "var(--space-4) 0" }}>
-        <div className="container grid-4 text-center">
-          {stats.map((stat, i) => (
-            <div key={i}>
-              <div style={{ fontSize: "2rem", fontFamily: "var(--font-display)", fontWeight: "bold" }}>{stat.value}</div>
-              <div style={{ fontSize: "0.875rem", opacity: 0.8, textTransform: "uppercase", letterSpacing: "0.05em" }}>{stat.label}</div>
+      {/* 2. META STRIP (Lat/Lng, Population etc.) */}
+      <section className="bg-[#1f3d2f] text-[#f7f5ef] py-4">
+        <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center md:justify-between gap-4 text-sm font-medium tracking-wide">
+          {home.meta.map((item, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <span className="text-[#a64b2a]">•</span>
+              <span className="opacity-70">{item.label}:</span>
+              <span>{item.value}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 3. LATEST ARTICLES (Auto-generated) */}
-      <section className="container" style={{ padding: "var(--space-12) var(--space-3)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "var(--space-6)" }}>
-          <h2 className="section-title" style={{ margin: 0, border: "none" }}>Latest from the Archive</h2>
-          <Link href="/section" style={{ fontWeight: "bold", color: "var(--accent-green)" }}>View All →</Link>
-        </div>
-        <div className="grid-3">
-          {latestArticles.map(article => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
-        </div>
-      </section>
-
-      {/* 4. PULLQUOTE SECTION */}
-      <section style={{ backgroundColor: "var(--bg-surface)", padding: "var(--space-12) 0" }}>
-        <div className="container text-center" style={{ maxWidth: "800px" }}>
-          <blockquote style={{ fontSize: "1.5rem", fontFamily: "var(--font-display)", fontStyle: "italic", lineHeight: 1.6, color: "var(--accent-green)", marginBottom: "var(--space-4)" }}>
-            "{pullquote.text}"
-          </blockquote>
-          <cite style={{ fontSize: "0.875rem", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-muted)" }}>— {pullquote.cite}</cite>
-        </div>
-      </section>
-
-      {/* 5. ABOUT TEASER */}
-      <section className="container" style={{ padding: "var(--space-12) var(--space-3)" }}>
-        <div className="grid-2">
-          <div>
-            <p style={{ textTransform: "uppercase", letterSpacing: "0.1em", fontSize: "0.875rem", fontWeight: "bold", color: "var(--accent-terra)", marginBottom: "var(--space-2)" }}>{about.eyebrow}</p>
-            <h2 style={{ fontSize: "2.5rem", fontFamily: "var(--font-display)", marginBottom: "var(--space-3)" }}>{about.title}</h2>
-            {about.paragraphs.map((p, i) => (
-              <p key={i} style={{ fontSize: "1.125rem", lineHeight: 1.7, marginBottom: "var(--space-3)", color: "var(--text-muted)" }}>{p}</p>
+      {/* 3. ABOUT SECTION */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-[#a64b2a] font-medium tracking-widest uppercase text-sm mb-4">
+            {home.about.eyebrow}
+          </h2>
+          <h3 className="font-serif text-3xl md:text-5xl font-bold text-[#1a1a18] mb-8">
+            {home.about.title}
+          </h3>
+          <div className="space-y-6 text-lg text-[#1a1a18]/80 leading-relaxed text-left md:text-center">
+            {home.about.paragraphs.map((p, idx) => (
+              <p key={idx}>{p}</p>
             ))}
-            <Link href="/about" style={{ fontWeight: "bold", color: "var(--accent-green)", display: "inline-block", marginTop: "var(--space-2)" }}>Read our principles →</Link>
           </div>
-          <div style={{ backgroundColor: "var(--bg-surface)", padding: "var(--space-6)", borderRadius: "var(--border-radius)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <h3 style={{ fontSize: "1.25rem", marginBottom: "var(--space-4)", fontFamily: "var(--font-display)" }}>Explore the Village</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
-              <Link href="/place" className="btn" style={{ backgroundColor: "var(--bg-base)", color: "var(--text-primary)", textAlign: "center" }}>🗺️ Interactive Map</Link>
-              <Link href="/time" className="btn" style={{ backgroundColor: "var(--bg-base)", color: "var(--text-primary)", textAlign: "center" }}>⏳ 2,600-Year Timeline</Link>
-              <Link href="/people" className="btn" style={{ backgroundColor: "var(--bg-base)", color: "var(--text-primary)", textAlign: "center" }}>👥 People of Bandwar</Link>
-            </div>
+          
+          <div className="mt-12">
+            <Link 
+              href={home.cta.href}
+              className="inline-flex items-center justify-center px-8 py-4 bg-[#1f3d2f] text-white font-medium rounded-lg hover:bg-[#152c21] transition-colors shadow-lg"
+            >
+              {home.cta.label} →
+            </Link>
           </div>
         </div>
       </section>
+
+      {/* 4. PULLQUOTE */}
+      <section className="py-20 bg-[#efece4] border-y border-[#1a1a18]/10 px-4 text-center">
+        <div className="max-w-3xl mx-auto">
+          <blockquote className="font-serif text-2xl md:text-4xl leading-snug text-[#1a1a18] italic mb-6">
+            "{home.pullquote.text}"
+          </blockquote>
+          <cite className="text-sm font-medium tracking-widest uppercase text-[#a64b2a] not-italic">
+            — {home.pullquote.cite}
+          </cite>
+        </div>
+      </section>
+
+      {/* 5. STATS */}
+      <section className="py-20 px-4 max-w-6xl mx-auto w-full">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {home.stats.map((stat, idx) => (
+            <div key={idx} className="p-6 border border-[#1a1a18]/10 rounded-2xl bg-white shadow-sm">
+              <div className="font-serif text-4xl md:text-5xl font-bold text-[#1a1a18] mb-2">
+                {/* Agar articleCount placeholder hai toh abhi ke liye static rakh rahe hain */}
+                {stat.value === "{{articleCount}}" ? "12" : stat.value}
+              </div>
+              <div className="text-sm font-medium tracking-wide text-[#1a1a18]/60 uppercase">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
     </div>
   );
 }
