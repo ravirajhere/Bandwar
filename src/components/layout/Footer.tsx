@@ -23,8 +23,9 @@ export function Footer({ config }: { config: MasterConfig }) {
         <div>
           <h4 className="font-bold text-[#a64b2a] mb-4 uppercase tracking-wider text-sm">Sections</h4>
           <ul className="space-y-2">
-            {config.footer?.sections?.map((link) => (
-              <li key={link.href}>
+            {/* 👇 Yahan 'link: any, idx: number' add kar diya hai */}
+            {config.footer?.sections?.map((link: any, idx: number) => (
+              <li key={idx}>
                 <Link href={link.href} className="text-sm text-[#f7f5ef]/70 hover:text-white transition-colors">
                   {link.label}
                 </Link>
@@ -37,8 +38,9 @@ export function Footer({ config }: { config: MasterConfig }) {
         <div>
           <h4 className="font-bold text-[#a64b2a] mb-4 uppercase tracking-wider text-sm">Explore</h4>
           <ul className="space-y-2">
-            {config.footer?.explore?.map((link) => (
-              <li key={link.href}>
+            {/* 👇 Yahan bhi 'link: any, idx: number' add kar diya hai */}
+            {config.footer?.explore?.map((link: any, idx: number) => (
+              <li key={idx}>
                 <Link href={link.href} className="text-sm text-[#f7f5ef]/70 hover:text-white transition-colors">
                   {link.label}
                 </Link>
