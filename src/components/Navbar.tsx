@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import master from '../../../data/master.json'; // Check path according to your folder
+import master from '../../data/master.json'; // <--- Path fix kiya gaya hai
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function Navbar() {
 
         <nav className={`nav-menu ${isOpen ? 'is-open' : ''}`}>
           <ul>
-            {master.nav.map((item: any) => {
+            {master.nav?.map((item: any) => {
               const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
               return (
                 <li key={item.href}>
