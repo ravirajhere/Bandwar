@@ -1,67 +1,107 @@
-import fs from 'fs';
-import path from 'path';
-import master from '../../../data/master.json';
+import { getMediaData } from "@/lib/data";
+import Link from "next/link";
 
 export const metadata = {
-  title: `Timeline | ${master.site.name}`,
-  description: '2,600 years of Bandwar history — from the Anga Mahajanapada to the present day.',
+  title: "Timeline | Bandwar Archive",
+  description: "A chronological history of Bandwar village from 600 BCE to the present day.",
 };
 
-export default function TimePage() {
-  const mediaPath = path.join(process.cwd(), 'data/media.json');
-  const mediaData = JSON.parse(fs.readFileSync(mediaPath, 'utf-8'));
-  const timeline = mediaData.timeline || [];
-
-  // Eras ke hisaab se group karna
-  const eras = timeline.reduce((acc: any, event: any) => {
-    if (!acc[event.era]) acc[event.era] = [];
-    acc[event.era].push(event);
-    return acc;
-  }, {});
-
-  const eraMeta: any = {
-    ancient:  { title: 'Ancient Period',   span: '600 BCE – 1200 CE' },
-    medieval: { title: 'Medieval Period',  span: '1200 – 1750 CE' },
-    colonial: { title: 'Colonial Period',  span: '1750 – 1947' },
-    modern:   { title: 'Modern Period',    span: '1947 – Present' },
+export default function TimelinePage() {
+  const media = getMediaData();
+  
+  // Timeline ko sortKey ke hisaab se sort kar rahe hain
+  const sortedTimeline = [...media.timeline].sort((a, b) => a.sortKey - b.sortKey);
+  
+  // Era ke hisaab se color dhoondhne ka function
+  const getEraColor = (eraId: string) => {
+    const era = media.eras.find((e) => e.id === eraId);
+    return era ? era.color : "#1a1a18";
   };
 
   return (
-    <div className="container-wide" style={{ paddingBottom: '4rem' }}>
-      <header className="section-head-page">
-        <span className="eyebrow">History</span>
-        <h1 className="section-title-main">Timeline</h1>
-        <p className="section-intro">Bandwar across 2,600 years — from the Anga Mahajanapada to the present day.</p>
-      </header>
+    <div className="bg-[#f7f5ef] min-h-screen pb-20">
+      {/* Hero Section */}
+      <section className="bg-[#1a1a18] text-[#f7f5ef] py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="font-serif text-4xl md:text-6xl font-bold mb-6">
+            The Village Timeline
+          </h1>
+          <p className="text-lg md:text-xl text-[#f7f5ef]/80 leading-relaxed">
+            From the ancient Anga Mahajanapada to the digital age — a chronological record of Bandwar's history.
+          </p>
+        </div>
+      </section>
 
-      <div className="time-timeline">
-        {Object.keys(eras).map((eraKey, i) => {
-          const meta = eraMeta[eraKey] || { title: eraKey, span: '' };
-          const eraNum = String(i + 1).padStart(2, '0');
-          const eraTotal = String(Object.keys(eras).length).padStart(2, '0');
+      {/* Era Legend */}
+      <div className="max-w-5xl mx-auto px-4 -mt-8 relative z-10">
+        <div className="bg-white rounded-2xl shadow-lg border border-[#1a1a18]/10 p-6 flex flex-wrap justify-center gap-6">
+          {media.eras.map((era) => (
+            <div key={era.id} className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: era.color }}></span>
+              <div>
+                <span className="font-bold text-sm block" style={{ color: era.color }}>{era.title}</span>
+                <span className="text-xs text-[#1a1a18]/60">{era.subtitle}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Timeline Container */}
+      <div className="max-w-4xl mx-auto px-4 mt-16 relative">
+        
+        {/* Desktop Center Line */}
+        <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-[#1a1a18]/10 -translate-x-1/2"></div>
+        
+        {/* Mobile Left Line */}
+        <div className="md:hidden absolute left-[22px] top-0 bottom-0 w-0.5 bg-[#1a1a18]/10"></div>
+
+        {sortedTimeline.map((event, index) => {
+          const eraColor = getEraColor(event.era);
+          const isEven = index % 2 === 0;
 
           return (
-            <section className="era" key={eraKey}>
-              <header className="era-header">
-                <span className="era-num">{eraNum} / {eraTotal}</span>
-                <h2 className="era-title">{meta.title}</h2>
-                {meta.span && <span className="era-span">{meta.span}</span>}
-              </header>
-              <ol className="era-events">
-                {eras[eraKey].sort((a: any, b: any) => (a.sortKey || 0) - (b.sortKey || 0)).map((event: any, j: number) => (
-                  <li className="era-event" key={j}>
-                    <div className="era-event-year">{event.year}</div>
-                    <div className="era-event-body">
-                      <h3>{event.title}</h3>
-                      <p>{event.description}</p>
-                      {event.article && (
-                        <a href={`/article/${event.article}`} className="era-event-link">Read full story →</a>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </section>
+            <div 
+              key={event.id} 
+              className={`relative mb-8 md:mb-12 w-full md:w-1/2 ${isEven ? "md:pr-12 md:ml-0" : "md:pl-12 md:ml-auto"} pl-14 md:pl-0`}
+            >
+              
+              {/* Timeline Dot */}
+              <div 
+                className={`absolute top-6 w-4 h-4 rounded-full border-4 border-[#f7f5ef] z-10 left-[15px] md:left-auto 
+                  ${isEven ? "md:right-0 md:translate-x-1/2" : "md:left-0 md:-translate-x-1/2"}`}
+                style={{ backgroundColor: eraColor }}
+              ></div>
+
+              {/* Content Card */}
+              <div className={`bg-white p-6 rounded-xl border border-[#1a1a18]/10 shadow-sm hover:shadow-md transition-shadow ${isEven ? "md:text-right" : "md:text-left"}`}>
+                <div className={`flex items-center gap-2 mb-2 ${isEven ? "md:justify-end" : "md:justify-start"}`}>
+                  <span className="text-2xl">{event.icon}</span>
+                  <span className="text-sm font-bold px-2 py-1 rounded bg-[#efece4] text-[#1a1a18]">
+                    {event.year}
+                  </span>
+                  <span className="text-xs uppercase tracking-wider font-bold" style={{ color: eraColor }}>
+                    {event.era}
+                  </span>
+                </div>
+                
+                <h3 className="font-serif text-xl font-bold text-[#1a1a18] mb-3">
+                  {event.title}
+                </h3>
+                <p className="text-[#1a1a18]/80 text-sm leading-relaxed mb-4">
+                  {event.description}
+                </p>
+                
+                {event.article && (
+                  <Link 
+                    href={`/article/${event.article}`}
+                    className="text-[#a64b2a] text-sm font-bold hover:underline"
+                  >
+                    Read full article →
+                  </Link>
+                )}
+              </div>
+            </div>
           );
         })}
       </div>
