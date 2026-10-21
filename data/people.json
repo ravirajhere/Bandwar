@@ -15,14 +15,6 @@
       "locality": "Bandwar",
       "bio": "A dedicated freedom fighter and communist activist who fought for the rights of the peasantry.",
       "photo": "images/people/sukhdev-singh.jpg"
-    },
-    {
-      "id": "your-third-person",
-      "name": "Third Person Name",
-      "role": "Teacher / Doctor",
-      "locality": "Ward 1",
-      "bio": "Short description of the person.",
-      "photo": "images/people/third-person.jpg"
     }
   ]
 }
