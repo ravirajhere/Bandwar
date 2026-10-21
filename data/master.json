@@ -52,6 +52,7 @@
     { "label": "People", "href": "/people", "icon": "👥" },
     { "label": "Places", "href": "/place", "icon": "🗺️" },
     { "label": "Time", "href": "/time", "icon": "⏳" },
+    { "label": "Reach", "href": "/reach", "icon": "🚆" },
     { "label": "Vision", "href": "/vision", "icon": "🔮" },
     { "label": "About", "href": "/about", "icon": "ℹ️" }
   ],
@@ -68,6 +69,7 @@
       { "label": "Gallery", "href": "/place?view=gallery" },
       { "label": "Timeline", "href": "/time" },
       { "label": "People", "href": "/people" },
+      { "label": "How to Reach", "href": "/reach" },
       { "label": "Vision 2035", "href": "/vision" },
       { "label": "Contribute", "href": "/contribute" }
     ],
