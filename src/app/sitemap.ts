@@ -1,32 +1,39 @@
-import { getAllArticles, getCategories } from '@/lib/data';
 import { MetadataRoute } from 'next';
-import master from '../../data/master.json';
+import { getAllArticles, getCategoriesData, getMasterData } from '@/lib/data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = master.site.url || 'https://bandwar.vercel.app';
+  const master = getMasterData();
+  const baseUrl = master.site.url;
   const articles = getAllArticles();
-  const categories = getCategories();
+  const categories = getCategoriesData().categories;
 
-  const articleUrls = articles.map((article: any) => ({
-    url: `${baseUrl}/article/${article.id}`,
-    lastModified: article.lastUpdated ? new Date(article.lastUpdated) : new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.8,
-  }));
+  // Static Pages
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}`, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${baseUrl}/section`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/people`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/vision`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/time`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/place`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.5 },
+    { url: `${baseUrl}/contribute`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.5 },
+  ];
 
-  const categoryUrls = categories.map((cat: any) => ({
+  // Category Pages
+  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
     url: `${baseUrl}/section/${cat.id}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
+    changeFrequency: 'weekly',
     priority: 0.7,
   }));
 
-  const staticPages = ['', '/section', '/about', '/people', '/place', '/time', '/vision', '/reach'].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-    changeFrequency: route === '' ? 'daily' as const : 'weekly' as const,
-    priority: route === '' ? 1 : 0.9,
+  // Article Pages
+  const articlePages: MetadataRoute.Sitemap = articles.map((article) => ({
+    url: `${baseUrl}/article/${article.id}`,
+    lastModified: new Date(article.lastUpdated),
+    changeFrequency: 'monthly',
+    priority: 0.9,
   }));
 
-  return [...staticPages, ...categoryUrls, ...articleUrls];
+  return [...staticPages, ...categoryPages, ...articlePages];
 }
