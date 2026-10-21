@@ -3,32 +3,28 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import master from '../../data/master.json'; // <--- Path fix kiya gaya hai
+import master from '../../data/master.json';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
   return (
-    <header className="site-header">
-      <div className="container-wide nav-inner">
-        <Link href="/" className="brand-logo">
+    <header className="navbar">
+      <div className="nav-inner">
+        <Link href="/" className="nav-brand">
           {master.site.shortName}
         </Link>
 
-        <nav className={`nav-menu ${isOpen ? 'is-open' : ''}`}>
-          <ul>
-            {master.nav?.map((item: any) => {
-              const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
-              return (
-                <li key={item.href}>
-                  <Link href={item.href} className={isActive ? 'active' : ''}>
-                    {item.icon && <span aria-hidden="true">{item.icon}</span>} {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+        <nav className={`nav-menu ${isOpen ? 'active' : ''}`}>
+          {master.nav?.map((item: any) => {
+            const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+            return (
+              <Link key={item.href} href={item.href} className={isActive ? 'active' : ''}>
+                {item.icon && <span aria-hidden="true">{item.icon}</span>} {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <button className="nav-toggle" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
