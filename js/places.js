@@ -15,6 +15,8 @@
 
   const { $, $$, esc } = window.Bandwar;
 
+  let mapInstance = null; // ✅ Map instance ko global rakhne ke liye
+
   /* ═══════ 1. TABS ═══════ */
   const tabs = $$('.place-tab');
   const panels = $$('.place-panel');
@@ -34,6 +36,13 @@
         p.classList.toggle('active', active);
         p.hidden = !active;
       });
+
+      // ✅ Fix: Jab Map tab khule, toh Leaflet ko size recalculate karne do
+      if (target === 'map' && mapInstance) {
+        setTimeout(() => {
+          mapInstance.invalidateSize();
+        }, 100);
+      }
     });
   });
 
@@ -50,12 +59,17 @@
       return;
     }
 
-    const map = L.map(mapEl, {
+    mapInstance = L.map(mapEl, {
       center: [data.center.lat, data.center.lng],
       zoom: data.zoom || 16,
       scrollWheelZoom: false,
       zoomControl: true,
     });
+
+    // ✅ Fix: Force map to calculate its container size after load
+    setTimeout(() => {
+      mapInstance.invalidateSize();
+    }, 200);
 
     L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
@@ -63,7 +77,7 @@
         attribution: 'Tiles © Esri',
         maxZoom: 19,
       }
-    ).addTo(map);
+    ).addTo(mapInstance);
 
     const markers = {};
 
@@ -77,7 +91,7 @@
       });
 
       const marker = L.marker([l.lat, l.lng], { icon })
-        .addTo(map)
+        .addTo(mapInstance)
         .bindPopup(renderPopup(l));
 
       marker._cat = l.cat;
@@ -95,8 +109,8 @@
 
         Object.values(markers).forEach(m => {
           const show = !cat || m._cat === cat;
-          if (show) m.addTo(map);
-          else map.removeLayer(m);
+          if (show) m.addTo(mapInstance);
+          else mapInstance.removeLayer(m);
         });
 
         // Filter landmark list too
