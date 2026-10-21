@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
    BANDWAR — BUILD ENGINE
    Static site generator · Pre-renders every page from JSON data
-   v5.3 — Category-wise data + inline links + FAQ schema
+   v5.4 — Category-wise data + inline links + FAQ schema + SEO fixes
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -41,7 +41,7 @@ function loadJSON(relPath) {
   }
 }
 
-/* ✅ UPDATED — Load categories from separate file, articles from directory */
+/* ✅ Load categories from separate file, articles from directory */
 function loadAllData() {
   console.log(`${COLORS.gray}  Loading data files...${COLORS.reset}`);
 
@@ -121,17 +121,25 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-/* ✅ NEW — Inline link parser for [[article-id|display text]] syntax */
+/* ✅ NEW — strip [[id|text]] for meta description and schema */
+function stripInlineLinks(text) {
+  if (!text) return '';
+  return String(text).replace(/\[\[[^|\]]+\|([^\]]+)\]\]/g, '$1');
+}
+
+/* ✅ FIXED — Inline link parser trims spaces to prevent broken links */
 function parseInlineLinks(text, articles) {
   if (!text) return '';
   const escaped = escapeHtml(text);
   return escaped.replace(/\[\[([^|\]]+)\|([^\]]+)\]\]/g, (match, id, label) => {
-    const exists = articles.some(a => a.id === id);
+    const cleanId = id.trim();
+    const cleanLabel = label.trim();
+    const exists = articles.some(a => a.id === cleanId);
     if (!exists) {
-      console.log(`${COLORS.yellow}      ⚠ Inline link target not found: "${id}"${COLORS.reset}`);
-      return label;
+      console.log(`${COLORS.yellow}      ⚠ Inline link target not found: "${cleanId}"${COLORS.reset}`);
+      return cleanLabel;
     }
-    return `<a href="/article/${encodeURIComponent(id)}" class="inline-link">${label}</a>`;
+    return `<a href="/article/${encodeURIComponent(cleanId)}" class="inline-link">${cleanLabel}</a>`;
   });
 }
 
@@ -218,7 +226,6 @@ function groupBy(arr, key) {
   }, {});
 }
 
-/* ✅ UPDATED — falls back to lastUpdated */
 function sortByDate(articles) {
   if (!Array.isArray(articles)) return [];
   return [...articles].sort((a, b) => {
@@ -329,12 +336,14 @@ function buildOrganizationNode(master) {
   };
 }
 
+/* ✅ FIXED — Google Site Name fix (Vercel hatane ke liye) */
 function buildWebsiteNode(master) {
   return {
     '@type': 'WebSite',
     '@id': `${master.site.url}/#website`,
     'url': master.site.url,
-    'name': master.site.name,
+    'name': master.site.shortName,
+    'alternateName': ['Bandwar Archive', 'Bandwar Village'],
     'description': master.site.description,
     'inLanguage': master.site.language,
     'publisher': { '@id': `${master.site.url}/#organization` },
@@ -430,7 +439,7 @@ function buildHomeSchema(master, content) {
   };
 }
 
-/* ✅ UPDATED — FAQ schema + lastUpdated */
+/* ✅ FIXED — FAQ schema + description strip */
 function buildArticleSchema(article, master, categories) {
   const url = `${master.site.url}/article/${article.id}`;
   const text = [
@@ -469,7 +478,7 @@ function buildArticleSchema(article, master, categories) {
     '@type': 'Article',
     '@id': `${url}#article`,
     'headline': article.title,
-    'description': article.summary || '',
+    'description': stripInlineLinks(article.summary || ''),
     'url': url,
     'mainEntityOfPage': { '@id': url },
     'datePublished': datePub,
@@ -495,7 +504,6 @@ function buildArticleSchema(article, master, categories) {
     })
   };
 
-  /* ✅ NEW — FAQPage schema */
   const faqNode = article.faqs && article.faqs.length ? {
     '@type': 'FAQPage',
     '@id': `${url}#faq`,
@@ -1173,7 +1181,6 @@ function renderArticle(templates, master, content, article) {
   const heroFigure = article.hero ? renderHeroFigure(article, master) : '';
   const factsBlock = article.infobox ? renderFactsBlock(article.infobox) : '';
 
-  /* ✅ UPDATED — inline links in content sections */
   const contentSections = (article.content || []).map((section, i, arr) => {
     const num = String(i + 1).padStart(2, '0');
     const total = String(arr.length).padStart(2, '0');
@@ -1190,7 +1197,6 @@ function renderArticle(templates, master, content, article) {
   const photosBlock = renderPhotosBlock(article, master);
   const voiceQuoteBlock = article.quote ? renderVoiceQuote(article.quote) : '';
 
-  /* ✅ NEW — FAQ block */
   const faqsBlock = renderFaqs(article, articles);
 
   const relatedBlock = renderRelated(article, content, master);
@@ -1208,7 +1214,6 @@ function renderArticle(templates, master, content, article) {
     articleTitle: escapeHtml(article.title),
     articleSubtitle: escapeHtml(article.subtitle || ''),
     articleSubtitleBlock,
-    /* ✅ Inline links in summary too */
     articleSummary: parseInlineLinks(article.summary || '', articles),
     categoryEyebrow,
     heroFigure,
@@ -1245,13 +1250,6 @@ function renderArticle(templates, master, content, article) {
   });
 }
 
-/* ✅ NEW — strip [[id|text]] for meta description */
-function stripInlineLinks(text) {
-  if (!text) return '';
-  return String(text).replace(/\[\[[^|\]]+\|([^\]]+)\]\]/g, '$1');
-}
-
-/* ✅ NEW — render FAQs block */
 function renderFaqs(article, articles) {
   if (!article.faqs || !article.faqs.length) return '';
 
@@ -1278,6 +1276,7 @@ function renderFaqs(article, articles) {
     </section>`.trim();
 }
 
+/* ✅ FIXED — Added sr-only figcaption for Google Images */
 function renderHeroFigure(article, master) {
   const hero = article.hero;
   const alt = `${article.title} — Bandwar village, Begusarai, Bihar`;
@@ -1298,6 +1297,7 @@ function renderHeroFigure(article, master) {
              width="1600"
              height="900">
       </picture>
+      <figcaption class="sr-only">${escapeHtml(alt)}</figcaption>
     </figure>`.trim();
 }
 
@@ -2284,7 +2284,7 @@ function trackPage(type) {
    ═══════════════════════════════════════════════════════════════════ */
 function main() {
   console.log('');
-  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.3${COLORS.reset}`);
+  console.log(`${COLORS.blue}${COLORS.bold}▶ Bandwar Build v5.4${COLORS.reset}`);
   console.log(`${COLORS.gray}  Root: ${ROOT}${COLORS.reset}`);
   console.log('');
 
