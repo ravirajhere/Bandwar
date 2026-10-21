@@ -1,12 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════════
-   BANDWAR — THEME v2.0  "Terracotta Editorial"
-   Single source of truth for all design tokens.
+   BANDWAR — THEME v3.0 "Modern Heritage"
+   Premium, tactile, and editorial design tokens for 2026.
 
    Restyle karne ke liye:
      1. Neeche koi bhi value badlo
      2. Baaki sab auto-derive ho jayega — kisi aur file ko chhune ki zarurat nahi
-
-   style.css ko theme change ke liye kabhi edit mat karo.
    ═══════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -69,17 +67,25 @@
 
   /* ═══════ 2. TEXT HIERARCHY (auto-derived) ═══════ */
   --c-text:         var(--c-primary);
-  --c-text-muted:   color-mix(in srgb, var(--c-primary) 72%, transparent);
-  --c-text-faint:   color-mix(in srgb, var(--c-primary) 52%, transparent);
-  --c-text-ghost:   color-mix(in srgb, var(--c-primary) 32%, transparent);
-  --c-text-hint:    color-mix(in srgb, var(--c-primary) 12%, transparent);
+  --c-text-muted:   color-mix(in srgb, var(--c-primary) 75%, transparent);
+  --c-text-faint:   color-mix(in srgb, var(--c-primary) 55%, transparent);
+  --c-text-ghost:   color-mix(in srgb, var(--c-primary) 35%, transparent);
+  --c-text-hint:    color-mix(in srgb, var(--c-primary) 15%, transparent);
 
-  /* ═══════ 3. SURFACES ═══════ */
+  /* ═══════ 3. SURFACES & GLASSMORPHISM ═══════ */
   --c-bg:            var(--c-base);
   --c-bg-alt:        var(--c-surface);
   --c-bg-raised:     color-mix(in srgb, var(--c-surface) 60%, var(--c-white));
   --c-bg-inverse:    var(--c-primary);
   --c-text-inverse:  var(--c-base);
+  
+  /* Modern Navbar Glass Effect */
+  --c-glass-bg:      color-mix(in srgb, var(--c-base) 75%, transparent);
+  --c-glass-border:  color-mix(in srgb, var(--c-white) 20%, transparent);
+  --blur-glass:      blur(16px) saturate(180%);
+
+  /* Paper Grain Texture (Subtle) */
+  --texture-grain:   url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.04"/></svg>');
 
   /* ═══════ 4. BORDERS ═══════ */
   --c-border:        var(--c-text-ghost);
@@ -89,11 +95,11 @@
 
   /* ═══════ 5. OVERLAYS ═══════ */
   --c-overlay:       color-mix(in srgb, var(--c-primary) 96%, transparent);
-  --c-overlay-soft:  color-mix(in srgb, var(--c-primary) 75%, transparent);
-  --c-overlay-faint: color-mix(in srgb, var(--c-primary) 35%, transparent);
+  --c-overlay-soft:  color-mix(in srgb, var(--c-primary) 80%, transparent);
+  --c-overlay-faint: color-mix(in srgb, var(--c-primary) 40%, transparent);
 
   /* ═══════ 6. ACCENT DERIVATIVES ═══════ */
-  --c-accent-soft:   color-mix(in srgb, var(--c-accent) 12%, transparent);
+  --c-accent-soft:   color-mix(in srgb, var(--c-accent) 10%, transparent);
   --c-accent-hover:  color-mix(in srgb, var(--c-accent) 85%, var(--c-primary));
   --c-accent-on:     var(--c-base);   /* text on accent surfaces */
 
@@ -102,91 +108,83 @@
   --f-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --f-mono:    'IBM Plex Mono', 'SF Mono', Monaco, 'Courier New', monospace;
 
-  /* ═══════ 8. TYPOGRAPHY — Sizes ═══════ */
+  /* ═══════ 8. TYPOGRAPHY — Fluid Sizes (Mobile to Desktop) ═══════ */
   --fs-2xs:  0.65rem;
   --fs-xs:   0.75rem;
   --fs-sm:   0.875rem;
-  --fs-base: 1.0625rem;
-  --fs-md:   1.25rem;
-  --fs-lg:   1.5rem;
-  --fs-xl:   2rem;
-  --fs-2xl:  2.5rem;
-  --fs-3xl:  3rem;
-  --fs-4xl:  4rem;
-  --fs-5xl:  5rem;
+  --fs-base: clamp(1rem, 1vw + 0.8rem, 1.125rem);
+  --fs-md:   clamp(1.15rem, 1.5vw + 0.8rem, 1.35rem);
+  --fs-lg:   clamp(1.4rem, 2vw + 0.8rem, 1.75rem);
+  --fs-xl:   clamp(1.75rem, 3vw + 1rem, 2.25rem);
+  --fs-2xl:  clamp(2rem, 4vw + 1rem, 3rem);
+  --fs-3xl:  clamp(2.5rem, 5vw + 1rem, 4rem);
+  --fs-4xl:  clamp(3rem, 7vw + 1rem, 5.5rem);
+  --fs-5xl:  clamp(4rem, 10vw + 1rem, 8rem);
 
-  /* ═══════ 9. TYPOGRAPHY — Weights ═══════ */
+  /* ═══════ 9. TYPOGRAPHY — Weights & Spacing ═══════ */
   --fw-light:    300;
   --fw-regular:  400;
   --fw-medium:   500;
   --fw-semibold: 600;
   --fw-bold:     700;
 
-  /* ═══════ 10. TYPOGRAPHY — Line heights ═══════ */
-  --lh-tight:   1.05;
-  --lh-snug:    1.25;
+  --lh-tight:   1.1;
+  --lh-snug:    1.3;
   --lh-normal:  1.5;
-  --lh-relaxed: 1.55;
-  --lh-body:    1.7;
-  --lh-loose:   1.8;
+  --lh-relaxed: 1.65;
+  --lh-body:    1.75; /* Articles ke liye premium spacing */
+  --lh-loose:   1.85;
 
-  /* ═══════ 11. TYPOGRAPHY — Letter spacing ═══════ */
   --ls-tighter: -0.04em;
-  --ls-tight:   -0.035em;
-  --ls-snug:    -0.02em;
+  --ls-tight:   -0.03em;
+  --ls-snug:    -0.015em;
   --ls-normal:  0;
-  --ls-wide:    0.08em;
-  --ls-wider:   0.14em;
-  --ls-widest:  0.18em;
+  --ls-wide:    0.06em;
+  --ls-wider:   0.12em;
 
-  /* ═══════ 12. SPACING SCALE ═══════ */
-  --sp-1:  0.25rem;
-  --sp-2:  0.5rem;
-  --sp-3:  0.75rem;
-  --sp-4:  1rem;
-  --sp-5:  1.5rem;
-  --sp-6:  2rem;
-  --sp-7:  3rem;
-  --sp-8:  4rem;
-  --sp-9:  6rem;
-  --sp-10: 8rem;
-  --sp-11: 10rem;
-  --sp-12: 14rem;
+  /* ═══════ 10. SPACING SCALE ═══════ */
+  --sp-1:  0.25rem;  --sp-2:  0.5rem;   --sp-3:  0.75rem;
+  --sp-4:  1rem;     --sp-5:  1.5rem;   --sp-6:  2rem;
+  --sp-7:  3rem;     --sp-8:  4rem;     --sp-9:  6rem;
+  --sp-10: 8rem;     --sp-11: 10rem;    --sp-12: 14rem;
 
-  /* ═══════ 13. RADIUS ═══════ */
-  --r-xs:   3px;
-  --r-sm:   6px;
-  --r-md:   10px;
-  --r-lg:   18px;
+  /* ═══════ 11. RADIUS (Modern Slight Rounding) ═══════ */
+  --r-xs:   4px;
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   24px;
   --r-full: 999px;
 
-  /* ═══════ 14. SHADOWS — warm-tinted, subtle ═══════ */
-  --sh-sm: 0 2px 6px  color-mix(in srgb, var(--c-primary) 6%, transparent);
-  --sh-md: 0 8px 24px color-mix(in srgb, var(--c-primary) 9%, transparent);
-  --sh-lg: 0 20px 56px color-mix(in srgb, var(--c-primary) 14%, transparent);
-  --sh-accent: 0 8px 28px color-mix(in srgb, var(--c-accent) 22%, transparent);
+  /* ═══════ 12. SHADOWS — Soft, Layered, Modern ═══════ */
+  --sh-sm: 0 1px 2px color-mix(in srgb, var(--c-primary) 4%, transparent);
+  --sh-md: 0 4px 12px color-mix(in srgb, var(--c-primary) 6%, transparent), 
+           0 1px 3px color-mix(in srgb, var(--c-primary) 4%, transparent);
+  --sh-lg: 0 12px 32px color-mix(in srgb, var(--c-primary) 8%, transparent), 
+           0 4px 12px color-mix(in srgb, var(--c-primary) 4%, transparent);
+  --sh-accent: 0 8px 24px color-mix(in srgb, var(--c-accent) 25%, transparent);
 
-  /* ═══════ 15. MOTION ═══════ */
-  --ease:      cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out:  cubic-bezier(0, 0, 0.2, 1);
-  --ease-in:   cubic-bezier(0.4, 0, 1, 1);
-  --dur-fast:  180ms;
-  --dur-base:  320ms;
-  --dur-slow:  600ms;
+  /* ═══════ 13. MOTION (Smooth & Premium) ═══════ */
+  --ease:      cubic-bezier(0.25, 1, 0.5, 1); /* Apple-style smooth ease */
+  --ease-out:  cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in:   cubic-bezier(0.4, 0.0, 1, 1);
+  --dur-fast:  200ms;
+  --dur-base:  400ms;
+  --dur-slow:  700ms;
 
-  /* ═══════ 16. LAYOUT WIDTHS ═══════ */
-  --w-text:  680px;
-  --w-base:  1200px;
-  --w-wide:  1440px;
-  --gutter:  clamp(1.25rem, 4vw, 3rem);
+  /* ═══════ 14. LAYOUT WIDTHS ═══════ */
+  --w-reading: 68ch;      /* Ideal reading width for articles */
+  --w-text:    720px;
+  --w-base:    1200px;
+  --w-wide:    1440px;
+  --gutter:    clamp(1.25rem, 5vw, 4rem);
 
-  /* ═══════ 17. Z-INDEX SCALE ═══════ */
+  /* ═══════ 15. Z-INDEX SCALE ═══════ */
   --z-base:    1;
   --z-nav:     100;
   --z-overlay: 900;
   --z-modal:   1000;
 
-  /* ═══════ 18. LEGACY ALIASES (backward compat) ═══════ */
+  /* ═══════ 16. LEGACY ALIASES (Backward Compatibility) ═══════ */
   --ink:        var(--c-text);
   --ink-70:     var(--c-text-muted);
   --ink-50:     var(--c-text-faint);
@@ -237,6 +235,7 @@
   --c-surface: #1e1b17;
   --c-accent:  #d4a373;   /* warm sand */
   --c-warn:    #e07a5f;
+  --texture-grain: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.06"/></svg>');
 }
 
 /* ── SEPIA — vintage book ── */
@@ -255,6 +254,7 @@
   --c-surface: #f0f0f0;
   --c-accent:  #0038a8;
   --c-warn:    #cc0000;
+  --texture-grain: none;
 }
 
 /* ── OCEAN — cool, modern ── */
@@ -283,5 +283,6 @@
     --c-surface: #1e1b17;
     --c-accent:  #d4a373;
     --c-warn:    #e07a5f;
+    --texture-grain: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.06"/></svg>');
   }
 }
