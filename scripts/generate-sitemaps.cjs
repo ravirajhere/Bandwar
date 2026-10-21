@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════
-   BANDWAR — SITEMAP GENERATOR (v2.0 — Modular Data & Image SEO Fix)
+   BANDWAR — SITEMAP GENERATOR (v2.1 — Added People & Reach)
    ═══════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -22,7 +22,6 @@ function loadJSON(relPath) {
   }
 }
 
-// ✅ NAYA: Modular articles load karega
 function loadAllData() {
   const master = loadJSON('data/master.json');
   const vision = loadJSON('data/vision.json');
@@ -68,11 +67,14 @@ function buildPages(master, categories, articles) {
   const today = formatDate();
   const pages = [];
 
+  // ✅ Added /people and /reach here
   const staticPages = [
     { path: '/', priority: 1.0, changefreq: 'weekly' },
     { path: '/section', priority: 0.9, changefreq: 'weekly' },
     { path: '/place', priority: 0.9, changefreq: 'monthly' },
     { path: '/time', priority: 0.8, changefreq: 'monthly' },
+    { path: '/people', priority: 0.8, changefreq: 'monthly' },  // ✅ Added
+    { path: '/reach', priority: 0.8, changefreq: 'monthly' },   // ✅ Added
     { path: '/vision', priority: 0.8, changefreq: 'monthly' },
     { path: '/about', priority: 0.6, changefreq: 'monthly' },
   ];
@@ -205,7 +207,6 @@ function generateImageSitemap(pageImages, master) {
       
       const cleanCaption = (img.caption || '').slice(0, 500);
       lines.push(`      <image:caption>${esc(cleanCaption)}</image:caption>`);
-      // ✅ Google Images ke liye Title tag
       lines.push(`      <image:title>${esc(cleanCaption)}</image:title>`); 
       
       lines.push('    </image:image>');
@@ -228,7 +229,7 @@ function generateSitemapIndex(master) {
 }
 
 function main() {
-  console.log(`\n${COLORS.blue}${COLORS.bold}▶ Bandwar Sitemap Generator v2.0${COLORS.reset}\n`);
+  console.log(`\n${COLORS.blue}${COLORS.bold}▶ Bandwar Sitemap Generator v2.1${COLORS.reset}\n`);
   const data = loadAllData();
   
   if (!fs.existsSync(DIST)) fs.mkdirSync(DIST, { recursive: true });
