@@ -70,3 +70,51 @@ export const MediaSchema = z.object({
 export type Article = z.infer<typeof ArticleSchema>;
 export type Media = z.infer<typeof MediaSchema>;
 export type MasterConfig = z.infer<typeof MasterSchema>;
+
+// 4. Vision Schema (2035 Manifesto)
+export const VisionSchema = z.object({
+  intro: z.string(),
+  priorities: z.array(z.object({
+    id: z.string(),
+    number: z.string(),
+    title: z.string(),
+    ward: z.string(),
+    category: z.string(),
+    status: z.string(),
+    targetYear: z.number(),
+    present: z.object({ photo: z.string(), caption: z.string() }),
+    required: z.object({ photo: z.string(), caption: z.string() }),
+    reality: z.string(),
+    vision: z.string(),
+    how: z.object({
+      scheme: z.string(),
+      cost: z.string(),
+      authority: z.string(),
+      timeline: z.string(),
+    }),
+    community: z.array(z.string()),
+    inside: z.object({
+      intro: z.string(),
+      photos: z.array(z.object({ src: z.string(), caption: z.string() })),
+      checklist: z.array(z.string()),
+    }),
+  })),
+  achievements: z.array(z.object({
+    id: z.string(),
+    icon: z.string(),
+    title: z.string(),
+    cost: z.string(),
+    date: z.string(),
+    by: z.string(),
+    description: z.string(),
+  })),
+  roadmap: z.array(z.object({
+    phase: z.number(),
+    label: z.string(),
+    title: z.string(),
+    focus: z.string(),
+    items: z.array(z.object({ icon: z.string(), title: z.string(), description: z.string() })),
+  })),
+});
+
+export type VisionData = z.infer<typeof VisionSchema>;
