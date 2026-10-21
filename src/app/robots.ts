@@ -1,14 +1,14 @@
 import { MetadataRoute } from 'next';
-import master from '../../data/master.json';
+import { getMasterData } from '@/lib/data';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = master.site.url || 'https://bandwar.vercel.app';
-  
+  const master = getMasterData();
+  const baseUrl = master.site.url;
+
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/'],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };
