@@ -1,47 +1,70 @@
-import fs from 'fs';
-import path from 'path';
-import master from '../../../data/master.json';
+import Image from "next/image";
+import { getPeopleData } from "@/lib/data";
 
 export const metadata = {
-  title: `People of Bandwar | ${master.site.name}`,
-  description: 'Meet the residents, leaders, and notable figures of Bandwar village.',
+  title: "People | Bandwar Archive",
+  description: "Notable personalities, elders, and leaders from Bandwar village.",
 };
 
 export default function PeoplePage() {
-  // Data read karna
-  const dataPath = path.join(process.cwd(), 'data/people.json');
-  const peopleData = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-  const people = peopleData.people || [];
+  const data = getPeopleData();
 
   return (
-    <div className="container-wide" style={{ paddingBottom: '4rem' }}>
-      <header className="section-head-page">
-        <span className="eyebrow">Directory</span>
-        <h1 className="section-title-main">People of Bandwar</h1>
-        <p className="section-intro">
-          A directory of notable individuals from our village — politicians, teachers, authors, and community leaders.
-        </p>
-        <span className="section-count">{people.length} individuals listed</span>
-      </header>
+    <div className="bg-[#f7f5ef] min-h-screen py-16 px-4">
+      <div className="max-w-6xl mx-auto">
+        
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1a1a18] mb-4">
+            The People of Bandwar
+          </h1>
+          <p className="text-lg text-[#1a1a18]/60 max-w-2xl mx-auto">
+            A record of the notable personalities, elders, and leaders who have shaped the village's history and identity.
+          </p>
+        </div>
 
-      <div className="section-grid" style={{ marginTop: '2rem' }}>
-        {people.map((person: any, i: number) => (
-          <div className="section-card" key={i} style={{ cursor: 'default' }}>
-            {person.photo && (
-              <div className="section-card-img" style={{ aspectRatio: '1/1' }}>
-                <img src={person.photo.startsWith('/') ? person.photo : `/${person.photo}`} alt={person.name} loading="lazy" />
+        {/* People Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {data.people.map((person) => (
+            <div key={person.id} className="bg-white rounded-2xl border border-[#1a1a18]/10 overflow-hidden shadow-sm hover:shadow-lg transition-all group">
+              
+              {/* Photo Area */}
+              <div className="relative aspect-[4/5] bg-[#efece4] overflow-hidden">
+                {person.photo ? (
+                  <Image
+                    src={`/${person.photo}`}
+                    alt={person.name}
+                    fill
+                    className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-[#1a1a18]/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                )}
+                {/* Locality Badge */}
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-[#1a1a18] shadow-sm">
+                  📍 {person.locality}
+                </div>
               </div>
-            )}
-            <div className="section-card-body">
-              <h3 className="section-card-title">{person.name}</h3>
-              <div className="section-card-cat" style={{ marginBottom: '1rem' }}>{person.role}</div>
-              <p className="section-card-summary">{person.bio}</p>
-              <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--c-border-soft)', fontSize: 'var(--fs-xs)', color: 'var(--c-text-faint)' }}>
-                📍 {person.locality}
+
+              {/* Info Area */}
+              <div className="p-6">
+                <h2 className="font-serif text-2xl font-bold text-[#1a1a18] mb-1 group-hover:text-[#1f3d2f] transition-colors">
+                  {person.name}
+                </h2>
+                <p className="text-[#a64b2a] font-medium text-sm mb-4">
+                  {person.role}
+                </p>
+                <p className="text-[#1a1a18]/70 text-sm leading-relaxed">
+                  {person.bio}
+                </p>
               </div>
+
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
       </div>
     </div>
   );
