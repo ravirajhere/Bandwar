@@ -67,7 +67,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
           </div>
         ) : (
           <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#1a1a18]/20">
-            <div className="text-5xl mb-4">📝</p>
+            <div className="text-5xl mb-4">📝</div>
             <h3 className="font-serif text-xl font-bold text-[#1a1a18] mb-2">No articles yet</h3>
             <p className="text-[#1a1a18]/60">Is category mein abhi koi article nahi hai.</p>
           </div>
