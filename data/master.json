@@ -1,12 +1,12 @@
 {
-  "version": "5.0.0",
-  "lastUpdated": "2026-10-10",
+  "version": "5.1.0",
+  "lastUpdated": "2026-10-22",
 
   "site": {
-    "name": "Bandwar Archive",
+    "name": "Bandwar Village",
     "shortName": "Bandwar",
-    "tagline": "A community-built digital archive",
-    "description": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — history, temples, schools, culture, and daily life.",
+    "tagline": "The community-built digital portal of Bandwar",
+    "description": "The official digital portal of Bandwar village, Begusarai (Bihar) — find local services, emergency contacts, history, temples, and daily life.",
     "url": "https://bandwar.vercel.app",
     "edition": "2026",
     "language": "en-IN",
@@ -30,17 +30,22 @@
     "censusCode": 238112
   },
 
+  "emergencyContacts": [
+    { "label": "Ambulance", "number": "102", "type": "ambulance" },
+    { "label": "Police", "number": "112", "type": "police" }
+  ],
+
   "brand": {
     "colors": {
-      "primary": "#1a1a18",
-      "base": "#f7f5ef",
-      "surface": "#efece4",
-      "accent": "#1f3d2f",
+      "primary": "#202122",
+      "base": "#ffffff",
+      "surface": "#f8f9fa",
+      "accent": "#0645ad",
       "warn": "#a64b2a",
       "white": "#ffffff"
     },
     "fonts": {
-      "display": "Fraunces",
+      "display": "Merriweather",
       "body": "Inter",
       "mono": "IBM Plex Mono"
     }
@@ -48,10 +53,11 @@
 
   "nav": [
     { "label": "Home", "href": "/", "icon": "🏠" },
+    { "label": "Directory", "href": "/directory", "icon": "📞" },
+    { "label": "Events", "href": "/events", "icon": "🎪" },
     { "label": "Archive", "href": "/section", "icon": "📚" },
     { "label": "People", "href": "/people", "icon": "👥" },
     { "label": "Places", "href": "/place", "icon": "🗺️" },
-    { "label": "Time", "href": "/time", "icon": "⏳" },
     { "label": "Reach", "href": "/reach", "icon": "🚆" },
     { "label": "Vision", "href": "/vision", "icon": "🔮" },
     { "label": "About", "href": "/about", "icon": "ℹ️" }
@@ -65,22 +71,22 @@
       { "label": "Infrastructure", "href": "/section/infrastructure" }
     ],
     "explore": [
+      { "label": "Directory", "href": "/directory" },
+      { "label": "Events", "href": "/events" },
       { "label": "Map", "href": "/place" },
       { "label": "Gallery", "href": "/place?view=gallery" },
       { "label": "Timeline", "href": "/time" },
-      { "label": "People", "href": "/people" },
       { "label": "How to Reach", "href": "/reach" },
-      { "label": "Vision 2035", "href": "/vision" },
       { "label": "Contribute", "href": "/contribute" }
     ],
-    "copyright": "© {year} Bandwar Village Archive",
-    "credit": "Made with ❤️ by Ravi Raj"
+    "copyright": "© {year} Bandwar Village Portal",
+    "credit": "Made with ❤️ & Curiosity"
   },
 
   "seo": {
-    "titlePattern": "{title} — {site} Archive",
+    "titlePattern": "{title} — {site} Portal",
     "titlePatternHome": "{siteName}",
-    "defaultDescription": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — history, temples, schools, culture, and daily life.",
+    "defaultDescription": "Find emergency contacts, local services, and the rich history of Bandwar village, Begusarai (Bihar).",
     "ogImage": "/images/home/burhi-gandak-river-dawn-bandwar.jpg",
     "ogImageWidth": 1200,
     "ogImageHeight": 630,
@@ -116,7 +122,7 @@
     "addToImageSitemap": true,
     "license": "https://bandwar.vercel.app/about#license",
     "acquireLicensePage": "https://bandwar.vercel.app/about#license",
-    "creditText": "Bandwar Village Archive",
+    "creditText": "Bandwar Village Portal",
     "creator": "Bandwar Village Community"
   },
 
@@ -162,7 +168,7 @@
   },
 
   "organization": {
-    "name": "Bandwar Village Archive",
+    "name": "Bandwar Village Portal",
     "type": "NGO",
     "foundingDate": "2024",
     "founders": ["Bandwar Village Community"],
@@ -174,8 +180,8 @@
       "image": "/images/home/burhi-gandak-river-dawn-bandwar.jpg",
       "alt": "The Burhi Gandak river at dawn, near Bandwar village, Begusarai",
       "location": "Begusarai District · Bihar · Mithila Region",
-      "title": "Bandwar",
-      "tagline": "A community-built digital archive of a village on the banks of the Burhi Gandak — its history, its temples, its people, and its daily life."
+      "title": "Bandwar Village",
+      "tagline": "The official digital portal of a village on the banks of the Burhi Gandak — find local services, emergency contacts, history, and daily life."
     },
     "meta": [
       { "label": "Latitude · Longitude", "value": "25.5009°N · 86.1606°E" },
@@ -194,29 +200,27 @@
       "cite": "Bandwar, September 2025"
     },
     "about": {
-      "eyebrow": "About This Archive",
+      "eyebrow": "About This Portal",
       "title": "A Village in Its Own Words",
       "paragraphs": [
         "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people.",
-        "This archive is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
+        "This portal is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
         "Every article, every photograph, every fact — contributed or verified by residents of Bandwar and their descendants."
       ]
     },
     "cta": {
-      "label": "Contribute to the Archive",
+      "label": "Contribute to the Portal",
       "href": "/contribute"
     }
   },
 
   "about": {
-    "intro": "A community-built digital archive of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life. Kept by the village, for the record.",
-
+    "intro": "The community-built digital portal of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life. Kept by the village, for the record.",
     "story": [
       "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people.",
-      "This archive is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
+      "This portal is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
       "Every article, every photograph, every fact — contributed or verified by residents of Bandwar and their descendants."
     ],
-
     "principles": [
       {
         "icon": "🔒",
@@ -241,10 +245,9 @@
       {
         "icon": "🌐",
         "title": "Free & open",
-        "description": "The archive is free to read, and the code is open source. Anyone can adapt it for their own village."
+        "description": "The portal is free to use, and the code is open source. Anyone can adapt it for their own village."
       }
     ],
-
     "sources": [
       {
         "type": "Government Record",
@@ -285,12 +288,10 @@
         "detail": "Village elders, 2024–2026"
       }
     ],
-
     "community": {
-      "lead": "The Bandwar Archive is maintained by a committee of residents, former residents, and their descendants. It is a volunteer effort — no one is paid, and nothing is published for profit.",
-      "contributors": "Every photograph, memory, and document shared with the archive is credited by name. Over 40 residents and descendants have contributed since 2024."
+      "lead": "The Bandwar Portal is maintained by a committee of residents, former residents, and their descendants. It is a volunteer effort — no one is paid, and nothing is published for profit.",
+      "contributors": "Every photograph, memory, and document shared with the portal is credited by name. Over 40 residents and descendants have contributed since 2024."
     },
-
     "committee": [
       {
         "role": "Editor",
