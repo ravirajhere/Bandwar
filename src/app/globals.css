@@ -3,11 +3,10 @@
 @tailwind utilities;
 
 /* =========================================
-   1. BASE STYLES (Global Reset & Fonts)
+   1. BASE STYLES & TYPOGRAPHY (Editorial Look)
    ========================================= */
 @layer base {
   :root {
-    /* Fallback colors */
     --background: #f7f5ef;
     --foreground: #1a1a18;
   }
@@ -19,18 +18,15 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    /* Font smoothing for crisp text */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Text selection color */
   ::selection {
     background-color: #a64b2a;
     color: #ffffff;
   }
 
-  /* Prevent extra space below images */
   img {
     display: block;
     max-width: 100%;
@@ -38,19 +34,69 @@
   }
 
   /* =========================================
-     STRICT ARCHIVAL TYPOGRAPHY (Senior Rule)
+     STRICT ARCHIVAL & EDITORIAL TYPOGRAPHY
      ========================================= */
   
-  /* Paragraphs ko aankhon ke liye perfect width aur spacing do */
+  /* Paragraphs: Breathing room for readability */
   p {
     max-width: 72ch; 
-    line-height: 1.75;
-    margin-bottom: 1.5rem;
+    line-height: 1.8; 
+    margin-bottom: 1.75rem; 
+    font-size: 1.05rem; 
   }
 
-  /* Headings ko sundar tarike se wrap karo taaki ek shabd akela na bache */
+  /* Headings: Balance and Hierarchy */
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance; 
+    color: #1a1a18;
+  }
+
+  /* h2: Section Headings spacing */
+  h2 {
+    font-family: var(--font-fraunces), serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 3.5rem; 
+    margin-bottom: 1.25rem; 
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(26, 26, 24, 0.1); 
+  }
+
+  /* Tables: Clean Data Sheets */
+  table {
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    border: 1px solid rgba(26, 26, 24, 0.15);
+  }
+
+  th, td {
+    padding: 1rem; 
+    border-bottom: 1px solid rgba(26, 26, 24, 0.1);
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  th {
+    background-color: #efece4; 
+    font-weight: 600;
+    color: #1a1a18;
+    width: 35%; 
+  }
+  
+  /* Lists */
+  ul, ol {
+    margin-bottom: 1.75rem;
+    padding-left: 1.5rem;
+  }
+  
+  li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
   }
 }
 
@@ -67,24 +113,23 @@
    3. CUSTOM UTILITIES 
    ========================================= */
 @layer utilities {
-  /* Any future custom utility classes can go here */
+  /* Future custom utility classes */
 }
 
 /* =========================================
-   4. LEAFLET MAP OVERRIDES (Strict Archival Look)
+   4. LEAFLET MAP OVERRIDES (Strict Look)
    ========================================= */
-/* Updated: Sharp corners instead of rounded */
 .leaflet-popup-content-wrapper {
   border-radius: 2px !important; 
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border: 1px solid rgba(26, 26, 24, 0.2) !important;
   background-color: #ffffff !important;
   color: #1a1a18 !important;
-  padding: 0 !important; /* Clean inner spacing */
+  padding: 0 !important; 
 }
 
 .leaflet-popup-content {
-  margin: 12px 16px !important; /* Adjust content padding */
+  margin: 12px 16px !important; 
   font-family: inherit;
 }
 
@@ -95,7 +140,7 @@
 }
 
 /* =========================================
-   5. CUSTOM SCROLLBAR (Minimal & Subtle)
+   5. CUSTOM SCROLLBAR (Minimal)
    ========================================= */
 ::-webkit-scrollbar {
   width: 10px;
@@ -109,10 +154,10 @@
 
 ::-webkit-scrollbar-thumb {
   background: #d4d0c5;
-  border-radius: 2px; /* Sharp scrollbar */
-  border: 2px solid #f7f5ef; /* Padding effect */
+  border-radius: 2px; 
+  border: 2px solid #f7f5ef; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a64b2a; /* Hover karne pe terracotta color */
+  background: #a64b2a; 
 }
