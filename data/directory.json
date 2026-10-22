@@ -1,0 +1,41 @@
+{
+  "categories": [
+    { "id": "emergency", "title": "Emergency", "icon": "🚨" },
+    { "id": "health", "title": "Health & Medical", "icon": "🏥" },
+    { "id": "shops", "title": "Shops & Markets", "icon": "🛒" },
+    { "id": "government", "title": "Government", "icon": "🏛️" },
+    { "id": "transport", "title": "Transport", "icon": "🚌" }
+  ],
+  "items": [
+    {
+      "id": "phc-bandwar",
+      "name": "Primary Health Center (PHC)",
+      "categoryId": "health",
+      "description": "Government primary health center with basic facilities.",
+      "phone": "102",
+      "address": "Main Road, Bandwar",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "jitendra-medical",
+      "name": "Jitendra Medical Store",
+      "categoryId": "shops",
+      "description": "All types of medicines available.",
+      "phone": "9876543210",
+      "address": "Bandwar Main Rd, Behind Petrol Pump",
+      "timing": "8 AM - 9 PM",
+      "isEmergency": false
+    },
+    {
+      "id": "chandpura-thana",
+      "name": "Police Station (neema-chandpura)",
+      "categoryId": "emergency",
+      "description": "Local police station.",
+      "phone": "112",
+      "address": "Main Road, chandpura",
+      "timing": "24x7",
+      "isEmergency": true
+    }
+  ]
+}
