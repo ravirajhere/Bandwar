@@ -1,17 +1,21 @@
 {
   "articles": [
     {
-      "id": "diarrhea-outbreak",
-      "title": "The September 2025 Diarrhea Outbreak",
-      "subtitle": "A crisis of water and public health",
-      "categories": ["health"],
-      "summary": "In September 2025, an outbreak of diarrheal illness in Bandwar led to the deaths of more than ten people in fifteen days. The outbreak was concentrated in Wards 1 and 2 — the Mahadalit basti — and exposed decades of neglect in the village's water and health infrastructure. The outbreak prompted a major health camp at [[gps-bandwar-musahri|Musahri Tola]] under the Primary Health Centre, Sadar, and became a turning point in the village's demand for clean piped water through the [[jal-jeevan-tank|Jal Jeevan Mission]].",
-      "hero": "images/village/village-lane-musahri.jpg",
+      "id": "diarrhea-outbreak-bandwar-september-2025",
+      "title": "2025 Bandwar Diarrhea Outbreak: Water Crisis and Public Health Failure",
+      "subtitle": "How contaminated water led to tragedy in Bihar's Mahadalit basti",
+      "categories": ["health", "infrastructure"],
+      "summary": "In September 2025, a severe diarrhea outbreak in Bandwar village, Begusarai, claimed over 10 lives in 15 days. The crisis was concentrated in Wards 1 and 2 (Mahadalit basti) and exposed the village's lack of clean piped water and sanitation. A health camp at [[gps-bandwar-musahri|Musahri Tola]] treated 26 patients and surveyed 293 households, accelerating the demand for the [[jal-jeevan-tank|Jal Jeevan Mission]] pipeline network.",
+      "hero": "images/health/bandwar-musahri-tola-village-lane-diarrhea-outbreak-2025.jpg",
       "photos": [
-        { "src": "images/village/village-lane-musahri.jpg", "caption": "A village lane in the affected ward" }
+        { 
+          "src": "images/health/bandwar-musahri-tola-village-lane-diarrhea-outbreak-2025.jpg", 
+          "caption": "A narrow lane in Musahri Tola, Bandwar, where the September 2025 diarrhea outbreak was concentrated." 
+        }
       ],
       "infobox": {
         "Type": "Public health crisis",
+        "Location": "Bandwar village, Begusarai, Bihar",
         "When": "September 2025",
         "Duration": "15 days",
         "Deaths": "More than 10",
@@ -23,33 +27,35 @@
       },
       "lastUpdated": "2026-10-15",
       "content": [
-        { "heading": "The Outbreak", "text": "In September 2025, Bandwar experienced a terrifying outbreak of diarrheal illness. Over the course of fifteen days, more than ten people — mostly children and the elderly — died. The deaths were concentrated in Wards 1 and 2 (the Mahadalit basti), the poorest and least-served part of the village. The outbreak was caused by contaminated water — the direct result of a village that has, since at least 2011, had no piped drinking water supply, no functional sanitation, and no community toilets. The 2011 Census recorded zero households with treated tap water and zero with sanitation access. The outbreak was, in this sense, not a sudden event but the predictable consequence of decades of neglect." },
+        { "heading": "The Outbreak: A Preventable Tragedy", "text": "In September 2025, Bandwar experienced a terrifying outbreak of diarrheal illness. Over the course of fifteen days, more than ten people — mostly children and the elderly — died. The deaths were concentrated in Wards 1 and 2 (the Mahadalit basti), the poorest and least-served part of the village. The outbreak was caused by contaminated water — the direct result of a village that has, since at least 2011, had no piped drinking water supply, no functional sanitation, and no community toilets. The 2011 Census recorded zero households with treated tap water and zero with sanitation access. The outbreak was, in this sense, not a sudden event but the predictable consequence of decades of neglect." },
         { "heading": "The Delayed Response and Local Grievances", "text": "According to reporting by News18 and Prabhat Khabar, the initial response from the health department was painfully slow. Villagers alleged that the local administration had delegated responsibility to a private doctor who was charging money for government-supplied medicines. Panic spread as local clinics ran out of basic IV fluids. Families paid out of their own pockets to have water tanks cleaned. The delayed response was a symptom of the village's lack of a dedicated health facility — with no primary health centre of its own, Bandwar depends on the Primary Health Centre at Sadar, several kilometres away. During the crisis, the absence of an ambulance meant villagers had to arrange private jeeps or tractors to rush patients to Begusarai Sadar Hospital." },
-        { "heading": "The Health Camp", "text": "On 29 September 2025, a health camp was finally held at Musahri Tola under the Primary Health Centre, Sadar. In the course of the camp, 293 households were surveyed, 26 patients were treated and recovered, and 3 remained under continued care. ORS, zinc, and metronidazole were distributed to 102 families in the affected wards, and bleaching powder was applied across three wards to disinfect water sources. The camp was a short-term intervention, but it did not address the underlying cause — the lack of clean piped water in the village." },
-        { "heading": "The Root Cause", "text": "The outbreak was caused by contaminated water. The village's shallow wells and hand-pumps, which had served Bandwar for generations, were the source of the infection. The [[jal-jeevan-tank|Jal Jeevan Mission water tower]] had not yet reached all parts of the village at the time of the outbreak, and the affected wards were among the last to be connected. The outbreak became a powerful argument for accelerating the pipeline network's expansion, and it put the issue of clean water at the centre of the village's political and social agenda." },
+        { "heading": "The Health Camp: Temporary Relief", "text": "On 29 September 2025, a health camp was finally held at Musahri Tola under the Primary Health Centre, Sadar. In the course of the camp, 293 households were surveyed, 26 patients were treated and recovered, and 3 remained under continued care. ORS, zinc, and metronidazole were distributed to 102 families in the affected wards, and bleaching powder was applied across three wards to disinfect water sources. The camp was a short-term intervention, but it did not address the underlying cause — the lack of clean piped water in the village." },
+        { "heading": "The Root Cause: Water Contamination", "text": "The outbreak was caused by contaminated water. The village's shallow wells and hand-pumps, which had served Bandwar for generations, were the source of the infection. The [[jal-jeevan-tank|Jal Jeevan Mission water tower]] had not yet reached all parts of the village at the time of the outbreak, and the affected wards were among the last to be connected. The outbreak became a powerful argument for accelerating the pipeline network's expansion, and it put the issue of clean water at the centre of the village's political and social agenda." },
         { "heading": "Aftermath and Community Resolve", "text": "Following the outbreak, the district administration maintained that the situation had been brought under control. But the crisis laid bare a hard truth: a village of more than twelve thousand people had no dedicated health facility of its own, no ambulance service, and no clean piped water. The outbreak prompted a wider conversation about Bandwar's health infrastructure. The local youth and community leaders began actively demanding a permanent sub-centre or primary health centre. The health camp at Musahri Tola was a temporary measure, but the demand for a permanent health facility in the village has grown louder since September 2025." }
       ],
       "faqs": [
         { "q": "What caused the September 2025 diarrhea outbreak in Bandwar?", "a": "The outbreak was caused by contaminated water. The village's wells and hand-pumps, which had served Bandwar for generations, were the source of the infection. The lack of clean piped water and sanitation were the underlying causes." },
-        { "q": "How many people died in the outbreak?", "a": "More than ten people died over the course of fifteen days. The deaths were concentrated in Wards 1 and 2 — the Mahadalit basti — the poorest and least-served part of the village." },
+        { "q": "How many people died in the Bandwar diarrhea outbreak?", "a": "More than ten people died over the course of fifteen days. The deaths were concentrated in Wards 1 and 2 — the Mahadalit basti — the poorest and least-served part of the village." },
         { "q": "What was done to control the outbreak?", "a": "On 29 September 2025, a health camp was held at Musahri Tola under the Primary Health Centre, Sadar. 293 households were surveyed, 26 patients were treated, and ORS, zinc, and metronidazole were distributed to 102 families." },
         { "q": "Was the outbreak related to the Jal Jeevan Mission?", "a": "Yes — the outbreak was caused by contaminated water from wells and hand-pumps. The Jal Jeevan Mission water tower had not yet reached all parts of the village, and the affected wards were among the last to be connected. The outbreak accelerated the demand for piped water." },
         { "q": "Is Bandwar's water safe now?", "a": "The Jal Jeevan Mission pipeline network has continued to expand since the outbreak, and more households are being connected. However, the village still does not have full piped water coverage, and the safety of the water supply remains a concern in the unconnected parts of the village." }
       ],
-      "related": ["jal-jeevan-tank", "burhi-gandak", "bandh", "health-infrastructure", "health-challenges", "roads"],
+      "related": ["jal-jeevan-tank", "burhi-gandak", "bandh", "health-infrastructure-bandwar-village", "roads"],
       "location": { "lat": 25.5002, "lng": 86.1607 },
-      "tags": ["health", "diarrhea", "outbreak", "water crisis", "2025", "mahadalit basti", "public health", "bandwar health", "water borne disease", "news18 bihar"]
+      "tags": ["diarrhea outbreak bandwar", "bandwar health crisis 2025", "water contamination bihar", "mahadalit basti health", "begusarai news diarrhea", "health camp musahri tola", "jal jeevan mission bandwar"]
     },
-
     {
-      "id": "health-infrastructure",
-      "title": "Health Infrastructure in Bandwar",
-      "subtitle": "A sub-centre, a health camp, and the long road to a PHC",
+      "id": "health-infrastructure-bandwar-village",
+      "title": "Health Infrastructure in Bandwar: Sub-Centre vs. PHC Deficit",
+      "subtitle": "Why a village of 12,000+ people lacks a primary health centre",
       "categories": ["health", "infrastructure"],
-      "summary": "Bandwar's health infrastructure is critically minimal. The village has one reported health sub-centre — which is often understaffed or lacks basic medicines — but no primary health centre (PHC), no community health centre, and no dedicated hospital. For minor ailments, residents rely heavily on unqualified local RMPs (Registered Medical Practitioners). The nearest major facilities are at Begusarai town, 18 kilometres away. The September 2025 diarrhea outbreak exposed the deadly consequences of this deficit.",
-      "hero": "images/village/health-sub-centre.jpg",
+      "summary": "Bandwar village has only one understaffed health sub-centre and no primary health centre (PHC). For 12,000+ residents, the nearest PHC is at Sadar and the district hospital is 18 km away in Begusarai. With no ambulance service, villagers rely on informal RMPs, ASHA workers, and Anganwadi centres. The September 2025 diarrhea outbreak exposed the deadly consequences of this infrastructure deficit.",
+      "hero": "images/health/bandwar-health-sub-centre-building-bihar.jpg",
       "photos": [
-        { "src": "images/village/health-sub-centre.jpg", "caption": "The health sub-centre serving Bandwar village" }
+        { 
+          "src": "images/health/bandwar-health-sub-centre-building-bihar.jpg", 
+          "caption": "The health sub-centre serving Bandwar village, which often faces staff shortages and lacks basic medicines." 
+        }
       ],
       "infobox": {
         "Health sub-centre": "1 reported (often understaffed)",
@@ -57,16 +63,17 @@
         "Community health centre": "0 reported",
         "Nearest district hospital": "Begusarai Sadar Hospital, 18 km",
         "Ambulance service": "None dedicated to the village",
-        "Ground Reality": "Heavy reliance on local RMPs and private clinics"
+        "Ground Reality": "Heavy reliance on local RMPs and private clinics",
+        "District PHCs (Begusarai)": "44 primary health centres"
       },
       "lastUpdated": "2026-10-15",
       "content": [
-        { "heading": "Overview", "text": "Bandwar's health infrastructure is minimal. The village has one reported health sub-centre — the lowest tier of India's rural public health system — but no primary health centre, no community health centre, and no dedicated hospital. For a village of over twelve thousand people, this is a significant deficit. The nearest major health facilities are at Begusarai town, 18 kilometres away. The September 2025 [[diarrhea-outbreak|diarrhea outbreak]] exposed the consequences of this deficit, and the health camp that followed was a temporary response to a structural problem." },
+        { "heading": "Overview of Health Infrastructure", "text": "Bandwar's health infrastructure is minimal. The village has one reported health sub-centre — the lowest tier of India's rural public health system — but no primary health centre, no community health centre, and no dedicated hospital. For a village of over twelve thousand people, this is a significant deficit. The nearest major health facilities are at Begusarai town, 18 kilometres away. The September 2025 [[diarrhea-outbreak-bandwar-september-2025|diarrhea outbreak]] exposed the consequences of this deficit, and the health camp that followed was a temporary response to a structural problem." },
         { "heading": "The Reality of the Sub-Centre", "text": "Bandwar has one reported health sub-centre, according to Census 2011 data. A sub-centre is meant to provide basic curative and preventive services, including maternal and child health care, immunisation, and treatment of minor ailments. However, in rural Bihar, these centres often face severe staff shortages. The sub-centre is typically staffed by an auxiliary nurse midwife (ANM) and an ASHA worker. Because of the unreliability of the sub-centre, a large portion of the village's day-to-day medical needs is met by local RMPs (Registered Medical Practitioners) — informal, unqualified doctors who run small clinics in the village and provide cheap, accessible, but often unscientific treatment." },
-        { "heading": "What the Village Lacks", "text": "The village does not have a primary health centre (PHC). A PHC is the next tier above a sub-centre — it serves a population of about 30,000 and is staffed by a medical officer, nurses, and paramedical staff. Bandwar, with a population of over 12,000, falls within the catchment area of a PHC at Sadar, several kilometres away. The absence of a PHC within the village means that residents must travel to Sadar or Begusarai for any but the most basic medical care. In emergencies — such as the diarrhea outbreak of September 2025 — this distance becomes a matter of life and death, especially because there is no dedicated ambulance service." },
-        { "heading": "District-Level Health Infrastructure", "text": "At the district level, Begusarai has 292 sub-centres, 44 primary health centres, 2 community health centres, one sub-divisional hospital, and one district hospital, according to Rural Health Statistics 2019-20. The district is also one of the aspirational districts of Bihar under NITI Aayog's Aspirational District Programme in terms of health infrastructure — meaning it has been identified as a district with significant health infrastructure gaps that require urgent attention. Bandwar's own sub-centre is part of this network, but it is the only facility actually located within the village." },
-        { "heading": "The 2025 Health Camp", "text": "The most significant health intervention in Bandwar's recent history was the health camp held at [[gps-bandwar-musahri|Musahri Tola]] on 29 September 2025, in the wake of the [[diarrhea-outbreak|diarrhea outbreak]]. The camp was organised under the Primary Health Centre, Sadar, and it surveyed 293 households, treated 26 patients, and distributed ORS, zinc, and metronidazole to 102 families. Bleaching powder was applied across three wards. The camp was a short-term measure, but it demonstrated the system's ability to reach the village when it chose to. The camp did not, however, lead to the establishment of a permanent health facility in Bandwar." },
-        { "heading": "The Road Ahead", "text": "The demand for better health infrastructure in Bandwar has grown since September 2025. Village residents have pointed out that the sub-centre is overstretched, the nearest PHC is several kilometres away, and the absence of an ambulance service has cost lives. The establishment of a primary health centre or an additional sub-centre in Bandwar would require state government approval and funding. Whether that happens depends on the village's ability to make its case to the district and state authorities. In the meantime, the ASHA workers and Anganwadi centres remain the only consistent link between Bandwar's mothers and children and the formal healthcare system." }
+        { "heading": "What the Village Lacks: The PHC Deficit", "text": "The village does not have a primary health centre (PHC). A PHC is the next tier above a sub-centre — it serves a population of about 30,000 and is staffed by a medical officer, nurses, and paramedical staff. Bandwar, with a population of over 12,000, falls within the catchment area of a PHC at Sadar, several kilometres away. The absence of a PHC within the village means that residents must travel to Sadar or Begusarai for any but the most basic medical care. In emergencies — such as the diarrhea outbreak of September 2025 — this distance becomes a matter of life and death, especially because there is no dedicated ambulance service." },
+        { "heading": "District-Level Health Infrastructure in Begusarai", "text": "At the district level, Begusarai has 292 sub-centres, 44 primary health centres, 2 community health centres, one sub-divisional hospital, and one district hospital, according to Rural Health Statistics 2019-20. The district is also one of the aspirational districts of Bihar under NITI Aayog's Aspirational District Programme in terms of health infrastructure — meaning it has been identified as a district with significant health infrastructure gaps that require urgent attention. Bandwar's own sub-centre is part of this network, but it is the only facility actually located within the village." },
+        { "heading": "The 2025 Health Camp at Musahri Tola", "text": "The most significant health intervention in Bandwar's recent history was the health camp held at [[gps-bandwar-musahri|Musahri Tola]] on 29 September 2025, in the wake of the [[diarrhea-outbreak-bandwar-september-2025|diarrhea outbreak]]. The camp was organised under the Primary Health Centre, Sadar, and it surveyed 293 households, treated 26 patients, and distributed ORS, zinc, and metronidazole to 102 families. Bleaching powder was applied across three wards. The camp was a short-term measure, but it demonstrated the system's ability to reach the village when it chose to. The camp did not, however, lead to the establishment of a permanent health facility in Bandwar." },
+        { "heading": "The Road Ahead: Demand for a PHC", "text": "The demand for better health infrastructure in Bandwar has grown since September 2025. Village residents have pointed out that the sub-centre is overstretched, the nearest PHC is several kilometres away, and the absence of an ambulance service has cost lives. The establishment of a primary health centre or an additional sub-centre in Bandwar would require state government approval and funding. Whether that happens depends on the village's ability to make its case to the district and state authorities. In the meantime, the ASHA workers and Anganwadi centres remain the only consistent link between Bandwar's mothers and children and the formal healthcare system." }
       ],
       "faqs": [
         { "q": "What health facilities does Bandwar have?", "a": "Bandwar has one reported health sub-centre. It does not have a primary health centre, community health centre, or hospital. The nearest major facility is Begusarai Sadar Hospital, 18 kilometres away." },
@@ -75,48 +82,9 @@
         { "q": "Why do villagers prefer RMPs?", "a": "RMPs (Registered Medical Practitioners) are local, informal doctors who live in the village. Because the nearest PHC is far away and government doctors are often absent, villagers prefer going to RMPs for quick treatment of fevers, colds, and minor infections." },
         { "q": "Is Bandwar an aspirational district for health?", "a": "Yes — Begusarai district is one of the aspirational districts of Bihar under NITI Aayog's Aspirational District Programme in terms of health infrastructure." }
       ],
-      "related": ["diarrhea-outbreak", "jal-jeevan-tank", "gps-bandwar-musahri", "roads", "sbi-bank", "health-challenges"],
+      "related": ["diarrhea-outbreak-bandwar-september-2025", "jal-jeevan-tank", "gps-bandwar-musahri", "roads", "sbi-bank"],
       "location": { "lat": 25.5003, "lng": 86.1609 },
-      "tags": ["health infrastructure", "sub centre", "primary health centre", "begusarai health", "rural health", "asha worker", "anganwadi", "aspirational district", "bandwar health", "RMP doctors"]
-    },
-
-    {
-      "id": "health-challenges",
-      "title": "Health Challenges in Bandwar and Begusarai",
-      "subtitle": "Malnutrition, anaemia, and the wider burden of disease",
-      "categories": ["health"],
-      "summary": "Bandwar's health challenges are part of a wider pattern of disease and deprivation across Begusarai district. According to district health data, 51% of children in Begusarai are malnourished, 71% of people are anaemic, and 23% have below-average height. The district also has one of the highest numbers of cancer and AIDS patients in Bihar. Furthermore, the village's proximity to the flood-prone Burhi Gandak river makes it highly vulnerable to water-borne and vector-borne diseases.",
-      "hero": "images/village/health-challenges.jpg",
-      "photos": [
-        { "src": "images/village/health-challenges.jpg", "caption": "A health awareness session in Begusarai district" }
-      ],
-      "infobox": {
-        "Malnourished children": "51% (Begusarai district)",
-        "Anaemia prevalence": "71.05% (Begusarai district)",
-        "Below-average height": "23% (Begusarai district)",
-        "Cancer patients": "Highest number in Bihar (Begusarai)",
-        "Doctors per lakh population": "8 (Munger Division)",
-        "Seasonal Risks": "Floods, waterlogging, Malaria, Dengue"
-      },
-      "lastUpdated": "2026-10-15",
-      "content": [
-        { "heading": "Overview", "text": "Bandwar's health challenges are not unique to the village. They are part of a wider pattern of disease and deprivation across Begusarai district — a district that has some of the poorest health indicators in Bihar. According to district health data, 51% of children in Begusarai are malnourished, 71.05% of people are anaemic, and 23% have below-average height. These are the conditions that shape the health of Bandwar's residents — and they are the reason why the village's demand for better health infrastructure is so urgent." },
-        { "heading": "Malnutrition and the Mid-Day Meal", "text": "Malnutrition is one of the most serious health challenges in Begusarai. With 51% of children malnourished, the physical and cognitive development of an entire generation is at risk. In Bandwar, where 95% of students at [[ms-bandwar|MS Bandwar]] come from Below Poverty Line households, the risk is severe. The mid-day meal scheme at the village's schools is often the only full, nutritious meal a child receives in a day. The local Anganwadi centres also run supplementary nutrition programs for pregnant women and children under six, but their reach is limited by funding and staffing constraints." },
-        { "heading": "The Anaemia Burden", "text": "Anaemia affects 71.05% of people in Begusarai district — one of the highest rates in Bihar. It is particularly dangerous for women of reproductive age and for children, contributing to maternal mortality and low birth weight. The district's health department runs awareness campaigns on folic acid and iron supplementation. However, the underlying causes — poor dietary diversity, iron deficiency, and parasitic infections (like hookworm) — remain widespread. For women working in the fields, the combination of poor nutrition and hard labour under the sun exacerbates the condition." },
-        { "heading": "Water-borne and Vector-borne Diseases", "text": "Because Bandwar sits along the flood-prone Burhi Gandak river, it faces a unique set of seasonal health challenges. During the monsoon (July to September), the [[bandh|bandh]] protects the village from major floods, but local waterlogging is common. Stagnant water becomes a breeding ground for mosquitoes, leading to spikes in Malaria and Dengue cases every year. Furthermore, the contamination of hand-pumps during the monsoon directly leads to outbreaks like the [[diarrhea-outbreak|September 2025 diarrhea crisis]] and typhoid." },
-        { "heading": "Cancer and HIV/AIDS", "text": "Begusarai district has the highest number of cancer patients in Bihar, and the state government has announced plans to set up a dedicated cancer hospital in the district. The district also has a significant burden of HIV/AIDS — more than 400 new AIDS cases are reported every year, according to the District AIDS Control Department. These diseases require specialised, long-term care that is not available at the sub-centre level. For Bandwar's residents, a cancer or HIV diagnosis means multiple, expensive trips to Patna or beyond." },
-        { "heading": "The Way Forward", "text": "Addressing Bandwar's health challenges requires action on multiple fronts. In the short term, the village needs better access to the existing health system — an ambulance service, more frequent health camps, and a properly stocked sub-centre. In the medium term, it needs a primary health centre within the village. In the long term, it needs the underlying social determinants of health — clean water, sanitation, nutrition, and education — to be addressed. The [[jal-jeevan-tank|Jal Jeevan Mission]] is a step in this direction, but it is only a beginning. The health of Bandwar's residents will not improve until the village's broader development challenges are addressed." }
-      ],
-      "faqs": [
-        { "q": "What is the malnutrition rate in Begusarai district?", "a": "According to district health data, 51% of children in Begusarai are malnourished, and 23% of people have below-average height — a sign of chronic undernutrition during childhood." },
-        { "q": "Why is anaemia so common in Begusarai?", "a": "Anaemia affects 71.05% of people in Begusarai due to poor dietary diversity, iron deficiency, and parasitic infections. It is especially dangerous for pregnant women and children, contributing to maternal mortality." },
-        { "q": "How do the floods affect the health of Bandwar's residents?", "a": "During the monsoon, local waterlogging creates breeding grounds for mosquitoes, leading to malaria and dengue. It also contaminates water sources, causing water-borne diseases like diarrhea and typhoid." },
-        { "q": "Does Begusarai have a cancer hospital?", "a": "The Bihar government has announced plans to set up a dedicated cancer hospital in Begusarai district, because the district has the highest number of cancer patients in Bihar. The hospital has not yet been built." },
-        { "q": "What is the doctor-to-patient ratio in the Munger Division?", "a": "A study of medical infrastructure in the Munger Division (which includes Begusarai) found an average of only 8 doctors and 8 nurses per lakh population, far below WHO recommendations." }
-      ],
-      "related": ["diarrhea-outbreak", "health-infrastructure", "jal-jeevan-tank", "burhi-gandak", "bandh", "ms-bandwar"],
-      "location": { "lat": 25.5003, "lng": 86.1609 },
-      "tags": ["malnutrition", "anaemia", "cancer", "aids", "health challenges", "begusarai health", "water borne diseases", "malaria", "dengue", "rural health"]
+      "tags": ["health infrastructure bandwar", "primary health centre bihar", "sub centre rural health", "begusarai health facilities", "asha worker role", "anganwadi bandwar", "rural health bihar"]
     }
   ]
 }
