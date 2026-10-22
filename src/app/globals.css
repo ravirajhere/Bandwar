@@ -3,14 +3,13 @@
 @tailwind utilities;
 
 /* =========================================
-   1. THEME VARIABLES (One-File Change Magic)
+   1. THEME VARIABLES
    ========================================= */
 @layer base {
   :root {
-    /* ☀️ Light Mode (Default) */
     --bg-main: #ffffff;
     --bg-alt: #f8f9fa;
-    --bg-header: #eaecf0; /* 👈 Header ka background */
+    --bg-header: #eaecf0;
     --text-main: #202122;
     --text-muted: #54595d;
     --link-color: #0645ad;
@@ -20,15 +19,12 @@
     
     --selection-bg: #0645ad;
     --selection-text: #ffffff;
-
-    --base-font-size: 16px;
   }
 
-  /* 🌙 Dark Mode */
   .dark {
     --bg-main: #121212;
     --bg-alt: #1a1a1a;
-    --bg-header: #2a2a2a; /* 👈 Dark mode mein header thoda light dark hoga */
+    --bg-header: #2a2a2a;
     --text-main: #e0e0e0;
     --text-muted: #a0a0a0;
     --link-color: #6ba3f5;
@@ -42,7 +38,7 @@
 
   html {
     scroll-behavior: smooth;
-    font-size: var(--base-font-size);
+    font-size: 16px; /* 👈 Fixed size */
   }
 
   body {
@@ -65,7 +61,6 @@
     height: auto;
   }
 
-  /* Typography */
   p {
     max-width: 75ch; 
     line-height: 1.7; 
@@ -119,7 +114,7 @@
   }
 
   th {
-    background-color: var(--bg-header); /* 👈 Table header bhi update kiya */
+    background-color: var(--bg-header);
     font-weight: 700;
     color: var(--text-main);
     width: 35%; 
