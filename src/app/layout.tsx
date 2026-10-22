@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import { getMasterData } from "@/lib/data";
+import { getSearchIndex } from "@/lib/search-data"; // 👈 Naya import
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { EmergencyBar } from "@/components/layout/EmergencyBar";
@@ -51,6 +52,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const config = getMasterData();
+  
+  // 👇 Server par saare articles ka search data taiyar kar rahe hain
+  const searchIndex = getSearchIndex(); 
 
   return (
     <html lang="en" className={`${inter.variable} ${merriweather.variable}`} suppressHydrationWarning>
@@ -75,11 +79,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="bg-wiki-bg text-wiki-text font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0 transition-colors duration-300">
-        <Header config={config} />
+        {/* 👇 Header ko searchIndex pass kiya 👇 */}
+        <Header config={config} searchIndex={searchIndex} />
+        
         <main className="flex-grow w-full">
           {children}
         </main>
+        
         <Footer config={config} />
+        
         <EmergencyBar config={config} />
       </body>
     </html>
