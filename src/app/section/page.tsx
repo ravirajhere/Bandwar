@@ -3,59 +3,73 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Archive | Bandwar Village",
-  description: "The complete archive of Bandwar village — history, temples, schools, culture, and daily life.",
+  title: "All Pages | Bandwar Village",
+  description: "The complete directory of articles for Bandwar village — history, temples, schools, culture, and daily life.",
 };
 
 export default function SectionPage() {
   const articles = getAllArticles();
   const categories = getCategoriesData().categories;
 
-  // Har category ke andar kitne articles hain, wo gin rahe hain
+  // Count articles per category
   const getCount = (catId: string) => articles.filter(a => a.categories.includes(catId)).length;
 
   return (
-    <div className="bg-[#f7f5ef] min-h-screen py-16 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="bg-wiki-bg min-h-screen py-8">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1a1a18] mb-4">The Archive</h1>
-          <p className="text-lg text-[#1a1a18]/60 max-w-2xl mx-auto">
-            Every article, every photograph, every fact — kept by the village, for the record.
+        {/* Page Header (Wikipedia Style) */}
+        <div className="mb-8">
+          <h1 className="font-serif text-3xl md:text-4xl text-wiki-text mb-2">
+            All Pages
+          </h1>
+          <div className="w-full border-b border-wiki-border-light mb-3"></div>
+          <p className="text-[15px] text-wiki-text-muted">
+            Every article, photograph, and fact — kept by the village, for the record.
           </p>
         </div>
 
-        {/* Categories Grid */}
-        <div className="mb-16">
-          <h2 className="font-serif text-2xl font-bold text-[#1a1a18] mb-6">Browse by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {/* Categories Section (Simple Wiki Boxes) */}
+        <div className="mb-10">
+          <h2 className="font-bold text-lg text-wiki-text mb-4">
+            Browse by Category
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {categories.map((cat) => {
               const count = getCount(cat.id);
               return (
                 <Link
                   key={cat.id}
                   href={`/section/${cat.id}`}
-                  className={`p-4 rounded-xl bg-white border border-[#1a1a18]/10 hover:border-[#1f3d2f] hover:shadow-md transition-all group ${count === 0 ? "opacity-50 pointer-events-none" : ""}`}
+                  className={`border border-wiki-border-light bg-wiki-bg-alt p-3 flex items-center gap-3 transition-colors ${
+                    count === 0 
+                      ? "opacity-50 pointer-events-none" 
+                      : "hover:bg-[#eaecf0] hover:border-wiki-border"
+                  }`}
                 >
-                  <div className="text-3xl mb-2">{cat.icon}</div>
-                  <h3 className="font-bold text-[#1a1a18] group-hover:text-[#1f3d2f] mb-1">{cat.title}</h3>
-                  <p className="text-xs text-[#1a1a18]/60">{count} articles</p>
+                  <div className="text-2xl" aria-hidden="true">{cat.icon}</div>
+                  <div>
+                    <h3 className="font-bold text-wiki-link text-[15px] hover:underline leading-tight">
+                      {cat.title}
+                    </h3>
+                    <p className="text-[12px] text-wiki-text-muted mt-0.5">{count} pages</p>
+                  </div>
                 </Link>
               );
             })}
           </div>
         </div>
 
-        {/* All Articles */}
+        {/* All Articles Section (Wikipedia List Style) */}
         <div>
-          <div className="flex items-center gap-4 mb-8">
-            <h2 className="font-serif text-2xl font-bold text-[#1a1a18]">All Articles</h2>
-            <div className="h-px bg-[#1a1a18]/20 flex-grow"></div>
-            <span className="text-sm font-medium text-[#1a1a18]/50">{articles.length} total</span>
+          <div className="flex items-center gap-4 mb-4">
+            <h2 className="font-bold text-lg text-wiki-text">All Articles</h2>
+            <div className="h-px bg-wiki-border-light flex-grow"></div>
+            <span className="text-[13px] text-wiki-text-muted">{articles.length} total</span>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Using single column for mobile, and 2 columns for desktop to keep the list readable */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
