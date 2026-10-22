@@ -1,30 +1,30 @@
 {
-  "intro": "Bandwar is a historic village in the Begusarai district of Bihar, located about 18 km from the district headquarters. Whether you are an NRI returning to your roots, a researcher, or a traveler, here is a comprehensive guide on how to reach Bandwar using air, rail, and road networks.",
+  "intro": "Bandwar is a historic village in the Begusarai district of Bihar, located approximately 18 km from the district headquarters. Whether you are an NRI returning to your roots, a researcher, or a traveler, here is a comprehensive guide on how to reach Bandwar by air, rail, and road.",
   "options": [
     {
-      "mode": "By Air (Hawai Jahaz)",
+      "mode": "By Air (Flight)",
       "icon": "✈️",
-      "details": "The nearest airport is Jay Prakash Narayan International Airport (PAT) in Patna, which is approximately 125 km away. From Patna, you can hire a taxi (takes about 2 to 2.5 hours) or take a train to Begusarai. Another option is Darbhanga Airport (DBR), which is also well-connected to major Indian cities. From either airport, the onward journey to Begusarai is by road or rail."
+      "details": "The nearest major airport is Jay Prakash Narayan International Airport (PAT) in Patna, located approximately 125 km away. From Patna, you can hire a taxi (which takes about 2 to 2.5 hours) or take a train to Begusarai. Another viable option is Darbhanga Airport (DBR), which is well-connected to major Indian cities. From either airport, the onward journey to Begusarai is by road or rail."
     },
     {
       "mode": "By Train (Railway)",
       "icon": "🚆",
-      "details": "The nearest railway station is Begusarai Railway Station (BGS), located about 15-18 km from Bandwar. It has three platforms and is well-connected to major cities like Patna, Delhi, Kolkata, and Guwahati. Major trains like the Koshi Express, Intercity Express, and Rajya Rani Express connect Patna to Begusarai. The nearby Barauni Junction is a major rail hub in the region. From the station, you can hire an auto or taxi to reach the village."
+      "details": "The nearest railway station is Begusarai Railway Station (BGS), located about 15-18 km from Bandwar. It is well-connected to major cities like Patna, Delhi, Kolkata, and Guwahati. Trains like the Koshi Express, Intercity Express, and Rajya Rani Express connect Patna to Begusarai. The nearby Barauni Junction is a major rail hub in the region. From the station, you can easily hire an auto or taxi to reach the village."
     },
     {
       "mode": "By Road (Bus/Taxi)",
       "icon": "🚌",
-      "details": "Bandwar is well-connected via National Highway 31 (NH-31) and State Highway 55 (SH-55). Patna is about 124 km away and can be reached by bus or car. Regular buses and shared jeeps run frequently from Patna and other major cities. From the Begusarai bus stand, you can easily get a shared auto or e-rickshaw to Bandwar. Private buses also operate directly to the village."
+      "details": "Bandwar is well-connected via National Highway 31 (NH-31) and State Highway 55 (SH-55). Patna is about 124 km away and can be reached by bus or car. Regular buses and shared jeeps run frequently from Patna and other major cities to Begusarai. From the Begusarai bus stand, you can easily get a shared auto or e-rickshaw to Bandwar. Private buses also operate directly to the village."
     },
     {
       "mode": "Local Transport in Bandwar",
       "icon": "🛺",
-      "details": "Once you reach Bandwar, e-rickshaws and auto-rickshaws are the primary means of local transport. The main landmarks to identify the village entrance are the Shaheed Ramchandra Dwar (Main Gate) and the SBI Bank branch. Fares are nominal; it is advisable to agree on the fare before starting your journey."
+      "details": "Once you reach Bandwar, e-rickshaws and auto-rickshaws are the primary means of local transport. The main landmarks to identify the village entrance are the Shaheed Ramchandra Dwar (Main Gate) and the SBI Bank branch on Bandwar Road. Fares are nominal; it is advisable to agree on the fare before starting your journey."
     },
     {
       "mode": "Where to Stay",
       "icon": "🏨",
-      "details": "Bandwar does not have commercial hotels or guest houses. Visitors typically stay with relatives or commute from Begusarai town. Begusarai has several decent options for accommodation, including Hotel Kamala Inn, Hotel Royal, Zero Mile Rooms, Kasa Courtyard & Banquets, and Hotel Harsh Garden. It is highly recommended to book your stay in Begusarai in advance."
+      "details": "Bandwar does not have commercial hotels or guest houses. Visitors typically stay with relatives or commute from Begusarai town. Begusarai has several decent accommodation options, including Hotel Kamala Inn, Hotel Royal, Zero Mile Rooms, Kasa Courtyard & Banquets, and Hotel Harsh Garden. It is highly recommended to book your stay in Begusarai in advance."
     },
     {
       "mode": "Best Time to Visit",
