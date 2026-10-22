@@ -7,27 +7,40 @@
    ========================================= */
 @layer base {
   :root {
-    /* 🌐 Wikipedia Style Colors (Yahan se puri site ka look control hoga) */
-    --bg-main: #ffffff;           /* Pure white background */
-    --bg-alt: #f8f9fa;            /* Light grey for Infobox/Tables */
-    --text-main: #202122;         /* High contrast dark grey for reading */
-    --text-muted: #54595d;        /* For captions and secondary text */
-    --link-color: #0645ad;        /* Classic Wikipedia Blue */
-    --link-visited: #0b0080;      /* Visited link color */
-    --border-main: #a2a9b1;       /* Standard table/infobox borders */
-    --border-light: #c8ccd1;      /* Light borders for separators */
+    /* ☀️ Light Mode (Default) */
+    --bg-main: #ffffff;
+    --bg-alt: #f8f9fa;
+    --text-main: #202122;
+    --text-muted: #54595d;
+    --link-color: #0645ad;
+    --link-visited: #0b0080;
+    --border-main: #a2a9b1;
+    --border-light: #c8ccd1;
     
-    /* Selection color */
     --selection-bg: #0645ad;
     --selection-text: #ffffff;
 
-    /* 👇 Global Font Size Variable (For A- / A+ feature) 👇 */
     --base-font-size: 16px;
+  }
+
+  /* 🌙 Dark Mode */
+  .dark {
+    --bg-main: #121212;
+    --bg-alt: #1a1a1a;
+    --text-main: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --link-color: #6ba3f5;
+    --link-visited: #9b8cf5;
+    --border-main: #444444;
+    --border-light: #333333;
+
+    --selection-bg: #6ba3f5;
+    --selection-text: #121212;
   }
 
   html {
     scroll-behavior: smooth;
-    font-size: var(--base-font-size); /* 👈 Yahan variable use kiya */
+    font-size: var(--base-font-size);
   }
 
   body {
@@ -36,6 +49,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
   }
 
   ::selection {
@@ -49,46 +63,31 @@
     height: auto;
   }
 
-  /* =========================================
-     TYPOGRAPHY (Wikipedia Editorial Style)
-     ========================================= */
-  
-  /* Paragraphs */
+  /* Typography */
   p {
     max-width: 75ch; 
-    line-height: 1.7; /* Slightly tighter than editorial, but highly readable */
+    line-height: 1.7; 
     margin-bottom: 1.25rem; 
-    font-size: 1.05rem; /* Approx 16.8px */
+    font-size: 1.05rem; 
   }
 
-  /* Global Links inside text */
   a {
     color: var(--link-color);
     text-decoration: none;
   }
   
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  a:visited {
-    color: var(--link-visited);
-  }
+  a:hover { text-decoration: underline; }
+  a:visited { color: var(--link-visited); }
 
-  /* Headings (Serif for Wikipedia feel) */
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance; 
     color: var(--text-main);
     font-family: var(--font-fraunces), Georgia, serif;
-    font-weight: normal; /* Wikipedia headings are usually normal weight */
+    font-weight: normal;
   }
 
-  h1 {
-    font-size: 2.2rem;
-    margin-bottom: 1rem;
-  }
+  h1 { font-size: 2.2rem; margin-bottom: 1rem; }
 
-  /* Classic Wikipedia heading underline */
   h2 {
     font-size: 1.6rem;
     margin-top: 2.5rem; 
@@ -97,13 +96,8 @@
     border-bottom: 1px solid var(--border-light); 
   }
 
-  h3 {
-    font-size: 1.3rem;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-  }
+  h3 { font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.75rem; }
 
-  /* Tables (Data Sheets & Infoboxes) */
   table {
     width: 100%;
     margin-top: 1.5rem;
@@ -123,36 +117,24 @@
   }
 
   th {
-    background-color: #eaecf0; /* Slightly darker grey for header */
+    background-color: var(--bg-alt);
     font-weight: 700;
     color: var(--text-main);
     width: 35%; 
   }
 
-  /* Lists */
-  ul, ol {
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
-    line-height: 1.7;
-  }
-  
-  li {
-    margin-bottom: 0.35rem;
-  }
+  ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.7; }
+  li { margin-bottom: 0.35rem; }
 }
 
-/* =========================================
-   2. CUSTOM COMPONENTS
-   ========================================= */
+/* Custom Components */
 @layer components {
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 md:px-6; /* Increased max-width for 3-column layout */
+    @apply max-w-7xl mx-auto px-4 md:px-6; 
   }
 }
 
-/* =========================================
-   3. LEAFLET MAP OVERRIDES (Clean Look)
-   ========================================= */
+/* Leaflet Map Overrides */
 .leaflet-popup-content-wrapper {
   border-radius: 2px !important; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
@@ -173,68 +155,38 @@
   box-shadow: none !important;
 }
 
-/* =========================================
-   4. CUSTOM SCROLLBAR (Clean & Minimal)
-   ========================================= */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-main);
-}
-
+/* Scrollbar */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb {
   background: var(--border-light);
   border-radius: 4px; 
   border: 2px solid var(--bg-main); 
 }
+::-webkit-scrollbar-thumb:hover { background: var(--border-main); }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-main); 
-}
-
-/* Leaflet Layer Control Override (Wiki Style) */
+/* Leaflet Controls */
 .leaflet-control-layers {
   border-radius: 0 !important;
   border: 1px solid var(--border-main) !important;
   box-shadow: none !important;
   background: var(--bg-alt) !important;
+  color: var(--text-main) !important;
   font-family: var(--font-inter), sans-serif !important;
   font-size: 14px !important;
 }
-.leaflet-control-layers-toggle {
-  width: 36px !important;
-  height: 36px !important;
-  background-size: 20px 20px !important;
-}
+.leaflet-control-layers-toggle { width: 36px !important; height: 36px !important; background-size: 20px 20px !important; }
 
-/* =========================================
-   5. PRINT STYLES (Only print the article)
-   ========================================= */
+/* Print Styles */
 @media print {
-  /* Hide everything by default */
-  body * {
-    visibility: hidden;
-  }
-  
-  /* Show only the article body and title */
-  .article-body-wrapper, .article-body-wrapper * {
-    visibility: visible;
-  }
-  
-  /* Position the article at the top of the page */
+  body * { visibility: hidden; }
+  .article-body-wrapper, .article-body-wrapper * { visibility: visible; }
   .article-body-wrapper {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    font-size: 12pt !important; /* Force a good print size */
+    font-size: 12pt !important;
   }
-
-  /* Hide navigation, sidebar, toolbar, footer */
-  header, footer, aside, .no-print, button {
-    display: none !important;
-  }
+  header, footer, aside, .no-print, button { display: none !important; }
 }
