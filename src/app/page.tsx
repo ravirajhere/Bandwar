@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getMasterData, getAllArticles } from "@/lib/data";
-import { ArticleCard } from "@/components/article/ArticleCard";
 
 interface MetaItem { label: string; value: string; }
 interface StatItem { label: string; value: string; }
@@ -10,7 +9,6 @@ export default function Home() {
   const config = getMasterData();
   const home = config.home;
   const allArticles = getAllArticles();
-  // Get top 4 articles for the grid
   const latestArticles = allArticles.slice(0, 4);
 
   if (!home) return null;
@@ -18,7 +16,7 @@ export default function Home() {
   return (
     <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-8">
       
-      {/* 🌐 WIKIPEDIA STYLE HEADER / WELCOME BANNER */}
+      {/* WIKIPEDIA STYLE HEADER / WELCOME BANNER */}
       <div className="border border-wiki-border bg-wiki-bg-alt p-6 md:p-8 text-center mb-8">
         <h1 className="font-serif text-3xl md:text-5xl text-wiki-text mb-2">
           Welcome to <span className="font-bold">{home.hero.title}</span>
@@ -31,15 +29,15 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 🌐 MAIN GRID LAYOUT */}
+      {/* MAIN GRID LAYOUT */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
 
-        {/* 🟢 LEFT COLUMN (Main Content: About & Articles) - Spans 8 cols on desktop */}
+        {/* LEFT COLUMN (Main Content: About & Articles) - Spans 8 cols on desktop */}
         <div className="md:col-span-8 space-y-8">
           
-          {/* 1. About Section (Wikipedia "From today's featured article" style) */}
+          {/* 1. About Section */}
           <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-[#eaecf0] border-b border-wiki-border px-4 py-2">
+            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2">
               <h2 className="font-bold text-wiki-text m-0 text-base">
                 About the Village
               </h2>
@@ -77,9 +75,9 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 2. Latest Articles (Wikipedia "In the news" style) */}
+          {/* 2. Latest Articles */}
           <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-[#eaecf0] border-b border-wiki-border px-4 py-2 flex justify-between items-center">
+            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2 flex justify-between items-center">
               <h2 className="font-bold text-wiki-text m-0 text-base">
                 From the Archive
               </h2>
@@ -88,7 +86,6 @@ export default function Home() {
               </Link>
             </div>
             <div className="p-4 md:p-6">
-              {/* Using bullet points like Wiki's "In the news" */}
               <ul className="list-disc pl-5 space-y-3 text-[15px] text-wiki-text">
                 {latestArticles.map((article) => (
                   <li key={article.id}>
@@ -106,12 +103,12 @@ export default function Home() {
 
         </div>
 
-        {/* 🟡 RIGHT COLUMN (Sidebar: Quick Access, Stats) - Spans 4 cols */}
+        {/* RIGHT COLUMN (Sidebar: Quick Access, Stats) - Spans 4 cols */}
         <div className="md:col-span-4 space-y-6">
 
-          {/* 3. Quick Access (Village Living Needs) */}
+          {/* 3. Quick Access */}
           <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-[#eaecf0] border-b border-wiki-border px-4 py-2">
+            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2">
               <h2 className="font-bold text-wiki-text m-0 text-base">
                 Quick Access
               </h2>
@@ -137,9 +134,9 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 4. Stats (Wikipedia "About" data sheet style) */}
+          {/* 4. Stats */}
           <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-[#eaecf0] border-b border-wiki-border px-4 py-2">
+            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2">
               <h2 className="font-bold text-wiki-text m-0 text-base">
                 Village Statistics
               </h2>
