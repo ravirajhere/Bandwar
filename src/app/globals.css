@@ -20,11 +20,14 @@
     /* Selection color */
     --selection-bg: #0645ad;
     --selection-text: #ffffff;
+
+    /* 👇 Global Font Size Variable (For A- / A+ feature) 👇 */
+    --base-font-size: 16px;
   }
 
   html {
     scroll-behavior: smooth;
-    font-size: 16px; /* Base size for seniors */
+    font-size: var(--base-font-size); /* 👈 Yahan variable use kiya */
   }
 
   body {
