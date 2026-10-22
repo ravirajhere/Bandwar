@@ -16,45 +16,72 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
 
   return (
     <div>
-      {/* Filter Tabs */}
-      <div className="flex flex-wrap gap-2 mb-8 justify-center">
+      {/* Filter Tabs (Wikipedia Style Boxes) */}
+      <div className="flex flex-wrap gap-2 mb-6 border-b border-wiki-border-light pb-3">
+        <button
+          onClick={() => setActiveTab("all")}
+          className={`px-3 py-1.5 text-[14px] border transition-colors ${
+            activeTab === "all" 
+              ? "bg-wiki-bg-alt font-bold border-wiki-border text-wiki-text" 
+              : "bg-wiki-bg border-wiki-border-light text-wiki-link hover:bg-wiki-bg-alt"
+          }`}
+        >
+          All Photos
+        </button>
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setActiveTab(cat.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2 border ${
+            className={`px-3 py-1.5 text-[14px] border transition-colors flex items-center gap-1.5 ${
               activeTab === cat.id 
-                ? "bg-[#1f3d2f] text-white border-[#1f3d2f]" 
-                : "bg-white text-[#1a1a18] border-[#1a1a18]/10 hover:border-[#1f3d2f]/50"
+                ? "bg-wiki-bg-alt font-bold border-wiki-border text-wiki-text" 
+                : "bg-wiki-bg border-wiki-border-light text-wiki-link hover:bg-wiki-bg-alt"
             }`}
           >
-            <span>{cat.icon}</span>
+            <span aria-hidden="true">{cat.icon}</span>
             {cat.title}
           </button>
         ))}
       </div>
 
-      {/* Photo Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {/* Photo Grid (Wikipedia Thumb Style) */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredPhotos.map((photo) => (
-          <div key={photo.id} className="group relative aspect-square rounded-xl overflow-hidden bg-[#efece4]">
-            <Image
-              src={`/${photo.src}`}
-              alt={photo.caption}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-              <span className="text-xs font-bold text-[#a64b2a] mb-1">{photo.year}</span>
-              <p className="text-white text-sm font-medium leading-tight">{photo.caption}</p>
+          <div 
+            key={photo.id} 
+            className="border border-wiki-border-light bg-wiki-bg-alt flex flex-col hover:border-wiki-border transition-colors"
+          >
+            {/* Image Container */}
+            <div className="relative aspect-[4/3] bg-wiki-bg border-b border-wiki-border-light overflow-hidden">
+              <Image
+                src={`/${photo.src}`}
+                alt={photo.caption}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+              />
+            </div>
+            
+            {/* Caption Box (Always Visible for Seniors) */}
+            <div className="p-2.5 flex-grow flex flex-col justify-start">
+              {photo.year && (
+                <span className="text-[11px] font-bold text-wiki-text-muted uppercase tracking-wider mb-1">
+                  {photo.year}
+                </span>
+              )}
+              <p className="text-[13px] text-wiki-text leading-snug">
+                {photo.caption}
+              </p>
             </div>
           </div>
         ))}
       </div>
       
+      {/* Empty State */}
       {filteredPhotos.length === 0 && (
-        <p className="text-center text-[#1a1a18]/50 py-12">Is category mein abhi koi photo nahi hai.</p>
+        <div className="text-center border border-dashed border-wiki-border-light py-12 text-wiki-text-muted text-[15px]">
+          No photos found in this category.
+        </div>
       )}
     </div>
   );
