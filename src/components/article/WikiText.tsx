@@ -6,30 +6,38 @@ interface WikiTextProps {
 }
 
 export function WikiText({ text }: WikiTextProps) {
-  // Regex: [[id|label]] ya [[id]] ko pakadne ke liye
+  // Regex to match [[id|label]] or [[id]]
   const parts = text.split(/(\[\[.*?\]\])/g);
 
   return (
     <>
       {parts.map((part, index) => {
         if (part.startsWith("[[") && part.endsWith("]]")) {
-          // Brackets hata rahe hain
           const innerText = part.slice(2, -2);
-          // Check kar rahe hain ki pipe (|) hai ya nahi
-          const [id, label] = innerText.split("|");
-          const displayLabel = label || id.replace(/-/g, " "); // Agar label nahi hai toh id ko sundar banayenge
+          const [rawId, rawLabel] = innerText.split("|");
+          
+          // 1. Trim spaces to prevent broken links
+          const id = rawId.trim();
+          
+          // 2. Smart Label Logic: If no label, capitalize the ID text
+          const defaultLabel = id
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase()); 
+          
+          const displayLabel = rawLabel ? rawLabel.trim() : defaultLabel;
 
           return (
             <Link 
               key={index} 
-              href={`/article/${id}`} // Humara route structure
-              className="text-[#1f3d2f] font-medium underline decoration-[#a64b2a]/30 hover:decoration-[#a64b2a] underline-offset-4 transition-colors"
+              href={`/article/${id}`} 
+              // 3. Theme colors and Accessibility Focus Ring added
+              className="text-accent font-semibold underline decoration-warn/40 decoration-2 underline-offset-4 hover:text-warn hover:decoration-warn transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-warn/50 focus:ring-offset-2 rounded-sm"
             >
               {displayLabel}
             </Link>
           );
         }
-        // Agar normal text hai toh waisa hi render karo
+        // Render normal text
         return <React.Fragment key={index}>{part}</React.Fragment>;
       })}
     </>
