@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MasterConfig } from "@/lib/schema";
 import { Menu, X } from "lucide-react";
+import { FontSizeControls } from "./FontSizeControls"; // 👈 Naya Import
 
 export function Header({ config }: { config: MasterConfig }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,36 +16,43 @@ export function Header({ config }: { config: MasterConfig }) {
     <header className="sticky top-0 z-50 bg-wiki-bg border-b border-wiki-border-light">
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         
-        {/* Logo / Site Name (Wikipedia uses Serif for the main logo) */}
+        {/* Logo / Site Name */}
         <Link 
           href="/" 
-          className="font-serif text-2xl font-bold text-wiki-text hover:text-black transition-colors"
+          className="font-serif text-2xl font-bold text-wiki-text hover:text-black transition-colors shrink-0"
           onClick={() => setIsOpen(false)}
         >
           {config.site.name}
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
-          {config.nav.map((item) => {
-            const isActive = pathname === item.href;
+        {/* Desktop Nav & Controls */}
+        <div className="hidden md:flex items-center gap-6">
+          <nav className="flex items-center gap-6" aria-label="Main Navigation">
+            {config.nav.map((item) => {
+              const isActive = pathname === item.href;
 
-            return (
-              <Link 
-                key={item.href} 
-                href={item.href}
-                className={`text-[15px] transition-colors flex items-center gap-1.5 pb-1 ${
-                  isActive 
-                    ? "text-wiki-text font-bold border-b-2 border-wiki-text" // Active state: Bold + Underline
-                    : "text-wiki-text hover:text-wiki-link hover:underline" // Hover state: Wiki Blue
-                }`}
-              >
-                <span className="text-base opacity-70" aria-hidden="true">{item.icon}</span>
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+              return (
+                <Link 
+                  key={item.href} 
+                  href={item.href}
+                  className={`text-[15px] transition-colors flex items-center gap-1.5 pb-1 ${
+                    isActive 
+                      ? "text-wiki-text font-bold border-b-2 border-wiki-text" // Active state
+                      : "text-wiki-text hover:text-wiki-link hover:underline" // Hover state
+                  }`}
+                >
+                  <span className="text-base opacity-70" aria-hidden="true">{item.icon}</span>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* 👇 Global Font Size Controls (Desktop) 👇 */}
+          <div className="pl-4 border-l border-wiki-border-light">
+            <FontSizeControls />
+          </div>
+        </div>
 
         {/* Mobile Menu Button */}
         <button 
@@ -62,10 +70,17 @@ export function Header({ config }: { config: MasterConfig }) {
       <div 
         id="mobile-menu"
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-wiki-bg-alt border-b border-wiki-border-light ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <nav className="px-4 pt-2 pb-4 flex flex-col gap-1" aria-label="Mobile Navigation">
+          
+          {/* 👇 Global Font Size Controls (Mobile Top) 👇 */}
+          <div className="flex justify-between items-center py-2 border-b border-wiki-border-light mb-2">
+            <span className="text-[14px] font-bold text-wiki-text">Text Size</span>
+            <FontSizeControls />
+          </div>
+
           {config.nav.map((item) => {
             const isActive = pathname === item.href;
 
