@@ -7,12 +7,21 @@ const IdSchema = z.string().regex(/^[a-z0-9-]+$/, "ID must be lowercase alphanum
 const DateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format");
 
 // ==========================================
-// 2. Master Schema
+// 2. Master Schema (Strictly Typed)
 // ==========================================
 export const MasterSchema = z.object({
-  site: z.object({ name: z.string(), url: z.string().url(), description: z.string() }),
-  brand: z.object({ colors: z.record(z.string()), fonts: z.record(z.string()) }),
-  nav: z.array(z.object({ label: z.string(), href: z.string(), icon: z.string() })),
+  site: z.object({ 
+    name: z.string(), 
+    url: z.string().url(), 
+    description: z.string() 
+  }),
+  brand: z.object({ 
+    colors: z.record(z.string()), 
+    fonts: z.record(z.string()) 
+  }),
+  nav: z.array(
+    z.object({ label: z.string(), href: z.string(), icon: z.string() })
+  ),
   contact: z.object({
     email: z.string().email(),
     address: z.string().optional(),
@@ -26,8 +35,34 @@ export const MasterSchema = z.object({
     community: z.object({ lead: z.string(), contributors: z.string() }),
     committee: z.array(z.object({ role: z.string(), name: z.string(), link: z.string().optional() })),
   }).optional(),
-  footer: z.any().optional(),
-  home: z.any().optional(), // Flexible for now to prevent build errors
+  
+  // 👇 Footer Schema (Strictly typed matching Footer.tsx)
+  footer: z.object({
+    copyright: z.string().optional(),
+    credit: z.string().optional(),
+    sections: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
+    explore: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
+  }).optional(),
+
+  // 👇 Home Schema (Strictly typed matching page.tsx)
+  home: z.object({
+    hero: z.object({
+      image: z.string(),
+      alt: z.string(),
+      location: z.string(),
+      title: z.string(),
+      tagline: z.string(),
+    }),
+    meta: z.array(z.object({ label: z.string(), value: z.string() })),
+    about: z.object({
+      eyebrow: z.string(),
+      title: z.string(),
+      paragraphs: z.array(z.string()),
+    }),
+    cta: z.object({ label: z.string(), href: z.string() }),
+    pullquote: z.object({ text: z.string(), cite: z.string() }),
+    stats: z.array(z.object({ label: z.string(), value: z.string() })),
+  }).optional(),
 });
 
 // ==========================================
@@ -55,16 +90,26 @@ export const ArticleListSchema = z.object({ articles: z.array(ArticleSchema) });
 // 4. Media Schema
 // ==========================================
 export const PhotoSchema = z.object({
-  id: z.string(), src: z.string(), caption: z.string(), category: z.string(), year: z.string(),
+  id: z.string(), 
+  src: z.string(), 
+  caption: z.string(), 
+  category: z.string(), 
+  year: z.string(),
 });
 
 export const TimelineEventSchema = z.object({
-  id: z.string(), year: z.string(), sortKey: z.number(), era: z.string(),
-  title: z.string(), description: z.string(), category: z.string(),
-  icon: z.string().optional(), article: z.string().optional(),
+  id: z.string(), 
+  year: z.string(), 
+  sortKey: z.number(), 
+  era: z.string(),
+  title: z.string(), 
+  description: z.string(), 
+  category: z.string(),
+  icon: z.string().optional(), 
+  article: z.string().optional(),
 });
 
-// UPDATED: Made 'title' optional, added 'name' and allowed extra fields
+// Landmarks schema (Flexible to prevent build errors from old data)
 export const LandmarkSchema = z.object({
   id: z.string().optional(),
   title: z.string().optional(), 
@@ -73,7 +118,7 @@ export const LandmarkSchema = z.object({
   lng: z.number(),
   description: z.string().optional(),
   category: z.string().optional(),
-}).passthrough(); // Allows extra fields so build doesn't fail
+}).passthrough(); 
 
 export const MediaSchema = z.object({
   gallery: z.object({
@@ -86,17 +131,23 @@ export const MediaSchema = z.object({
 });
 
 // ==========================================
-// 5. Vision 2030 Manifesto Schema
+// 5. Vision 2035 Manifesto Schema (Flexible)
 // ==========================================
 export const VisionSchema = z.object({
   intro: z.string(),
   priorities: z.array(
     z.object({
-      id: z.string(), number: z.string(), title: z.string(), ward: z.string(),
-      category: z.string(), status: z.string(), targetYear: z.number(),
+      id: z.string(), 
+      number: z.string(), 
+      title: z.string(), 
+      ward: z.string(),
+      category: z.string(), 
+      status: z.string(), 
+      targetYear: z.number(),
       present: z.object({ photo: z.string(), caption: z.string() }),
       required: z.object({ photo: z.string(), caption: z.string() }),
-      reality: z.string(), vision: z.string(),
+      reality: z.string(), 
+      vision: z.string(),
       how: z.object({ scheme: z.string(), cost: z.string(), authority: z.string(), timeline: z.string() }),
       community: z.array(z.string()),
       inside: z.object({
@@ -106,7 +157,6 @@ export const VisionSchema = z.object({
       }),
     })
   ),
-  // UPDATED: Made 'year' optional and allowed 'items' to be objects
   achievements: z.array(z.object({
     title: z.string().optional(),
     description: z.string().optional(),
@@ -124,7 +174,12 @@ export const VisionSchema = z.object({
 // 6. People Schema
 // ==========================================
 export const PersonSchema = z.object({
-  id: IdSchema, name: z.string(), role: z.string(), locality: z.string(), bio: z.string(), photo: z.string().optional(),
+  id: IdSchema, 
+  name: z.string(), 
+  role: z.string(), 
+  locality: z.string(), 
+  bio: z.string(), 
+  photo: z.string().optional(),
 });
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 
@@ -132,7 +187,10 @@ export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 // 7. Categories Schema
 // ==========================================
 export const CategorySchema = z.object({
-  id: IdSchema, title: z.string(), icon: z.string(), description: z.string(),
+  id: IdSchema, 
+  title: z.string(), 
+  icon: z.string(), 
+  description: z.string(),
 });
 export const CategoriesDataSchema = z.object({ categories: z.array(CategorySchema) });
 
