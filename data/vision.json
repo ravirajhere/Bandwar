@@ -13,11 +13,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/home/burhi-gandak-vertical.jpg",
+        "photo": "images/geography/burhi-gandak-river-embankment-vertical-bandwar.jpg",
         "caption": "Unpaved riverbank — no permanent ghat"
       },
       "required": {
-        "photo": "images/vision/chhath-ghat-required.jpg",
+        "photo": "images/vision/chhath-ghat-construction-bandwar.jpg",
         "caption": "Proper Chhath Ghat with steps, railings, and lighting"
       },
       "reality": "The village has no proper Chhath Ghat. Every year during Chhath Puja, hundreds of devotees — mostly women — stand on slippery, uneven riverbank steps of the Burhi Gandak to offer arghya to the setting and rising sun. There are no railings, no lighting, no changing rooms, and no safety arrangements. During the September 2025 flood, the riverbank eroded further, making access dangerous.",
@@ -38,8 +38,8 @@
       "inside": {
         "intro": "The minimum facilities that every Chhath Ghat must have:",
         "photos": [
-          { "src": "images/vision/chhath-ghat-steps.jpg", "caption": "Safe concrete steps with handrails" },
-          { "src": "images/vision/chhath-ghat-changeroom.jpg", "caption": "Changing rooms and lighting" }
+          { "src": "images/vision/chhath-ghat-steps-bandwar.jpg", "caption": "Safe concrete steps with handrails" },
+          { "src": "images/vision/chhath-ghat-changeroom-bandwar.jpg", "caption": "Changing rooms and lighting" }
         ],
         "checklist": [
           "Concrete steps to river — safe slope, non-slip surface",
@@ -68,11 +68,11 @@
       "targetYear": 2026,
       "completed": null,
       "present": {
-        "photo": "images/village/ram-janki-petrol-pump.jpg",
+        "photo": "images/infrastructure/ram-janki-fuels-indian-oil-petrol-pump-bandwar-sh55.jpg",
         "caption": "IndianOil petrol pump — basic facilities"
       },
       "required": {
-        "photo": "images/vision/pump-required.jpg",
+        "photo": "images/vision/petrol-pump-modernised-bandwar.jpg",
         "caption": "Modernised pump with complete customer facilities"
       },
       "reality": "Ram Janki Fuels serves the village and passing highway traffic on SH 55, but its facilities are minimal. There is no air pressure machine, no clean restroom, and no drinking water for customers. During summer, customers wait in the open sun. The convenience store is small and poorly stocked. There is no EV charging infrastructure for the future.",
@@ -93,8 +93,8 @@
       "inside": {
         "intro": "The minimum facilities that every petrol pump should have:",
         "photos": [
-          { "src": "images/vision/pump-store.jpg", "caption": "Convenience store with essentials" },
-          { "src": "images/vision/pump-airwater.jpg", "caption": "Air pump and drinking water station" }
+          { "src": "images/vision/petrol-pump-store-bandwar.jpg", "caption": "Convenience store with essentials" },
+          { "src": "images/vision/petrol-pump-airwater-bandwar.jpg", "caption": "Air pump and drinking water station" }
         ],
         "checklist": [
           "Modern digital dispensers with clear display",
@@ -122,11 +122,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/culture/ram-mandir-thakurbari.jpg",
+        "photo": "images/religion/ram-mandir-thakurbari-bandwar.jpg",
         "caption": "Ram Mandir Thakurbari — needs renovation"
       },
       "required": {
-        "photo": "images/vision/thakurbari-required.jpg",
+        "photo": "images/vision/ram-mandir-thakurbari-renovated-bandwar.jpg",
         "caption": "Renovated temple with twin shikharas and full facilities"
       },
       "reality": "The Ram Mandir Thakurbari is one of Bandwar's most distinctive temples, with its twin shikharas. But the temple needs renovation — the paint is faded, the courtyard is unpaved, and the facilities for devotees are minimal. During the annual Ram Katha, over a hundred villagers gather, but there is no proper seating, no sound system, and no clean toilets.",
@@ -147,8 +147,8 @@
       "inside": {
         "intro": "The minimum facilities that every temple must have:",
         "photos": [
-          { "src": "images/vision/thakurbari-hall.jpg", "caption": "Prayer hall with seating for devotees" },
-          { "src": "images/vision/thakurbari-murti.jpg", "caption": "Decorated murti with proper lighting" }
+          { "src": "images/vision/ram-mandir-thakurbari-hall-bandwar.jpg", "caption": "Prayer hall with seating for devotees" },
+          { "src": "images/vision/ram-mandir-thakurbari-murti-bandwar.jpg", "caption": "Decorated murti with proper lighting" }
         ],
         "checklist": [
           "Fresh whitewashed twin shikharas with red bands",
@@ -178,11 +178,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/culture/chhota-krishna-mandir.jpg",
+        "photo": "images/religion/chhota-krishna-mandir-bandwar.jpg",
         "caption": "Chhota Krishna Mandir — needs upkeep"
       },
       "required": {
-        "photo": "images/vision/krishna-chhota-required.jpg",
+        "photo": "images/vision/chhota-krishna-mandir-renovated-bandwar.jpg",
         "caption": "Renovated temple with fresh arches and marble"
       },
       "reality": "The Chhota Krishna Mandir is the smaller of the village's two Krishna temples. Its distinctive scalloped arches and marble steps are its identity, but the paint has faded, the marble has worn out, and the shrine needs daily upkeep. During Janmashtami and Radha Ashtami, devotees visit in large numbers, but there are no proper facilities — no shoe rack, no hand wash, no seating.",
@@ -203,8 +203,8 @@
       "inside": {
         "intro": "The minimum facilities that every temple must have:",
         "photos": [
-          { "src": "images/vision/krishna-chhota-shrine.jpg", "caption": "Marble shrine with decorated murti" },
-          { "src": "images/vision/krishna-chhota-arch.jpg", "caption": "Restored colourful arches and steps" }
+          { "src": "images/vision/chhota-krishna-mandir-shrine-bandwar.jpg", "caption": "Marble shrine with decorated murti" },
+          { "src": "images/vision/chhota-krishna-mandir-arch-bandwar.jpg", "caption": "Restored colourful arches and steps" }
         ],
         "checklist": [
           "Fresh paint on the colourful scalloped arches",
@@ -232,11 +232,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/culture/bada-krishna-mandir.jpg",
+        "photo": "images/religion/bada-krishna-mandir-bandwar.jpg",
         "caption": "Bada Krishna Mandir — needs renovation"
       },
       "required": {
-        "photo": "images/vision/krishna-bara-required.jpg",
+        "photo": "images/vision/bada-krishna-mandir-renovated-bandwar.jpg",
         "caption": "Renovated temple with peacock motifs and paved forecourt"
       },
       "reality": "The Bada Krishna Mandir is the larger of the two Krishna temples. Its whitewashed exterior, arched entrance, and courtyard handpump make it a key gathering place. But the paint has faded, the courtyard is unpaved, and there are no facilities for visiting devotees. During Janmashtami and Radha Ashtami, crowding creates safety concerns.",
@@ -257,8 +257,8 @@
       "inside": {
         "intro": "The minimum facilities that every temple must have:",
         "photos": [
-          { "src": "images/vision/krishna-bara-shrine.jpg", "caption": "Decorated shrine with Radha-Krishna idol" },
-          { "src": "images/vision/krishna-bara-forecourt.jpg", "caption": "Paver-block forecourt with garden" }
+          { "src": "images/vision/bada-krishna-mandir-shrine-bandwar.jpg", "caption": "Decorated shrine with Radha-Krishna idol" },
+          { "src": "images/vision/bada-krishna-mandir-forecourt-bandwar.jpg", "caption": "Paver-block forecourt with garden" }
         ],
         "checklist": [
           "Fresh paint — white with blue trim",
@@ -288,11 +288,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/culture/durga-mandir.jpg",
+        "photo": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
         "caption": "Maharishi Gautam Mandir — needs renovation"
       },
       "required": {
-        "photo": "images/vision/durga-mandir-required.jpg",
+        "photo": "images/vision/durga-mandir-renovated-bandwar.jpg",
         "caption": "Renovated temple with five shikharas and carved arches"
       },
       "reality": "The Maharishi Gautam Aadi Shakti Durga Mandir is the village's principal Durga temple, painted in distinctive orange with green pillars. But the structure needs significant renovation — the walls need fresh paint, the carved details need restoration, and the temple lacks proper facilities for the large crowds that gather during Chaitra Navratri and Durga Puja.",
@@ -313,8 +313,8 @@
       "inside": {
         "intro": "The minimum facilities that every temple must have:",
         "photos": [
-          { "src": "images/vision/durga-murti.jpg", "caption": "Decorated murtis with proper lighting" },
-          { "src": "images/vision/durga-arches.jpg", "caption": "Carved stone arches and marble base" }
+          { "src": "images/vision/durga-mandir-murti-bandwar.jpg", "caption": "Decorated murtis with proper lighting" },
+          { "src": "images/vision/durga-mandir-arches-bandwar.jpg", "caption": "Carved stone arches and marble base" }
         ],
         "checklist": [
           "Five fresh white shikharas with gold kalash",
@@ -344,11 +344,11 @@
       "targetYear": 2026,
       "completed": null,
       "present": {
-        "photo": "images/history/chandrashekhar-chowk.jpg",
+        "photo": "images/landmarks/chandrashekhar-chowk-statue-bandwar.jpg",
         "caption": "Chandrashekhar Chowk — statue under canopy"
       },
       "required": {
-        "photo": "images/vision/chowk-required.jpg",
+        "photo": "images/vision/chandrashekhar-chowk-renovated-bandwar.jpg",
         "caption": "Renovated chowk with proper canopy and garden"
       },
       "reality": "Chandrashekhar Chowk honours the memory of Chandrashekhar Singh, Begusarai's first communist MLA. The statue stands under a red-tiled canopy, but the surrounding area lacks maintenance — the pavement is broken, there is no seating for elders, and the evening lighting is poor. The chowk deserves to be a dignified public space.",
@@ -369,8 +369,8 @@
       "inside": {
         "intro": "The minimum facilities that every village square must have:",
         "photos": [
-          { "src": "images/vision/chowk-canopy.jpg", "caption": "Statue with fresh canopy and lighting" },
-          { "src": "images/vision/chowk-garden.jpg", "caption": "Garden and paver-block pavement" }
+          { "src": "images/vision/chandrashekhar-chowk-canopy-bandwar.jpg", "caption": "Statue with fresh canopy and lighting" },
+          { "src": "images/vision/chandrashekhar-chowk-garden-bandwar.jpg", "caption": "Garden and paver-block pavement" }
         ],
         "checklist": [
           "Statue with proper red-tile canopy",
@@ -398,11 +398,11 @@
       "targetYear": 2026,
       "completed": null,
       "present": {
-        "photo": "images/history/shaheed-dwar-day.jpg",
+        "photo": "images/landmarks/shaheed-ramchandra-dwar-bandwar-day.jpg",
         "caption": "Shaheed Dwar — village entrance gate"
       },
       "required": {
-        "photo": "images/vision/dwar-required.jpg",
+        "photo": "images/vision/shaheed-ramchandra-dwar-renovated-bandwar.jpg",
         "caption": "Fresh blue and gold gate with proper lighting"
       },
       "reality": "Shaheed Ramchandra Dwar is the main entrance gate to the village, built in memory of a village martyr. The blue arch with 'Jai Hind' and 'Bande Mataram' is a source of pride, but the paint has faded, the gold lettering has worn, and there is no proper lighting at night. Pedestrians and two-wheelers share the same narrow road, creating safety concerns.",
@@ -423,8 +423,8 @@
       "inside": {
         "intro": "The minimum facilities that every memorial gate must have:",
         "photos": [
-          { "src": "images/vision/dwar-night.jpg", "caption": "Gate lit at night with CCTV" },
-          { "src": "images/vision/dwar-road.jpg", "caption": "Widened road with footpath" }
+          { "src": "images/vision/shaheed-ramchandra-dwar-night-bandwar.jpg", "caption": "Gate lit at night with CCTV" },
+          { "src": "images/vision/shaheed-ramchandra-dwar-road-bandwar.jpg", "caption": "Widened road with footpath" }
         ],
         "checklist": [
           "Fresh paint — blue with gold lettering",
@@ -452,11 +452,11 @@
       "targetYear": 2026,
       "completed": null,
       "present": {
-        "photo": "images/culture/historic-well-chaupal.jpg",
+        "photo": "images/landmarks/historic-well-chaupal-bandwar.jpg",
         "caption": "Historic well — recently renovated"
       },
       "required": {
-        "photo": "images/vision/well-required.jpg",
+        "photo": "images/vision/historic-well-chaupal-heritage-bandwar.jpg",
         "caption": "Fully restored well with heritage signage"
       },
       "reality": "The historic well — the village's chaupal — has been given a fresh look with clean surfaces and modern lighting. But it still lacks proper drainage around it, seating for the elders who gather here every evening, and a heritage plaque that explains its significance to visitors.",
@@ -477,8 +477,8 @@
       "inside": {
         "intro": "The minimum facilities that every historic well must have:",
         "photos": [
-          { "src": "images/vision/well-railing.jpg", "caption": "Safety railing with iron jaali cover" },
-          { "src": "images/vision/well-seating.jpg", "caption": "Bench seating for elders at the chaupal" }
+          { "src": "images/vision/historic-well-chaupal-railing-bandwar.jpg", "caption": "Safety railing with iron jaali cover" },
+          { "src": "images/vision/historic-well-chaupal-seating-bandwar.jpg", "caption": "Bench seating for elders at the chaupal" }
         ],
         "checklist": [
           "Safety railing around the well",
@@ -506,11 +506,11 @@
       "targetYear": 2028,
       "completed": null,
       "present": {
-        "photo": "images/village/jal-jeevan-water-tower.jpg",
+        "photo": "images/infrastructure/jal-jeevan-mission-water-tower-bandwar-bihar.jpg",
         "caption": "Jal Jeevan Mission water tower — partial coverage"
       },
       "required": {
-        "photo": "images/vision/tank-required.jpg",
+        "photo": "images/vision/jal-jeevan-water-tower-complete-bandwar.jpg",
         "caption": "Complete piped water coverage to every household"
       },
       "reality": "The Jal Jeevan Mission water tower has been built near the village fields, but the pipeline network is incomplete. Many households still depend on wells and handpumps. Water quality is not regularly tested, and there is no toll-free helpline for repairs. The September 2025 diarrhea outbreak exposed how critical this gap is.",
@@ -531,8 +531,8 @@
       "inside": {
         "intro": "The minimum facilities that every piped water system must have:",
         "photos": [
-          { "src": "images/vision/tank-pumphouse.jpg", "caption": "Pump house with chlorination system" },
-          { "src": "images/vision/tank-taps.jpg", "caption": "Household tap connections and public standpipes" }
+          { "src": "images/vision/jal-jeevan-water-tower-pumphouse-bandwar.jpg", "caption": "Pump house with chlorination system" },
+          { "src": "images/vision/jal-jeevan-water-tower-taps-bandwar.jpg", "caption": "Household tap connections and public standpipes" }
         ],
         "checklist": [
           "100% household connections — every home",
@@ -560,11 +560,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/village/road-construction.jpg",
+        "photo": "images/infrastructure/bandwar-village-road-construction-bricks.jpg",
         "caption": "Kacchi lane — waterlogging and dust"
       },
       "required": {
-        "photo": "images/vision/road-required.jpg",
+        "photo": "images/vision/bandwar-internal-road-pucca-drainage.jpg",
         "caption": "Pucca road with drainage, footpath, and lighting"
       },
       "reality": "The village's internal roads are unpaved. During the monsoon, waterlogging makes them impassable — children can't reach school, patients can't reach the main road, and farmers can't take their produce to market. During summer, dust affects the elderly and children. Several road projects have been sanctioned, but work is slow and some stretches remain incomplete.",
@@ -585,8 +585,8 @@
       "inside": {
         "intro": "The minimum facilities that every village road must have:",
         "photos": [
-          { "src": "images/vision/road-footpath.jpg", "caption": "Footpath with kerb stones" },
-          { "src": "images/vision/road-drainage.jpg", "caption": "Covered drainage on both sides" }
+          { "src": "images/vision/bandwar-internal-road-footpath.jpg", "caption": "Footpath with kerb stones" },
+          { "src": "images/vision/bandwar-internal-road-drainage.jpg", "caption": "Covered drainage on both sides" }
         ],
         "checklist": [
           "Pucca concrete or asphalt — every lane",
@@ -614,11 +614,11 @@
       "targetYear": 2028,
       "completed": null,
       "present": {
-        "photo": "images/village/madhya-vidyalaya-building.jpg",
+        "photo": "images/education/ms-bandwar-middle-school-building.jpg",
         "caption": "Rajkiyakrit Madhya Vidyalaya — needs renovation"
       },
       "required": {
-        "photo": "images/vision/school-required.jpg",
+        "photo": "images/vision/ms-bandwar-modern-school-building.jpg",
         "caption": "Modern school building with full facilities"
       },
       "reality": "The government middle school — established in 1955 — operates from a pucca building. But the boundary wall is broken, there is no electricity in some rooms, and there is no separate toilet for girls. The school lacks a computer lab, a library, and a proper playground. Mid-day meals are not provided. The school's infrastructure does not meet the standards of 2026.",
@@ -639,8 +639,8 @@
       "inside": {
         "intro": "The minimum facilities that every village school must have:",
         "photos": [
-          { "src": "images/vision/school-classroom.jpg", "caption": "Modern classroom with benches and blackboards" },
-          { "src": "images/vision/school-lab.jpg", "caption": "Computer lab with 10 working computers" }
+          { "src": "images/vision/ms-bandwar-modern-classroom.jpg", "caption": "Modern classroom with benches and blackboards" },
+          { "src": "images/vision/ms-bandwar-computer-lab.jpg", "caption": "Computer lab with 10 working computers" }
         ],
         "checklist": [
           "6+ classrooms with proper benches and blackboards",
@@ -670,11 +670,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/village/panchayat-bhawan.jpg",
+        "photo": "images/infrastructure/gram-panchayat-bhawan-bandwar.jpg",
         "caption": "Gram Panchayat Bhawan — basic infrastructure"
       },
       "required": {
-        "photo": "images/vision/panchayat-required.jpg",
+        "photo": "images/vision/gram-panchayat-bhawan-modern-bandwar.jpg",
         "caption": "Modern panchayat bhawan with digital services"
       },
       "reality": "The Gram Panchayat Bhawan functions, but lacks modern facilities. There is no proper meeting hall for Gram Sabha, no digital service counter, and land records are not digitised. Citizens must travel to Begusarai for basic certificates. The building also lacks drinking water, clean toilets, and disabled access.",
@@ -695,8 +695,8 @@
       "inside": {
         "intro": "The minimum facilities that every Gram Panchayat Bhawan must have:",
         "photos": [
-          { "src": "images/vision/panchayat-hall.jpg", "caption": "Meeting hall for Gram Sabha" },
-          { "src": "images/vision/panchayat-counter.jpg", "caption": "Digital service counter (CSC)" }
+          { "src": "images/vision/gram-panchayat-hall-bandwar.jpg", "caption": "Meeting hall for Gram Sabha" },
+          { "src": "images/vision/gram-panchayat-service-counter-bandwar.jpg", "caption": "Digital service counter (CSC)" }
         ],
         "checklist": [
           "Meeting hall for Gram Sabha — 100+ capacity",
@@ -726,11 +726,11 @@
       "targetYear": 2027,
       "completed": null,
       "present": {
-        "photo": "images/village/sbi-bank-branch-2025.jpg",
+        "photo": "images/infrastructure/sbi-bank-bandwar-branch-building-2025.jpg",
         "caption": "SBI Bandwar branch — current infrastructure"
       },
       "required": {
-        "photo": "images/vision/bank-required.jpg",
+        "photo": "images/vision/sbi-bank-bandwar-modern-branch.jpg",
         "caption": "Modern SBI branch with full customer facilities"
       },
       "reality": "The SBI Bandwar branch is the village's only formal banking facility. It operates from a small building with limited counter space. During peak hours — especially on pension days and after harvest — long queues form outside. There is no proper seating for elderly customers, no dedicated counter for women, and no wheelchair access.",
@@ -751,8 +751,8 @@
       "inside": {
         "intro": "The minimum facilities that every bank branch must have:",
         "photos": [
-          { "src": "images/vision/bank-counter.jpg", "caption": "Multiple counters with women's counter" },
-          { "src": "images/vision/bank-waiting.jpg", "caption": "Waiting area with seating and AC" }
+          { "src": "images/vision/sbi-bank-bandwar-multi-counter.jpg", "caption": "Multiple counters with women's counter" },
+          { "src": "images/vision/sbi-bank-bandwar-waiting-area.jpg", "caption": "Waiting area with seating and AC" }
         ],
         "checklist": [
           "2+ counters — one dedicated for women",
@@ -782,11 +782,11 @@
       "targetYear": 2026,
       "completed": null,
       "present": {
-        "photo": "images/village/sbi-bank-atm.jpg",
+        "photo": "images/infrastructure/sbi-atm-bandwar-branch.jpg",
         "caption": "SBI ATM — single unit, frequent cash shortages"
       },
       "required": {
-        "photo": "images/vision/atm-required.jpg",
+        "photo": "images/vision/sbi-atm-multi-kiosk-bandwar.jpg",
         "caption": "Multi-ATM facility with cash deposit kiosk"
       },
       "reality": "The village has only one ATM, which frequently runs out of cash. During festivals and harvest season, long queues form. There is no cash deposit facility, so villagers must visit the branch during working hours. The kiosk has no air conditioning, and security is a concern at night.",
@@ -807,8 +807,8 @@
       "inside": {
         "intro": "The minimum facilities that every village ATM kiosk must have:",
         "photos": [
-          { "src": "images/vision/atm-kiosk.jpg", "caption": "Two ATMs with air-conditioned kiosk" },
-          { "src": "images/vision/atm-cashdeposit.jpg", "caption": "Cash deposit kiosk (CDM)" }
+          { "src": "images/vision/sbi-atm-multi-kiosk-airconditioned-bandwar.jpg", "caption": "Two ATMs with air-conditioned kiosk" },
+          { "src": "images/vision/sbi-atm-cash-deposit-kiosk-bandwar.jpg", "caption": "Cash deposit kiosk (CDM)" }
         ],
         "checklist": [
           "2+ ATM machines — 24x7 operational",
@@ -858,7 +858,7 @@
       "byTitle": "Member of Parliament (Rajya Sabha)",
       "thankYou": "Shri Rakesh Sinha ji",
       "description": "A village library built with MPLAD funds under the initiative of Girija Singh — with books, a reading area, and portraits of national leaders on the walls.",
-      "photo": "images/education/library-gate.jpg",
+      "photo": "images/education/vaani-vilas-library-bandwar-building.jpg",
       "facts": {
         "Funding": "₹25 lakh (MPLAD)",
         "Led by": "Rakesh Sinha ji (MP)",
@@ -877,7 +877,7 @@
       "byTitle": "Union Minister, Government of India",
       "thankYou": "Shri Giriraj Singh ji",
       "description": "Begusarai became the first district in Bihar to equip all Gram Panchayats with public WiFi under PM-WANI. Bandwar was among them — bringing the village online.",
-      "photo": "images/education/library-reading-area.jpg",
+      "photo": "images/education/vaani-vilas-library-reading-area.jpg",
       "facts": {
         "Scheme": "PM-WANI / RGSA",
         "Led by": "Giriraj Singh ji",
@@ -895,7 +895,7 @@
       "byTitle": "Multiple leaders across years",
       "thankYou": "All who contributed",
       "description": "Several road projects — from Gandak Bandh to Vandwar Musahri (₹60 lakh), Vandwar Krishna Mandir Chowk to Mohanpur, Parna PCC Road to Hanuman Mandir, and 8 more roads sanctioned across Begusarai.",
-      "photo": "images/village/road-construction.jpg",
+      "photo": "images/infrastructure/bandwar-village-road-construction.jpg",
       "facts": {
         "Funding": "₹11 crore+ (sanctioned)",
         "Period": "2020–2025",
