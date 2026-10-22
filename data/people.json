@@ -1,20 +1,25 @@
 {
   "people": [
     {
-      "id": "chandrashekhar-singh",
-      "name": "Chandrashekhar Singh",
-      "role": "Communist Leader & Former Minister",
+      "id": "sukhdev-singh-bandwar",
+      "name": "Sukhdev Singh",
+      "role": "Freedom Fighter & Peasant Activist",
       "locality": "Bandwar",
-      "bio": "A towering leader of the CPI, known for laying the foundation of the communist movement in Begusarai.",
-      "photo": "images/people/chandrashekhar-singh.jpg"
+      "bio": "A dedicated freedom fighter and communist activist who fought for the rights of the peasantry in the Begusarai region."
     },
     {
-      "id": "sukhdev-singh",
-      "name": "Sukhdev Singh",
-      "role": "Freedom Fighter & Activist",
+      "id": "navin-kumar-navin-bandwar",
+      "name": "Navin Kumar Navin",
+      "role": "Politician & Social Worker",
       "locality": "Bandwar",
-      "bio": "A dedicated freedom fighter and communist activist who fought for the rights of the peasantry.",
-      "photo": "images/people/sukhdev-singh.jpg"
+      "bio": "A prominent political figure from Bandwar, actively involved in local governance and community development in the Begusarai district."
+    },
+    {
+      "id": "girija-singh-bandwar",
+      "name": "Girija Singh",
+      "role": "Community Leader & Philanthropist",
+      "locality": "Bandwar",
+      "bio": "A respected village elder who played a key role in building the Shaheed Ramchandra Dwar and was instrumental in the founding and development of the Vaani Vilas Pustakalaya library."
     }
   ]
 }
