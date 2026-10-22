@@ -21,8 +21,8 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
     const textToRead = `${title}. ${contentText}`;
     const utterance = new SpeechSynthesisUtterance(textToRead);
     
-    // Optional: Make it sound a bit better and slower for seniors
-    utterance.rate = 0.9; // Slower speed
+    // Slower speed for seniors
+    utterance.rate = 0.9; 
     utterance.pitch = 1;
 
     utterance.onend = () => setIsSpeaking(false);
@@ -41,9 +41,11 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
 
   // Share via WhatsApp
   const handleShare = () => {
-    const url = window.location.href;
-    const text = `Check out this article about ${title} on the Bandwar Portal: `;
-    window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, "_blank");
+    if (typeof window !== "undefined") {
+      const url = window.location.href;
+      const text = `Check out this article about ${title} on the Bandwar Portal: `;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, "_blank");
+    }
   };
 
   // Print
@@ -57,13 +59,16 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
   };
 
   return (
-    <div className="border border-wiki-border-light bg-wiki-bg-alt flex flex-wrap items-center justify-between p-2 mb-6 text-[13px] text-wiki-text">
+    // 👇 'no-print' class add ki hai taaki print preview mein yeh toolbar na dikhe
+    <div className="no-print border border-wiki-border-light bg-wiki-bg-alt flex flex-wrap items-center justify-between p-2 mb-6 text-[13px] text-wiki-text">
       
       {/* Left Side: Utility Tools */}
       <div className="flex items-center gap-2 flex-wrap">
+        
         {/* Listen Button */}
         <button 
           onClick={handleListen}
+          title={isSpeaking ? "Stop reading" : "Listen to this article"}
           className={`flex items-center gap-1.5 px-3 py-1.5 border transition-colors ${
             isSpeaking 
               ? "bg-red-50 border-red-300 text-red-700 font-bold" 
@@ -77,6 +82,7 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
         {/* Print Button */}
         <button 
           onClick={handlePrint}
+          title="Print this article"
           className="flex items-center gap-1.5 px-3 py-1.5 bg-wiki-bg border border-wiki-border-light hover:bg-[#eaecf0] transition-colors"
         >
           <Printer size={16} /> Print
@@ -85,6 +91,7 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
         {/* Share Button */}
         <button 
           onClick={handleShare}
+          title="Share on WhatsApp"
           className="flex items-center gap-1.5 px-3 py-1.5 bg-wiki-bg border border-wiki-border-light hover:bg-[#eaecf0] transition-colors"
         >
           <Share2 size={16} /> WhatsApp
@@ -93,12 +100,20 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
 
       {/* Right Side: Font Size Adjuster */}
       <div className="flex items-center gap-2 border-l border-wiki-border-light pl-3 ml-2 mt-2 sm:mt-0">
-        <Type size={16} className="text-wiki-text-muted" />
-        <button onClick={() => changeFontSize(-10)} className="px-2 py-1 bg-wiki-bg border border-wiki-border-light hover:bg-[#eaecf0] font-bold">
+        <Type size={16} className="text-wiki-text-muted" title="Adjust Text Size" />
+        <button 
+          onClick={() => changeFontSize(-10)} 
+          title="Decrease text size"
+          className="px-2 py-1 bg-wiki-bg border border-wiki-border-light hover:bg-[#eaecf0] font-bold"
+        >
           A-
         </button>
         <span className="font-mono text-[12px] w-8 text-center">{fontSize}%</span>
-        <button onClick={() => changeFontSize(10)} className="px-2 py-1 bg-wiki-bg border border-wiki-border-light hover:bg-[#eaecf0] font-bold">
+        <button 
+          onClick={() => changeFontSize(10)} 
+          title="Increase text size"
+          className="px-2 py-1 bg-wiki-bg border border-wiki-border-light hover:bg-[#eaecf0] font-bold"
+        >
           A+
         </button>
       </div>
