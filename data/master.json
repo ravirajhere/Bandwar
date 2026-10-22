@@ -54,7 +54,6 @@
   "nav": [
     { "label": "Home", "href": "/", "icon": "🏠" },
     { "label": "Directory", "href": "/directory", "icon": "📞" },
-    { "label": "Events", "href": "/events", "icon": "🎪" },
     { "label": "Archive", "href": "/section", "icon": "📚" },
     { "label": "People", "href": "/people", "icon": "👥" },
     { "label": "Places", "href": "/place", "icon": "🗺️" },
@@ -72,7 +71,6 @@
     ],
     "explore": [
       { "label": "Directory", "href": "/directory" },
-      { "label": "Events", "href": "/events" },
       { "label": "Map", "href": "/place" },
       { "label": "Gallery", "href": "/place?view=gallery" },
       { "label": "Timeline", "href": "/time" },
