@@ -5,12 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MasterConfig } from "@/lib/schema";
 import { Menu, X, Search } from "lucide-react";
-import { FontSizeControls } from "./FontSizeControls";
 import { ThemeToggle } from "./ThemeToggle";
 import { SearchModal } from "./SearchModal";
 import { SearchItem } from "@/lib/search-data";
 
-export function Header({ config, searchIndex }: { config: MasterConfig, searchIndex: SearchItem[] }) {
+// Header component props type
+interface HeaderProps {
+  config: MasterConfig;
+  searchIndex: SearchItem[];
+}
+
+export function Header({ config, searchIndex }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
@@ -34,7 +39,6 @@ export function Header({ config, searchIndex }: { config: MasterConfig, searchIn
             <nav className="flex items-center gap-6" aria-label="Main Navigation">
               {config.nav.map((item) => {
                 const isActive = pathname === item.href;
-
                 return (
                   <Link 
                     key={item.href} 
@@ -54,8 +58,7 @@ export function Header({ config, searchIndex }: { config: MasterConfig, searchIn
 
             {/* Desktop Controls */}
             <div className="flex items-center gap-3 pl-4 border-l border-wiki-border-light">
-              
-              {/* 👇 Search Button 👇 */}
+              {/* Search Button */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className="p-2 text-wiki-text hover:bg-wiki-bg-alt border border-wiki-border-light transition-colors flex items-center justify-center"
@@ -65,16 +68,15 @@ export function Header({ config, searchIndex }: { config: MasterConfig, searchIn
                 <Search size={18} />
               </button>
 
-              <FontSizeControls />
+              {/* Dark/Light Mode Toggle */}
               <ThemeToggle />
             </div>
           </div>
 
           {/* Mobile Menu Buttons */}
           <div className="md:hidden flex items-center gap-2">
-             
-             {/* 👇 Mobile Search Button 👇 */}
-             <button 
+            {/* Mobile Search Button */}
+            <button 
               onClick={() => setIsSearchOpen(true)}
               className="p-2 text-wiki-text hover:bg-wiki-bg-alt rounded-sm transition-colors"
               aria-label="Search Articles"
@@ -82,6 +84,7 @@ export function Header({ config, searchIndex }: { config: MasterConfig, searchIn
               <Search size={22} />
             </button>
 
+            {/* Mobile Menu Toggle */}
             <button 
               className="p-2 text-wiki-text hover:bg-wiki-bg-alt rounded-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-wiki-link"
               onClick={() => setIsOpen(!isOpen)}
@@ -103,22 +106,17 @@ export function Header({ config, searchIndex }: { config: MasterConfig, searchIn
         >
           <nav className="px-4 pt-2 pb-4 flex flex-col gap-1" aria-label="Mobile Navigation">
             
-            {/* Mobile Controls */}
+            {/* Mobile Controls (Sirf Theme Toggle bacha hai) */}
             <div className="flex justify-between items-center py-2 border-b border-wiki-border-light mb-2">
               <div className="flex items-center gap-2">
                 <span className="text-[14px] font-bold text-wiki-text">Theme</span>
                 <ThemeToggle />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[14px] font-bold text-wiki-text">Size</span>
-                <FontSizeControls />
               </div>
             </div>
 
             {/* Mobile Links */}
             {config.nav.map((item) => {
               const isActive = pathname === item.href;
-
               return (
                 <Link 
                   key={item.href} 
@@ -139,7 +137,7 @@ export function Header({ config, searchIndex }: { config: MasterConfig, searchIn
         </div>
       </header>
 
-      {/* 👇 Search Modal Render 👇 */}
+      {/* Search Modal Render */}
       <SearchModal 
         isOpen={isSearchOpen} 
         onClose={() => setIsSearchOpen(false)} 
