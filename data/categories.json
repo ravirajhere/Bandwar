@@ -1,14 +1,70 @@
 {
   "categories": [
-    { "id": "history", "title": "History", "icon": "📜", "description": "From Anga Mahajanapada to the 1942 Gurukul" },
-    { "id": "religion", "title": "Religion", "icon": "🛕", "description": "Temples, festivals, and faith" },
-    { "id": "education", "title": "Education", "icon": "🏫", "description": "Schools, teachers, and learning" },
-    { "id": "health", "title": "Health", "icon": "🏥", "description": "Medical facilities and health records" },
-    { "id": "economy", "title": "Economy", "icon": "💰", "description": "Agriculture, businesses, and employment" },
-    { "id": "infrastructure", "title": "Infrastructure", "icon": "🏗️", "description": "Roads, banks, and utilities" },
-    { "id": "culture", "title": "Culture", "icon": "🎉", "description": "Festivals, sports, and daily life" },
-    { "id": "geography", "title": "Geography", "icon": "🌊", "description": "River, land, and climate" },
-    { "id": "people", "title": "People", "icon": "👥", "description": "Notable personalities and elders" },
-    { "id": "landmarks", "title": "Landmarks", "icon": "🚩", "description": "Notable places in the village" }
+    { 
+      "id": "history", 
+      "title": "History", 
+      "icon": "📜", 
+      "description": "From the ancient Anga Mahajanapada to the 1942 Gurukul and the freedom struggle." 
+    },
+    { 
+      "id": "religion", 
+      "title": "Religion & Temples", 
+      "icon": "🛕", 
+      "description": "Ancient temples, local deities, and major festivals of Bandwar." 
+    },
+    { 
+      "id": "education", 
+      "title": "Education", 
+      "icon": "🏫", 
+      "description": "Government schools, private institutions, and the historic village library." 
+    },
+    { 
+      "id": "health", 
+      "title": "Health", 
+      "icon": "🏥", 
+      "description": "Medical facilities, health infrastructure, and public health records." 
+    },
+    { 
+      "id": "economy", 
+      "title": "Economy", 
+      "icon": "💰", 
+      "description": "Agriculture, local businesses, banking, and employment in the village." 
+    },
+    { 
+      "id": "infrastructure", 
+      "title": "Infrastructure", 
+      "icon": "🏗️", 
+      "description": "Roads, SBI bank, post office, water supply, and rural connectivity." 
+    },
+    { 
+      "id": "culture", 
+      "title": "Culture", 
+      "icon": "🎉", 
+      "description": "Historic fairs, Janmashtami Mela, Chhath Puja, and daily village life." 
+    },
+    { 
+      "id": "sports", 
+      "title": "Sports", 
+      "icon": "🏏", 
+      "description": "Traditional Kushti wrestling, cricket tournaments, and local athletes." 
+    },
+    { 
+      "id": "geography", 
+      "title": "Geography", 
+      "icon": "🌊", 
+      "description": "The Burhi Gandak river, flood plains, and the village landscape." 
+    },
+    { 
+      "id": "people", 
+      "title": "People", 
+      "icon": "👥", 
+      "description": "Notable personalities, freedom fighters, and respected elders." 
+    },
+    { 
+      "id": "landmarks", 
+      "title": "Landmarks", 
+      "icon": "🚩", 
+      "description": "Memorials, historic wells, and important public spaces." 
+    }
   ]
 }
