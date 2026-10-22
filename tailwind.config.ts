@@ -9,7 +9,6 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Ye colors tere master.json ke brand section se liye gaye hain
         primary: "#1a1a18",   // Dark text / Backgrounds
         paper: "#f7f5ef",     // Main Page Background
         surface: "#efece4",   // Cards, Infobox, Pullquote Background
@@ -18,15 +17,13 @@ const config: Config = {
         white: "#ffffff",
       },
       fontFamily: {
-        // Ye fonts layout.tsx mein next/font se load ho rahe hain
         sans: ["var(--font-inter)", "sans-serif"],
         serif: ["var(--font-fraunces)", "serif"],
-        mono: ["var(--font-ibm-plex-mono)", "monospace"], // Agar future mein zaroorat pade
+        mono: ["var(--font-ibm-plex-mono)", "monospace"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       typography: {
         DEFAULT: {
@@ -38,13 +35,16 @@ const config: Config = {
               '&:hover': {
                 color: '#a64b2a',
               },
+              textDecoration: 'none',
             },
           },
         },
       },
     },
   },
-  plugins: [], // Yahan hum aage chalkar typography plugin add kar sakte hain
+  plugins: [
+    require('@tailwindcss/typography'), // 👈 Added by Expert (Must install)
+  ],
 };
 
 export default config;
