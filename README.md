@@ -1,82 +1,116 @@
-# 🏛️ Bandwar Village Archive
+# 🏛️ Bandwar Village Portal
 
-A community-built digital archive of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life. 
+A community-built digital portal for Bandwar village, Begusarai (Bihar) — a living, interactive website designed for the village, its residents, and their descendants. 
 
-This project is built on a **Data-Driven Architecture**. The entire website is static, requires no database, and is fully powered by JSON files. As a Solo Editor or Developer, you can manage the content via the `data/` folder, and customize the UI/layout via the `src/` folder.
+Built with a **Wikipedia-inspired, distraction-free UI**, this portal prioritizes accessibility (especially for senior citizens), speed, and a strict data-driven architecture.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-blue?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![Zod](https://img.shields.io/badge/Zod-3.23-blueviolet?style=flat-square)](https://zod.dev/)
-[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?style=flat-square&logo=vercel)](https://vercel.com/)
+[![Zod](https://img.shields.io/badge/Zod-3.23-blueviolet?style=flat-square&logo=zod)](https://zod.dev/)
+[![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-black?style=flat-square&logo=vercel)](https://vercel.com/)
+
+---
+
+## ✨ Key Features
+
+- **Wikipedia-Style Layout:** Clean 3-column article layout (TOC, Content, Infobox), sharp borders, and no distracting animations.
+- **Senior-Friendly Accessibility:** 
+  - Global Font Size Adjuster (A- / A+) that saves user preference.
+  - Dark/Light Mode toggle.
+  - "Listen to Article" (Text-to-Speech).
+  - Print & WhatsApp Share options.
+- **Living Village Features:** 
+  - Village Directory (Searchable list of doctors, shops, emergency contacts).
+  - Mobile Emergency Sticky Bar (Direct call buttons).
+  - Interactive Village Map with Satellite View toggle.
+  - Photo Gallery with a full-screen Lightbox.
+- **Zero-Database Architecture:** 100% static site powered by JSON files. No backend costs, ultra-fast load times.
+- **Pre-Build Validation:** Zod validates all JSON data before deployment. If data is malformed, the Vercel build fails, ensuring the live site never crashes.
 
 ---
 
 ## 🚀 Tech Stack
 
 - **Framework:** Next.js 15 (App Router, Static Site Generation)
-- **Styling:** Tailwind CSS (Custom Editorial & Archival Theme)
-- **Data Validation:** Zod (Strict Type-Safety & Error Handling)
-- **Maps & Icons:** Leaflet & Lucide React
-- **Deployment:** Vercel (With Automated Pre-build Validation)
+- **Styling:** Tailwind CSS (with CSS Variables for Dark Mode & Themes)
+- **Data Validation:** Zod (Strict Type-Safety)
+- **Maps:** React Leaflet (with Esri Satellite tiles)
+- **Icons:** Lucide React
+- **Deployment:** Vercel
 
 ---
 
-## 📂 Full File Structure
-
-Yahan project ka pura structure diya gaya hai taaki tumhe pata ho ki kya kahan hai:
+## 📂 Detailed File Structure
 
 ```text
-bandwar-archive/
-├── data/                   # 👑 CONTENT WORKSPACE (JSON Data)
-│   ├── master.json         # Site Config, Homepage, Footer, Nav, SEO
-│   ├── categories.json     # Categories for articles
-│   ├── people.json         # Notable personalities directory
-│   ├── vision.json         # Vision 2035 Manifesto
-│   ├── media.json          # Gallery, Timeline, & Map (Landmarks)
-│   └── articles/           # All articles (Split into files by category)
+bandwar-portal/
+├── data/                       # 👑 CONTENT WORKSPACE (Update JSONs here)
+│   ├── master.json             # Site Config, Homepage, Footer, Nav, SEO, Emergency Contacts
+│   ├── directory.json          # Local services, doctors, shops, emergency numbers
+│   ├── events.json             # Village events and festivals
+│   ├── reach.json              # How to reach the village (bus/train info)
+│   ├── media.json              # Gallery photos, Timeline events, Map landmarks
+│   ├── people.json             # Notable personalities directory
+│   ├── vision.json             # Vision 2035 Manifesto data
+│   └── articles/               # All articles (Split into files by category)
 │       ├── education.json  
 │       ├── culture.json    
 │       └── ...             
 │
-├── public/                 # 📸 STATIC ASSETS
-│   └── images/             # Put all photos here (e.g., images/education/photo.jpg)
+├── public/                     # 📸 STATIC ASSETS
+│   └── images/                 # Put all photos here (e.g., images/education/photo.jpg)
 │
-├── scripts/                # ⚙️ AUTOMATION
-│   └── validate.ts         # The engine that checks JSON for errors
+├── scripts/                    # ⚙️ AUTOMATION
+│   └── validate.ts             # The engine that checks JSON for errors
 │
-├── src/                    # 💻 CORE APPLICATION CODE (UI & Logic)
-│   ├── app/                # Next.js App Router (Pages & Layouts)
-│   │   ├── [id]/           # Dynamic Article Page (e.g., /article/snk-high-school)
-│   │   ├── about/          # About page
-│   │   ├── section/        # Archive/Category listing page
-│   │   ├── globals.css     # Global Tailwind styles & Typography rules
-│   │   ├── layout.tsx      # Main Layout (Header, Footer, Fonts)
-│   │   ├── page.tsx        # Homepage (Hero, Stats, Latest Articles)
-│   │   └── sitemap.ts      # Auto-generates sitemap.xml for Google
+├── src/                        # 💻 CORE APPLICATION CODE
+│   ├── app/                    # Next.js App Router (Pages)
+│   │   ├── article/[id]/       # Dynamic Article Page (3-column layout)
+│   │   ├── about/              # About page
+│   │   ├── contribute/         # Form to submit corrections/photos
+│   │   ├── directory/          # Village Directory page (Search & Filter)
+│   │   ├── events/             # Village Events page
+│   │   ├── place/              # Map & Gallery page
+│   │   ├── section/            # Archive/Category listing page
+│   │   ├── vision/             # Vision 2035 page (With Before/After slider)
+│   │   ├── globals.css         # Global Tailwind styles, CSS Variables, Print styles
+│   │   ├── layout.tsx          # Main Layout (Header, Footer, Theme/Font scripts)
+│   │   ├── not-found.tsx       # Custom 404 Page
+│   │   ├── page.tsx            # Homepage (Portal Grid, Stats, Latest Articles)
+│   │   └── sitemap.ts          # Auto-generates sitemap.xml for Google
 │   │
-│   ├── components/         # Reusable UI Components
-│   │   ├── article/        # Article related components
-│   │   │   ├── ArticleCard.tsx # Card for homepage/lists
-│   │   │   ├── FaqAccordion.tsx# Collapsible FAQs
-│   │   │   ├── Infobox.tsx     # Right-side data sheet on articles
-│   │   │   └── WikiText.tsx    # Parses [[id|label]] internal links
-│   │   └── layout/         # Layout components
-│   │       ├── Header.tsx      # Navigation bar & mobile menu
-│   │       └── Footer.tsx      # Site footer
+│   ├── components/             # Reusable UI Components
+│   │   ├── article/            # Article components
+│   │   │   ├── ArticleToolbar.tsx # Listen, Print, Share, A-/A+ controls
+│   │   │   ├── FaqAccordion.tsx   # Collapsible FAQs
+│   │   │   ├── Infobox.tsx        # Right-side data sheet on articles
+│   │   │   └── WikiText.tsx       # Parses [[id|label]] internal links
+│   │   ├── contribute/         # Form components for Contribute page
+│   │   ├── directory/          # Search & Filter components for Directory
+│   │   ├── layout/             # Layout components
+│   │   │   ├── Header.tsx         # Navbar with Theme & Font Size toggles
+│   │   │   ├── Footer.tsx         # Site footer
+│   │   │   ├── EmergencyBar.tsx   # Sticky mobile emergency bar
+│   │   │   ├── FontSizeControls.tsx # A- / A+ global font logic
+│   │   │   └── ThemeToggle.tsx    # Dark/Light mode switch
+│   │   └── place/              # Map & Gallery components
+│   │       ├── GalleryGrid.tsx    # Photo grid with category filters
+│   │       ├── Lightbox.tsx       # Full-screen image viewer
+│   │       └── LandmarkMap.tsx    # Leaflet map with Satellite toggle
 │   │
-│   └── lib/                # Core Logic
-│       ├── data.ts         # Functions to read JSON and pass to pages
-│       └── schema.ts       # Zod schemas for strict data validation
+│   └── lib/                    # Core Logic
+│       ├── data.ts             # Functions to read JSON and pass to pages
+│       └── schema.ts           # Zod schemas for strict data validation
 │
-├── next.config.mjs         # Next.js configuration
-├── package.json            # Project dependencies and scripts
-├── tailwind.config.ts      # Tailwind custom colors and fonts
-└── tsconfig.json           # TypeScript configuration
+├── next.config.mjs             # Next.js configuration
+├── package.json                # Project dependencies and scripts
+├── tailwind.config.ts          # Tailwind custom colors (Wiki theme) and fonts
+└── tsconfig.json               # TypeScript configuration
 ```
 
 ---
 
-## 🛠️ Local Setup (For the first time)
+## 🛠️ Local Setup
 
 1. Install dependencies:
    ```bash
@@ -91,43 +125,42 @@ bandwar-archive/
 
 ---
 
-## ✍️ How to Update Content (Solo Editor Workflow)
+## ✍️ How to Update Content (Editor Workflow)
 
 ### 1. Adding or Updating an Article
 - **File Location:** `data/articles/` (e.g., `education.json`).
 - **Strict Rules:**
   - `id`: Must be lowercase, unique, and use hyphens (e.g., `snk-high-school`).
-  - `lastUpdated`: Must be in `YYYY-MM-DD` format (e.g., `2026-10-22`).
-  - `content`: Add new sections using `heading` and `text`.
-  - **Internal Links:** To link to another article inside the text, use this format: `[[article-id|Display Text]]`.
+  - `lastUpdated`: Must be in `YYYY-MM-DD` format.
+  - **Internal Links:** To link to another article, use `[[article-id|Display Text]]`.
 
-### 2. Adding a New Person
-- **File Location:** `data/people.json`.
-- Add a new object to the `people` array. Ensure the `id` is unique and lowercase.
+### 2. Adding a Directory Entry (Doctor, Shop, etc.)
+- **File Location:** `data/directory.json`.
+- Add an object to the `items` array. Set `isEmergency: true` for urgent contacts.
 
-### 3. Adding a New Photo
-- **Step 1:** Place the photo in `public/images/` (e.g., `public/images/education/my-photo.jpg`).
+### 3. Adding a New Event
+- **File Location:** `data/events.json`.
+- Add an object to the `events` array with date, title, type, description, and location.
+
+### 4. Adding a New Photo
+- **Step 1:** Place the photo in `public/images/`.
 - **Step 2:** Open `data/media.json` and add it to the `gallery.photos` array.
 - **Path Rule:** Write paths as `images/education/photo-name.jpg` (No leading slash `/`).
 
-### 4. Updating the Timeline or Map
-- **File Location:** `data/media.json`.
-- Add an event to the `timeline` array with a `sortKey` (year) to place it chronologically.
-
-### 5. Updating Homepage or Footer
+### 5. Updating Emergency Contacts (Mobile Bar)
 - **File Location:** `data/master.json`.
-- All text, links, and stats for the Home and Footer are driven by this single file.
+- Update the `emergencyContacts` array.
 
 ---
 
 ## 💻 How to Update UI & Code (Developer Workflow)
 
-If you want to change the design, layout, or logic, here is where you need to look:
+If you want to change the design, layout, or add new features, here is where you need to look:
 
 - **Change Colors or Fonts:** Update `tailwind.config.ts` (for colors) and `src/app/layout.tsx` (for fonts).
-- **Change Global Spacing/Typography:** Edit `src/app/globals.css`.
+- **Change Global Spacing/Typography/Dark Mode Variables:** Edit `src/app/globals.css`.
 - **Update Homepage Layout:** Edit `src/app/page.tsx`.
-- **Update Article Layout:** Edit `src/app/[id]/page.tsx`.
+- **Update Article Layout:** Edit `src/app/article/[id]/page.tsx`.
 - **Update Navigation/Footer:** Edit `src/components/layout/Header.tsx` and `Footer.tsx`.
 - **Add a new field to JSON:** You MUST update the Zod Schema in `src/lib/schema.ts` first, otherwise the build will fail.
 
@@ -161,11 +194,7 @@ The repository is connected directly to Vercel.
    git commit -m "feat: added new article and updated UI"
    git push origin main
    ```
-3. Vercel will automatically build and deploy. 
-
-### SEO & Sitemaps
-- **Sitemap:** The dynamic sitemap is available at `/sitemap.xml`. It includes all articles and their images.
-- **Google Search Console:** Submit `https://bandwar.vercel.app/sitemap.xml` in the Search Console to ensure Google indexes new articles quickly.
+3. Vercel will automatically build and deploy.
 
 ---
 
@@ -178,4 +207,4 @@ The repository is connected directly to Vercel.
 5. **Before deploying:** Always run `npm run validate` to ensure data integrity.
 
 ---
-*Made with ❤️ by the Bandwar Village Community.*
+*Made with ❤️ & Curiosity by the Bandwar Village Community.*
