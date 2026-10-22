@@ -1,109 +1,78 @@
 import { getMasterData } from "@/lib/data";
+import { ContributeForm } from "@/components/contribute/ContributeForm";
 
 export const metadata = {
-  title: "Contribute | Bandwar Archive",
-  description: "Share your memories, report an issue, or suggest a correction for the Bandwar Village Archive.",
+  title: "Contribute | Bandwar Portal",
+  description: "Share your memories, report an issue, or suggest a correction for the Bandwar Village Portal.",
 };
 
 export default function ContributePage() {
   const config = getMasterData();
   const email = config.contact.email;
 
-  // Mailto links generate karne ka function
-  const createMailto = (subject: string, body: string) => {
-    return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  };
-
-  const options = [
-    {
-      icon: "✏️",
-      title: "Suggest a Correction",
-      description: "Spotted an error in an article? Let us know so we can fix it.",
-      subject: "Correction Suggestion",
-      body: "Article Name / URL:\n\nWhat needs to be corrected:\n\nCorrect Information:\n",
-      color: "bg-blue-50 border-blue-200 text-blue-900",
-    },
-    {
-      icon: "➕",
-      title: "Add Information",
-      description: "Have a story, historical fact, or detail we missed? Share it with us.",
-      subject: "New Information Submission",
-      body: "Topic / Page:\n\nInformation to add:\n\nSource (if any):\n",
-      color: "bg-green-50 border-green-200 text-green-900",
-    },
-    {
-      icon: "👤",
-      title: "Add a Person",
-      description: "Nominate a notable personality, elder, or leader from Bandwar.",
-      subject: "Person Submission",
-      body: "Full Name:\nRole/Occupation:\nLocality (Ward/Tola):\nBrief Bio:\n\nDo you have a photo? (Yes/No):\n",
-      color: "bg-amber-50 border-amber-200 text-amber-900",
-    },
-    {
-      icon: "📸",
-      title: "Submit a Photo",
-      description: "Share old or new photographs of the village, temples, or events.",
-      subject: "Photo Submission",
-      body: "Photo Description:\nYear/Decade (if known):\nLocation in Village:\n\nPlease attach the photo to this email.\n",
-      color: "bg-purple-50 border-purple-200 text-purple-900",
-    },
-    {
-      icon: "🐞",
-      title: "Report an Issue",
-      description: "Found a broken link, missing image, or technical glitch?",
-      subject: "Website Issue Report",
-      body: "Page / URL:\n\nWhat is the issue:\n\n(If possible, please attach a screenshot)\n",
-      color: "bg-red-50 border-red-200 text-red-900",
-    }
-  ];
-
   return (
-    <div className="bg-[#f7f5ef] min-h-screen py-16 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="bg-wiki-bg min-h-screen py-8">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-6">
         
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1a1a18] mb-4">
-            Contribute to the Archive
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="font-serif text-3xl md:text-4xl text-wiki-text mb-2">
+            Contribute to the Portal
           </h1>
-          <p className="text-lg text-[#1a1a18]/60 max-w-2xl mx-auto">
-            This archive is built by the community, for the community. Your memories, photos, and corrections make it better.
-          </p>
-          <p className="mt-4 text-sm font-medium text-[#a64b2a] bg-[#a64b2a]/10 inline-block px-4 py-2 rounded-lg">
-            No login required. All contributions happen via email.
+          <div className="w-full border-b border-wiki-border-light mb-3"></div>
+          <p className="text-[15px] text-wiki-text-muted max-w-3xl">
+            This portal is built by the community, for the community. Your memories, photos, and corrections make it better.
           </p>
         </div>
 
-        {/* Email Options Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {options.map((opt, idx) => (
-            <a 
-              key={idx}
-              href={createMailto(opt.subject, opt.body)}
-              className={`group p-6 rounded-2xl border-2 transition-all hover:-translate-y-1 hover:shadow-md ${opt.color} bg-white`}
-            >
-              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{opt.icon}</div>
-              <h3 className="font-serif text-xl font-bold mb-2">{opt.title}</h3>
-              <p className="text-sm opacity-80 leading-relaxed mb-4">{opt.description}</p>
-              <div className="text-sm font-bold flex items-center gap-2">
-                <span>Open Email App</span>
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </div>
-            </a>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* LEFT: The Form */}
+          <div className="lg:col-span-2">
+            <ContributeForm email={email} />
+          </div>
 
-        {/* Contact Info */}
-        <div className="mt-16 text-center text-[#1a1a18]/60 text-sm">
-          <p>Prefer to write directly? Email us at:</p>
-          <a href={`mailto:${email}`} className="font-bold text-[#1f3d2f] text-lg hover:underline mt-2 block">
-            {email}
-          </a>
-          {config.contact.address && (
-            <p className="mt-4">{config.contact.address}</p>
-          )}
-        </div>
+          {/* RIGHT: Guidelines & Info */}
+          <div className="space-y-6">
+            
+            <div className="border border-wiki-border-light bg-wiki-bg-alt p-4">
+              <h3 className="font-bold text-wiki-text text-[15px] mb-3 border-b border-wiki-border-light pb-2">
+                How it works
+              </h3>
+              <ul className="text-[13px] text-wiki-text-muted space-y-2 list-disc pl-4">
+                <li>Fill out the form on the left.</li>
+                <li>Click "Send via Email".</li>
+                <li>Your default email app (like Gmail) will open.</li>
+                <li>Just hit send! We will review your contribution.</li>
+              </ul>
+            </div>
 
+            <div className="border border-wiki-border-light bg-wiki-bg p-4">
+              <h3 className="font-bold text-wiki-text text-[15px] mb-3 border-b border-wiki-border-light pb-2">
+                Prefer Direct Email?
+              </h3>
+              <p className="text-[13px] text-wiki-text-muted mb-2">
+                You can also write to us directly at:
+              </p>
+              <a href={`mailto:${email}`} className="font-bold text-wiki-link hover:underline break-all text-[14px]">
+                {email}
+              </a>
+              {config.contact.address && (
+                <p className="text-[12px] text-wiki-text-muted mt-3 pt-3 border-t border-wiki-border-light">
+                  {config.contact.address}
+                </p>
+              )}
+            </div>
+
+            <div className="bg-[#fef8e7] border border-[#fce8b2] p-4">
+              <h4 className="font-bold text-[#b47a00] text-[13px] mb-1">Note for Photos:</h4>
+              <p className="text-[12px] text-[#b47a00]">
+                If you are submitting a photo, please attach it to the email after your mail app opens.
+              </p>
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
   );
