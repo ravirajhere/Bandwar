@@ -8,34 +8,64 @@
   ],
   "items": [
     {
-      "id": "phc-bandwar",
-      "name": "Primary Health Center (PHC)",
+      "id": "health-sub-centre-bandwar",
+      "name": "Health Sub-Centre, Bandwar",
       "categoryId": "health",
-      "description": "Government primary health center with basic facilities.",
+      "description": "Government health sub-centre providing basic medical care, maternal health services, and vaccinations.",
       "phone": "102",
       "address": "Main Road, Bandwar",
+      "timing": "9 AM - 4 PM (Emergency 24x7)",
+      "isEmergency": true
+    },
+    {
+      "id": "neema-chandpura-police-station",
+      "name": "Neema Chandpura Police Station",
+      "categoryId": "emergency",
+      "description": "Local police station serving Bandwar and surrounding panchayats.",
+      "phone": "112",
+      "address": "Main Road, Neema Chandpura",
       "timing": "24x7",
       "isEmergency": true
     },
     {
-      "id": "jitendra-medical",
+      "id": "ambulance-service-102",
+      "name": "Ambulance Service (102)",
+      "categoryId": "emergency",
+      "description": "Free government ambulance service for emergencies and hospital transfers.",
+      "phone": "102",
+      "address": "District Wide Service",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "jitendra-medical-store-bandwar",
       "name": "Jitendra Medical Store",
       "categoryId": "shops",
-      "description": "All types of medicines available.",
+      "description": "Chemist shop providing all types of essential medicines and first-aid supplies.",
       "phone": "9876543210",
       "address": "Bandwar Main Rd, Behind Petrol Pump",
       "timing": "8 AM - 9 PM",
       "isEmergency": false
     },
     {
-      "id": "chandpura-thana",
-      "name": "Police Station (neema-chandpura)",
-      "categoryId": "emergency",
-      "description": "Local police station.",
-      "phone": "112",
-      "address": "Main Road, chandpura",
-      "timing": "24x7",
-      "isEmergency": true
+      "id": "gram-panchayat-bhawan-bandwar",
+      "name": "Gram Panchayat Bhawan",
+      "categoryId": "government",
+      "description": "Village administrative office for certificates, land records, and government schemes.",
+      "phone": "06243-XXXXXX",
+      "address": "Village Centre, Bandwar",
+      "timing": "10 AM - 4 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "auto-stand-bandwar",
+      "name": "E-Rickshaw / Auto Stand",
+      "categoryId": "transport",
+      "description": "Main point for local e-rickshaws and autos to Begusarai and nearby villages.",
+      "phone": "N/A",
+      "address": "Near Shaheed Ramchandra Dwar",
+      "timing": "5 AM - 9 PM",
+      "isEmergency": false
     }
   ]
 }
