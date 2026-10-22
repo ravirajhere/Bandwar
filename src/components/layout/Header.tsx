@@ -2,23 +2,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // 👈 Active link ke liye
+import { usePathname } from "next/navigation";
 import { MasterConfig } from "@/lib/schema";
-import { Menu, X } from "lucide-react"; // 👈 Professional Icons
+import { Menu, X } from "lucide-react";
 
 export function Header({ config }: { config: MasterConfig }) {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname(); // Current URL check karne ke liye
+  const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 bg-paper/90 backdrop-blur-md border-b border-primary/10 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    // Wikipedia Style: Solid White Background, Thin Grey Border at bottom, No Blur
+    <header className="sticky top-0 z-50 bg-wiki-bg border-b border-wiki-border-light">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         
-        {/* Logo / Site Name */}
+        {/* Logo / Site Name (Wikipedia uses Serif for the main logo) */}
         <Link 
           href="/" 
-          className="font-serif text-2xl font-bold text-primary tracking-tight hover:opacity-80 transition-opacity"
-          onClick={() => setIsOpen(false)} // Mobile menu close on logo click
+          className="font-serif text-2xl font-bold text-wiki-text hover:text-black transition-colors"
+          onClick={() => setIsOpen(false)}
         >
           {config.site.name}
         </Link>
@@ -26,20 +27,19 @@ export function Header({ config }: { config: MasterConfig }) {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
           {config.nav.map((item) => {
-            // Check if current path matches the link
             const isActive = pathname === item.href;
 
             return (
               <Link 
                 key={item.href} 
                 href={item.href}
-                className={`text-sm font-semibold transition-colors flex items-center gap-1.5 ${
+                className={`text-[15px] transition-colors flex items-center gap-1.5 pb-1 ${
                   isActive 
-                    ? "text-warn" // Active link color (Terracotta)
-                    : "text-primary/70 hover:text-accent" // Normal & Hover color
+                    ? "text-wiki-text font-bold border-b-2 border-wiki-text" // Active state: Bold + Underline
+                    : "text-wiki-text hover:text-wiki-link hover:underline" // Hover state: Wiki Blue
                 }`}
               >
-                <span className="text-base" aria-hidden="true">{item.icon}</span>
+                <span className="text-base opacity-70" aria-hidden="true">{item.icon}</span>
                 {item.label}
               </Link>
             );
@@ -48,20 +48,20 @@ export function Header({ config }: { config: MasterConfig }) {
 
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden p-2 text-primary hover:bg-surface rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="md:hidden p-2 text-wiki-text hover:bg-wiki-bg-alt rounded-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-wiki-link"
           onClick={() => setIsOpen(!isOpen)}
           aria-label={isOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isOpen}         // 👈 Accessibility
-          aria-controls="mobile-menu"    // 👈 Accessibility
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
         >
-          {isOpen ? <X size={24} strokeWidth={2.5} /> : <Menu size={24} strokeWidth={2.5} />}
+          {isOpen ? <X size={24} strokeWidth={2} /> : <Menu size={24} strokeWidth={2} />}
         </button>
       </div>
 
-      {/* Mobile Nav Dropdown (Smooth Animation) */}
+      {/* Mobile Nav Dropdown */}
       <div 
         id="mobile-menu"
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-paper border-b border-primary/10 ${
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-wiki-bg-alt border-b border-wiki-border-light ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
@@ -74,13 +74,13 @@ export function Header({ config }: { config: MasterConfig }) {
                 key={item.href} 
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`text-base font-medium py-3 flex items-center gap-3 border-b border-primary/5 last:border-0 transition-colors ${
+                className={`text-[15px] py-3 flex items-center gap-3 border-b border-wiki-border-light last:border-0 transition-colors ${
                   isActive 
-                    ? "text-warn font-bold" 
-                    : "text-primary/80 hover:text-accent"
+                    ? "text-wiki-text font-bold bg-wiki-bg" 
+                    : "text-wiki-text hover:text-wiki-link"
                 }`}
               >
-                <span className="text-xl" aria-hidden="true">{item.icon}</span>
+                <span className="text-lg opacity-70" aria-hidden="true">{item.icon}</span>
                 {item.label}
               </Link>
             );
