@@ -106,51 +106,52 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </p>
           
           {article.hero && (
-            <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] rounded-xl overflow-hidden mb-8 shadow-sm">
+            <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] rounded-sm overflow-hidden mb-8 border border-primary/10 shadow-sm">
               <Image
                 src={`/${article.hero}`}
                 alt={article.title}
                 fill
-                sizes="(max-width: 1024px) 100vw, 800px" // 👈 Performance Fix
+                sizes="(max-width: 1024px) 100vw, 800px"
                 className="object-cover"
                 priority
               />
             </div>
           )}
 
-          <p className="text-lg md:text-xl text-primary/80 leading-relaxed font-medium bg-surface p-6 rounded-lg border-l-4 border-accent">
+          <p className="text-lg md:text-xl text-primary/80 leading-relaxed font-medium bg-surface p-6 rounded-sm border-l-4 border-accent">
             {article.summary}
           </p>
         </header>
 
         {/* Content & Infobox */}
-        {/* 3. Layout Expert: flow-root prevents text from wrapping under floated Infobox */}
-        <div className="flow-root text-primary leading-relaxed">
+        <div className="flow-root text-primary leading-relaxed mt-8">
           {article.infobox && <Infobox data={article.infobox} title={article.title} />}
 
-          <div className="space-y-8">
+          {/* 👇 Yahan 'article-content' class add ki hai taaki typography apply ho */}
+          <div className="space-y-8 article-content">
             {article.content.map((block: { heading: string, text: string }, index: number) => (
               <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-24">
-                <h2 className="font-serif text-2xl font-bold text-primary mb-4 border-b border-primary/10 pb-2">
+                <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-4 pb-2 border-b border-primary/10">
                   {block.heading}
                 </h2>
-                <p className="text-base md:text-lg">
+                {/* Yahan humne text ko ek div me wrap kiya hai taaki base CSS apply ho */}
+                <div className="text-primary/80 text-lg">
                   <WikiText text={block.text} />
-                </p>
+                </div>
               </section>
             ))}
           </div>
         </div>
 
         {/* FAQs */}
-        <div id="faqs" className="scroll-mt-24 mt-12">
+        <div id="faqs" className="scroll-mt-24 mt-16">
           {article.faqs && article.faqs.length > 0 && (
             <FaqAccordion faqs={article.faqs} />
           )}
         </div>
 
         {/* Footer Info */}
-        <div className="mt-12 pt-6 border-t border-primary/10 text-sm text-primary/50 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-16 pt-6 border-t border-primary/10 text-sm text-primary/50 flex flex-col md:flex-row justify-between items-center gap-4">
           <span>Last updated: {article.lastUpdated}</span>
           <span className="font-medium">Bandwar Village Archive</span>
         </div>
