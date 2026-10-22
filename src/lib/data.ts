@@ -23,11 +23,11 @@ const readJsonFile = (filePath: string) => {
 };
 
 // Generic validation helper to avoid code repetition
-function validateData<T>(schema: z.ZodSchema<T>, data: unknown, fileName: string): T {
+function validateData<T extends z.ZodTypeAny>(schema: T, data: unknown, fileName: string): z.infer<T> {
   const parsed = schema.safeParse(data);
   
   if (!parsed.success) {
-    // Senior Dev Tip: Human-readable error formatting
+    // Human-readable error formatting
     const errorMessages = parsed.error.issues.map(
       (issue) => `  → Field [${issue.path.join(".")}]: ${issue.message}`
     ).join("\n");
@@ -37,7 +37,8 @@ function validateData<T>(schema: z.ZodSchema<T>, data: unknown, fileName: string
     );
   }
   
-  return parsed.data;
+  // TypeScript ko explicitly output type bata rahe hain
+  return parsed.data as z.infer<T>;
 }
 
 // ==========================================
