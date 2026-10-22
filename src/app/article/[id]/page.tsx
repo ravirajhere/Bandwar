@@ -3,6 +3,7 @@ import { getAllArticles, getArticleById } from "@/lib/data";
 import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
+import { ArticleToolbar } from "@/components/article/ArticleToolbar"; // 👈 Naya Import
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!article) return { title: "Not Found" };
 
   return {
-    title: `${article.title} | Bandwar Archive`,
+    title: `${article.title} | Bandwar Portal`,
     description: article.summary.slice(0, 160),
     openGraph: {
       title: article.title,
@@ -48,6 +49,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   // 2. UX Expert: Generate ID for Table of Contents
   const generateAnchorId = (heading: string) => 
     heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+  // 3. TTS Expert: Extract all text for "Listen to Article" feature
+  const fullContentText = `${article.summary}. ` + article.content.map((block: any) => `${block.heading}. ${block.text}`).join(" ");
 
   return (
     // Wikipedia Style 3-Column Grid
@@ -89,14 +93,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </div>
       </aside>
 
-      {/* 🟢 MIDDLE COLUMN: Main Article Content */}
-      <div className="min-w-0">
+      {/* 🟢 MIDDLE COLUMN: Main Article Content (Wrapped for Font Size Adjuster) */}
+      <div className="min-w-0 article-body-wrapper">
         
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm text-wiki-text-muted mb-4">
           <Link href="/" className="hover:text-wiki-link hover:underline">Home</Link>
           <span aria-hidden="true">›</span>
-          <Link href={`/${article.categories[0]}`} className="capitalize hover:text-wiki-link hover:underline">
+          <Link href={`/section`} className="capitalize hover:text-wiki-link hover:underline">
             {article.categories[0]}
           </Link>
         </nav>
@@ -111,6 +115,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           <p className="text-lg text-wiki-text-muted mb-6 italic">
             {article.subtitle}
           </p>
+
+          {/* 👇 TOOLBAR ADDED HERE 👇 */}
+          <div className="no-print">
+            <ArticleToolbar title={article.title} contentText={fullContentText} />
+          </div>
           
           {article.hero && (
             <div className="relative w-full h-[250px] md:h-[350px] border border-wiki-border-light mb-6">
@@ -165,7 +174,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         {/* Footer Info */}
         <div className="mt-12 pt-4 border-t border-wiki-border-light text-xs text-wiki-text-muted flex flex-col md:flex-row justify-between items-center gap-2">
           <span>Last updated: {article.lastUpdated}</span>
-          <span>Source: Bandwar Village Archive</span>
+          <span>Source: Bandwar Village Portal</span>
         </div>
       </div>
 
