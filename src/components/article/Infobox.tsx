@@ -5,27 +5,33 @@ export function Infobox({ data, title }: { data: Record<string, string>; title: 
   return (
     <aside 
       aria-label={`Quick facts about ${title}`}
-      // 👇 Sharp corners, solid border
-      className="bg-surface border border-primary/30 rounded-sm mb-8 w-full lg:w-[320px] lg:float-right lg:ml-8 lg:mb-6 clear-right"
+      // Wikipedia style: Light grey background, solid outer border
+      className="bg-wiki-bg-alt border border-wiki-border w-full text-sm mb-6"
     >
-      <div className="bg-primary px-4 py-3 border-b border-primary/30">
-        <h3 className="font-serif font-bold text-base text-paper text-center tracking-wide">
+      {/* Infobox Header */}
+      <div className="bg-[#eaecf0] px-4 py-2 border-b border-wiki-border text-center">
+        <h3 className="font-bold text-wiki-text text-base m-0">
           {title}
         </h3>
       </div>
 
+      {/* Infobox Data Rows */}
       <div className="p-0">
-        <dl className="text-sm">
-          {Object.entries(data).map(([key, value], index) => (
+        <dl className="m-0">
+          {Object.entries(data).map(([key, value]) => (
             <div 
               key={key} 
-              // 👇 Strict row borders (like a table)
-              className={`grid grid-cols-3 border-b border-primary/10 last:border-0 ${index % 2 === 0 ? 'bg-white/50' : ''}`}
+              // Flex layout ensures the key (left) and value (right) align properly
+              className="flex border-b border-wiki-border-light last:border-0"
             >
-              <dt className="col-span-1 p-2 text-primary/70 font-semibold text-xs border-r border-primary/10 bg-surface/50">
+              {/* Key Column (Left Side) */}
+              <dt className="w-[35%] p-2.5 bg-wiki-bg-alt text-wiki-text font-bold text-[13px] border-r border-wiki-border-light leading-snug">
                 {key}
               </dt>
-              <dd className="col-span-2 p-2 text-primary font-medium text-sm leading-snug break-words">
+              
+              {/* Value Column (Right Side) */}
+              <dd className="w-[65%] p-2.5 bg-wiki-bg text-wiki-text text-[13px] leading-snug break-words">
+                {/* Wikipedia links usually apply to values, but since it's plain text here, we keep it clean */}
                 {value}
               </dd>
             </div>
