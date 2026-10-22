@@ -15,13 +15,11 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
       return;
     }
 
-    // Stop if already speaking
     window.speechSynthesis.cancel();
 
     const textToRead = `${title}. ${contentText}`;
     const utterance = new SpeechSynthesisUtterance(textToRead);
     
-    // Slower speed for seniors
     utterance.rate = 0.9; 
     utterance.pitch = 1;
 
@@ -59,7 +57,6 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
   };
 
   return (
-    // 👇 'no-print' class add ki hai taaki print preview mein yeh toolbar na dikhe
     <div className="no-print border border-wiki-border-light bg-wiki-bg-alt flex flex-wrap items-center justify-between p-2 mb-6 text-[13px] text-wiki-text">
       
       {/* Left Side: Utility Tools */}
@@ -100,7 +97,11 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
 
       {/* Right Side: Font Size Adjuster */}
       <div className="flex items-center gap-2 border-l border-wiki-border-light pl-3 ml-2 mt-2 sm:mt-0">
-        <Type size={16} className="text-wiki-text-muted" title="Adjust Text Size" />
+        {/* 👇 Yahan span ka use kiya hai title ke liye 👇 */}
+        <span title="Adjust Text Size" className="flex items-center">
+          <Type size={16} className="text-wiki-text-muted" />
+        </span>
+        
         <button 
           onClick={() => changeFontSize(-10)} 
           title="Decrease text size"
