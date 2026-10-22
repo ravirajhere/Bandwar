@@ -1,119 +1,140 @@
-# 📜 Bandwar Village Archive
+# 🏛️ Bandwar Village Archive
 
-A community-built digital archive of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life. 
+A community-built digital archive of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life.
 
-This project follows a **"Code-Once, Edit Forever"** architecture. The website is 100% static (SSG), requires no database or backend, and is entirely driven by JSON data. As a Solo Editor, you only need to touch the `data/` folder to update the website.
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-blue?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Zod](https://img.shields.io/badge/Zod-3.23-blueviolet?style=flat-square)](https://zod.dev/)
+[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-black?style=flat-square&logo=vercel)](https://vercel.com/)
+
+## 📖 Our Philosophy: "Code-Once, Edit Forever"
+
+This project follows a strict **Static Site Generation (SSG)** architecture. The website requires **no database, no backend, and no CMS**. 
+
+It is entirely driven by JSON data. As a **Solo Editor**, you never need to touch the complex React/Next.js code inside `src/`. Your entire workspace is the `data/` folder.
+
+---
 
 ## 🚀 Tech Stack
 
 - **Framework:** Next.js 15 (App Router, SSG)
-- **Styling:** Tailwind CSS
-- **Data Validation:** Zod (Ensures JSON data is always 100% correct before build)
+- **Styling:** Tailwind CSS (Custom theme integrated)
+- **Data Validation:** Zod (Zero-Error Theorem implemented)
+- **Icons:** Lucide React
 - **Maps:** Leaflet & React-Leaflet
-- **Deployment:** Vercel (Zero-config)
+- **Deployment:** Vercel (Zero-config with Prebuild Validation)
 
 ---
 
-## 📂 Folder Structure (Where to do what)
+## 📂 Folder Structure (Your Workspace)
 
-You only need to focus on **2 folders**. You do not need to touch the underlying code.
+Only focus on the **`data/`** and **`public/images/`** folders. The rest is automated.
 
+```text
 bandwar-archive/
-├── data/                   # 👑 YOUR WORKSPACE (All Content)
-│   ├── master.json         # Site Config, SEO, Nav, About Page data
-│   ├── categories.json     # Categories (Temples, Schools, etc.)
+├── data/                   # 👑 YOUR ONLY WORKSPACE
+│   ├── master.json         # Site Config, Homepage, Footer, Nav, SEO
+│   ├── categories.json     # Categories for articles
 │   ├── people.json         # Notable personalities directory
-│   ├── vision.json         # Vision 2035 Manifesto data
-│   ├── media.json          # Gallery, Timeline, and Map (Landmarks) data
-│   └── articles/           # All articles in JSON format
+│   ├── vision.json         # Vision 2035 Manifesto
+│   ├── media.json          # Gallery, Timeline, & Map (Landmarks)
+│   └── articles/           # All articles (Split into files by category)
 │       ├── education.json  
-│       └── culture.json    # (Create new files and add data here)
+│       ├── culture.json    
+│       └── ...             
 │
 ├── public/
-│   └── images/             # Put all your photos here
+│   └── images/             # 📸 Put all your photos here (WebP recommended)
 │
-├── scripts/                # Automation scripts
-│   └── validate.ts         # JSON validation script
+├── scripts/                
+│   └── validate.ts         # The Engine that checks your JSON for errors
 │
-└── src/                    # Website code (Do not touch this)
+└── src/                    # ⚠️ DO NOT TOUCH THIS FOLDER (Code is locked)
+```
 
 ---
 
 ## 🛠️ Local Setup (For the first time)
 
-Run these commands in your terminal:
-
 1. Install dependencies:
+   ```bash
    npm install
+   ```
 
 2. Start the local server:
+   ```bash
    npm run dev
-   
-   The website will be live at http://localhost:3000.
+   ```
+   *The website will be live at `http://localhost:3000`.*
 
 ---
 
-## ✍️ How to Add New Content (Solo Editor Workflow)
-
-Follow these steps whenever you want to add new content:
+## ✍️ The Solo Editor Workflow (How to add content)
 
 ### 1. Adding a New Article
-- Create a new JSON file in the `data/articles/` folder (e.g., `geography.json`).
-- You can copy `education.json` to check the schema format.
-- To link to other articles inside the text, use the `[[article-id|Display Text]]` format.
+- Create a new JSON file in `data/articles/` (e.g., `geography.json`).
+- **Strict Rules:**
+  - `id`: Must be lowercase with hyphens (e.g., `snk-high-school`). No spaces or capital letters.
+  - `lastUpdated`: Must be in `YYYY-MM-DD` format (e.g., `2026-10-22`).
+  - Internal Links: Use the `[[article-id|Display Text]]` format inside the `text` field.
 
 ### 2. Adding a New Person
 - Open `data/people.json`.
-- Add a new object to the `people` array. (The `id` must be unique).
+- Add an object to the `people` array. Ensure the `id` is unique and lowercase.
 
 ### 3. Adding a New Photo
-- First, place the photo in the correct folder inside `public/images/` (e.g., `public/images/culture/`).
-- Then, open `data/media.json` and add a new object to the `gallery.photos` array.
+- Place the photo in the correct folder inside `public/images/` (e.g., `public/images/education/photo-name.jpg`).
+- Open `data/media.json` and add a new object to the `gallery.photos` array.
+- **Image Path Rule:** Write the path as `images/education/photo-name.jpg` (No leading slash `/`).
 
 ### 4. Updating the Timeline
 - Open `data/media.json`.
-- Add a new event to the `timeline` array. Make sure to include the `sortKey` (e.g., 2026) to place it in the correct chronological order.
+- Add an event to the `timeline` array. Include the `sortKey` (year) for chronological sorting.
 
 ---
 
 ## 🛡️ Data Validation (The Most Important Step)
 
-Because we are using JSON, a small mistake (like a missing comma or a misspelled field) can break the website build. 
+Because we use JSON and Zod, a single missing comma or a wrong date format (like writing `22-10-2026` instead of `2026-10-22`) will break the build.
 
-Therefore, always run this command before pushing to GitHub:
+**Always run this before pushing to GitHub:**
 
-   npm run validate
+```bash
+npm run validate
+```
 
-- If it shows **Green** (✅), your data is perfect. You can proceed.
-- If it shows **Red** (❌), the terminal will show the exact line number and error. Fix the JSON accordingly.
+- ✅ **Green Pass:** Your data is 100% perfect. You can push.
+- ❌ **Red Fail:** The terminal will show exact human-readable errors (e.g., `Field [articles.0.title]: Required`). Fix them immediately.
+
+> **🛡️ The "Prebuild" Safety Net:** We have added a `prebuild` hook. Vercel will automatically run this validation *before* building the site. If your JSON is broken, **Vercel will reject the deployment**, saving your live site from crashing.
 
 ---
 
 ## 🚀 Deployment (Vercel)
 
-Our code will connect directly from GitHub to Vercel. Whenever you update the JSON and `git push`, Vercel will automatically rebuild and deploy the website.
+Vercel is connected directly to this GitHub repository. 
 
-1. Push your code to GitHub:
+1. Update your JSON or Images.
+2. Push your code to GitHub:
+   ```bash
    git add .
    git commit -m "feat: added new article and photos"
    git push origin main
-   
-2. Log in to Vercel.com and import your GitHub repository.
-3. The framework preset will automatically select Next.js. Click **Deploy**.
-4. Your archive will be live!
+   ```
+3. Vercel will automatically trigger a build. If the `validate` script passes, your new site will be live in ~1 minute.
 
 ### Google Search Console Setup
-After deploying, go to Google Search Console (https://search.google.com/search-console) and submit your `sitemap.xml`. Our dynamic sitemap will automatically notify Google about all your new articles.
+After deploying, go to [Google Search Console](https://search.google.com/search-console) and submit your `sitemap.xml`. Our dynamic sitemap will automatically notify Google about all your new articles.
 
 ---
 
-## 💡 Golden Rules (Always Remember)
+## 🏆 Golden Rules (Never Break These)
 
-1. **Do not touch the `src/` folder.** The code is already written; from now on, only play with the `data/` folder.
-2. **Image paths:** In JSON, the image path should be written as `images/folder-name/photo-name.jpg` (without a leading `/`).
-3. **Unique IDs:** Every article, person, and photo must have a unique ID (e.g., `chhath-ghat`, `snk-high-school`).
-4. **Before deploying:** Always run `npm run validate`.
+1. **Do not touch the `src/` folder.** The React code and UI are finalized to Enterprise standards.
+2. **JSON Syntax:** Always use double quotes (`"key": "value"`). JSON does not accept single quotes or comments (`//`).
+3. **Strict Dates:** Always use `YYYY-MM-DD` format for `lastUpdated`.
+4. **Unique IDs:** Every article, person, and photo must have a unique, lowercase `id`.
+5. **Before deploying:** Always run `npm run validate` locally if you have Node.js installed.
 
 ---
-
 *Made with ❤️ by the Bandwar Village Community.*
