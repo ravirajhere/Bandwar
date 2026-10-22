@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, LayersControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Link from "next/link";
@@ -24,34 +24,66 @@ export default function LandmarkMap({ landmarks }: { landmarks: any[] }) {
     setMounted(true);
   }, []);
 
-  if (!mounted) return <div className="h-[500px] bg-[#efece4] animate-pulse rounded-xl flex items-center justify-center">Loading Map...</div>;
+  // Loading state (Wikipedia Style)
+  if (!mounted) return (
+    <div className="h-[500px] bg-wiki-bg-alt border border-wiki-border-light flex items-center justify-center text-wiki-text-muted">
+      Loading Map...
+    </div>
+  );
 
-  // Village center roughly: 25.5009, 86.1606
   return (
-    <div className="h-[500px] w-full rounded-xl overflow-hidden border border-[#1a1a18]/10 shadow-sm z-0 relative">
+    // Sharp borders, no rounded corners, Wiki styling
+    <div className="h-[500px] w-full border border-wiki-border-light overflow-hidden z-0 relative">
       <MapContainer 
         center={[25.5009, 86.1606]} 
         zoom={14} 
         style={{ height: "100%", width: "100%" }}
         scrollWheelZoom={false}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        {/* 🛰️ Layer Control: Street vs Satellite */}
+        <LayersControl position="topright">
+          
+          {/* 1. Default Street Map */}
+          <LayersControl.BaseLayer checked name="Street Map">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+          </LayersControl.BaseLayer>
+
+          {/* 2. Satellite View (High Quality) */}
+          <LayersControl.BaseLayer name="Satellite View">
+            <TileLayer
+              attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            />
+          </LayersControl.BaseLayer>
+
+        </LayersControl>
+
+        {/* Markers */}
         {landmarks.map((place) => (
           <Marker 
-            key={place.id} 
+            key={place.id || place.name} 
             position={[place.lat, place.lng]}
             icon={customIcon}
           >
             <Popup>
               <div className="text-center font-sans">
-                <div className="text-2xl mb-1">{place.icon}</div>
-                <h3 className="font-bold text-sm text-[#1a1a18]">{place.name}</h3>
-                <p className="text-xs text-[#1a1a18]/70 mt-1 mb-2">{place.description}</p>
+                {place.icon && <div className="text-2xl mb-1">{place.icon}</div>}
+                <h3 className="font-bold text-[15px] text-wiki-text m-0 leading-tight">
+                  {place.name}
+                </h3>
+                {place.description && (
+                  <p className="text-[13px] text-wiki-text-muted mt-1 mb-2 leading-snug">
+                    {place.description}
+                  </p>
+                )}
                 {place.article && (
-                  <Link href={`/article/${place.article}`} className="text-xs text-[#a64b2a] font-bold hover:underline">
+                  <Link 
+                    href={`/article/${place.article}`} 
+                    className="inline-block text-[13px] text-wiki-link font-bold hover:underline mt-1"
+                  >
                     Read Article →
                   </Link>
                 )}
