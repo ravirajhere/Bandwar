@@ -3,8 +3,8 @@ import path from "path";
 import { z } from "zod";
 import { 
   MasterSchema, ArticleListSchema, MediaSchema, VisionSchema, 
-  PeopleDataSchema, CategoriesDataSchema,
-  MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData
+  PeopleDataSchema, CategoriesDataSchema, DirectoryDataSchema, // 👈 Naya import
+  MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData, DirectoryData // 👈 Naya type
 } from "./schema";
 
 // ==========================================
@@ -105,4 +105,10 @@ export function getPeopleData(): PeopleData {
 export function getCategoriesData(): CategoriesData {
   const rawData = readJsonFile("categories.json");
   return validateData(CategoriesDataSchema, rawData, "categories.json");
+}
+
+// 👇 NAYA FUNCTION: Directory Data Fetch
+export function getDirectoryData(): DirectoryData {
+  const rawData = readJsonFile("directory.json");
+  return validateData(DirectoryDataSchema, rawData, "directory.json");
 }
