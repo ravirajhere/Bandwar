@@ -1,6 +1,14 @@
 import { z } from "zod";
 
-// 1. Master Schema (Config, Nav, About, Contact)
+// ==========================================
+// 1. Core / Shared Schemas
+// ==========================================
+const IdSchema = z.string().regex(/^[a-z0-9-]+$/, "ID must be lowercase alphanumeric with hyphens (e.g., 'snk-high-school')");
+const DateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format");
+
+// ==========================================
+// 2. Master Schema (Strictly typed)
+// ==========================================
 export const MasterSchema = z.object({
   site: z.object({ 
     name: z.string(), 
@@ -45,13 +53,36 @@ export const MasterSchema = z.object({
       })
     ),
   }).optional(),
-  footer: z.any().optional(),
-  home: z.any().optional(),
+  footer: z.object({
+    text: z.string().optional(),
+    links: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
+  }).optional(),
+  // 👇 Strict Home Schema matching your page.tsx
+  home: z.object({
+    hero: z.object({
+      image: z.string(),
+      alt: z.string(),
+      location: z.string(),
+      title: z.string(),
+      tagline: z.string(),
+    }),
+    meta: z.array(z.object({ label: z.string(), value: z.string() })),
+    about: z.object({
+      eyebrow: z.string(),
+      title: z.string(),
+      paragraphs: z.array(z.string()),
+    }),
+    cta: z.object({ label: z.string(), href: z.string() }),
+    pullquote: z.object({ text: z.string(), cite: z.string() }),
+    stats: z.array(z.object({ label: z.string(), value: z.string() })),
+  }).optional(),
 });
 
-// 2. Article Schema (Wikipedia-style)
+// ==========================================
+// 3. Article Schema
+// ==========================================
 export const ArticleSchema = z.object({
-  id: z.string(),
+  id: IdSchema,
   title: z.string(),
   subtitle: z.string(),
   categories: z.array(z.string()),
@@ -59,7 +90,7 @@ export const ArticleSchema = z.object({
   hero: z.string().optional(),
   photos: z.array(z.object({ src: z.string(), caption: z.string() })).default([]),
   infobox: z.record(z.string()).optional(),
-  lastUpdated: z.string(),
+  lastUpdated: DateSchema, // 👈 Strict Date
   content: z.array(z.object({ heading: z.string(), text: z.string() })),
   faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
   related: z.array(z.string()).default([]),
@@ -68,7 +99,9 @@ export const ArticleSchema = z.object({
 });
 export const ArticleListSchema = z.object({ articles: z.array(ArticleSchema) });
 
-// 3. Media Schema (Gallery, Timeline, Map)
+// ==========================================
+// 4. Media Schema
+// ==========================================
 export const PhotoSchema = z.object({
   id: z.string(), 
   src: z.string(), 
@@ -89,6 +122,15 @@ export const TimelineEventSchema = z.object({
   article: z.string().optional(),
 });
 
+export const LandmarkSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  lat: z.number(),
+  lng: z.number(),
+  description: z.string().optional(),
+  category: z.string().optional(),
+});
+
 export const MediaSchema = z.object({
   gallery: z.object({
     categories: z.array(z.object({ id: z.string(), title: z.string(), icon: z.string() })),
@@ -98,10 +140,12 @@ export const MediaSchema = z.object({
   eras: z.array(
     z.object({ id: z.string(), title: z.string(), subtitle: z.string(), color: z.string() })
   ),
-  landmarks: z.array(z.any()).optional(),
+  landmarks: z.array(LandmarkSchema).optional(), // 👈 Strict Landmarks for Map
 });
 
-// 4. Vision 2035 Manifesto Schema
+// ==========================================
+// 5. Vision 2035 Manifesto Schema
+// ==========================================
 export const VisionSchema = z.object({
   intro: z.string(),
   priorities: z.array(
@@ -131,13 +175,16 @@ export const VisionSchema = z.object({
       }),
     })
   ),
-  achievements: z.array(z.any()),
-  roadmap: z.array(z.any()),
+  // Changed from any to a structured record
+  achievements: z.array(z.object({ title: z.string(), description: z.string(), year: z.string() })).default([]),
+  roadmap: z.array(z.object({ year: z.string(), title: z.string(), items: z.array(z.string()) })).default([]),
 });
 
-// 5. People Schema
+// ==========================================
+// 6. People Schema
+// ==========================================
 export const PersonSchema = z.object({
-  id: z.string(), 
+  id: IdSchema, 
   name: z.string(), 
   role: z.string(),
   locality: z.string(), 
@@ -146,9 +193,11 @@ export const PersonSchema = z.object({
 });
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 
-// 6. Categories Schema
+// ==========================================
+// 7. Categories Schema
+// ==========================================
 export const CategorySchema = z.object({
-  id: z.string(),
+  id: IdSchema,
   title: z.string(),
   icon: z.string(),
   description: z.string(),
