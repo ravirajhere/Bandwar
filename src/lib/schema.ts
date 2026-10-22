@@ -38,7 +38,6 @@ export const MasterSchema = z.object({
     censusCode: z.number().optional()
   }).optional(),
 
-  // 👇 NAYA: Emergency Contacts for Sticky Bar
   emergencyContacts: z.array(
     z.object({
       label: z.string(),
@@ -224,6 +223,25 @@ export const CategorySchema = z.object({
 export const CategoriesDataSchema = z.object({ categories: z.array(CategorySchema) });
 
 // ==========================================
+// 8. Directory Schema (NEW)
+// ==========================================
+export const DirectoryItemSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  categoryId: z.string(),
+  description: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+  timing: z.string().optional(),
+  isEmergency: z.boolean().default(false),
+});
+
+export const DirectoryDataSchema = z.object({
+  categories: z.array(z.object({ id: z.string(), title: z.string(), icon: z.string() })),
+  items: z.array(DirectoryItemSchema),
+});
+
+// ==========================================
 // TypeScript Types Export
 // ==========================================
 export type MasterConfig = z.infer<typeof MasterSchema>;
@@ -234,3 +252,7 @@ export type Person = z.infer<typeof PersonSchema>;
 export type PeopleData = z.infer<typeof PeopleDataSchema>;
 export type Category = z.infer<typeof CategorySchema>;
 export type CategoriesData = z.infer<typeof CategoriesDataSchema>;
+
+// Directory Types
+export type DirectoryItem = z.infer<typeof DirectoryItemSchema>;
+export type DirectoryData = z.infer<typeof DirectoryDataSchema>;
