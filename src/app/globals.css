@@ -3,28 +3,41 @@
 @tailwind utilities;
 
 /* =========================================
-   1. BASE STYLES & TYPOGRAPHY (Editorial Look)
+   1. THEME VARIABLES (One-File Change Magic)
    ========================================= */
 @layer base {
   :root {
-    --background: #f7f5ef;
-    --foreground: #1a1a18;
+    /* 🌐 Wikipedia Style Colors (Yahan se puri site ka look control hoga) */
+    --bg-main: #ffffff;           /* Pure white background */
+    --bg-alt: #f8f9fa;            /* Light grey for Infobox/Tables */
+    --text-main: #202122;         /* High contrast dark grey for reading */
+    --text-muted: #54595d;        /* For captions and secondary text */
+    --link-color: #0645ad;        /* Classic Wikipedia Blue */
+    --link-visited: #0b0080;      /* Visited link color */
+    --border-main: #a2a9b1;       /* Standard table/infobox borders */
+    --border-light: #c8ccd1;      /* Light borders for separators */
+    
+    /* Selection color */
+    --selection-bg: #0645ad;
+    --selection-text: #ffffff;
   }
 
   html {
     scroll-behavior: smooth;
+    font-size: 16px; /* Base size for seniors */
   }
 
   body {
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: var(--bg-main);
+    color: var(--text-main);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   }
 
   ::selection {
-    background-color: #a64b2a;
-    color: #ffffff;
+    background-color: var(--selection-bg);
+    color: var(--selection-text);
   }
 
   img {
@@ -34,69 +47,94 @@
   }
 
   /* =========================================
-     STRICT ARCHIVAL & EDITORIAL TYPOGRAPHY
+     TYPOGRAPHY (Wikipedia Editorial Style)
      ========================================= */
   
-  /* Paragraphs: Breathing room for readability */
+  /* Paragraphs */
   p {
-    max-width: 72ch; 
-    line-height: 1.8; 
-    margin-bottom: 1.75rem; 
-    font-size: 1.05rem; 
+    max-width: 75ch; 
+    line-height: 1.7; /* Slightly tighter than editorial, but highly readable */
+    margin-bottom: 1.25rem; 
+    font-size: 1.05rem; /* Approx 16.8px */
   }
 
-  /* Headings: Balance and Hierarchy */
+  /* Global Links inside text */
+  a {
+    color: var(--link-color);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  a:visited {
+    color: var(--link-visited);
+  }
+
+  /* Headings (Serif for Wikipedia feel) */
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance; 
-    color: #1a1a18;
+    color: var(--text-main);
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-weight: normal; /* Wikipedia headings are usually normal weight */
   }
 
-  /* h2: Section Headings spacing */
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Classic Wikipedia heading underline */
   h2 {
-    font-family: var(--font-fraunces), serif;
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-top: 3.5rem; 
-    margin-bottom: 1.25rem; 
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(26, 26, 24, 0.1); 
+    font-size: 1.6rem;
+    margin-top: 2.5rem; 
+    margin-bottom: 1rem; 
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border-light); 
   }
 
-  /* Tables: Clean Data Sheets */
+  h3 {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Tables (Data Sheets & Infoboxes) */
   table {
     width: 100%;
-    margin-top: 2rem;
-    margin-bottom: 3rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
     border-collapse: collapse;
     font-size: 0.95rem;
-    background-color: #ffffff;
-    border: 1px solid rgba(26, 26, 24, 0.15);
+    background-color: var(--bg-alt);
+    border: 1px solid var(--border-main);
   }
 
   th, td {
-    padding: 1rem; 
-    border-bottom: 1px solid rgba(26, 26, 24, 0.1);
+    padding: 0.75rem; 
+    border: 1px solid var(--border-light);
     text-align: left;
     vertical-align: top;
     line-height: 1.5;
   }
 
   th {
-    background-color: #efece4; 
-    font-weight: 600;
-    color: #1a1a18;
+    background-color: #eaecf0; /* Slightly darker grey for header */
+    font-weight: 700;
+    color: var(--text-main);
     width: 35%; 
   }
-  
+
   /* Lists */
   ul, ol {
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
     padding-left: 1.5rem;
+    line-height: 1.7;
   }
   
   li {
-    margin-bottom: 0.5rem;
-    line-height: 1.7;
+    margin-bottom: 0.35rem;
   }
 }
 
@@ -105,26 +143,19 @@
    ========================================= */
 @layer components {
   .container-custom {
-    @apply max-w-6xl mx-auto px-4 md:px-6;
+    @apply max-w-7xl mx-auto px-4 md:px-6; /* Increased max-width for 3-column layout */
   }
 }
 
 /* =========================================
-   3. CUSTOM UTILITIES 
-   ========================================= */
-@layer utilities {
-  /* Future custom utility classes */
-}
-
-/* =========================================
-   4. LEAFLET MAP OVERRIDES (Strict Look)
+   3. LEAFLET MAP OVERRIDES (Clean Look)
    ========================================= */
 .leaflet-popup-content-wrapper {
   border-radius: 2px !important; 
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-  border: 1px solid rgba(26, 26, 24, 0.2) !important;
-  background-color: #ffffff !important;
-  color: #1a1a18 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid var(--border-main) !important;
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
   padding: 0 !important; 
 }
 
@@ -134,30 +165,29 @@
 }
 
 .leaflet-popup-tip {
-  background-color: #ffffff !important;
-  border: 1px solid rgba(26, 26, 24, 0.2) !important;
+  background-color: var(--bg-main) !important;
+  border: 1px solid var(--border-main) !important;
   box-shadow: none !important;
 }
 
 /* =========================================
-   5. CUSTOM SCROLLBAR (Minimal)
+   4. CUSTOM SCROLLBAR (Clean & Minimal)
    ========================================= */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f7f5ef;
-  border-left: 1px solid rgba(26, 26, 24, 0.05);
+  background: var(--bg-main);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4d0c5;
-  border-radius: 2px; 
-  border: 2px solid #f7f5ef; 
+  background: var(--border-light);
+  border-radius: 4px; 
+  border: 2px solid var(--bg-main); 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a64b2a; 
+  background: var(--border-main); 
 }
