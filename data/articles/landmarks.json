@@ -1,15 +1,21 @@
 {
   "articles": [
     {
-      "id": "shaheed-dwar",
-      "title": "Shaheed Ramchandra Dwar",
-      "subtitle": "The martyrs' gate at the village entrance",
+      "id": "shaheed-ramchandra-dwar-bandwar",
+      "title": "Shaheed Ramchandra Dwar (Martyrs' Gate), Bandwar",
+      "subtitle": "The historic memorial gate at the village entrance",
       "categories": ["landmarks", "history"],
       "summary": "The main entrance gate to Bandwar village, named in memory of Ramchandra ji — a martyr from the village. Built under the initiative of Girija Singh, a resident of Bandwar, the gate stands at the point where the road from Begusarai enters the village. It is inscribed on both sides with 'Jai Hind' and 'Bharat Mata', and has become one of the most recognisable structures in Bandwar.",
-      "hero": "images/history/shaheed-dwar-day.jpg",
+      "hero": "images/landmarks/shaheed-ramchandra-dwar-bandwar-day.jpg",
       "photos": [
-        { "src": "images/history/shaheed-dwar-day.jpg", "caption": "The gate during the day" },
-        { "src": "images/history/shaheed-dwar-night.jpg", "caption": "The gate lit at night" }
+        { 
+          "src": "images/landmarks/shaheed-ramchandra-dwar-bandwar-day.jpg", 
+          "caption": "The Shaheed Ramchandra Dwar during the day." 
+        },
+        { 
+          "src": "images/landmarks/shaheed-ramchandra-dwar-bandwar-night.jpg", 
+          "caption": "The martyr's gate lit up at night in Bandwar." 
+        }
       ],
       "infobox": {
         "Type": "Memorial gate",
@@ -21,10 +27,10 @@
       },
       "lastUpdated": "2026-10-15",
       "content": [
-        { "heading": "Overview", "text": "Shaheed Ramchandra Dwar is the main entrance gate to Bandwar village. It stands at the point where the road from Begusarai enters the village, and carries the name of a village martyr — Shaheed Ramchandra. The gate is painted blue with white lettering, and is inscribed on both sides with 'Jai Hind' and 'Bharat Mata'. It is the first structure that most visitors to Bandwar see, and it announces the village's identity before they have set foot in it. The [[vaani-vilas-library|Vaani Vilas Pustakalaya]] stands just behind the gate, on Bandwar Road." },
-        { "heading": "History", "text": "The gate was built under the initiative of Girija Singh, a resident of Bandwar, in memory of Ramchandra ji. Its name places it among the 'Shaheed Duars' (martyrs' gates) that are found across Begusarai district — a legacy of the region's history of peasant movements and resistance that earned it the name 'Leningrad of Bihar'. Like the [[chandrashekhar-chowk|Chandrashekhar Chowk]] in the village centre, the gate is part of Bandwar's engagement with the wider political and commemorative culture of the district — a way of marking the village's place in a history larger than itself." },
+        { "heading": "Overview", "text": "Shaheed Ramchandra Dwar is the main entrance gate to Bandwar village. It stands at the point where the road from Begusarai enters the village, and carries the name of a village martyr — Shaheed Ramchandra. The gate is painted blue with white lettering, and is inscribed on both sides with 'Jai Hind' and 'Bharat Mata'. It is the first structure that most visitors to Bandwar see, and it announces the village's identity before they have set foot in it. The [[vaani-vilas-library-bandwar|Vaani Vilas Pustakalaya]] stands just behind the gate, on Bandwar Road." },
+        { "heading": "History", "text": "The gate was built under the initiative of Girija Singh, a resident of Bandwar, in memory of Ramchandra ji. Its name places it among the 'Shaheed Duars' (martyrs' gates) that are found across Begusarai district — a legacy of the region's history of peasant movements and resistance that earned it the name 'Leningrad of Bihar'. Like the [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]] in the village centre, the gate is part of Bandwar's engagement with the wider political and commemorative culture of the district — a way of marking the village's place in a history larger than itself." },
         { "heading": "Design", "text": "The gate is built in the form of a large arch, supported by two pillars. The arch and pillars are painted in blue with white trim, and the pillars are topped with gold-coloured finials. A single lamp is mounted at the top. The simplicity of the design — no ornate carving, no elaborate sculpture — is typical of the memorial gates of the region, which are meant to be functional entrances as much as memorials. The gate is maintained by the village community, and is repainted periodically, especially before major festivals." },
-        { "heading": "Daily Life", "text": "The gate is not just a memorial — it is a working part of the village. Every morning and evening, villagers pass through it on their way to work, to the market, or to the fields. During the [[janmashtami-mela|Janmashtami Mela]], the area around the gate becomes a hub of activity, with temporary stalls and vendors setting up under and around the arch. The [[sbi-bank|SBI Bandwar branch]], the [[post-office|post office]], and other village institutions are all a short walk from the gate." },
+        { "heading": "Daily Life", "text": "The gate is not just a memorial — it is a working part of the village. Every morning and evening, villagers pass through it on their way to work, to the market, or to the fields. During the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]], the area around the gate becomes a hub of activity, with temporary stalls and vendors setting up under and around the arch. The [[sbi-bank|SBI Bandwar branch]], the [[post-office|post office]], and other village institutions are all a short walk from the gate." },
         { "heading": "Present Day", "text": "The gate is well-maintained and is one of the most recognisable structures in Bandwar. It has become a landmark that villagers use as a reference point — 'Shaheed Dwar se aage' (beyond the Shaheed Dwar) is a phrase that every resident of Bandwar understands. At night, the lamp mounted at the top of the arch casts a soft light over the road, and the blue-and-white paint of the pillars catches the glow of passing vehicles on the [[roads|SH 55]]." }
       ],
       "faqs": [
@@ -34,20 +40,22 @@
         { "q": "What is inscribed on the gate?", "a": "The gate is inscribed on both sides with 'Jai Hind' and 'Bharat Mata'. It is painted blue with white lettering, with gold-coloured finials on top of its pillars." },
         { "q": "Why is the gate important to the village?", "a": "The gate is both a memorial and a landmark. It commemorates a village martyr, and it has become a reference point that villagers use to orient themselves — 'Shaheed Dwar se aage' is a phrase every resident understands." }
       ],
-      "related": ["chandrashekhar-chowk", "historic-well", "vaani-vilas-library", "janmashtami-mela", "burhi-gandak", "shivala"],
+      "related": ["chandrashekhar-chowk-bandwar", "historic-well-chaupal-bandwar", "vaani-vilas-library-bandwar", "janmashtami-mela-bandwar-bihar", "burhi-gandak-river-bandwar", "shivala-temple-bandwar"],
       "location": { "lat": 25.5015, "lng": 86.1600 },
-      "tags": ["gate", "martyr", "shaheed", "landmark", "entrance", "shaheed dwar", "bandwar gate", "begusarai landmark", "memorial gate"]
+      "tags": ["shaheed ramchandra dwar", "bandwar entrance gate", "martyrs gate bihar", "begusarai landmarks", "village gate bandwar", "girija singh"]
     },
-
     {
-      "id": "chandrashekhar-chowk",
-      "title": "Chandrashekhar Chowk",
-      "subtitle": "The village square honouring Begusarai's first communist MLA",
+      "id": "chandrashekhar-chowk-bandwar",
+      "title": "Chandrashekhar Chowk: Memorial of Begusarai's First Communist MLA",
+      "subtitle": "The village square honouring a key figure in the 'Leningrad of Bihar' movement",
       "categories": ["landmarks", "history"],
       "summary": "A village square in Bandwar with a statue of Chandrashekhar Singh — the first communist MLA from Barauni, and a defining figure in Begusarai's identity as 'the Leningrad of Bihar'. The chowk sits at a crossroads in the village centre, and its statue — under a canopy supported by red stone pillars — has become one of the most photographed features of Bandwar.",
-      "hero": "images/history/chandrashekhar-chowk.jpg",
+      "hero": "images/landmarks/chandrashekhar-chowk-statue-bandwar.jpg",
       "photos": [
-        { "src": "images/history/chandrashekhar-chowk.jpg", "caption": "The statue of Chandrashekhar Singh under its canopy" }
+        { 
+          "src": "images/landmarks/chandrashekhar-chowk-statue-bandwar.jpg", 
+          "caption": "The statue of Chandrashekhar Singh under its canopy at the village square." 
+        }
       ],
       "infobox": {
         "Type": "Village square with memorial",
@@ -61,7 +69,7 @@
         { "heading": "Overview", "text": "Chandrashekhar Chowk is a village square in Bandwar, centred around a statue of Chandrashekhar Singh — the first communist MLA to be elected from Barauni, and one of the founding figures of Begusarai's communist movement. The chowk sits at a crossroads in the village centre, where lanes from the temples, the historic well, and the market meet. Its presence in Bandwar places the village within a wider political geography — the region of Begusarai that came to be known across India as 'Leningrad of Bihar'." },
         { "heading": "Who Was Chandrashekhar Singh", "text": "Chandrashekhar Singh (1915–1986) was born in Bihat, a village near Bandwar. He was elected as the first communist MLA from the Barauni constituency in 1956, and went on to become a leading figure in the Communist Party of India. His work in the Naokothi land movement helped redistribute thousands of acres of land to the landless, and earned Begusarai the nickname 'Leningrad of Bihar'. The movement, which peaked in the late 1960s and 1970s, was one of the most significant peasant uprisings in post-independence India, and Chandrashekhar Singh was among its most visible leaders. His connection to Bandwar — through Bihat, his birth village, which is only a few kilometres away — is the reason his memorial stands in the village centre." },
         { "heading": "The Memorial", "text": "The memorial consists of a statue of Chandrashekhar Singh standing under a canopy supported by red stone pillars. The canopy is topped with a red tiled roof and decorated with orange flags. The memorial is enclosed by a low iron railing, and a small plaque at the base carries his name and dates. The statue depicts him in the simple attire that he was known for — a kurta and a shawl — rather than the formal dress of a politician. This was a deliberate choice by the villagers who erected the memorial, and it reflects the image he cultivated in life: a leader of the people, not above them." },
-        { "heading": "Significance", "text": "The presence of the memorial in Bandwar reflects the village's connection to the wider Begusarai region's political history. The chowk sits at a crossroads in the village centre, and remains a place where people gather, rest, and pass through on their way to the market or the temples. The [[shivala|Shivala]] is a short walk away, as is the [[historic-well|historic well]]. In the evenings, the chowk becomes a place of conversation — older villagers sit on the low wall of the memorial, and the conversations that happen here are often about the same politics of land and labour that Chandrashekhar Singh spent his life working on." },
+        { "heading": "Significance", "text": "The presence of the memorial in Bandwar reflects the village's connection to the wider Begusarai region's political history. The chowk sits at a crossroads in the village centre, and remains a place where people gather, rest, and pass through on their way to the market or the temples. The [[shivala-temple-bandwar|Shivala]] is a short walk away, as is the [[historic-well-chaupal-bandwar|historic well]]. In the evenings, the chowk becomes a place of conversation — older villagers sit on the low wall of the memorial, and the conversations that happen here are often about the same politics of land and labour that Chandrashekhar Singh spent his life working on." },
         { "heading": "Present Day", "text": "The memorial is maintained by the village community. It is repainted periodically and cleaned before important festivals. On his birth anniversary and death anniversary, small gatherings are held at the chowk, and the flags around the canopy are replaced. The memorial has become part of the daily rhythm of the village — a place that villagers pass through without always stopping to look at the statue, but whose presence they notice when it is cleaned or when the flags change." }
       ],
       "faqs": [
@@ -70,20 +78,22 @@
         { "q": "Why is there a statue of Chandrashekhar Singh in Bandwar?", "a": "Chandrashekhar Singh was born in Bihat, a village near Bandwar. The statue was erected by the village community as a memorial to his role in Begusarai's communist movement and the land reforms that followed." },
         { "q": "Where is Chandrashekhar Chowk located?", "a": "The chowk is in the centre of Bandwar village, at a crossroads where lanes from the temples, the historic well, and the market meet. It is a short walk from Shivala and the historic well (chaupal)." }
       ],
-      "related": ["shaheed-dwar", "shivala", "historic-well", "snk-high-school", "bandh", "burhi-gandak"],
+      "related": ["shaheed-ramchandra-dwar-bandwar", "shivala-temple-bandwar", "historic-well-chaupal-bandwar", "snk-high-school-bandwar", "bandh-embankment-bandwar", "burhi-gandak-river-bandwar"],
       "location": { "lat": 25.5008, "lng": 86.1612 },
-      "tags": ["statue", "memorial", "communist", "landmark", "chowk", "history", "chandrashekhar singh", "begusarai", "leningrad of bihar", "naokothi"]
+      "tags": ["chandrashekhar chowk bandwar", "first communist mla barauni", "leningrad of bihar", "naokothi movement", "begusarai history", "chandrashekhar singh statue"]
     },
-
     {
-      "id": "historic-well",
-      "title": "Historic Well (Chaupal)",
-      "subtitle": "A gathering place older than living memory",
+      "id": "historic-well-chaupal-bandwar",
+      "title": "Historic Well (Chaupal) of Bandwar: The Village Gathering Place",
+      "subtitle": "A social hub older than living memory, featured in Prabhat Khabar",
       "categories": ["landmarks", "culture"],
-      "summary": "Bandwar's historic well has served as both a source of water and a gathering place — a chaupal — for generations. It was the subject of a feature in Prabhat Khabar in July 2026, which described it as 'still the centre of social dialogue and intellectual discussion in the village'. It sits near [[shivala|Shivala]] and the [[chandrashekhar-chowk|Chandrashekhar Chowk]], and has been a centre of village life for as long as anyone remembers.",
-      "hero": "images/culture/historic-well-chaupal.jpg",
+      "summary": "Bandwar's historic well has served as both a source of water and a gathering place — a chaupal — for generations. It was the subject of a feature in Prabhat Khabar in July 2026, which described it as 'still the centre of social dialogue and intellectual discussion in the village'. It sits near [[shivala-temple-bandwar|Shivala]] and the [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]], and has been a centre of village life for as long as anyone remembers.",
+      "hero": "images/landmarks/historic-well-chaupal-bandwar.jpg",
       "photos": [
-        { "src": "images/culture/historic-well-chaupal.jpg", "caption": "The historic well — the village chaupal" }
+        { 
+          "src": "images/landmarks/historic-well-chaupal-bandwar.jpg", 
+          "caption": "The historic well (chaupal) at the centre of Bandwar village." 
+        }
       ],
       "infobox": {
         "Type": "Historic well",
@@ -95,9 +105,9 @@
       },
       "lastUpdated": "2026-10-15",
       "content": [
-        { "heading": "Overview", "text": "The historic well of Bandwar — locally known simply as the chaupal — is one of the oldest structures in the village. For generations, it has served a dual purpose: as a source of drinking water, and as a place where villagers gather to talk. It sits at the heart of the village centre, a short walk from [[shivala|Shivala]] and the [[chandrashekhar-chowk|Chandrashekhar Chowk]]. Its name — 'chaupal' — comes from the traditional North Indian village gathering place, and it is a fitting name for a structure that has been the site of more conversations than any other place in Bandwar." },
+        { "heading": "Overview", "text": "The historic well of Bandwar — locally known simply as the chaupal — is one of the oldest structures in the village. For generations, it has served a dual purpose: as a source of drinking water, and as a place where villagers gather to talk. It sits at the heart of the village centre, a short walk from [[shivala-temple-bandwar|Shivala]] and the [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]]. Its name — 'chaupal' — comes from the traditional North Indian village gathering place, and it is a fitting name for a structure that has been the site of more conversations than any other place in Bandwar." },
         { "heading": "The Chaupal Tradition", "text": "In the evenings, as the day's work ends, men and women come to the well. They discuss the harvest, school results, politics, and the world beyond the village. Some of the most important decisions taken in Bandwar over the years have been taken here — not in any formal meeting, but in the slow, unhurried talk that happens at a well. The chaupal tradition is common across rural North India — the village well or tree under which men gather to talk — but in Bandwar, the tradition has survived into an era when piped water has reduced the well's practical role. Even though most households now have their own taps, villagers still come to the well to sit and talk." },
-        { "heading": "Recent Renovation", "text": "In recent years, the well has been given a modern appearance. Its surface has been redone, the surrounding area has been repainted in bright colours, and modern lighting has been installed. At night, the entire area around the well is illuminated. The renovation was undertaken with funds from the village's own resources and, in part, from the [[jal-jeevan-tank|Jal Jeevan Mission]] programme that brought piped water to the village. The well is no longer the village's primary source of drinking water — that role has passed to the piped water system — but it has retained its role as the village's primary source of conversation." },
+        { "heading": "Recent Renovation", "text": "In recent years, the well has been given a modern appearance. Its surface has been redone, the surrounding area has been repainted in bright colours, and modern lighting has been installed. At night, the entire area around the well is illuminated. The renovation was undertaken with funds from the village's own resources and, in part, from the [[jal-jeevan-tank-bandwar|Jal Jeevan Mission]] programme that brought piped water to the village. The well is no longer the village's primary source of drinking water — that role has passed to the piped water system — but it has retained its role as the village's primary source of conversation." },
         { "heading": "Media Recognition", "text": "In July 2026, the Hindi daily Prabhat Khabar published a feature on the well, describing it as 'still the centre of social dialogue and intellectual discussion in the village'. The article noted that the chaupal has survived the arrival of smartphones and piped water, and that villagers still gather there every evening — a fact that the reporter described as a sign of the village's social cohesion. The feature was accompanied by photographs of the well and the men gathered around it, and it generated some local attention." },
         { "heading": "Present Day", "text": "The well continues to be used as a place of gathering. The tradition that has been observed here for generations — of conversation, memory, and community — continues into the present. Younger villagers sometimes gather at the well in the evenings, and the conversation that happens there is a mix of the old and the new: farm prices and cricket scores, land disputes and WhatsApp forwards, the history of the village and the news of the day. In this way, the chaupal has adapted to the times while keeping its essential character — a place where Bandwar talks to itself." }
       ],
@@ -108,22 +118,30 @@
         { "q": "What did Prabhat Khabar write about the well?", "a": "In July 2026, Prabhat Khabar published a feature describing the well as 'still the centre of social dialogue and intellectual discussion in the village'. The article noted that the chaupal has survived the arrival of smartphones and piped water." },
         { "q": "Where is the historic well located?", "a": "The well is in the centre of Bandwar village, a short walk from Shivala, the Chandrashekhar Chowk, and the Bada Krishna Mandir. It is one of the landmarks that define the village's centre." }
       ],
-      "related": ["shivala", "chandrashekhar-chowk", "burhi-gandak", "bandh", "krishna-mandir-bada", "jal-jeevan-tank"],
+      "related": ["shivala-temple-bandwar", "chandrashekhar-chowk-bandwar", "burhi-gandak-river-bandwar", "bandh-embankment-bandwar", "krishna-mandir-bada-bandwar", "jal-jeevan-tank-bandwar"],
       "location": { "lat": 25.5011, "lng": 86.1607 },
-      "tags": ["well", "chaupal", "landmark", "gathering", "culture", "water", "historic well", "prabhat khabar", "bandwar centre"]
+      "tags": ["historic well bandwar", "chaupal village square", "prabhat khabar bandwar", "gathering place bihar", "jal jeevan mission well", "bandwar village centre"]
     },
-
     {
-      "id": "bandh",
-      "title": "The Bandh",
-      "subtitle": "The embankment that gave Bandwar its name",
+      "id": "bandh-embankment-bandwar",
+      "title": "The Bandh: Bandwar's Historic Flood Protection Embankment",
+      "subtitle": "The structure that gave Bandwar its name and saved it from the Burhi Gandak",
       "categories": ["landmarks", "geography", "history"],
-      "summary": "The bandh is the embankment built along the Burhi Gandak to protect Bandwar from floods. It is widely believed that the village takes its name from this very structure — 'Bandh' becoming 'Bandwar'. It runs parallel to the [[burhi-gandak|Burhi Gandak]] along the western edge of the village, and is the single most important piece of infrastructure in Bandwar.",
-      "hero": "images/home/bandh-embankment.jpg",
+      "summary": "The bandh is the embankment built along the Burhi Gandak to protect Bandwar from floods. It is widely believed that the village takes its name from this very structure — 'Bandh' becoming 'Bandwar'. It runs parallel to the [[burhi-gandak-river-bandwar|Burhi Gandak]] along the western edge of the village, and is the single most important piece of infrastructure in Bandwar.",
+      "hero": "images/landmarks/bandh-embankment-burhi-gandak-bandwar.jpg",
       "photos": [
-        { "src": "images/home/bandh-embankment.jpg", "caption": "The embankment along the Burhi Gandak" },
-        { "src": "images/home/burhi-gandak-river.jpg", "caption": "Wildflowers on the river bank" },
-        { "src": "images/home/burhi-gandak-vertical.jpg", "caption": "The embankment and the river" }
+        { 
+          "src": "images/landmarks/bandh-embankment-burhi-gandak-bandwar.jpg", 
+          "caption": "The bandh (embankment) along the Burhi Gandak river protecting Bandwar." 
+        },
+        { 
+          "src": "images/geography/burhi-gandak-river-sunset-wildflowers-bandwar.jpg", 
+          "caption": "Wildflowers on the river bank near the embankment." 
+        },
+        { 
+          "src": "images/geography/burhi-gandak-river-embankment-vertical-bandwar.jpg", 
+          "caption": "The embankment and the river." 
+        }
       ],
       "infobox": {
         "Type": "Embankment",
@@ -135,11 +153,11 @@
       },
       "lastUpdated": "2026-10-15",
       "content": [
-        { "heading": "Overview", "text": "The bandh is the long embankment that runs parallel to the [[burhi-gandak|Burhi Gandak]] river, along the western edge of Bandwar. It was built by the village community generations ago to keep the river from flooding the village — and it is, in all likelihood, the origin of the village's name. The bandh is more than a piece of infrastructure: it is the physical fact that made Bandwar possible. Without it, the village would not exist in its present form. Every house, field, and lane in Bandwar owes its existence, indirectly, to the bandh." },
+        { "heading": "Overview", "text": "The bandh is the long embankment that runs parallel to the [[burhi-gandak-river-bandwar|Burhi Gandak]] river, along the western edge of Bandwar. It was built by the village community generations ago to keep the river from flooding the village — and it is, in all likelihood, the origin of the village's name. The bandh is more than a piece of infrastructure: it is the physical fact that made Bandwar possible. Without it, the village would not exist in its present form. Every house, field, and lane in Bandwar owes its existence, indirectly, to the bandh." },
         { "heading": "Why It Was Built", "text": "The Burhi Gandak floods almost every year. Without protection, the village's homes, fields, and roads would be submerged for weeks at a time. The bandh — a raised earthen embankment — redirects the floodwaters and protects the village from the worst of the flooding. The logic of the bandh is simple: by raising a wall of earth between the river and the village, the floodwaters are forced to flow elsewhere. But the engineering required to make this work — the slope of the embankment, the quality of the soil, the placement of drainage channels — is far from simple, and the village's original builders had to get it right, or the village would have been flooded every year." },
         { "heading": "The Name", "text": "The most widely accepted theory about the village's name is that 'Bandwar' is derived from 'Bandh'. In the local dialect, a bandh-waar — a place protected by an embankment — would naturally have been shortened to 'Bandwar'. This theory is supported by the fact that the bandh is the single most distinctive feature of the village's landscape, and that the villages along the Burhi Gandak that do not have embankments have names that are not derived from 'bandh'. The name of the village, in other words, is a record of the decision to build the bandh — a decision taken by the village's ancestors, and one that has shaped everything that has happened since." },
-        { "heading": "The Landscape", "text": "The bandh is one of the most striking features of Bandwar's landscape. From its top, on a clear morning, one can see the entire length of the village on one side, and the wide, still waters of the Burhi Gandak on the other. The embankment is planted with trees in places, and its slopes are covered in grass during the monsoon months. Wildflowers grow along its banks in the cooler months, and it is a favourite walking route for villagers in the early morning and evening. During [[chhath-puja|Chhath Puja]], the bandh becomes the site of the village's most important religious observance — thousands of villagers gather on its slope to offer prayers to Surya Dev as the sun sets and rises." },
-        { "heading": "Present Day", "text": "The bandh continues to serve its original purpose — flood protection — and has been reinforced over the years by the state's water resources department. But it is also more than that. It is a landmark, a walking path, and the physical embodiment of the village's name. The [[jal-jeevan-tank|Jal Jeevan Mission water tower]] stands near the bandh, drawing on groundwater connected to the river's aquifer. The embankment is also the site of the [[diarrhea-outbreak|September 2025 diarrhea outbreak]]'s aftermath — the health camp was held a short distance from its slopes. In this way, the bandh continues to be the stage on which many of the village's most important events — from religious festivals to public health crises — are played out." }
+        { "heading": "The Landscape", "text": "The bandh is one of the most striking features of Bandwar's landscape. From its top, on a clear morning, one can see the entire length of the village on one side, and the wide, still waters of the Burhi Gandak on the other. The embankment is planted with trees in places, and its slopes are covered in grass during the monsoon months. Wildflowers grow along its banks in the cooler months, and it is a favourite walking route for villagers in the early morning and evening. During [[chhath-puja-bandwar-bandh-burhi-gandak|Chhath Puja]], the bandh becomes the site of the village's most important religious observance — thousands of villagers gather on its slope to offer prayers to Surya Dev as the sun sets and rises." },
+        { "heading": "Present Day", "text": "The bandh continues to serve its original purpose — flood protection — and has been reinforced over the years by the state's water resources department. But it is also more than that. It is a landmark, a walking path, and the physical embodiment of the village's name. The [[jal-jeevan-tank-bandwar|Jal Jeevan Mission water tower]] stands near the bandh, drawing on groundwater connected to the river's aquifer. The embankment is also the site of the [[diarrhea-outbreak-bandwar-september-2025|September 2025 diarrhea outbreak]]'s aftermath — the health camp was held a short distance from its slopes. In this way, the bandh continues to be the stage on which many of the village's most important events — from religious festivals to public health crises — are played out." }
       ],
       "faqs": [
         { "q": "What is the bandh?", "a": "The bandh is the embankment built along the Burhi Gandak river, running parallel to it along the western edge of Bandwar. It was built by the village community generations ago to protect the village from the river's annual floods." },
@@ -148,9 +166,9 @@
         { "q": "What happens on the bandh during Chhath Puja?", "a": "During Chhath Puja — Bihar's most important festival — thousands of villagers gather on the slope of the bandh to offer prayers to Surya Dev (the Sun God) at sunset and sunrise. The bandh is the main venue for the festival in Bandwar." },
         { "q": "Does the bandh prevent all flooding in Bandwar?", "a": "No — the bandh mitigates much of the damage from the Burhi Gandak's annual floods, but the village has still experienced flooding repeatedly. The bandh is a crucial protection, but it is not a complete solution." }
       ],
-      "related": ["burhi-gandak", "chhath-puja", "jal-jeevan-tank", "diarrhea-outbreak", "shaheed-dwar", "historic-well"],
+      "related": ["burhi-gandak-river-bandwar", "chhath-puja-bandwar-bandh-burhi-gandak", "jal-jeevan-tank-bandwar", "diarrhea-outbreak-bandwar-september-2025", "shaheed-ramchandra-dwar-bandwar", "historic-well-chaupal-bandwar"],
       "location": { "lat": 25.5005, "lng": 86.1575 },
-      "tags": ["bandh", "embankment", "flood", "landmark", "geography", "name-origin", "bandwar name", "burhi gandak", "flood protection"]
+      "tags": ["bandh embankment bandwar", "flood protection bihar", "burhi gandak river bandh", "bandwar name origin", "chhath puja bandh", "geography of bandwar"]
     }
   ]
 }
