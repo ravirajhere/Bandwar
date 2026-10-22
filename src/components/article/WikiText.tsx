@@ -30,8 +30,13 @@ export function WikiText({ text }: WikiTextProps) {
             <Link 
               key={index} 
               href={`/article/${id}`} 
-              // 3. Theme colors and Accessibility Focus Ring added
-              className="text-accent font-semibold underline decoration-warn/40 decoration-2 underline-offset-4 hover:text-warn hover:decoration-warn transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-warn/50 focus:ring-offset-2 rounded-sm"
+              title={displayLabel} // Wikipedia-style tooltip on hover
+              // 3. Exact Wikipedia link styling:
+              // - Standard wiki blue color (text-wiki-link)
+              // - Visited state (visited:text-wiki-link-visited)
+              // - No underline by default, underline on hover
+              // - Accessible focus ring for keyboard users
+              className="text-wiki-link visited:text-wiki-link-visited hover:underline focus:outline-none focus:ring-2 focus:ring-wiki-link focus:ring-offset-1 rounded-sm"
             >
               {displayLabel}
             </Link>
