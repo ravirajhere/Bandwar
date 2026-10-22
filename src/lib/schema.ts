@@ -12,13 +12,46 @@ const DateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY
 export const MasterSchema = z.object({
   site: z.object({ 
     name: z.string(), 
-    url: z.string().url(), 
-    description: z.string() 
+    shortName: z.string().optional(),
+    tagline: z.string().optional(),
+    description: z.string(), 
+    url: z.string().url(),
+    edition: z.string().optional(),
+    language: z.string().optional(),
+    locale: z.string().optional(),
+    dir: z.string().optional(),
+    established: z.string().optional()
   }),
+  
+  village: z.object({
+    name: z.string(),
+    alias: z.array(z.string()).optional(),
+    region: z.string().optional(),
+    district: z.string().optional(),
+    state: z.string().optional(),
+    country: z.string().optional(),
+    pincode: z.string().optional(),
+    coordinates: z.object({ lat: z.number(), lng: z.number() }).optional(),
+    elevation: z.string().optional(),
+    population: z.number().optional(),
+    area: z.string().optional(),
+    censusCode: z.number().optional()
+  }).optional(),
+
+  // 👇 NAYA: Emergency Contacts for Sticky Bar
+  emergencyContacts: z.array(
+    z.object({
+      label: z.string(),
+      number: z.string(),
+      type: z.string().optional()
+    })
+  ).optional(),
+
   brand: z.object({ 
     colors: z.record(z.string()), 
     fonts: z.record(z.string()) 
-  }),
+  }).optional(),
+
   nav: z.array(
     z.object({ label: z.string(), href: z.string(), icon: z.string() })
   ),
@@ -36,7 +69,6 @@ export const MasterSchema = z.object({
     committee: z.array(z.object({ role: z.string(), name: z.string(), link: z.string().optional() })),
   }).optional(),
   
-  // 👇 Footer Schema (Strictly typed matching Footer.tsx)
   footer: z.object({
     copyright: z.string().optional(),
     credit: z.string().optional(),
@@ -44,7 +76,6 @@ export const MasterSchema = z.object({
     explore: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
   }).optional(),
 
-  // 👇 Home Schema (Strictly typed matching page.tsx)
   home: z.object({
     hero: z.object({
       image: z.string(),
@@ -109,7 +140,6 @@ export const TimelineEventSchema = z.object({
   article: z.string().optional(),
 });
 
-// Landmarks schema (Flexible to prevent build errors from old data)
 export const LandmarkSchema = z.object({
   id: z.string().optional(),
   title: z.string().optional(), 
@@ -131,7 +161,7 @@ export const MediaSchema = z.object({
 });
 
 // ==========================================
-// 5. Vision 2035 Manifesto Schema (Flexible)
+// 5. Vision 2035 Manifesto Schema
 // ==========================================
 export const VisionSchema = z.object({
   intro: z.string(),
@@ -162,7 +192,6 @@ export const VisionSchema = z.object({
     description: z.string().optional(),
     year: z.string().optional(), 
   }).passthrough()).default([]),
-  
   roadmap: z.array(z.object({
     year: z.string().optional(), 
     title: z.string().optional(),
