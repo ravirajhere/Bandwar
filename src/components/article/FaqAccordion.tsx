@@ -8,23 +8,26 @@ export function FaqAccordion({ faqs }: FaqProps) {
   if (!faqs || faqs.length === 0) return null;
 
   return (
-    <div className="mt-12 border-t border-primary/10 pt-10">
-      <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6">
+    <div className="mt-8">
+      {/* Wikipedia Style Heading */}
+      <h2 className="font-serif text-2xl text-wiki-text mb-3 pb-1 border-b border-wiki-border-light">
         Frequently Asked Questions
       </h2>
-      <div className="space-y-3">
+      
+      {/* Clean Wikipedia-style List Box */}
+      <div className="border border-wiki-border-light bg-wiki-bg divide-y divide-wiki-border-light">
         {faqs.map((faq) => (
           <details 
             key={faq.q} 
-            className="group bg-white border border-primary/10 rounded-xl overflow-hidden shadow-sm transition-all duration-200 [&_summary::-webkit-details-marker]:hidden"
+            className="group [&_summary::-webkit-details-marker]:hidden"
           >
-            <summary className="flex items-center justify-between cursor-pointer p-5 font-semibold text-primary hover:bg-surface/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset">
-              <span className="pr-4 text-base md:text-lg">{faq.q}</span>
-              <span className="shrink-0 text-warn bg-warn/10 p-1.5 rounded-full group-open:rotate-180 transition-transform duration-300">
-                <ChevronDown size={18} strokeWidth={2.5} />
+            <summary className="flex items-center justify-between cursor-pointer p-4 font-bold text-[15px] text-wiki-text hover:bg-wiki-bg-alt transition-colors focus:outline-none focus-visible:bg-wiki-bg-alt">
+              <span className="pr-4 leading-snug">{faq.q}</span>
+              <span className="shrink-0 text-wiki-text-muted group-open:rotate-180 transition-transform duration-200">
+                <ChevronDown size={18} strokeWidth={2} />
               </span>
             </summary>
-            <div className="px-5 pb-5 pt-2 text-primary/80 text-base leading-relaxed border-t border-primary/5 bg-surface/20">
+            <div className="p-4 pt-1 text-[15px] text-wiki-text leading-relaxed bg-wiki-bg-alt">
               {faq.a}
             </div>
           </details>
