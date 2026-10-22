@@ -32,7 +32,7 @@ export default function Home() {
       {/* MAIN GRID LAYOUT */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
 
-        {/* LEFT COLUMN (Main Content: About & Articles) - Spans 8 cols on desktop */}
+        {/* LEFT COLUMN (Main Content: About & Articles) */}
         <div className="md:col-span-8 space-y-8">
           
           {/* 1. About Section */}
@@ -103,10 +103,10 @@ export default function Home() {
 
         </div>
 
-        {/* RIGHT COLUMN (Sidebar: Quick Access, Stats) - Spans 4 cols */}
+        {/* RIGHT COLUMN (Sidebar: Quick Access, Stats) */}
         <div className="md:col-span-4 space-y-6">
 
-          {/* 3. Quick Access */}
+          {/* 3. Quick Access (Events link removed) */}
           <section className="border border-wiki-border bg-wiki-bg p-0">
             <div className="bg-wiki-header border-b border-wiki-border px-4 py-2">
               <h2 className="font-bold text-wiki-text m-0 text-base">
@@ -121,8 +121,8 @@ export default function Home() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/events" className="text-wiki-link hover:underline flex items-center gap-2">
-                    <span className="text-blue-600 font-bold">●</span> Events & Festivals
+                  <Link href="/place" className="text-wiki-link hover:underline flex items-center gap-2">
+                    <span className="text-blue-600 font-bold">●</span> Places & Map
                   </Link>
                 </li>
                 <li>
