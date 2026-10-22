@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Merriweather } from "next/font/google"; // 👈 Fraunces replaced with Merriweather
+import { Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import { getMasterData } from "@/lib/data";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { EmergencyBar } from "@/components/layout/EmergencyBar"; // 👈 Naya Import
 
 // 1. Font Optimization (Wikipedia Style: Clean Sans + Serif Headings)
 const inter = Inter({ 
@@ -14,17 +15,17 @@ const inter = Inter({
 
 const merriweather = Merriweather({ 
   subsets: ["latin"], 
-  weight: ["400", "700"], // Wikipedia headings are mostly normal or bold
-  variable: "--font-fraunces", // Variable name same rakha hai taaki globals.css mein change na karna pade
+  weight: ["400", "700"],
+  variable: "--font-fraunces", // Variable name same rakha hai taaki globals.css match kare
   display: "swap"
 });
 
 // 2. SEO & Viewport Configuration
 export const viewport: Viewport = {
-  themeColor: "#ffffff", // 👈 Changed to White for Wikipedia look
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5, // Accessibility: Seniors ko zoom karne ki permission
+  maximumScale: 5,
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -63,14 +64,18 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable} ${merriweather.variable}`} suppressHydrationWarning>
-      {/* 4. Wiki Classes Applied */}
-      <body className="bg-wiki-bg text-wiki-text font-sans antialiased min-h-screen flex flex-col">
+      {/* 4. Wiki Classes Applied & Padding for Mobile Bar */}
+      <body className="bg-wiki-bg text-wiki-text font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0">
         <Header config={config} />
-        {/* Wikipedia articles need full width for the 3-column layout */}
+        
         <main className="flex-grow w-full">
           {children}
         </main>
+        
         <Footer config={config} />
+        
+        {/* 5. Emergency Sticky Bar (Sirf Mobile par dikhegi) */}
+        <EmergencyBar config={config} />
       </body>
     </html>
   );
