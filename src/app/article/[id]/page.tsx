@@ -45,37 +45,42 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     }))
   } : null;
 
-  // 2. UX Expert: Generate ID for Table of Contents (URL friendly)
+  // 2. UX Expert: Generate ID for Table of Contents
   const generateAnchorId = (heading: string) => 
     heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   return (
-    <article className="max-w-7xl mx-auto px-4 py-12 flex flex-col lg:flex-row gap-12">
+    // Wikipedia Style 3-Column Grid
+    <article className="max-w-[1400px] mx-auto px-4 md:px-6 py-8 grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[240px_minmax(0,1fr)_320px] gap-8">
       
       {faqJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       )}
 
-      {/* 🟢 LEFT SIDEBAR: Table of Contents (Desktop only) */}
-      <aside className="hidden lg:block w-64 shrink-0">
-        <div className="sticky top-24">
-          <h4 className="font-bold text-primary mb-4 uppercase tracking-wider text-sm border-b border-primary/10 pb-2">
+      {/* 🟢 LEFT COLUMN: Table of Contents (Classic Wikipedia Box) */}
+      <aside className="hidden lg:block">
+        <div className="sticky top-24 bg-wiki-bg-alt border border-wiki-border p-4 text-sm">
+          <h4 className="font-bold text-wiki-text mb-3 text-center">
             Contents
           </h4>
-          <ul className="space-y-2 text-sm text-primary/70 border-l-2 border-primary/10">
+          <ul className="space-y-1.5 text-wiki-link">
             {article.content.map((block: { heading: string }, index: number) => (
               <li key={index}>
                 <a 
                   href={`#${generateAnchorId(block.heading)}`}
-                  className="block py-1 pl-4 hover:text-warn hover:border-l-2 hover:border-warn transition-all -ml-[2px]"
+                  className="block hover:underline leading-tight"
                 >
+                  <span className="text-wiki-text-muted mr-2">{index + 1}.</span>
                   {block.heading}
                 </a>
               </li>
             ))}
             {article.faqs && article.faqs.length > 0 && (
               <li>
-                <a href="#faqs" className="block py-1 pl-4 hover:text-warn hover:border-l-2 hover:border-warn transition-all -ml-[2px]">
+                <a href="#faqs" className="block hover:underline leading-tight">
+                  <span className="text-wiki-text-muted mr-2">
+                    {article.content.length + 1}.
+                  </span>
                   FAQs
                 </a>
               </li>
@@ -84,29 +89,31 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </div>
       </aside>
 
-      {/* 🟢 MAIN CONTENT AREA */}
-      <div className="flex-grow max-w-4xl min-w-0">
+      {/* 🟢 MIDDLE COLUMN: Main Article Content */}
+      <div className="min-w-0">
         
         {/* Breadcrumbs */}
-        <nav className="flex items-center gap-2 text-sm text-primary/60 mb-6 font-medium">
-          <Link href="/" className="hover:text-warn transition-colors">Home</Link>
+        <nav className="flex items-center gap-2 text-sm text-wiki-text-muted mb-4">
+          <Link href="/" className="hover:text-wiki-link hover:underline">Home</Link>
           <span aria-hidden="true">›</span>
-          <Link href={`/${article.categories[0]}`} className="capitalize hover:text-warn transition-colors">
+          <Link href={`/${article.categories[0]}`} className="capitalize hover:text-wiki-link hover:underline">
             {article.categories[0]}
           </Link>
         </nav>
 
-        {/* Header */}
-        <header className="mb-10">
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-3 leading-tight">
+        {/* Header (Wikipedia Style: Title + Underline) */}
+        <header className="mb-6">
+          <h1 className="font-serif text-4xl md:text-5xl text-wiki-text mb-2 leading-tight">
             {article.title}
           </h1>
-          <p className="text-xl text-warn font-medium mb-6">
+          <div className="w-full border-b border-wiki-border-light mb-4"></div>
+          
+          <p className="text-lg text-wiki-text-muted mb-6 italic">
             {article.subtitle}
           </p>
           
           {article.hero && (
-            <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] rounded-sm overflow-hidden mb-8 border border-primary/10 shadow-sm">
+            <div className="relative w-full h-[250px] md:h-[350px] border border-wiki-border-light mb-6">
               <Image
                 src={`/${article.hero}`}
                 alt={article.title}
@@ -118,24 +125,29 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          <p className="text-lg md:text-xl text-primary/80 leading-relaxed font-medium bg-surface p-6 rounded-sm border-l-4 border-accent">
+          {/* Lead Paragraph (Wikipedia keeps it clean) */}
+          <p className="text-base md:text-lg text-wiki-text leading-relaxed mb-6">
             {article.summary}
           </p>
         </header>
 
-        {/* Content & Infobox */}
-        <div className="flow-root text-primary leading-relaxed mt-8">
-          {article.infobox && <Infobox data={article.infobox} title={article.title} />}
+        {/* Content & Infobox Container (Infobox ko right float karne ke liye) */}
+        <div className="flow-root">
+          {/* Mobile par Infobox upar dikhega, Desktop par Right column me chala jayega */}
+          {article.infobox && (
+            <div className="xl:hidden mb-6">
+              <Infobox data={article.infobox} title={article.title} />
+            </div>
+          )}
 
-          {/* 👇 Yahan 'article-content' class add ki hai taaki typography apply ho */}
-          <div className="space-y-8 article-content">
+          {/* Article Content Blocks */}
+          <div className="space-y-6">
             {article.content.map((block: { heading: string, text: string }, index: number) => (
               <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-24">
-                <h2 className="font-serif text-2xl md:text-3xl font-bold text-primary mb-4 pb-2 border-b border-primary/10">
+                <h2 className="font-serif text-2xl text-wiki-text mb-3 pb-1 border-b border-wiki-border-light">
                   {block.heading}
                 </h2>
-                {/* Yahan humne text ko ek div me wrap kiya hai taaki base CSS apply ho */}
-                <div className="text-primary/80 text-lg">
+                <div className="text-wiki-text text-base md:text-[17px] leading-relaxed">
                   <WikiText text={block.text} />
                 </div>
               </section>
@@ -144,18 +156,26 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </div>
 
         {/* FAQs */}
-        <div id="faqs" className="scroll-mt-24 mt-16">
+        <div id="faqs" className="scroll-mt-24 mt-10">
           {article.faqs && article.faqs.length > 0 && (
             <FaqAccordion faqs={article.faqs} />
           )}
         </div>
 
         {/* Footer Info */}
-        <div className="mt-16 pt-6 border-t border-primary/10 text-sm text-primary/50 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-12 pt-4 border-t border-wiki-border-light text-xs text-wiki-text-muted flex flex-col md:flex-row justify-between items-center gap-2">
           <span>Last updated: {article.lastUpdated}</span>
-          <span className="font-medium">Bandwar Village Archive</span>
+          <span>Source: Bandwar Village Archive</span>
         </div>
       </div>
+
+      {/* 🟢 RIGHT COLUMN: Infobox (Classic Wikipedia Data Sheet) */}
+      <aside className="hidden xl:block">
+        <div className="sticky top-24">
+          {article.infobox && <Infobox data={article.infobox} title={article.title} />}
+        </div>
+      </aside>
+
     </article>
   );
 }
