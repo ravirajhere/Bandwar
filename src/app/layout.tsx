@@ -4,7 +4,7 @@ import "./globals.css";
 import { getMasterData } from "@/lib/data";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { EmergencyBar } from "@/components/layout/EmergencyBar"; // 👈 Naya Import
+import { EmergencyBar } from "@/components/layout/EmergencyBar";
 
 // 1. Font Optimization (Wikipedia Style: Clean Sans + Serif Headings)
 const inter = Inter({ 
@@ -64,6 +64,22 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable} ${merriweather.variable}`} suppressHydrationWarning>
+      <head>
+        {/* 👇 Font Size Flash Prevent Script (Hydration Fix) 👇 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var size = localStorage.getItem('bandwar-font-size');
+                if (size) {
+                  document.documentElement.style.setProperty('--base-font-size', size + 'px');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
+      
       {/* 4. Wiki Classes Applied & Padding for Mobile Bar */}
       <body className="bg-wiki-bg text-wiki-text font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0">
         <Header config={config} />
