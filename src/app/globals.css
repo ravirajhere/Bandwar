@@ -7,31 +7,30 @@
    ========================================= */
 @layer base {
   :root {
-    /* Fallback colors agar kabhi Tailwind load na ho */
+    /* Fallback colors */
     --background: #f7f5ef;
     --foreground: #1a1a18;
   }
 
   html {
-    /* Vision page ke anchor links (jaise #priorities) pe click karne pe smooth scroll hoga */
     scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
-    /* Font smoothing taaki text retina display pe ekdum crisp dikhe */
+    /* Font smoothing for crisp text */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Text select karne pe tera terracotta (warn) color aayega */
+  /* Text selection color */
   ::selection {
     background-color: #a64b2a;
     color: #ffffff;
   }
 
-  /* Images ko default block display taaki niche extra space na bache */
+  /* Prevent extra space below images */
   img {
     display: block;
     max-width: 100%;
@@ -40,53 +39,41 @@
 }
 
 /* =========================================
-   2. CUSTOM COMPONENTS (Agar future mein chahiye)
+   2. CUSTOM COMPONENTS
    ========================================= */
 @layer components {
-  /* Container for maximum width */
   .container-custom {
     @apply max-w-6xl mx-auto px-4 md:px-6;
   }
 }
 
 /* =========================================
-   3. CUSTOM UTILITIES & ANIMATIONS
+   3. CUSTOM UTILITIES 
    ========================================= */
+/* Note: line-clamp-1,2,3 are now built into Tailwind v3.3+, 
+   so we removed the manual CSS for them to keep the bundle light. */
 @layer utilities {
-  /* Text ki max lines limit karne ke liye (Article Cards mein use ho raha hai) */
-  .line-clamp-1 {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* Map ke Leaflet popup ko hamare theme ke hisaab se style karna */
-  .leaflet-popup-content-wrapper {
-    @apply rounded-xl shadow-lg border border-[#1a1a18]/10 !bg-white !text-[#1a1a18];
-  }
-  
-  .leaflet-popup-tip {
-    @apply !bg-white;
-  }
+  /* Any future custom utility classes can go here */
 }
 
 /* =========================================
-   4. CUSTOM SCROLLBAR (Desktop ke liye premium look)
+   4. LEAFLET MAP OVERRIDES (Safe Way)
+   ========================================= */
+/* Using standard CSS instead of @apply because Leaflet injects its CSS at runtime */
+.leaflet-popup-content-wrapper {
+  border-radius: 0.75rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(26, 26, 24, 0.1) !important;
+  background-color: #ffffff !important;
+  color: #1a1a18 !important;
+}
+
+.leaflet-popup-tip {
+  background-color: #ffffff !important;
+}
+
+/* =========================================
+   5. CUSTOM SCROLLBAR (Premium Look)
    ========================================= */
 ::-webkit-scrollbar {
   width: 8px;
@@ -103,5 +90,5 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a64b2a; /* Hover karne pe terracotta color */
+  background: #a64b2a;
 }
