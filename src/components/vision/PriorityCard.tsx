@@ -1,89 +1,118 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
-import { VisionData } from "@/lib/schema";
 
-type Priority = VisionData["priorities"][0];
+export function PriorityCard({ data }: { data: any }) {
+  const [sliderPosition, setSliderPosition] = useState(50);
 
-export function PriorityCard({ data }: { data: Priority }) {
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSliderPosition(Number(e.target.value));
+  };
+
   return (
-    <div className="bg-white border border-[#1a1a18]/10 rounded-2xl overflow-hidden mb-16 shadow-sm">
+    <div className="border border-wiki-border-light bg-wiki-bg mb-8">
       
-      {/* Header */}
-      <div className="bg-[#efece4] p-6 border-b border-[#1a1a18]/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <span className="text-[#a64b2a] font-bold text-sm tracking-widest uppercase mb-1 block">
-            Priority {data.number} · {data.category}
+      {/* Header (Wikipedia Style) */}
+      <div className="bg-[#eaecf0] border-b border-wiki-border-light p-3 sm:p-4 flex flex-wrap justify-between items-center gap-2">
+        <div className="flex items-center gap-2">
+          <span className="bg-wiki-text text-wiki-bg text-xs font-bold px-2 py-1">
+            #{data.number}
           </span>
-          <h3 className="font-serif text-2xl md:text-3xl font-bold text-[#1a1a18]">
-            {data.title}
-          </h3>
+          <h3 className="font-bold text-wiki-text text-lg m-0">{data.title}</h3>
         </div>
-        <div className="text-left md:text-right">
-          <span className="inline-block bg-[#1f3d2f] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
-            Target: {data.targetYear}
+        <div className="flex gap-2 text-xs">
+          <span className="bg-wiki-bg border border-wiki-border-light px-2 py-1 text-wiki-text-muted">
+            Ward: {data.ward}
           </span>
-          <p className="text-sm text-[#1a1a18]/60 font-medium">Ward: {data.ward}</p>
+          <span className="bg-wiki-bg border border-wiki-border-light px-2 py-1 text-wiki-text-muted">
+            Status: {data.status}
+          </span>
         </div>
       </div>
 
-      <div className="p-6 md:p-8">
-        {/* Present vs Required Images */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <div className="relative aspect-video rounded-xl overflow-hidden group">
-            <Image src={`/${data.present.photo}`} alt="Present" fill className="object-cover grayscale-[30%] group-hover:grayscale-0 transition-all" />
-            <div className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">Current Reality</div>
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-10">
-              <p className="text-white text-sm font-medium">{data.present.caption}</p>
+      <div className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        {/* LEFT: Smooth Before/After Image Slider */}
+        <div className="flex flex-col">
+          <div className="relative w-full aspect-[4/3] border border-wiki-border-light bg-wiki-bg-alt overflow-hidden group">
+            
+            {/* Required Image (Background) */}
+            <Image
+              src={data.required.photo.startsWith("/") ? data.required.photo : `/${data.required.photo}`}
+              alt="Required"
+              fill
+              className="object-cover"
+            />
+            
+            {/* Current Image (Foreground with Clip) */}
+            <div 
+              className="absolute inset-0 z-10"
+              style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+            >
+              <Image
+                src={data.present.photo.startsWith("/") ? data.present.photo : `/${data.present.photo}`}
+                alt="Current"
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            {/* Labels */}
+            <div className="absolute top-2 left-2 z-20 bg-black/70 text-white text-[10px] px-2 py-1 uppercase tracking-wider font-bold">
+              Current (Present)
+            </div>
+            <div className="absolute top-2 right-2 z-20 bg-wiki-link/90 text-white text-[10px] px-2 py-1 uppercase tracking-wider font-bold">
+              Required (Vision)
+            </div>
+
+            {/* The Slider Input (Invisible but controls the clip-path) */}
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={sliderPosition}
+              onChange={handleSliderChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30"
+              aria-label="Drag to compare current and required images"
+            />
+
+            {/* Slider Handle (Visual) */}
+            <div 
+              className="absolute top-0 bottom-0 w-1 bg-white z-20 pointer-events-none shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+              style={{ left: `${sliderPosition}%` }}
+            >
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full border-2 border-wiki-border shadow-md flex items-center justify-center">
+                <span className="text-wiki-text text-[10px]">↔</span>
+              </div>
             </div>
           </div>
-          <div className="relative aspect-video rounded-xl overflow-hidden group border-2 border-[#1f3d2f]">
-            <Image src={`/${data.required.photo}`} alt="Vision" fill className="object-cover" />
-            <div className="absolute top-2 left-2 bg-[#1f3d2f] text-white text-xs px-2 py-1 rounded">Target Vision</div>
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-10">
-              <p className="text-white text-sm font-medium">{data.required.caption}</p>
-            </div>
+          <div className="text-[12px] text-wiki-text-muted mt-2 text-center">
+            Drag the slider to compare
           </div>
         </div>
 
-        {/* Reality vs Vision Text */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div className="bg-red-50/50 p-5 rounded-xl border border-red-100">
-            <h4 className="font-bold text-red-900 mb-2 flex items-center gap-2">⚠️ The Reality</h4>
-            <p className="text-[#1a1a18]/80 text-sm leading-relaxed">{data.reality}</p>
+        {/* RIGHT: Text Details */}
+        <div className="flex flex-col justify-center">
+          <div className="mb-4">
+            <h4 className="font-bold text-wiki-text text-sm border-b border-wiki-border-light pb-1 mb-2">Reality</h4>
+            <p className="text-[14px] text-wiki-text-muted leading-relaxed">{data.reality}</p>
           </div>
-          <div className="bg-green-50/50 p-5 rounded-xl border border-green-100">
-            <h4 className="font-bold text-green-900 mb-2 flex items-center gap-2">✨ The Vision</h4>
-            <p className="text-[#1a1a18]/80 text-sm leading-relaxed">{data.vision}</p>
-          </div>
-        </div>
-
-        {/* How to achieve & Checklist */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1 space-y-6">
-            <div>
-              <h4 className="font-serif font-bold text-lg mb-3 border-b pb-2">How to Achieve</h4>
-              <ul className="space-y-3 text-sm">
-                <li><strong className="text-[#1a1a18]/60 block text-xs uppercase">Scheme</strong> {data.how.scheme}</li>
-                <li><strong className="text-[#1a1a18]/60 block text-xs uppercase">Est. Cost</strong> {data.how.cost}</li>
-                <li><strong className="text-[#1a1a18]/60 block text-xs uppercase">Authority</strong> {data.how.authority}</li>
-                <li><strong className="text-[#1a1a18]/60 block text-xs uppercase">Timeline</strong> {data.how.timeline}</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="lg:col-span-2">
-             <h4 className="font-serif font-bold text-lg mb-3 border-b pb-2">{data.inside.intro}</h4>
-             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {data.inside.checklist.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-[#1a1a18]/80">
-                    <span className="text-[#1f3d2f] mt-0.5">✓</span>
-                    {item}
-                  </li>
-                ))}
-             </ul>
+          <div>
+            <h4 className="font-bold text-wiki-link text-sm border-b border-wiki-border-light pb-1 mb-2">Vision 2035</h4>
+            <p className="text-[14px] text-wiki-text leading-relaxed">{data.vision}</p>
           </div>
         </div>
 
       </div>
+
+      {/* Footer details */}
+      <div className="bg-wiki-bg-alt border-t border-wiki-border-light p-3 text-[12px] text-wiki-text-muted flex flex-wrap gap-4">
+        <span><strong>Scheme:</strong> {data.how.scheme}</span>
+        <span><strong>Cost:</strong> {data.how.cost}</span>
+        <span><strong>Authority:</strong> {data.how.authority}</span>
+      </div>
+
     </div>
   );
 }
