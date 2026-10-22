@@ -358,45 +358,51 @@
     {
       "id": "vaani-vilas-library",
       "title": "Vaani Vilas Pustakalaya",
-      "subtitle": "The village library on Bandwar Road",
+      "subtitle": "The village library on Bandwar Road — established 1945",
       "categories": ["education", "culture"],
-      "summary": "Vaani Vilas Pustakalaya is the village library of Bandwar, located on Bandwar Road. Built with MPLAD funds under the initiative of Girija Singh, it was inaugurated by Rajya Sabha MP Rakesh Sinha on 5 September 2023. The library houses a collection of books in numbered cabinets, along with a reading area decorated with portraits of national leaders. It stands as one of the village's most important public institutions, and supplements the libraries at [[ms-bandwar|MS Bandwar]] and [[gps-mohanpur-kanya|GPS Mohanpur Kanya]].",
-      "hero": "images/education/vaani-vilas-library-gate.jpg",
+      "summary": "Vaani Vilas Pustakalaya (वाणी विलास पुस्तकालय) is the village library of Bandwar, located on Bandwar Road near the Shaheed Ramchandra Dwar. Established on 5 November 1945, its current building was inaugurated on 5 September 2025 by Rajya Sabha MP Rakesh Sinha. Built with contributions from Muktinath Singh and Girija Singh, the library houses a collection of books in numbered cabinets, along with a reading area decorated with portraits of national leaders. It stands as one of the village's most important public institutions.",
+      "hero": "images/education/library-cover.jpg",
       "photos": [
-        { "src": "images/education/vaani-vilas-library-gate.jpg", "caption": "The library's entrance gate on Bandwar Road" },
-        { "src": "images/education/vaani-vilas-library-books.jpg", "caption": "Bookshelves inside the library" },
-        { "src": "images/education/vaani-vilas-library-reading-area.jpg", "caption": "The reading area, lined with portraits" },
-        { "src": "images/education/vaani-vilas-library-portraits.jpg", "caption": "Framed portraits of national leaders" }
+        { "src": "images/education/reading-room.jpg", "caption": "The shared reading table, with space for students and local readers." },
+        { "src": "images/education/portraits-and-desks.jpg", "caption": "Portrait-lined walls and natural light in the reading area." },
+        { "src": "images/education/inauguration-plaques.jpg", "caption": "Commemorative plaques record the library’s foundation and inauguration." },
+        { "src": "images/education/book-cabinets.jpg", "caption": "Numbered wooden cabinets preserve the library’s book collection." },
+        { "src": "images/education/inauguration-01.jpg", "caption": "Inauguration Ceremony: A welcome on stage." },
+        { "src": "images/education/inauguration-02.jpg", "caption": "Inauguration Ceremony: A gesture of welcome." },
+        { "src": "images/education/inauguration-03.jpg", "caption": "Inauguration Ceremony: Greetings at the ceremony." }
       ],
       "infobox": {
         "Type": "Village library",
-        "Also known as": "Vaani Vilas Pustakalaya",
-        "Location": "Bandwar Road",
-        "Inaugurated": "5 September 2023",
+        "Also known as": "वाणी विलास पुस्तकालय",
+        "Location": "Bandwar Road, Bandwar",
+        "Established": "5 November 1945",
+        "Land Donor": "Muktinath Singh",
+        "Current Building Inaugurated": "5 September 2025",
         "Inaugurated by": "Rakesh Sinha (Rajya Sabha MP)",
-        "Funded by": "MPLAD fund (₹10 lakh)",
-        "Initiative by": "Girija Singh (resident)"
+        "Initiative by": "Muktinath Singh & Girija Singh",
+        "Construction Funding": "₹30 lakh total (₹15L MPLAD + ₹15L Gram Panchayat)",
+        "Official Website": "https://vanivilaspushtakalya.netlify.app"
       },
-      "lastUpdated": "2026-10-15",
+      "lastUpdated": "2026-10-22",
       "content": [
-        { "heading": "Overview", "text": "Vaani Vilas Pustakalaya is the village library of Bandwar, standing on the main Bandwar Road near the [[shaheed-dwar|Shaheed Ramchandra Dwar]]. It is a single-storey building, painted white with a red iron gate at the entrance. Inside, it contains a collection of books — including Hindi literature, Bengali works, Islamic texts, and reference material — kept in numbered wooden cabinets and open bookshelves. For a village of Bandwar's size, having a dedicated public library is significant, and it supplements the school libraries at [[ms-bandwar|MS Bandwar]] and [[gps-mohanpur-kanya|GPS Mohanpur Kanya]]." },
-        { "heading": "Origin", "text": "The library was built under the initiative of Girija Singh — a resident of Bandwar — with funding from the MPLAD (Members of Parliament Local Area Development) fund of Rajya Sabha MP Rakesh Sinha. The total cost of construction was approximately ₹10 lakh. The library was inaugurated on 5 September 2023 — a date that coincided with Teachers' Day — and has since become one of the village's most important public institutions. The choice of date was deliberate: the library was conceived as a space for learning, and its inauguration on Teachers' Day was intended to underline that purpose." },
-        { "heading": "Rakesh Sinha", "text": "Rakesh Sinha is a Member of Parliament (Rajya Sabha) and a native of Begusarai district — his ancestral village, Mansarpur, is not far from Bandwar. He has been associated with the establishment of libraries across the region, and the Vaani Vilas Pustakalaya is one of several such projects undertaken through his MPLAD fund. His connection to the area — and his interest in rural libraries — made the project possible. Other villages in the region have received similar institutions through his fund." },
-        { "heading": "The Reading Area", "text": "The heart of the library is its reading area — a large wooden table with black metal chairs arranged around it. The walls of the reading room are lined with framed portraits of national leaders, including Mahatma Gandhi and Dr. B. R. Ambedkar. The room is well-lit, with ceiling fans and large windows that let in natural light and a view of the green trees outside. The library's collections are kept in wooden cabinets marked with the prefix 'वा.वि.पु.' — an abbreviation of 'Vaani Vilas Pustakalaya' — followed by a number. The reading area can seat a dozen readers at a time, and it is often full during school examination season." },
-        { "heading": "The Collection", "text": "The library's bookshelves hold a wide range of titles — from Hindi fiction and poetry to Bengali literature, Islamic texts, and reference works. Some volumes appear to be several decades old, suggesting that the collection has been built over time. The library also holds bound volumes of periodicals and magazines, and a small collection of books on Indian history and politics. Its collection is eclectic rather than curated — a reflection of the way rural libraries in India are often built, through donations, bequests, and the personal interests of their founders." },
-        { "heading": "Significance", "text": "For a village of Bandwar's size, having a dedicated public library is significant. In rural India, access to books remains limited — most villages do not have a functioning library, and school and college students often have to travel to district towns to find the reading material they need. The presence of Vaani Vilas Pustakalaya gives Bandwar's residents, and especially its students, a place where they can access books and quiet space to read. It complements the school libraries at [[ms-bandwar|MS Bandwar]] and [[gps-mohanpur-kanya|GPS Mohanpur Kanya]], and provides a study space that the village's government schools — many of which lack a library — cannot offer." },
-        { "heading": "Present Day", "text": "The library is in active use and remains open through the week. It is looked after by the village community, and its reading room receives a steady stream of students and older residents. It stands alongside the other institutions of the village — its schools, temples, and panchayat — as part of Bandwar's public life. The library also hosts occasional reading events and is sometimes used as a venue for community meetings. Its presence has become a marker of the village's commitment to education, and it is often cited by residents as one of Bandwar's proudest achievements." }
+        { "heading": "Overview", "text": "Standing on Bandwar Road near the [[shaheed-dwar|Shaheed Ramchandra Dwar]], the library occupies a single-storey white building with a red iron entrance gate. Inside, numbered wooden cabinets and open bookshelves hold Hindi literature, Bengali works, Islamic texts, and reference material. It adds a dedicated public reading space to the village's educational institutions, complementing the libraries at [[ms-bandwar|MS Bandwar]] and [[gps-mohanpur-kanya|GPS Mohanpur Kanya]]." },
+        { "heading": "History and Origin", "text": "The library was established on 5 November 1945. Muktinath Singh donated the land for the library building and, together with Girija Singh, supported the initiative for its development. The current building's approximately ₹30 lakh construction cost was supported by ₹15 lakh from the MPLAD fund associated with Rakesh Sinha and ₹15 lakh from Bandwar Gram Panchayat through the Fifteenth Finance Commission allocation. The current building was inaugurated on 5 September 2025, Teachers' Day, reflecting the library's purpose as a space for learning." },
+        { "heading": "Services & Facilities", "text": "The library is more than just a reading room. It offers Book Lending (Hindi, Bengali, Islamic texts, reference materials), Free Wi-Fi & Workspace for students and remote workers, Workshops & Classes (from spoken word poetry to digital literacy), Community Events (storytelling evenings, harvest festivals, village council meetings), a Children's Corner with picture books and educational toys, and a unique Seed Library where villagers can borrow seeds, grow gardens, and return seeds at harvest." },
+        { "heading": "The Reading Area", "text": "A large wooden table and black metal chairs form the heart of the reading room, seating around a dozen readers. Framed portraits of national leaders, including Mahatma Gandhi and Dr. B. R. Ambedkar, line the walls. Large windows bring in daylight and views of trees, while ceiling fans keep air moving. Cabinets bear the prefix 'वा.वि.पु.', short for the library's name, followed by a number. The room is especially valued during school examination season." },
+        { "heading": "Featured Collection & Events", "text": "The collection includes notable books like 'The Midnight Library' by Matt Haig, 'A Village Called Hope' by Priya Nair, and 'Stories from the Soil' by local authors. The library hosts regular events, including a Summer Reading Challenge (June 1 – August 31) where children compete to read the most books, Storytelling Evenings every 2nd Friday at 6 PM where elders share folk tales, and Art & Craft Workshops teaching traditional rangoli, pottery, and papercraft." },
+        { "heading": "Voices from the Village", "text": "The library is deeply cherished by the community. Sunita Devi, a teacher and volunteer, says, 'This library is the soul of our village. My children discovered the joy of reading here.' Retired educator Shyam Prasad calls it his 'second home' where he spends his afternoons reading and mentoring young students. Farmer Ravi Kumar shares, 'The seed library changed my life! I started a small kitchen garden and now supply fresh vegetables to the village market.'" },
+        { "heading": "Present Day", "text": "Run daily by the वाणी विलास पुस्तकालय committee, the library welcomes students and older residents as an active part of village life. It carries forward the legacy of its late founders, including Ramsharan Sharma, Rajendra Singh, Sachidanand Pathak, and Shri Narayan Pathak. It stands as an expression of the village's commitment to education. You can explore more about the library and its initiatives on their official website: https://vanivilaspushtakalya.netlify.app" }
       ],
       "faqs": [
-        { "q": "Who built Vaani Vilas Pustakalaya?", "a": "The library was built under the initiative of Girija Singh, a resident of Bandwar, with funding from the MPLAD fund of Rajya Sabha MP Rakesh Sinha. It cost approximately ₹10 lakh and was inaugurated on 5 September 2023." },
-        { "q": "Where is Vaani Vilas Pustakalaya located?", "a": "The library is on Bandwar Road, near the Shaheed Ramchandra Dwar — the martyrs' gate at the main village entrance. It is a single-storey building, painted white with a red iron gate." },
-        { "q": "What kind of books does the library have?", "a": "The library holds Hindi literature, Bengali works, Islamic texts, reference material, and bound volumes of periodicals. Its collection is eclectic — built over time through donations and bequests, rather than a curated acquisition plan." },
-        { "q": "Who is Rakesh Sinha?", "a": "Rakesh Sinha is a Member of Parliament (Rajya Sabha) from Bihar, and a native of Begusarai district — his ancestral village, Mansarpur, is near Bandwar. He funded Vaani Vilas Pustakalaya through his MPLAD fund." },
-        { "q": "Is the library open to everyone?", "a": "Yes — the library is open to all residents of Bandwar and the surrounding area, and its reading room is in active use. It is looked after by the village community." }
+        { "q": "When was Vaani Vilas Pustakalaya established?", "a": "The library was established on 5 November 1945. However, its current building was inaugurated much later on 5 September 2025." },
+        { "q": "Who built the current building of Vaani Vilas Pustakalaya?", "a": "The land was donated by Muktinath Singh. The construction of the current building cost approximately ₹30 lakh, funded by ₹15 lakh from the MPLAD fund (Rakesh Sinha) and ₹15 lakh from Bandwar Gram Panchayat." },
+        { "q": "What services does the library offer?", "a": "The library offers book lending, free Wi-Fi, workshops, community events, a children's corner, and a unique seed library for farmers. It also hosts a Summer Reading Challenge and monthly storytelling evenings." },
+        { "q": "Who inaugurated the current building?", "a": "The current building was inaugurated by Rajya Sabha MP Rakesh Sinha on 5 September 2025 (Teachers' Day)." },
+        { "q": "Where is the library located?", "a": "It is located on Bandwar Road, near the Shaheed Ramchandra Dwar. It is a single-storey white building with a red iron gate. The official website is https://vanivilaspushtakalya.netlify.app." }
       ],
       "related": ["snk-high-school", "ms-bandwar", "gps-bandwar-musahri", "gps-mohanpur-kanya", "shaheed-dwar", "historic-well"],
       "location": { "lat": 25.5007, "lng": 86.1618 },
-      "tags": ["library", "education", "reading", "rakesh sinha", "girija singh", "mplad", "culture", "vaani vilas", "bandwar library"]
+      "tags": ["library", "education", "reading", "rakesh sinha", "girija singh", "muktinath singh", "mplad", "culture", "vaani vilas", "bandwar library", "1945", "seed library"]
     }
   ]
 }
