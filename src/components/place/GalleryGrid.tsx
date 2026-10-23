@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Media } from "@/lib/schema";
-import { Lightbox } from "./Lightbox"; // 👈 Import kiya
+import { Lightbox } from "./Lightbox";
 
 type Photo = Media["gallery"]["photos"][0];
 type Category = Media["gallery"]["categories"][0];
 
 export function GalleryGrid({ photos, categories }: { photos: Photo[], categories: Category[] }) {
   const [activeTab, setActiveTab] = useState("all");
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null); // 👈 Naya State
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
   const filteredPhotos = activeTab === "all" 
     ? photos 
@@ -52,7 +52,7 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
           <div 
             key={photo.id} 
             className="border border-wiki-border-light bg-wiki-bg-alt flex flex-col hover:border-wiki-border transition-colors cursor-pointer group"
-            onClick={() => setSelectedPhoto(photo)} // 👈 Click par Lightbox open
+            onClick={() => setSelectedPhoto(photo)}
           >
             {/* Image Container */}
             <div className="relative aspect-[4/3] bg-wiki-bg border-b border-wiki-border-light overflow-hidden">
@@ -60,12 +60,13 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
                 src={`/${photo.src}`}
                 alt={photo.caption}
                 fill
-                className="object-cover group-hover:opacity-90 transition-opacity"
+                // 👇 Yahan object-contain aur p-1 add kiya hai taaki image pure dikhe 👇
+                className="object-contain p-1 group-hover:opacity-90 transition-opacity"
                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               />
               {/* Optional visual cue on hover */}
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 pointer-events-none">
-                 <span className="text-white text-2xl font-bold">🔍</span>
+                 <span className="text-white text-2xl font-bold drop-shadow-md">🔍</span>
               </div>
             </div>
             
