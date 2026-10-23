@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   if (!category) return { title: "Not Found" };
   
   return {
-    title: `${category.title} | Bandwar Archive`,
+    title: `${category.title} | Bandwar Portal`,
     description: category.description,
   };
 }
@@ -32,44 +32,49 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const articles = getAllArticles().filter(a => a.categories.includes(category.id));
 
   return (
-    <div className="bg-[#f7f5ef] min-h-screen py-16 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="bg-wiki-bg min-h-screen py-8">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
         
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-[#1a1a18]/50 mb-8">
-          <Link href="/" className="hover:text-[#1f3d2f]">Home</Link>
-          <span>/</span>
-          <Link href="/section" className="hover:text-[#1f3d2f]">Archive</Link>
-          <span>/</span>
-          <span className="text-[#1a1a18] font-medium">{category.title}</span>
+        {/* Breadcrumb (Wikipedia Style) */}
+        <nav className="flex items-center gap-2 text-[13px] text-wiki-text-muted mb-6">
+          <Link href="/" className="hover:text-wiki-link hover:underline">Home</Link>
+          <span aria-hidden="true">›</span>
+          <Link href="/section" className="hover:text-wiki-link hover:underline">Archive</Link>
+          <span aria-hidden="true">›</span>
+          <span className="text-wiki-text font-bold">{category.title}</span>
         </nav>
 
-        {/* Header */}
-        <div className="mb-12 border-b border-[#1a1a18]/10 pb-8">
-          <div className="text-5xl mb-4">{category.icon}</div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-[#1a1a18] mb-3">
-            {category.title}
-          </h1>
-          <p className="text-lg text-[#1a1a18]/60 max-w-2xl">
+        {/* Page Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-3xl" aria-hidden="true">{category.icon}</span>
+            <h1 className="font-serif text-3xl md:text-4xl text-wiki-text">
+              {category.title}
+            </h1>
+          </div>
+          <div className="w-full border-b border-wiki-border-light mb-3"></div>
+          <p className="text-[15px] text-wiki-text-muted leading-relaxed max-w-3xl">
             {category.description}
           </p>
-          <p className="mt-4 text-sm font-bold text-[#a64b2a] uppercase tracking-wider">
-            {articles.length} {articles.length === 1 ? "Article" : "Articles"}
-          </p>
+          <div className="mt-3">
+            <span className="bg-wiki-bg-alt border border-wiki-border-light text-wiki-text-muted text-[12px] font-bold px-2 py-1">
+              {articles.length} {articles.length === 1 ? "Article" : "Articles"}
+            </span>
+          </div>
         </div>
 
-        {/* Articles Grid */}
+        {/* Articles List (Using 2 columns for the horizontal ArticleCard) */}
         {articles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-[#1a1a18]/20">
-            <div className="text-5xl mb-4">📝</div>
-            <h3 className="font-serif text-xl font-bold text-[#1a1a18] mb-2">No articles yet</h3>
-            <p className="text-[#1a1a18]/60">Is category mein abhi koi article nahi hai.</p>
+          <div className="text-center py-16 border border-dashed border-wiki-border-light bg-wiki-bg-alt">
+            <div className="text-4xl mb-3" aria-hidden="true">📝</div>
+            <h3 className="font-bold text-wiki-text mb-1">No articles found</h3>
+            <p className="text-wiki-text-muted text-[14px]">There are currently no articles in this category.</p>
           </div>
         )}
 
