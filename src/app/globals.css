@@ -38,7 +38,7 @@
 
   html {
     scroll-behavior: smooth;
-    font-size: 16px; /* 👈 Fixed size */
+    font-size: 16px;
   }
 
   body {
@@ -168,16 +168,76 @@
 }
 .leaflet-control-layers-toggle { width: 36px !important; height: 36px !important; background-size: 20px 20px !important; }
 
-/* Print Styles */
+/* =========================================
+   PRINT STYLES (Wikipedia Book Style)
+   ========================================= */
 @media print {
-  body * { visibility: hidden; }
-  .article-body-wrapper, .article-body-wrapper * { visibility: visible; }
-  .article-body-wrapper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    font-size: 12pt !important;
+  /* 1. Page setup & force background colors */
+  @page { margin: 15mm; }
+  
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
   }
-  header, footer, aside, .no-print, button { display: none !important; }
+
+  /* 2. Hide non-printable elements (Header, Footer, Sidebars, Buttons, Toolbars) */
+  .no-print,
+  header,
+  footer,
+  nav,
+  aside,
+  button,
+  .leaflet-container {
+    display: none !important;
+  }
+
+  /* 3. Reset layout for printing (Single column, no grids) */
+  article {
+    display: block !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .article-body-wrapper {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: static !important;
+  }
+
+  /* 4. Show the mobile infobox specifically for print (since desktop aside is hidden) */
+  .print-infobox {
+    display: block !important;
+    margin-bottom: 20px !important;
+    page-break-inside: avoid;
+  }
+
+  /* 5. Typography for Print */
+  h1 { font-size: 24pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 10px; }
+  h2 { font-size: 16pt !important; color: #000000 !important; margin-top: 20px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
+  p { font-size: 11pt !important; color: #000000 !important; line-height: 1.5 !important; }
+  
+  /* 6. Reset Link colors to black for print */
+  a { color: #000000 !important; text-decoration: none !important; }
+
+  /* 7. Image handling (avoid breaking images across pages) */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+  }
+
+  /* 8. Fix Infobox borders and colors for print */
+  .bg-wiki-bg-alt, .bg-wiki-header {
+    background-color: #f8f9fa !important;
+  }
+  .border-wiki-border, .border-wiki-border-light {
+    border-color: #a2a9b1 !important;
+  }
+  .text-wiki-text, .text-wiki-text-muted {
+    color: #000000 !important;
+  }
 }
