@@ -6,7 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const master = getMasterData();
   const baseUrl = master.site.url.replace(/\/$/, ''); // Trailing slash remove
 
-  // 2. Main Static Pages (Wikipedia style categories)
+  // 2. Main Static Pages
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
     { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
@@ -25,10 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => {
     const imageSet = new Set<string>();
     
+    // Hero image add karein
     if (article.hero) {
       imageSet.add(`${baseUrl}/${article.hero.replace(/^\//, '')}`);
     }
     
+    // Gallery photos add karein (agar hain toh)
     if (article.photos && article.photos.length > 0) {
       article.photos.forEach((photo) => {
         imageSet.add(`${baseUrl}/${photo.src.replace(/^\//, '')}`);
@@ -36,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
 
     const uniqueImages = Array.from(imageSet);
+    
     // Date parse error se bachne ke liye fallback
     const lastModDate = article.lastUpdated ? new Date(article.lastUpdated) : new Date();
 
@@ -49,7 +52,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
 
   // 4. Gallery Images ko map karna (Place page ke andar)
-  // Yeh Google ko batayega ki gallery ki photos kahan hain
   let galleryImages: string[] = [];
   try {
     const media = getMediaData();
