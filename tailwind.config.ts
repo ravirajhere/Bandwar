@@ -10,48 +10,65 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#1a1a18",
-        paper: "#f7f5ef",
-        surface: "#efece4",
-        accent: "#1f3d2f",
-        warn: "#a64b2a",
+        // 🏛️ THE NEW PREMIUM IDENTITY (Design Tokens)
+        background: "var(--bg-main)",
+        foreground: "var(--text-main)",
+        card: {
+          DEFAULT: "var(--bg-card)",
+          hover: "var(--bg-card-hover)",
+        },
+        brand: {
+          DEFAULT: "var(--brand-primary)",
+          hover: "var(--brand-hover)",
+        },
+        muted: {
+          DEFAULT: "var(--text-muted)",
+          background: "var(--bg-muted)",
+        },
+        border: {
+          DEFAULT: "var(--border-main)",
+          subtle: "var(--border-subtle)",
+        },
+
+        // 🔄 BACKWARDS COMPATIBILITY (Old classes mapped to new tokens)
         wiki: {
           bg: "var(--bg-main)",
-          "bg-alt": "var(--bg-alt)",
-          header: "var(--bg-header)", // 👈 Naya color add kiya
+          "bg-alt": "var(--bg-card)",
+          header: "var(--bg-muted)",
           text: "var(--text-main)",
           "text-muted": "var(--text-muted)",
-          link: "var(--link-color)",
-          "link-visited": "var(--link-visited)",
+          link: "var(--brand-primary)",
+          "link-visited": "var(--brand-visited)",
           border: "var(--border-main)",
-          "border-light": "var(--border-light)",
+          "border-light": "var(--border-subtle)",
         },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "sans-serif"],
-        serif: ["var(--font-fraunces)", "serif"],
-        mono: ["var(--font-ibm-plex-mono)", "monospace"],
+        serif: ["var(--font-playfair)", "Georgia", "serif"], // Upgraded to Playfair
+        mono: ["var(--font-mono)", "monospace"],
       },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      borderRadius: {
+        sm: "4px",
+        md: "6px",
+        lg: "8px",
       },
       typography: {
         DEFAULT: {
           css: {
-            maxWidth: '65ch',
+            maxWidth: '75ch',
             color: 'var(--text-main)',
-            fontFamily: 'var(--font-inter), Arial, sans-serif',
+            fontFamily: 'var(--font-inter), sans-serif',
             a: {
-              color: 'var(--link-color)',
-              '&:hover': { textDecoration: 'underline' },
+              color: 'var(--brand-primary)',
+              '&:hover': { textDecoration: 'underline', color: 'var(--brand-hover)' },
               textDecoration: 'none',
+              fontWeight: '500',
             },
             'h1, h2, h3, h4, h5, h6': {
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
-              fontWeight: 'normal',
-              borderBottom: '1px solid var(--border-light)',
-              paddingBottom: '0.3em',
+              fontFamily: 'var(--font-playfair), Georgia, serif',
+              fontWeight: '600',
+              color: 'var(--text-main)',
             }
           },
         },
