@@ -81,7 +81,8 @@ export default function VisionPage() {
           <div className="space-y-6">
             {vision.roadmap.map((phase: any) => (
               <div key={phase.phase} className="border border-wiki-border-light bg-wiki-bg">
-                <div className="bg-[#eaecf0] border-b border-wiki-border-light p-3 sm:p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                {/* 👇 Yahan bg-[#eaecf0] ko bg-wiki-header se replace kiya hai 👇 */}
+                <div className="bg-wiki-header border-b border-wiki-border-light p-3 sm:p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
                   <div>
                     <span className="text-wiki-text-muted font-bold text-[11px] tracking-wider uppercase block mb-1">
                       Phase {phase.phase} · {phase.label}
