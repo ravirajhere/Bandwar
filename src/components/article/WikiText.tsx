@@ -36,7 +36,8 @@ export function WikiText({ text }: WikiTextProps) {
               // - Visited state (visited:text-wiki-link-visited)
               // - No underline by default, underline on hover
               // - Accessible focus ring for keyboard users
-              className="text-wiki-link visited:text-wiki-link-visited hover:underline focus:outline-none focus:ring-2 focus:ring-wiki-link focus:ring-offset-1 rounded-sm"
+              // - Added focus:ring-offset-wiki-bg for perfect Dark Mode support
+              className="text-wiki-link visited:text-wiki-link-visited hover:underline focus:outline-none focus:ring-2 focus:ring-wiki-link focus:ring-offset-1 focus:ring-offset-wiki-bg rounded-sm transition-colors"
             >
               {displayLabel}
             </Link>
