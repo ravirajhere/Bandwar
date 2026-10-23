@@ -3,21 +3,22 @@ import { getMasterData } from '@/lib/data';
 
 export default function robots(): MetadataRoute.Robots {
   const master = getMasterData();
-  const baseUrl = master.site.url;
+  // Trailing slash remove karne ke liye (safety check)
+  const baseUrl = master.site.url.replace(/\/$/, '');
 
   return {
     rules: [
       {
         userAgent: '*',
         allow: '/',
-        // Next.js ke internal build folders ko crawl karne ki zaroorat nahi hoti
+        // Next.js ke internal build folders aur admin routes ko block kar rahe hain
         disallow: [
           '/_next/',
           '/api/', 
           '/admin/'
         ],
       },
-      // Specific rules for major search engines (optional but good practice)
+      // Major search engines ke liye specific rules
       {
         userAgent: ['Googlebot', 'Bingbot'],
         allow: '/',
@@ -25,6 +26,6 @@ export default function robots(): MetadataRoute.Robots {
       }
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl, // Kuch search engines (like Yandex) ke liye helpful hota hai
+    host: baseUrl, // Yandex jaise search engines ke liye helpful
   };
 }
