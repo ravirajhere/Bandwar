@@ -44,7 +44,7 @@ export default function SectionPage() {
                   className={`border border-wiki-border-light bg-wiki-bg-alt p-3 flex items-center gap-3 transition-colors ${
                     count === 0 
                       ? "opacity-50 pointer-events-none" 
-                      : "hover:bg-[#eaecf0] hover:border-wiki-border"
+                      : "hover:bg-wiki-header hover:border-wiki-border"
                   }`}
                 >
                   <div className="text-2xl" aria-hidden="true">{cat.icon}</div>
