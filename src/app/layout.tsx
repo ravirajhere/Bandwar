@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Merriweather } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google"; // Upgraded Font
 import "./globals.css";
 import { getMasterData } from "@/lib/data";
 import { getSearchIndex } from "@/lib/search-data"; 
@@ -13,15 +13,15 @@ const inter = Inter({
   display: "swap" 
 });
 
-const merriweather = Merriweather({ 
+const playfair = Playfair_Display({ 
   subsets: ["latin"], 
-  weight: ["400", "700"],
-  variable: "--font-fraunces",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair", // New variable name
   display: "swap"
 });
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#FAFAF9",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -55,9 +55,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const searchIndex = getSearchIndex(); 
 
   return (
-    <html lang="en" className={`${inter.variable} ${merriweather.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
-        {/* Sirf Theme Flash Prevention Script bacha hai */}
+        {/* Theme Flash Prevention Script */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -73,7 +73,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
       </head>
-      <body className="bg-wiki-bg text-wiki-text font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0 transition-colors duration-300">
+      <body className="bg-background text-foreground font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0 transition-colors duration-300">
         <Header config={config} searchIndex={searchIndex} />
         <main className="flex-grow w-full">
           {children}
