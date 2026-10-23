@@ -23,7 +23,8 @@ export function ArticleCard({ article }: { article: Article }) {
             src={`/${article.hero}`}
             alt={article.title}
             fill
-            className="object-cover"
+            // 👇 Yahan object-contain aur p-1 add kiya hai taaki image pure dikhe 👇
+            className="object-contain p-1"
             sizes="(max-width: 640px) 100vw, 160px"
           />
         ) : (
