@@ -3,7 +3,7 @@ import { getAllArticles, getArticleById } from "@/lib/data";
 import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
-import { ArticleToolbar } from "@/components/article/ArticleToolbar"; // 👈 Naya Import
+import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import Image from "next/image";
 import Link from "next/link";
 
@@ -61,8 +61,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       )}
 
-      {/* 🟢 LEFT COLUMN: Table of Contents (Classic Wikipedia Box) */}
-      <aside className="hidden lg:block">
+      {/* 🟢 LEFT COLUMN: Table of Contents (Hidden in Print) */}
+      <aside className="hidden lg:block no-print">
         <div className="sticky top-24 bg-wiki-bg-alt border border-wiki-border p-4 text-sm">
           <h4 className="font-bold text-wiki-text mb-3 text-center">
             Contents
@@ -93,11 +93,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </div>
       </aside>
 
-      {/* 🟢 MIDDLE COLUMN: Main Article Content (Wrapped for Font Size Adjuster) */}
+      {/* 🟢 MIDDLE COLUMN: Main Article Content */}
       <div className="min-w-0 article-body-wrapper">
         
-        {/* Breadcrumbs */}
-        <nav className="flex items-center gap-2 text-sm text-wiki-text-muted mb-4">
+        {/* Breadcrumbs (Hidden in Print) */}
+        <nav className="flex items-center gap-2 text-sm text-wiki-text-muted mb-4 no-print">
           <Link href="/" className="hover:text-wiki-link hover:underline">Home</Link>
           <span aria-hidden="true">›</span>
           <Link href={`/section`} className="capitalize hover:text-wiki-link hover:underline">
@@ -105,7 +105,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </Link>
         </nav>
 
-        {/* Header (Wikipedia Style: Title + Underline) */}
+        {/* Header (Title, Subtitle, Toolbar, Hero Image) */}
         <header className="mb-6">
           <h1 className="font-serif text-4xl md:text-5xl text-wiki-text mb-2 leading-tight">
             {article.title}
@@ -116,7 +116,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             {article.subtitle}
           </p>
 
-          {/* 👇 TOOLBAR ADDED HERE 👇 */}
+          {/* Toolbar (Hidden in Print) */}
           <div className="no-print">
             <ArticleToolbar title={article.title} contentText={fullContentText} />
           </div>
@@ -134,17 +134,19 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* Lead Paragraph (Wikipedia keeps it clean) */}
+          {/* Lead Paragraph */}
           <p className="text-base md:text-lg text-wiki-text leading-relaxed mb-6">
             {article.summary}
           </p>
         </header>
 
-        {/* Content & Infobox Container (Infobox ko right float karne ke liye) */}
+        {/* Content & Infobox Container */}
         <div className="flow-root">
-          {/* Mobile par Infobox upar dikhega, Desktop par Right column me chala jayega */}
+          
+          {/* 👇 Mobile par Infobox upar dikhega, Desktop par Right column me. 
+              PRINT mein yeh class ('print-infobox') isko visible rakhegi 👇 */}
           {article.infobox && (
-            <div className="xl:hidden mb-6">
+            <div className="xl:hidden mb-6 print-infobox">
               <Infobox data={article.infobox} title={article.title} />
             </div>
           )}
@@ -178,8 +180,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      {/* 🟢 RIGHT COLUMN: Infobox (Classic Wikipedia Data Sheet) */}
-      <aside className="hidden xl:block">
+      {/* 🟢 RIGHT COLUMN: Infobox (Hidden in Print) */}
+      <aside className="hidden xl:block no-print">
         <div className="sticky top-24">
           {article.infobox && <Infobox data={article.infobox} title={article.title} />}
         </div>
