@@ -3,37 +3,49 @@
 @tailwind utilities;
 
 /* =========================================
-   1. THEME VARIABLES
+   1. THEME DESIGN TOKENS (Long-Term System)
    ========================================= */
 @layer base {
   :root {
-    --bg-main: #ffffff;
-    --bg-alt: #f8f9fa;
-    --bg-header: #eaecf0;
-    --text-main: #202122;
-    --text-muted: #54595d;
-    --link-color: #0645ad;
-    --link-visited: #0b0080;
-    --border-main: #a2a9b1;
-    --border-light: #c8ccd1;
+    /* ☀️ Light Mode (Warm Editorial) */
+    --bg-main: #FAFAF9;           /* Warm Off-White (Stripe style) */
+    --bg-card: #FFFFFF;           /* Pure White for Cards */
+    --bg-card-hover: #F5F5F4;
+    --bg-muted: #F5F5F4;          /* For headers/table backgrounds */
     
-    --selection-bg: #0645ad;
-    --selection-text: #ffffff;
+    --text-main: #1C1917;         /* Deep Charcoal (Not pure black) */
+    --text-muted: #78716C;        /* Subtle Grey */
+    
+    --brand-primary: #166534;     /* Heritage Deep Green */
+    --brand-hover: #14532D;
+    --brand-visited: #4C1D95;     /* Deep Purple */
+    
+    --border-main: #E7E5E4;       /* Soft Border */
+    --border-subtle: #F5F5F4;     /* Extremely subtle border */
+    
+    --selection-bg: #166534;
+    --selection-text: #FFFFFF;
   }
 
+  /* 🌙 Dark Mode (Luxurious Obsidian) */
   .dark {
-    --bg-main: #121212;
-    --bg-alt: #1a1a1a;
-    --bg-header: #2a2a2a;
-    --text-main: #e0e0e0;
-    --text-muted: #a0a0a0;
-    --link-color: #6ba3f5;
-    --link-visited: #9b8cf5;
-    --border-main: #444444;
-    --border-light: #333333;
-
-    --selection-bg: #6ba3f5;
-    --selection-text: #121212;
+    --bg-main: #0C0A09;           /* Deep Obsidian */
+    --bg-card: #1C1917;           
+    --bg-card-hover: #292524;
+    --bg-muted: #1C1917;
+    
+    --text-main: #FAFAF9;         
+    --text-muted: #A8A29E;        
+    
+    --brand-primary: #4ADE80;     /* Bright Green for Dark Mode */
+    --brand-hover: #22C55E;
+    --brand-visited: #C084FC;
+    
+    --border-main: #292524;       
+    --border-subtle: #1C1917;     
+    
+    --selection-bg: #4ADE80;
+    --selection-text: #0C0A09;
   }
 
   html {
@@ -46,8 +58,8 @@
     color: var(--text-main);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
-    transition: background-color 0.3s, color 0.3s;
+    font-family: var(--font-inter), sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   ::selection {
@@ -61,67 +73,73 @@
     height: auto;
   }
 
+  /* Typography (Editorial Style) */
   p {
     max-width: 75ch; 
-    line-height: 1.7; 
-    margin-bottom: 1.25rem; 
+    line-height: 1.75; 
+    margin-bottom: 1.5rem; 
     font-size: 1.05rem; 
   }
 
   a {
-    color: var(--link-color);
+    color: var(--brand-primary);
     text-decoration: none;
+    transition: color 0.2s ease;
   }
   
   a:hover { text-decoration: underline; }
-  a:visited { color: var(--link-visited); }
+  a:visited { color: var(--brand-visited); }
 
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance; 
     color: var(--text-main);
-    font-family: var(--font-fraunces), Georgia, serif;
-    font-weight: normal;
+    font-family: var(--font-playfair), Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
-  h1 { font-size: 2.2rem; margin-bottom: 1rem; }
+  h1 { font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.2; }
 
   h2 {
-    font-size: 1.6rem;
-    margin-top: 2.5rem; 
-    margin-bottom: 1rem; 
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid var(--border-light); 
+    font-size: 1.75rem;
+    margin-top: 3rem; 
+    margin-bottom: 1.25rem; 
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-main); 
   }
 
-  h3 { font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+  h3 { font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; }
 
+  /* Tables (Modern Data Sheet) */
   table {
     width: 100%;
     margin-top: 1.5rem;
     margin-bottom: 2rem;
     border-collapse: collapse;
     font-size: 0.95rem;
-    background-color: var(--bg-alt);
+    background-color: var(--bg-card);
     border: 1px solid var(--border-main);
+    border-radius: 6px;
+    overflow: hidden;
   }
 
   th, td {
-    padding: 0.75rem; 
-    border: 1px solid var(--border-light);
+    padding: 0.85rem 1rem; 
+    border-bottom: 1px solid var(--border-main);
     text-align: left;
     vertical-align: top;
     line-height: 1.5;
   }
 
   th {
-    background-color: var(--bg-header);
-    font-weight: 700;
+    background-color: var(--bg-muted);
+    font-weight: 600;
     color: var(--text-main);
     width: 35%; 
   }
 
-  ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.7; }
-  li { margin-bottom: 0.35rem; }
+  ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.75; }
+  li { margin-bottom: 0.5rem; }
 }
 
 @layer components {
@@ -130,38 +148,40 @@
   }
 }
 
-/* Leaflet Map Overrides */
+/* =========================================
+   2. LEAFLET MAP OVERRIDES (Premium Look)
+   ========================================= */
 .leaflet-popup-content-wrapper {
-  border-radius: 2px !important; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 6px !important; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   border: 1px solid var(--border-main) !important;
-  background-color: var(--bg-main) !important;
+  background-color: var(--bg-card) !important;
   color: var(--text-main) !important;
   padding: 0 !important; 
 }
-.leaflet-popup-content { margin: 12px 16px !important; font-family: inherit; }
+.leaflet-popup-content { margin: 14px 18px !important; font-family: var(--font-inter), sans-serif; }
 .leaflet-popup-tip {
-  background-color: var(--bg-main) !important;
+  background-color: var(--bg-card) !important;
   border: 1px solid var(--border-main) !important;
   box-shadow: none !important;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg-main); }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-light);
-  border-radius: 4px; 
+  background: var(--border-main);
+  border-radius: 5px; 
   border: 2px solid var(--bg-main); 
 }
-::-webkit-scrollbar-thumb:hover { background: var(--border-main); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 /* Leaflet Controls */
 .leaflet-control-layers {
-  border-radius: 0 !important;
+  border-radius: 6px !important;
   border: 1px solid var(--border-main) !important;
-  box-shadow: none !important;
-  background: var(--bg-alt) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  background: var(--bg-card) !important;
   color: var(--text-main) !important;
   font-family: var(--font-inter), sans-serif !important;
   font-size: 14px !important;
@@ -169,11 +189,10 @@
 .leaflet-control-layers-toggle { width: 36px !important; height: 36px !important; background-size: 20px 20px !important; }
 
 /* =========================================
-   PRINT STYLES (Wikipedia Book Style)
+   3. PRINT STYLES (Book Style)
    ========================================= */
 @media print {
-  /* 1. Page setup & force background colors */
-  @page { margin: 15mm; }
+  @page { margin: 20mm; }
   
   body {
     -webkit-print-color-adjust: exact !important;
@@ -182,18 +201,10 @@
     color: #000000 !important;
   }
 
-  /* 2. Hide non-printable elements (Header, Footer, Sidebars, Buttons, Toolbars) */
-  .no-print,
-  header,
-  footer,
-  nav,
-  aside,
-  button,
-  .leaflet-container {
+  .no-print, header, footer, nav, aside, button, .leaflet-container {
     display: none !important;
   }
 
-  /* 3. Reset layout for printing (Single column, no grids) */
   article {
     display: block !important;
     max-width: 100% !important;
@@ -208,29 +219,20 @@
     position: static !important;
   }
 
-  /* 4. Show the mobile infobox specifically for print (since desktop aside is hidden) */
   .print-infobox {
     display: block !important;
     margin-bottom: 20px !important;
     page-break-inside: avoid;
   }
 
-  /* 5. Typography for Print */
-  h1 { font-size: 24pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 10px; }
-  h2 { font-size: 16pt !important; color: #000000 !important; margin-top: 20px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
-  p { font-size: 11pt !important; color: #000000 !important; line-height: 1.5 !important; }
+  h1 { font-size: 28pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 15px; }
+  h2 { font-size: 18pt !important; color: #000000 !important; margin-top: 25px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
+  p { font-size: 12pt !important; color: #000000 !important; line-height: 1.6 !important; }
   
-  /* 6. Reset Link colors to black for print */
   a { color: #000000 !important; text-decoration: none !important; }
 
-  /* 7. Image handling (avoid breaking images across pages) */
-  img {
-    max-width: 100% !important;
-    height: auto !important;
-    page-break-inside: avoid;
-  }
+  img { max-width: 100% !important; height: auto !important; page-break-inside: avoid; }
 
-  /* 8. Fix Infobox borders and colors for print */
   .bg-wiki-bg-alt, .bg-wiki-header {
     background-color: #f8f9fa !important;
   }
