@@ -15,15 +15,15 @@ Built with a **Wikipedia-inspired, distraction-free UI**, this portal prioritize
 
 - **Wikipedia-Style Layout:** Clean 3-column article layout (TOC, Content, Infobox), sharp borders, and no distracting animations.
 - **Senior-Friendly Accessibility:** 
-  - Global Font Size Adjuster (A- / A+) that saves user preference.
-  - Dark/Light Mode toggle.
-  - "Listen to Article" (Text-to-Speech).
-  - Print & WhatsApp Share options.
+  - Dark/Light Mode toggle (saves user preference).
+  - **"Listen to Article"** (Text-to-Speech) in Hindi for easy listening.
+  - Print Article & WhatsApp Share options.
 - **Living Village Features:** 
   - Village Directory (Searchable list of doctors, shops, emergency contacts).
   - Mobile Emergency Sticky Bar (Direct call buttons).
   - Interactive Village Map with Satellite View toggle.
   - Photo Gallery with a full-screen Lightbox.
+- **Global Search:** Instant search modal to find any article across the portal.
 - **Zero-Database Architecture:** 100% static site powered by JSON files. No backend costs, ultra-fast load times.
 - **Pre-Build Validation:** Zod validates all JSON data before deployment. If data is malformed, the Vercel build fails, ensuring the live site never crashes.
 
@@ -47,18 +47,29 @@ bandwar-portal/
 ├── data/                       # 👑 CONTENT WORKSPACE (Update JSONs here)
 │   ├── master.json             # Site Config, Homepage, Footer, Nav, SEO, Emergency Contacts
 │   ├── directory.json          # Local services, doctors, shops, emergency numbers
-│   ├── events.json             # Village events and festivals
 │   ├── reach.json              # How to reach the village (bus/train info)
 │   ├── media.json              # Gallery photos, Timeline events, Map landmarks
 │   ├── people.json             # Notable personalities directory
 │   ├── vision.json             # Vision 2035 Manifesto data
+│   ├── categories.json         # Article categories (History, Religion, etc.)
 │   └── articles/               # All articles (Split into files by category)
 │       ├── education.json  
 │       ├── culture.json    
-│       └── ...             
+│       ├── health.json
+│       ├── geography.json
+│       ├── landmarks.json
+│       ├── religion.json
+│       └── infrastructure.json
 │
 ├── public/                     # 📸 STATIC ASSETS
-│   └── images/                 # Put all photos here (e.g., images/education/photo.jpg)
+│   └── images/                 # Put all photos here (organized by folders)
+│       ├── education/
+│       ├── religion/
+│       ├── infrastructure/
+│       ├── geography/
+│       ├── culture/
+│       ├── health/
+│       └── landmarks/
 │
 ├── scripts/                    # ⚙️ AUTOMATION
 │   └── validate.ts             # The engine that checks JSON for errors
@@ -67,31 +78,31 @@ bandwar-portal/
 │   ├── app/                    # Next.js App Router (Pages)
 │   │   ├── article/[id]/       # Dynamic Article Page (3-column layout)
 │   │   ├── about/              # About page
-│   │   ├── contribute/         # Form to submit corrections/photos
+│   │   ├── contribute/         # Form to submit corrections/photos via Email
 │   │   ├── directory/          # Village Directory page (Search & Filter)
-│   │   ├── events/             # Village Events page
 │   │   ├── place/              # Map & Gallery page
 │   │   ├── section/            # Archive/Category listing page
 │   │   ├── vision/             # Vision 2035 page (With Before/After slider)
 │   │   ├── globals.css         # Global Tailwind styles, CSS Variables, Print styles
-│   │   ├── layout.tsx          # Main Layout (Header, Footer, Theme/Font scripts)
+│   │   ├── layout.tsx          # Main Layout (Header, Footer, Theme scripts)
 │   │   ├── not-found.tsx       # Custom 404 Page
 │   │   ├── page.tsx            # Homepage (Portal Grid, Stats, Latest Articles)
+│   │   ├── robots.ts           # Auto-generates robots.txt
 │   │   └── sitemap.ts          # Auto-generates sitemap.xml for Google
 │   │
 │   ├── components/             # Reusable UI Components
 │   │   ├── article/            # Article components
-│   │   │   ├── ArticleToolbar.tsx # Listen, Print, Share, A-/A+ controls
+│   │   │   ├── ArticleToolbar.tsx # Listen, Print, Share controls
 │   │   │   ├── FaqAccordion.tsx   # Collapsible FAQs
 │   │   │   ├── Infobox.tsx        # Right-side data sheet on articles
 │   │   │   └── WikiText.tsx       # Parses [[id|label]] internal links
 │   │   ├── contribute/         # Form components for Contribute page
 │   │   ├── directory/          # Search & Filter components for Directory
 │   │   ├── layout/             # Layout components
-│   │   │   ├── Header.tsx         # Navbar with Theme & Font Size toggles
+│   │   │   ├── Header.tsx         # Navbar with Theme & Search toggles
 │   │   │   ├── Footer.tsx         # Site footer
 │   │   │   ├── EmergencyBar.tsx   # Sticky mobile emergency bar
-│   │   │   ├── FontSizeControls.tsx # A- / A+ global font logic
+│   │   │   ├── SearchModal.tsx    # Global search overlay
 │   │   │   └── ThemeToggle.tsx    # Dark/Light mode switch
 │   │   └── place/              # Map & Gallery components
 │   │       ├── GalleryGrid.tsx    # Photo grid with category filters
@@ -100,6 +111,7 @@ bandwar-portal/
 │   │
 │   └── lib/                    # Core Logic
 │       ├── data.ts             # Functions to read JSON and pass to pages
+│       ├── search-data.ts      # Aggregates data for the Global Search index
 │       └── schema.ts           # Zod schemas for strict data validation
 │
 ├── next.config.mjs             # Next.js configuration
@@ -130,7 +142,7 @@ bandwar-portal/
 ### 1. Adding or Updating an Article
 - **File Location:** `data/articles/` (e.g., `education.json`).
 - **Strict Rules:**
-  - `id`: Must be lowercase, unique, and use hyphens (e.g., `snk-high-school`).
+  - `id`: Must be lowercase, unique, and use hyphens (e.g., `snk-high-school-bandwar`).
   - `lastUpdated`: Must be in `YYYY-MM-DD` format.
   - **Internal Links:** To link to another article, use `[[article-id|Display Text]]`.
 
@@ -138,16 +150,13 @@ bandwar-portal/
 - **File Location:** `data/directory.json`.
 - Add an object to the `items` array. Set `isEmergency: true` for urgent contacts.
 
-### 3. Adding a New Event
-- **File Location:** `data/events.json`.
-- Add an object to the `events` array with date, title, type, description, and location.
-
-### 4. Adding a New Photo
-- **Step 1:** Place the photo in `public/images/`.
+### 3. Adding a New Photo
+- **Step 1:** Place the photo in `public/images/` inside the correct category folder (e.g., `public/images/education/`).
 - **Step 2:** Open `data/media.json` and add it to the `gallery.photos` array.
-- **Path Rule:** Write paths as `images/education/photo-name.jpg` (No leading slash `/`).
+- **Path Rule:** Write paths as `images/education/photo-name.jpg` (No leading slash `/`). 
+- **SEO Rule:** Name images with hyphens and location (e.g., `snk-high-school-bandwar-campus.jpg`).
 
-### 5. Updating Emergency Contacts (Mobile Bar)
+### 4. Updating Emergency Contacts (Mobile Bar)
 - **File Location:** `data/master.json`.
 - Update the `emergencyContacts` array.
 
@@ -191,7 +200,7 @@ The repository is connected directly to Vercel.
 2. Push your code to GitHub:
    ```bash
    git add .
-   git commit -m "feat: added new article and updated UI"
+   git commit -m "feat: added new article and updated JSON"
    git push origin main
    ```
 3. Vercel will automatically build and deploy.
