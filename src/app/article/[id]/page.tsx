@@ -122,13 +122,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </div>
           
           {article.hero && (
-            <div className="relative w-full h-[250px] md:h-[350px] border border-wiki-border-light mb-6">
+            // 👇 Yahan bg-wiki-bg-alt add kiya aur object-cover ko object-contain p-1 kiya 👇
+            <div className="relative w-full h-[250px] md:h-[400px] border border-wiki-border-light mb-6 bg-wiki-bg-alt">
               <Image
                 src={`/${article.hero}`}
                 alt={article.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 800px"
-                className="object-cover"
+                className="object-contain p-1"
                 priority
               />
             </div>
