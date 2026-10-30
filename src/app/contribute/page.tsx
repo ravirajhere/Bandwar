@@ -1,6 +1,7 @@
+import { Suspense } from "react"; // 👈 Suspense import kiya
 import { Metadata } from "next";
 import { ContributeForm } from "@/components/contribute/ContributeForm";
-import { ShieldCheck, FileText, Image as ImageIcon, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, FileText, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contribute to the Archive | Bandwar Portal",
@@ -27,7 +28,15 @@ export default function ContributePage() {
           
           {/* Form Section */}
           <div className="bg-card border border-border rounded-2xl shadow-sm p-6 md:p-8">
-            <ContributeForm />
+            {/* ✅ Suspense Boundary yahan wrap kiya hai */}
+            <Suspense fallback={
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-brand/30 border-t-brand rounded-full animate-spin mb-4"></div>
+                <p className="text-muted font-medium">Loading form...</p>
+              </div>
+            }>
+              <ContributeForm />
+            </Suspense>
           </div>
 
           {/* Guidelines Sidebar */}
