@@ -1,6 +1,6 @@
 {
   "version": "5.1.0",
-  "lastUpdated": "2026-10-22",
+  "lastUpdated": "2026-10-30",
 
   "site": {
     "name": "Bandwar",
@@ -56,7 +56,7 @@
     { "label": "Directory", "href": "/directory", "icon": "📞" },
     { "label": "Archive", "href": "/section", "icon": "📚" },
     { "label": "People", "href": "/people", "icon": "👥" },
-    { "label": "Places", "href": "/place", "icon": "🗺️" },
+    { "label": "Gallery", "href": "/gallery", "icon": "🖼️" },
     { "label": "Reach", "href": "/reach", "icon": "🚆" },
     { "label": "Vision", "href": "/vision", "icon": "🔮" },
     { "label": "About", "href": "/about", "icon": "ℹ️" }
@@ -71,8 +71,8 @@
     ],
     "explore": [
       { "label": "Directory", "href": "/directory" },
-      { "label": "Map", "href": "/place" },
-      { "label": "Gallery", "href": "/place?view=gallery" },
+      { "label": "Map", "href": "/#map" },
+      { "label": "Gallery", "href": "/gallery" },
       { "label": "Timeline", "href": "/time" },
       { "label": "How to Reach", "href": "/reach" },
       { "label": "Contribute", "href": "/contribute" }
@@ -125,7 +125,7 @@
   },
 
   "contact": {
-    "email": "bandwar.archive@gmail.com",
+    "email": "ravirajbandwar@gmail.com",
     "address": "Bandwar, Begusarai, Bihar — 851131",
     "coordinates": { "lat": 25.5009, "lng": 86.1606 }
   },
