@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -9,27 +9,45 @@ import L from "leaflet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// Custom SVG Icon Generator based on Category
-const createIcon = (category: string) => {
+// 🎨 Custom SVG Icon Generator (Category based)
+const createIcon = (category: string, iconEmoji?: string) => {
   const colors: Record<string, string> = {
-    religion: "#ea580c", // Orange for Temples
-    education: "#2563eb", // Blue for Schools
-    infrastructure: "#16a34a", // Green for Bank/Pumps
-    landmarks: "#dc2626", // Red for Memorials
-    geography: "#0284c7", // Light Blue for River
+    religion: "#ea580c",      // Orange
+    education: "#2563eb",     // Blue
+    infrastructure: "#16a34a", // Green
+    landmarks: "#dc2626",     // Red
+    geography: "#0284c7",     // Light Blue
   };
   const color = colors[category] || "#52525b";
 
+  // Emoji ya dot ke saath ek premium pin design
   return L.divIcon({
-    className: "custom-div-icon",
-    html: `<div style="background-color: ${color}; width: 18px; height: 18px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.4);"></div>`,
-    iconSize: [24, 24],
-    iconAnchor: [12, 12],
-    popupAnchor: [0, -12],
+    className: "custom-map-pin",
+    html: `
+      <div style="
+        background-color: ${color}; 
+        width: 32px; 
+        height: 32px; 
+        border-radius: 50% 50% 50% 0; 
+        transform: rotate(-45deg); 
+        border: 3px solid white; 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <span style="transform: rotate(45deg); font-size: 14px; line-height: 1;">
+          ${iconEmoji || ""}
+        </span>
+      </div>
+    `,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32], // Pin ka neecha hissa location ko point karega
+    popupAnchor: [0, -32],
   });
 };
 
-// Component to handle Fly-To animation
+// 🎬 Controller for Fly-To Animation
 function MapController({ activeLandmark }: { activeLandmark: any }) {
   const map = useMap();
   useEffect(() => {
@@ -48,77 +66,74 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
   }, []);
 
   if (!mounted) return (
-    <div className="h-[600px] w-full bg-wiki-bg-alt border border-wiki-border-light flex items-center justify-center text-wiki-text-muted">
-      Loading Advanced Map...
+    <div className="h-full min-h-[400px] w-full bg-muted-background border border-border flex items-center justify-center text-muted">
+      Loading Satellite Map...
     </div>
   );
 
   return (
-    <div className="h-[600px] w-full border border-wiki-border-light overflow-hidden z-0 relative">
+    <div className="h-full w-full overflow-hidden z-0 relative">
       <MapContainer 
         center={[25.5009, 86.1606]} 
         zoom={14} 
         style={{ height: "100%", width: "100%" }}
         scrollWheelZoom={false}
+        className="z-0"
       >
         <MapController activeLandmark={activeLandmark} />
 
-        <LayersControl position="topright">
-          <LayersControl.BaseLayer checked name="Street Map">
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-          </LayersControl.BaseLayer>
+        {/* 🛰️ Sirf Satellite View (Esri) */}
+        <TileLayer
+          attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        />
 
-          <LayersControl.BaseLayer name="Satellite View">
-            <TileLayer
-              attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-            />
-          </LayersControl.BaseLayer>
-        </LayersControl>
-
-        {/* Marker Clustering */}
+        {/* 📍 Markers with Clustering */}
         <MarkerClusterGroup chunkedLoading>
           {landmarks.map((place) => (
             <Marker 
               key={place.id} 
               position={[place.lat, place.lng]}
-              icon={createIcon(place.category)}
+              icon={createIcon(place.category, place.icon)}
             >
               <Popup>
-                <div className="font-sans min-w-[200px]">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xl">{place.icon}</span>
-                    <h3 className="font-bold text-[15px] text-wiki-text m-0 leading-tight">
-                      {place.name}
-                    </h3>
+                {/* Premium Popup Card */}
+                <div className="min-w-[220px] max-w-[260px] p-1">
+                  <div className="flex items-start gap-2 mb-2">
+                    <span className="text-xl shrink-0 mt-0.5">{place.icon || "📍"}</span>
+                    <div>
+                      <h3 className="font-serif font-bold text-lg text-foreground leading-tight m-0">
+                        {place.name || place.title}
+                      </h3>
+                      <span className="text-[11px] font-semibold text-brand uppercase tracking-wider">
+                        {place.category}
+                      </span>
+                    </div>
                   </div>
                   
                   {place.description && (
-                    <p className="text-[13px] text-wiki-text-muted mb-3 leading-snug">
+                    <p className="text-sm text-foreground/80 mb-3 leading-snug">
                       {place.description}
                     </p>
                   )}
                   
-                  <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-gray-200">
+                  {/* Actions */}
+                  <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-border">
                     {place.article && (
                       <Link 
                         href={`/article/${place.article}`} 
-                        className="text-[13px] text-wiki-link font-bold hover:underline"
+                        className="text-sm text-brand font-semibold hover:underline flex items-center gap-1"
                       >
                         Read Full Article →
                       </Link>
                     )}
-                    {/* 1-Click Navigation */}
                     <a 
                       href={`https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[13px] bg-blue-50 text-blue-700 font-bold px-2 py-1.5 rounded-sm hover:bg-blue-100 text-center transition-colors"
+                      className="text-sm bg-brand hover:bg-brand-hover text-white font-medium px-3 py-2 rounded-lg text-center transition-colors shadow-sm"
                     >
-                      📍 Get Directions
+                      Get Directions
                     </a>
                   </div>
                 </div>
@@ -128,15 +143,19 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
         </MarkerClusterGroup>
       </MapContainer>
 
-      {/* Custom CSS for Clustering and Popups */}
+      {/* 🎨 Custom CSS for Clustering & Leaflet Overrides */}
       <style>{`
-        .custom-div-icon { background: transparent; border: none; }
-        .leaflet-popup-content-wrapper { padding: 0; border-radius: 4px; overflow: hidden; }
-        .leaflet-popup-content { margin: 12px; }
-        .marker-cluster-small { background-color: rgba(37, 99, 235, 0.6) !important; }
-        .marker-cluster-small div { background-color: rgba(37, 99, 235, 0.9) !important; color: white; font-weight: bold; }
-        .marker-cluster-medium { background-color: rgba(234, 88, 12, 0.6) !important; }
-        .marker-cluster-medium div { background-color: rgba(234, 88, 12, 0.9) !important; color: white; font-weight: bold; }
+        /* Remove default Leaflet white background from pins */
+        .custom-map-pin { background: transparent; border: none; }
+        
+        /* Cluster colors to match theme */
+        .marker-cluster-small { background-color: rgba(22, 101, 52, 0.6) !important; }
+        .marker-cluster-small div { background-color: #166534 !important; color: white; font-weight: bold; }
+        .marker-cluster-medium { background-color: rgba(202, 138, 4, 0.6) !important; }
+        .marker-cluster-medium div { background-color: #ca8a04 !important; color: white; font-weight: bold; }
+        
+        /* Ensure Leaflet controls don't overlap header */
+        .leaflet-container { z-index: 0; }
       `}</style>
     </div>
   );
