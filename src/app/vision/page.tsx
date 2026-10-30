@@ -1,7 +1,9 @@
 import { getVisionData } from "@/lib/data";
 import { PriorityCard } from "@/components/vision/PriorityCard";
+import { Target, Trophy, Map, ArrowRight } from "lucide-react";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Vision 2035 | Bandwar Portal",
   description: "A non-political development manifesto for Bandwar village — 15 priorities, achievements, and a 10-year roadmap.",
 };
@@ -10,100 +12,170 @@ export default function VisionPage() {
   const vision = getVisionData();
 
   return (
-    <div className="bg-wiki-bg min-h-screen py-8">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+    <div className="bg-background min-h-screen pb-20">
+      
+      {/* 🏛️ HERO SECTION (Premium Header) */}
+      <section className="relative bg-muted-background border-b border-border pt-20 pb-16 mb-12 overflow-hidden">
+        {/* Background pattern/gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-brand/5 to-transparent pointer-events-none"></div>
         
-        {/* Page Header (Wikipedia Style) */}
-        <div className="mb-8">
-          <h1 className="font-serif text-3xl md:text-4xl text-wiki-text mb-2">
-            Vision 2035
+        <div className="container-custom relative z-10 text-center max-w-4xl mx-auto">
+          <span className="inline-block bg-brand/10 text-brand font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+            Village Manifesto
+          </span>
+          <h1 className="font-serif text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+            Vision <span className="text-brand">2035</span>
           </h1>
-          <div className="w-full border-b border-wiki-border-light mb-3"></div>
-          <p className="text-[15px] text-wiki-text-muted leading-relaxed max-w-4xl">
+          <p className="text-lg md:text-xl text-muted leading-relaxed">
             {vision.intro}
           </p>
         </div>
+      </section>
 
-        {/* Sticky Navigation (Wikipedia TOC Style) */}
-        <nav className="sticky top-16 z-40 bg-wiki-bg-alt border border-wiki-border-light mb-8 flex overflow-x-auto shadow-sm">
-          <a href="#priorities" className="px-4 py-3 text-[14px] font-bold text-wiki-text border-b-2 border-transparent hover:border-wiki-link hover:text-wiki-link whitespace-nowrap transition-colors">
-            15 Priorities
-          </a>
-          <a href="#achievements" className="px-4 py-3 text-[14px] font-bold text-wiki-text border-b-2 border-transparent hover:border-wiki-link hover:text-wiki-link whitespace-nowrap transition-colors border-l border-wiki-border-light">
-            Achievements
-          </a>
-          <a href="#roadmap" className="px-4 py-3 text-[14px] font-bold text-wiki-text border-b-2 border-transparent hover:border-wiki-link hover:text-wiki-link whitespace-nowrap transition-colors border-l border-wiki-border-light">
-            10-Year Roadmap
-          </a>
+      <div className="container-custom max-w-5xl">
+        
+        {/* 🧭 Sticky Navigation (Apple Style Pills) */}
+        <nav className="sticky top-20 z-40 bg-background/80 backdrop-blur-md py-4 mb-12 flex justify-center no-print">
+          <div className="inline-flex bg-card border border-border rounded-full p-1.5 shadow-sm">
+            <a 
+              href="#priorities" 
+              className="px-5 py-2.5 rounded-full text-sm font-semibold text-foreground hover:bg-muted-background transition-colors flex items-center gap-2"
+            >
+              <Target size={16} className="text-brand" /> 15 Priorities
+            </a>
+            <a 
+              href="#achievements" 
+              className="px-5 py-2.5 rounded-full text-sm font-semibold text-foreground hover:bg-muted-background transition-colors flex items-center gap-2"
+            >
+              <Trophy size={16} className="text-brand" /> Achievements
+            </a>
+            <a 
+              href="#roadmap" 
+              className="px-5 py-2.5 rounded-full text-sm font-semibold text-foreground hover:bg-muted-background transition-colors flex items-center gap-2"
+            >
+              <Map size={16} className="text-brand" /> Roadmap
+            </a>
+          </div>
         </nav>
 
         {/* 1. Priorities Section */}
-        <section id="priorities" className="scroll-mt-32">
-          <div className="flex items-center gap-4 mb-6">
-            <h2 className="font-serif text-2xl text-wiki-text">The 15 Priorities</h2>
-            <div className="h-px bg-wiki-border-light flex-grow"></div>
+        <section id="priorities" className="scroll-mt-32 mb-24">
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="font-serif text-3xl font-semibold text-foreground flex items-center gap-3">
+              <Target className="text-brand" size={28} /> The 15 Priorities
+            </h2>
+            <div className="h-px bg-border flex-grow rounded-full"></div>
           </div>
           
-          {vision.priorities.map((priority) => (
-            <PriorityCard key={priority.id} data={priority} />
-          ))}
+          <div className="space-y-6">
+            {vision.priorities.map((priority) => (
+              /* Assuming PriorityCard is also updated to use new tokens */
+              <PriorityCard key={priority.id} data={priority} />
+            ))}
+          </div>
         </section>
 
         {/* 2. Achievements Section */}
-        <section id="achievements" className="scroll-mt-32 mt-16">
-          <div className="flex items-center gap-4 mb-6">
-            <h2 className="font-serif text-2xl text-wiki-text">Completed Achievements</h2>
-            <div className="h-px bg-wiki-border-light flex-grow"></div>
+        <section id="achievements" className="scroll-mt-32 mb-24">
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="font-serif text-3xl font-semibold text-foreground flex items-center gap-3">
+              <Trophy className="text-brand" size={28} /> Completed Achievements
+            </h2>
+            <div className="h-px bg-border flex-grow rounded-full"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {vision.achievements.map((ach: any) => (
-              <div key={ach.id} className="bg-wiki-bg-alt border border-wiki-border-light p-4 flex flex-col h-full">
-                <div className="text-3xl mb-2">{ach.icon}</div>
-                <h3 className="font-bold text-wiki-text text-[16px] mb-2">{ach.title}</h3>
-                <p className="text-[14px] text-wiki-text-muted mb-4 flex-grow leading-relaxed">{ach.description}</p>
-                <div className="border-t border-wiki-border-light pt-3 mt-auto text-[13px] text-wiki-text">
-                  <p className="mb-1"><strong className="text-wiki-text-muted">By:</strong> {ach.by}</p>
-                  <p className="mb-1"><strong className="text-wiki-text-muted">Date:</strong> {ach.date}</p>
-                  <p><strong className="text-wiki-text-muted">Cost:</strong> {ach.cost}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {vision.achievements.map((ach: any, idx: number) => (
+              <div 
+                key={idx} 
+                className="bg-card border border-border p-6 rounded-2xl shadow-sm hover:shadow-elevated transition-all duration-300 group relative overflow-hidden"
+              >
+                {/* Decorative background icon */}
+                <div className="absolute -right-4 -bottom-4 text-8xl opacity-5 group-hover:scale-110 transition-transform">
+                  {ach.icon || "🏆"}
+                </div>
+
+                <div className="text-4xl mb-4 relative z-10">{ach.icon || "✅"}</div>
+                <h3 className="font-serif font-bold text-foreground text-xl mb-3 relative z-10">
+                  {ach.title}
+                </h3>
+                <p className="text-muted text-sm mb-6 leading-relaxed relative z-10">
+                  {ach.description}
+                </p>
+                
+                {/* Meta Data */}
+                <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border-subtle relative z-10">
+                  {ach.by && (
+                    <span className="bg-muted-background text-foreground/80 text-xs px-2.5 py-1 rounded-md font-medium">
+                      👤 {ach.by}
+                    </span>
+                  )}
+                  {ach.date && (
+                    <span className="bg-brand/10 text-brand text-xs px-2.5 py-1 rounded-md font-medium">
+                      📅 {ach.date}
+                    </span>
+                  )}
+                  {ach.cost && (
+                    <span className="bg-green-500/10 text-green-600 dark:text-green-400 text-xs px-2.5 py-1 rounded-md font-medium">
+                      💰 {ach.cost}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 3. Roadmap Section */}
-        <section id="roadmap" className="scroll-mt-32 mt-16">
-          <div className="flex items-center gap-4 mb-6">
-            <h2 className="font-serif text-2xl text-wiki-text">10-Year Roadmap</h2>
-            <div className="h-px bg-wiki-border-light flex-grow"></div>
+        {/* 3. Roadmap Section (Vertical Timeline) */}
+        <section id="roadmap" className="scroll-mt-32">
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="font-serif text-3xl font-semibold text-foreground flex items-center gap-3">
+              <Map className="text-brand" size={28} /> 10-Year Roadmap
+            </h2>
+            <div className="h-px bg-border flex-grow rounded-full"></div>
           </div>
           
-          <div className="space-y-6">
-            {vision.roadmap.map((phase: any) => (
-              <div key={phase.phase} className="border border-wiki-border-light bg-wiki-bg">
-                {/* 👇 Yahan bg-[#eaecf0] ko bg-wiki-header se replace kiya hai 👇 */}
-                <div className="bg-wiki-header border-b border-wiki-border-light p-3 sm:p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
-                  <div>
-                    <span className="text-wiki-text-muted font-bold text-[11px] tracking-wider uppercase block mb-1">
-                      Phase {phase.phase} · {phase.label}
-                    </span>
-                    <h3 className="font-bold text-wiki-text text-lg m-0">{phase.title}</h3>
+          <div className="relative border-l-2 border-brand/20 ml-4 md:ml-6 space-y-12 pb-8">
+            {vision.roadmap.map((phase: any, index: number) => (
+              <div key={index} className="relative pl-8 md:pl-12">
+                
+                {/* Timeline Dot */}
+                <div className="absolute -left-[9px] top-1 w-4 h-4 bg-brand border-4 border-background rounded-full shadow-sm"></div>
+                
+                {/* Phase Header */}
+                <div className="mb-4">
+                  <span className="text-brand font-bold text-sm tracking-wider uppercase mb-1 block">
+                    Phase {phase.phase || phase.year} · {phase.label || ""}
+                  </span>
+                  <h3 className="font-serif text-2xl font-semibold text-foreground">
+                    {phase.title}
+                  </h3>
+                  <div className="inline-block bg-muted-background text-muted text-xs px-3 py-1.5 rounded-lg mt-2 font-medium">
+                    🎯 Focus: {phase.focus}
                   </div>
-                  <p className="text-[13px] text-wiki-text-muted bg-wiki-bg border border-wiki-border-light px-3 py-1.5 max-w-xs">
-                    <strong>Focus:</strong> {phase.focus}
-                  </p>
                 </div>
-                <div className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {phase.items.map((item: any, idx: number) => (
-                    <div key={idx} className="flex gap-3">
-                      <span className="text-2xl mt-0.5">{item.icon}</span>
-                      <div>
-                        <h4 className="font-bold text-wiki-text text-[15px]">{item.title}</h4>
-                        <p className="text-[14px] text-wiki-text-muted leading-relaxed mt-1">{item.description}</p>
+
+                {/* Phase Items (Grid inside timeline) */}
+                <div className="bg-card border border-border rounded-2xl p-6 shadow-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    {phase.items.map((item: any, idx: number) => (
+                      <div key={idx} className="flex gap-4 group">
+                        <div className="shrink-0 w-10 h-10 rounded-full bg-muted-background flex items-center justify-center text-xl group-hover:bg-brand/10 transition-colors">
+                          {item.icon}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-foreground text-base mb-1">
+                            {item.title}
+                          </h4>
+                          <p className="text-muted text-sm leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
+
               </div>
             ))}
           </div>
