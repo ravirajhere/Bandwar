@@ -8,20 +8,20 @@
 @layer base {
   :root {
     /* ☀️ Light Mode (Warm Editorial) */
-    --bg-main: #FAFAF9;           /* Warm Off-White */
-    --bg-card: #FFFFFF;           /* Pure White for Cards */
+    --bg-main: #FAFAF9;           
+    --bg-card: #FFFFFF;           
     --bg-card-hover: #F5F5F4;
-    --bg-muted: #F5F5F4;          /* For headers/table backgrounds */
+    --bg-muted: #F5F5F4;          
     
-    --text-main: #1C1917;         /* Deep Charcoal (Not pure black) */
-    --text-muted: #78716C;        /* Subtle Grey */
+    --text-main: #1C1917;         
+    --text-muted: #78716C;        
     
-    --brand-primary: #166534;     /* Heritage Deep Green */
+    --brand-primary: #166534;     
     --brand-hover: #14532D;
-    --brand-visited: #4C1D95;     /* Deep Purple */
+    --brand-visited: #4C1D95;     
     
-    --border-main: #E7E5E4;       /* Soft Border */
-    --border-subtle: #F5F5F4;     /* Extremely subtle border */
+    --border-main: #E7E5E4;       
+    --border-subtle: #F5F5F4;     
     
     --selection-bg: #166534;
     --selection-text: #FFFFFF;
@@ -29,7 +29,7 @@
 
   /* 🌙 Dark Mode (Luxurious Obsidian) */
   .dark {
-    --bg-main: #0C0A09;           /* Deep Obsidian */
+    --bg-main: #0C0A09;           
     --bg-card: #1C1917;           
     --bg-card-hover: #292524;
     --bg-muted: #1C1917;
@@ -37,7 +37,7 @@
     --text-main: #FAFAF9;         
     --text-muted: #A8A29E;        
     
-    --brand-primary: #4ADE80;     /* Bright Green for Dark Mode */
+    --brand-primary: #4ADE80;     
     --brand-hover: #22C55E;
     --brand-visited: #C084FC;
     
@@ -51,7 +51,8 @@
   /* Senior Accessibility: Base font slightly larger */
   html {
     scroll-behavior: smooth;
-    font-size: 17px; /* 16px se badha kar 17px kiya for better readability */
+    font-size: 17px; 
+    scroll-padding-top: 6rem; /* Sticky header offset */
   }
 
   /* Motion sickness fix */
@@ -88,15 +89,12 @@
     height: auto;
   }
 
-  /* Typography (Editorial Style) */
-  /* FIX: Global p tag se max-width hata diya gaya hai taaki cards/footers na tootein */
   p {
     line-height: 1.7; 
     margin-bottom: 1.5rem; 
     font-size: 1.05rem; 
   }
 
-  /* Sirf Article (prose) ke andar max-width lagega */
   article p, .prose p {
     max-width: 75ch;
   }
@@ -116,10 +114,9 @@
     font-family: var(--font-playfair), Georgia, serif;
     font-weight: 600;
     letter-spacing: -0.02em;
-    scroll-margin-top: 100px; /* FIX: Sticky header ke liye space */
+    scroll-margin-top: 100px; 
   }
 
-  /* FIX: Mobile Responsive Headings using Clamp */
   h1 { font-size: clamp(2rem, 5vw, 2.5rem); margin-bottom: 1rem; line-height: 1.2; }
 
   h2 {
@@ -132,7 +129,6 @@
 
   h3 { font-size: clamp(1.25rem, 3vw, 1.35rem); margin-top: 2rem; margin-bottom: 0.75rem; }
 
-  /* Tables (Modern Data Sheet) */
   table {
     width: 100%;
     margin-top: 1.5rem;
@@ -163,10 +159,11 @@
   ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.7; }
   li { margin-bottom: 0.5rem; }
   
-  /* Form Elements (Professional Touch) */
+  /* ✅ FIXED: border-border-main ko border-border kar diya gaya hai */
   input, select, textarea {
-    @apply w-full px-4 py-2 border border-border-main rounded-lg bg-background text-foreground focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors;
+    @apply w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors;
   }
+  
   button {
     @apply cursor-pointer transition-colors;
   }
