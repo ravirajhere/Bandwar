@@ -4,6 +4,7 @@ import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
+import { ReadingProgress } from "@/components/article/ReadingProgress"; // ✅ Naya Import
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ChevronRight } from "lucide-react";
@@ -19,12 +20,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
   if (!article) return { title: "Not Found" };
 
+  // ✅ SEO Fix: metaTitle aur metaDescription use kar rahe hain
   return {
-    title: `${article.title} | Bandwar Portal`,
-    description: article.summary.slice(0, 160),
+    title: article.metaTitle || `${article.title} | Bandwar Portal`,
+    description: article.metaDescription || article.summary.slice(0, 160),
     openGraph: {
-      title: article.title,
-      description: article.summary,
+      title: article.metaTitle || article.title,
+      description: article.metaDescription || article.summary,
       images: article.hero ? [{ url: `/${article.hero}`, width: 1200, height: 630, alt: article.title }] : [],
     },
   };
@@ -59,7 +61,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
 
   return (
-    <article className="bg-background min-h-screen py-10 md:py-16">
+    <article className="bg-background min-h-screen py-10 md:py-16 relative">
+      {/* ✅ Reading Progress Bar yahan add kiya hai */}
+      <ReadingProgress />
+
       <div className="container-custom grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_340px] gap-8 xl:gap-12">
         
         {faqJsonLd && (
