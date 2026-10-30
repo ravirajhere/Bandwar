@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search, Phone, MapPin, Clock, X, AlertCircle } from "lucide-react";
 import { DirectoryItem } from "@/lib/schema";
+import { EditContactModal } from "./EditContactModal"; // 👈 Import kiya
 
 interface DirectoryClientProps {
   items: DirectoryItem[];
@@ -13,7 +14,6 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
 
-  // Filter Logic
   const filteredItems = items.filter((item) => {
     const matchesSearch = 
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -28,9 +28,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
   return (
     <div className="flex flex-col md:flex-row gap-8">
       
-      {/* =========================================
-          LEFT SIDEBAR: Categories (Desktop Only)
-         ========================================= */}
+      {/* Desktop Sidebar Categories */}
       <aside className="hidden md:block w-64 shrink-0">
         <div className="bg-card border border-border rounded-xl shadow-sm sticky top-24 overflow-hidden">
           <div className="p-4 border-b border-border bg-muted-background">
@@ -64,9 +62,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
         </div>
       </aside>
 
-      {/* =========================================
-          RIGHT CONTENT: Search & List
-         ========================================= */}
+      {/* Main Content */}
       <div className="flex-grow min-w-0">
         
         {/* Search Bar */}
@@ -90,14 +86,12 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
           )}
         </div>
 
-        {/* 📱 Mobile Categories (Horizontal Scroll) */}
+        {/* Mobile Categories */}
         <div className="md:hidden flex overflow-x-auto pb-4 mb-2 gap-2 scrollbar-hide">
           <button
             onClick={() => setActiveCategory("all")}
             className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
-              activeCategory === "all" 
-                ? "bg-brand text-white border-brand" 
-                : "bg-card text-foreground border-border"
+              activeCategory === "all" ? "bg-brand text-white border-brand" : "bg-card text-foreground border-border"
             }`}
           >
             All
@@ -107,9 +101,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
               className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
-                activeCategory === cat.id 
-                  ? "bg-brand text-white border-brand" 
-                  : "bg-card text-foreground border-border"
+                activeCategory === cat.id ? "bg-brand text-white border-brand" : "bg-card text-foreground border-border"
               }`}
             >
               <span>{cat.icon}</span> {cat.title}
@@ -123,13 +115,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
             <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-card border border-dashed border-border rounded-xl">
               <AlertCircle size={40} className="text-muted mb-4 opacity-50" />
               <h3 className="text-lg font-semibold text-foreground mb-1">No results found</h3>
-              <p className="text-muted">We couldn't find anything matching "{searchQuery}". Try a different term.</p>
-              <button 
-                onClick={() => { setSearchQuery(""); setActiveCategory("all"); }}
-                className="mt-6 text-brand font-medium hover:underline"
-              >
-                Clear all filters
-              </button>
+              <p className="text-muted">We couldn't find anything matching "{searchQuery}".</p>
             </div>
           ) : (
             filteredItems.map((item) => (
@@ -140,8 +126,6 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                 <div className="flex-grow">
                   <div className="flex items-center gap-3 mb-1.5">
                     <h3 className="font-serif font-bold text-xl text-foreground">{item.name}</h3>
-                    
-                    {/* Emergency Badge */}
                     {item.isEmergency && (
                       <span className="bg-red-500/10 text-red-600 dark:text-red-400 text-[11px] font-bold px-2.5 py-0.5 rounded-md uppercase tracking-wider border border-red-500/20 flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
@@ -156,7 +140,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                     </p>
                   )}
                   
-                  <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 text-sm text-muted font-medium">
+                  <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 text-sm text-muted font-medium mb-1">
                     {item.address && (
                       <span className="flex items-center gap-1.5">
                         <MapPin size={16} className="text-brand/70"/> {item.address}
@@ -168,9 +152,18 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                       </span>
                     )}
                   </div>
+
+                  {/* 🚀 NAYA: Phone Number with Edit Button */}
+                  {item.phone && (
+                    <div className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground bg-muted-background border border-border-subtle px-3 py-1.5 rounded-lg">
+                      <Phone size={14} className="text-brand" /> 
+                      {item.phone}
+                      {/* Pencil Button */}
+                      <EditContactModal itemName={item.name} currentPhone={item.phone} />
+                    </div>
+                  )}
                 </div>
 
-                {/* Call Button */}
                 {item.phone && (
                   <a 
                     href={`tel:${item.phone}`}
