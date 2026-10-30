@@ -21,7 +21,8 @@ export function Header({ config, searchIndex }: HeaderProps) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-300">
+      {/* 👇 site-header aur no-print class add ki hai 👇 */}
+      <header className="site-header no-print sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-300">
         <div className="container-custom h-20 flex items-center justify-between gap-4">
           
           {/* Logo / Site Name */}
@@ -33,7 +34,7 @@ export function Header({ config, searchIndex }: HeaderProps) {
             {config.site.name}
           </Link>
 
-          {/* 💻 Desktop Nav & Controls (Ab lg:flex hai, taaki tablet par overlap na ho) */}
+          {/* 💻 Desktop Nav & Controls */}
           <div className="hidden lg:flex items-center justify-end flex-1 gap-4 xl:gap-6">
             <nav className="flex items-center gap-0.5 xl:gap-1.5" aria-label="Main Navigation">
               {config.nav.map((item) => {
@@ -42,7 +43,6 @@ export function Header({ config, searchIndex }: HeaderProps) {
                   <Link 
                     key={item.href} 
                     href={item.href}
-                    // Padding thodi kam ki hai aur whitespace-nowrap lagaya hai
                     className={`px-3 xl:px-4 py-2.5 rounded-full text-[14px] xl:text-[15px] whitespace-nowrap transition-all duration-200 flex items-center gap-1.5 ${
                       isActive 
                         ? "bg-brand/10 text-brand font-semibold" 
@@ -70,7 +70,7 @@ export function Header({ config, searchIndex }: HeaderProps) {
             </div>
           </div>
 
-          {/* 📱 Mobile & Tablet Menu Buttons (lg:hidden kiya hai) */}
+          {/* 📱 Mobile & Tablet Menu Buttons */}
           <div className="lg:hidden flex items-center gap-2 shrink-0">
             <button 
               onClick={() => setIsSearchOpen(true)}
