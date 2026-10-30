@@ -3,6 +3,7 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import Link from "next/link";
 import { ChevronRight, Library } from "lucide-react";
 import { Metadata } from "next";
+import { AddContentModal } from "@/components/shared/AddContentModal"; // 👈 Naya Import
 
 export const metadata: Metadata = {
   title: "All Pages | Bandwar Village",
@@ -20,15 +21,25 @@ export default function SectionPage() {
     <div className="bg-background min-h-screen py-12 md:py-16">
       <div className="container-custom">
         
-        {/* 🏛️ Page Header (Premium Style) */}
-        <div className="mb-12 max-w-3xl">
-          <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4 font-semibold tracking-tight">
-            All Pages
-          </h1>
-          <div className="w-20 h-1 bg-brand mb-6 rounded-full"></div>
-          <p className="text-lg text-muted leading-relaxed">
-            The complete digital archive of Bandwar. Every article, photograph, and fact — kept by the village, for the record.
-          </p>
+        {/* 🏛️ Page Header (Updated with Flex Layout for Button) */}
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-3xl">
+            <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4 font-semibold tracking-tight">
+              All Pages
+            </h1>
+            <div className="w-20 h-1 bg-brand mb-6 rounded-full"></div>
+            <p className="text-lg text-muted leading-relaxed">
+              The complete digital archive of Bandwar. Every article, photograph, and fact — kept by the village, for the record.
+            </p>
+          </div>
+          
+          {/* 👇 Yahan "Write an Article" button add kiya hai 👇 */}
+          <div className="shrink-0 pb-2">
+            <AddContentModal 
+              type="article" 
+              customButtonText="Write an Article" 
+            />
+          </div>
         </div>
 
         {/* =========================================
