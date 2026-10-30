@@ -5,8 +5,10 @@ import dynamic from "next/dynamic";
 const LandmarkMap = dynamic(() => import("./LandmarkMap"), {
   ssr: false,
   loading: () => (
-    <div className="h-[600px] w-full bg-wiki-bg-alt border border-wiki-border-light flex items-center justify-center text-wiki-text-muted">
-      Loading Map Engine...
+    // ✅ Naye design tokens use kiye hain
+    <div className="h-full min-h-[400px] w-full bg-muted-background border border-border rounded-xl flex flex-col items-center justify-center text-muted">
+      <div className="w-8 h-8 border-4 border-brand/30 border-t-brand rounded-full animate-spin mb-4"></div>
+      <span className="font-medium text-sm">Loading Satellite Map...</span>
     </div>
   )
 });
