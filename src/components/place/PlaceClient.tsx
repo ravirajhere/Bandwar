@@ -6,7 +6,7 @@ import { GalleryGrid } from "./GalleryGrid";
 import LandmarkMapWrapper from "./LandmarkMapWrapper";
 import { MapPin } from "lucide-react";
 
-// 🛡️ TypeScript Type Extraction (No more 'any')
+// 🛡️ TypeScript Type Extraction
 type LandmarkType = NonNullable<Media["landmarks"]>[number];
 
 export function PlaceClient({ media }: { media: Media }) {
@@ -67,14 +67,15 @@ export function PlaceClient({ media }: { media: Media }) {
                         <div className={`p-2 rounded-full shrink-0 transition-colors ${
                           isActive ? "bg-brand/20 text-brand" : "bg-muted-background text-muted group-hover:text-foreground"
                         }`}>
-                          <span className="text-base leading-none block">{place.icon || "📍"}</span>
+                          {/* ✅ Yahan String() ka use kiya hai error fix karne ke liye */}
+                          <span className="text-base leading-none block">{String(place.icon || "📍")}</span>
                         </div>
                         
                         <div className="min-w-0 pt-0.5">
                           <div className={`font-semibold text-[15px] truncate ${
                             isActive ? "text-brand" : "text-foreground group-hover:text-brand"
                           }`}>
-                            {place.name}
+                            {place.name || place.title}
                           </div>
                           <div className="text-[13px] text-muted capitalize mt-0.5">
                             {place.category}
