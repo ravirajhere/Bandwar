@@ -9,7 +9,6 @@ import { ThemeToggle } from "./ThemeToggle";
 import { SearchModal } from "./SearchModal";
 import { SearchItem } from "@/lib/search-data";
 
-// Header component props type
 interface HeaderProps {
   config: MasterConfig;
   searchIndex: SearchItem[];
@@ -22,9 +21,8 @@ export function Header({ config, searchIndex }: HeaderProps) {
 
   return (
     <>
-      {/* 🏛️ Premium Sticky Header with Glass Effect */}
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-300">
-        <div className="container-custom h-20 flex items-center justify-between">
+        <div className="container-custom h-20 flex items-center justify-between gap-4">
           
           {/* Logo / Site Name */}
           <Link 
@@ -35,16 +33,17 @@ export function Header({ config, searchIndex }: HeaderProps) {
             {config.site.name}
           </Link>
 
-          {/* Desktop Nav & Controls */}
-          <div className="hidden md:flex items-center gap-8">
-            <nav className="flex items-center gap-1.5" aria-label="Main Navigation">
+          {/* 💻 Desktop Nav & Controls (Ab lg:flex hai, taaki tablet par overlap na ho) */}
+          <div className="hidden lg:flex items-center justify-end flex-1 gap-4 xl:gap-6">
+            <nav className="flex items-center gap-0.5 xl:gap-1.5" aria-label="Main Navigation">
               {config.nav.map((item) => {
                 const isActive = pathname === item.href;
                 return (
                   <Link 
                     key={item.href} 
                     href={item.href}
-                    className={`px-4 py-2.5 rounded-full text-[15px] transition-all duration-200 flex items-center gap-2 ${
+                    // Padding thodi kam ki hai aur whitespace-nowrap lagaya hai
+                    className={`px-3 xl:px-4 py-2.5 rounded-full text-[14px] xl:text-[15px] whitespace-nowrap transition-all duration-200 flex items-center gap-1.5 ${
                       isActive 
                         ? "bg-brand/10 text-brand font-semibold" 
                         : "text-foreground/80 hover:bg-muted-background hover:text-foreground font-medium"
@@ -58,8 +57,7 @@ export function Header({ config, searchIndex }: HeaderProps) {
             </nav>
 
             {/* Desktop Controls */}
-            <div className="flex items-center gap-3 pl-6 border-l border-border">
-              {/* Search Button */}
+            <div className="flex items-center gap-2 xl:gap-3 pl-3 xl:pl-5 border-l border-border shrink-0">
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className="p-2.5 text-foreground/70 hover:text-foreground bg-card hover:bg-muted-background border border-border rounded-full transition-all duration-200 shadow-sm hover:shadow"
@@ -68,15 +66,12 @@ export function Header({ config, searchIndex }: HeaderProps) {
               >
                 <Search size={18} />
               </button>
-
-              {/* Dark/Light Mode Toggle */}
               <ThemeToggle />
             </div>
           </div>
 
-          {/* Mobile Menu Buttons */}
-          <div className="md:hidden flex items-center gap-2">
-            {/* Mobile Search Button */}
+          {/* 📱 Mobile & Tablet Menu Buttons (lg:hidden kiya hai) */}
+          <div className="lg:hidden flex items-center gap-2 shrink-0">
             <button 
               onClick={() => setIsSearchOpen(true)}
               className="p-2.5 text-foreground/70 hover:text-foreground bg-card border border-border rounded-full transition-all duration-200 shadow-sm"
@@ -85,7 +80,6 @@ export function Header({ config, searchIndex }: HeaderProps) {
               <Search size={20} />
             </button>
 
-            {/* Mobile Menu Toggle */}
             <button 
               className="p-2.5 text-foreground/70 hover:text-foreground bg-card border border-border rounded-full transition-all duration-200 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               onClick={() => setIsOpen(!isOpen)}
@@ -101,19 +95,16 @@ export function Header({ config, searchIndex }: HeaderProps) {
         {/* Mobile Nav Dropdown */}
         <div 
           id="mobile-menu"
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out border-border bg-background ${
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out border-border bg-background ${
             isOpen ? "max-h-[600px] opacity-100 border-t" : "max-h-0 opacity-0 border-t-0"
           }`}
         >
           <nav className="px-4 py-4 flex flex-col gap-1.5" aria-label="Mobile Navigation">
-            
-            {/* Mobile Controls (Theme Toggle) */}
             <div className="flex justify-between items-center py-2 px-3 border-b border-border mb-2">
               <span className="text-sm font-semibold text-foreground">Appearance</span>
               <ThemeToggle />
             </div>
 
-            {/* Mobile Links */}
             {config.nav.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -136,7 +127,6 @@ export function Header({ config, searchIndex }: HeaderProps) {
         </div>
       </header>
 
-      {/* Search Modal Render */}
       <SearchModal 
         isOpen={isSearchOpen} 
         onClose={() => setIsSearchOpen(false)} 
