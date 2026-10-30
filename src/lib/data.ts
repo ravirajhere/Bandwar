@@ -10,8 +10,6 @@ import {
 // ==========================================
 // 1. CORE HELPERS (Optimized & Generic)
 // ==========================================
-
-// Read file synchronously (Best for Next.js SSG builds)
 const readJsonFile = (filePath: string) => {
   const fullPath = path.join(process.cwd(), "data", filePath);
   try {
@@ -25,28 +23,20 @@ const readJsonFile = (filePath: string) => {
   }
 };
 
-// Generic validation helper to avoid code repetition
 function validateData<T extends z.ZodTypeAny>(schema: T, data: unknown, fileName: string): z.infer<T> {
   const parsed = schema.safeParse(data);
-  
   if (!parsed.success) {
-    // Human-readable error formatting
     const errorMessages = parsed.error.issues.map(
       (issue) => `  → Field [${issue.path.join(".")}]: ${issue.message}`
     ).join("\n");
-    
-    throw new Error(
-      `❌ Validation Failed in data/${fileName}:\n${errorMessages}\nPlease check your JSON formatting.`
-    );
+    throw new Error(`❌ Validation Failed in data/${fileName}:\n${errorMessages}`);
   }
-  
   return parsed.data as z.infer<T>;
 }
 
 // ==========================================
-// 2. CACHE (Performance Optimization)
+// 2. CACHE 
 // ==========================================
-// Build ke time data sirf EK BAAR load hoga memory mein
 let articlesCache: Article[] | null = null;
 
 // ==========================================
@@ -60,13 +50,10 @@ export function getMasterData(): MasterConfig {
 
 export function getAllArticles(): Article[] {
   if (articlesCache) return articlesCache;
-
   const articlesDir = path.join(process.cwd(), "data", "articles");
   
-  if (!fs.existsSync(articlesDir)) {
-    throw new Error("❌ Data Error: 'data/articles' directory not found!");
-  }
-
+  if (!fs.existsSync(articlesDir)) throw new Error("❌ Data Error: 'data/articles' directory not found!");
+  
   const fileNames = fs.readdirSync(articlesDir);
   let allArticles: Article[] = [];
 
@@ -78,12 +65,7 @@ export function getAllArticles(): Article[] {
     }
   }
 
-  // 🚀 SENIOR FIX: Sort articles by date (Newest first)
-  // Isse Homepage par latest articles sabse upar aayenge
-  allArticles.sort((a, b) => {
-    return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
-  });
-
+  allArticles.sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime());
   articlesCache = allArticles;
   return allArticles;
 }
@@ -92,14 +74,31 @@ export function getArticleById(id: string): Article | undefined {
   return getAllArticles().find((a) => a.id === id);
 }
 
-// 🚀 NAYA FUNCTION: Category wise articles fetch karne ke liye (Aage kaam aayega)
 export function getArticlesByCategory(categoryId: string): Article[] {
   return getAllArticles().filter((a) => a.categories.includes(categoryId));
 }
 
+// 🚀 NAYA UPDATE YAHAN HAI (GALLERY FILTER)
 export function getMediaData(): Media {
   const rawData = readJsonFile("media.json");
-  return validateData(MediaSchema, rawData, "media.json");
+  const media = validateData(MediaSchema, rawData, "media.json");
+  
+  // ✅ MAGIC: Filter out photos whose image files don't exist in public folder
+  if (media.gallery && media.gallery.photos) {
+    media.gallery.photos = media.gallery.photos.filter((photo) => {
+      // Agar path ke aage '/' hai toh hata do
+      const cleanSrc = photo.src.startsWith("/") ? photo.src.slice(1) : photo.src;
+      const imgPath = path.join(process.cwd(), "public", cleanSrc);
+      
+      const exists = fs.existsSync(imgPath);
+      if (!exists) {
+        console.log(`⚠️ Gallery Image Missing (Hidden): ${photo.src}`);
+      }
+      return exists; // Sirf wahi photo rakhega jo folder me sach me hai
+    });
+  }
+
+  return media;
 }
 
 export function getVisionData(): VisionData {
