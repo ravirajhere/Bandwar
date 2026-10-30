@@ -8,27 +8,36 @@ export function FaqAccordion({ faqs }: FaqProps) {
   if (!faqs || faqs.length === 0) return null;
 
   return (
-    <div className="mt-8">
-      {/* Wikipedia Style Heading */}
-      <h2 className="font-serif text-2xl text-wiki-text mb-3 pb-1 border-b border-wiki-border-light">
+    <div className="mt-12">
+      {/* Section Heading */}
+      <h2 className="font-serif text-2xl md:text-3xl font-semibold text-foreground mb-6 pb-2 border-b border-border">
         Frequently Asked Questions
       </h2>
       
-      {/* Clean Wikipedia-style List Box */}
-      <div className="border border-wiki-border-light bg-wiki-bg divide-y divide-wiki-border-light">
+      {/* Premium Card Container */}
+      <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden divide-y divide-border-subtle">
         {faqs.map((faq) => (
           <details 
             key={faq.q} 
             className="group [&_summary::-webkit-details-marker]:hidden"
           >
-            <summary className="flex items-center justify-between cursor-pointer p-4 font-bold text-[15px] text-wiki-text hover:bg-wiki-bg-alt transition-colors focus:outline-none focus-visible:bg-wiki-bg-alt">
-              <span className="pr-4 leading-snug">{faq.q}</span>
-              <span className="shrink-0 text-wiki-text-muted group-open:rotate-180 transition-transform duration-200">
-                <ChevronDown size={18} strokeWidth={2} />
+            <summary className="flex items-center justify-between cursor-pointer p-5 md:p-6 transition-colors hover:bg-muted-background/50 focus:outline-none focus-visible:bg-muted-background/50">
+              {/* Question Text */}
+              <span className="pr-6 text-base md:text-lg font-semibold text-foreground group-open:text-brand transition-colors leading-snug">
+                {faq.q}
+              </span>
+              
+              {/* Icon (Rotates and changes color when open) */}
+              <span className="shrink-0 text-muted group-open:text-brand group-open:rotate-180 transition-all duration-300 bg-muted-background group-open:bg-brand/10 p-1.5 rounded-full">
+                <ChevronDown size={20} strokeWidth={2.5} />
               </span>
             </summary>
-            <div className="p-4 pt-1 text-[15px] text-wiki-text leading-relaxed bg-wiki-bg-alt">
-              {faq.a}
+            
+            {/* Answer Body */}
+            <div className="px-5 pb-6 md:px-6 md:pb-6 pt-0 text-[16px] md:text-[17px] text-foreground/80 leading-relaxed bg-card">
+              <div className="pt-2 border-t border-border-subtle/50">
+                {faq.a}
+              </div>
             </div>
           </details>
         ))}
