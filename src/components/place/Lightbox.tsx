@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 
@@ -14,10 +14,14 @@ interface LightboxProps {
 }
 
 export function Lightbox({ photo, onClose }: LightboxProps) {
-  // 1. Background Scroll Rokna (Jab lightbox khula ho)
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // 1. Background Scroll Rokna
   useEffect(() => {
     if (photo) {
       document.body.style.overflow = "hidden";
+      // Focus the close button when opened for accessibility
+      setTimeout(() => closeButtonRef.current?.focus(), 100);
     } else {
       document.body.style.overflow = "unset";
     }
@@ -26,60 +30,69 @@ export function Lightbox({ photo, onClose }: LightboxProps) {
     };
   }, [photo]);
 
-  // 2. 'Escape' dabane par band hona (Keyboard users ke liye)
+  // 2. 'Escape' dabane par band hona
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    window.addEventListener("keydown", handleKeyDown);
+    if (photo) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [photo, onClose]);
 
   if (!photo) return null;
 
+  // 🛡️ Safe Image Path Logic (Handles both internal and external links)
+  const imageSrc = photo.src.startsWith("http") || photo.src.startsWith("/") 
+    ? photo.src 
+    : `/${photo.src}`;
+
   return (
     <div 
-      className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-4 sm:p-8"
-      onClick={onClose} // Background par click karne se band ho jaye
+      className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex flex-col items-center justify-center p-4 sm:p-8 transition-opacity duration-300"
+      onClick={onClose}
       role="dialog"
       aria-modal="true"
+      aria-label="Image Viewer"
     >
-      {/* Close Button */}
+      {/* ❌ Premium Close Button */}
       <button 
-        className="absolute top-4 right-4 text-white hover:text-gray-300 bg-black/50 hover:bg-black/80 p-2 rounded-full transition-colors z-10"
+        ref={closeButtonRef}
+        className="absolute top-4 right-4 md:top-8 md:right-8 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 p-2.5 md:p-3 rounded-full transition-all duration-200 z-10 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
         onClick={onClose}
         aria-label="Close Lightbox"
       >
-        <X size={32} />
+        <X size={24} className="md:w-7 md:h-7" strokeWidth={2.5} />
       </button>
 
-      {/* Image Container */}
+      {/* 🖼️ Main Image Container */}
       <div 
-        className="relative w-full max-w-6xl h-[60vh] sm:h-[75vh]" 
-        onClick={(e) => e.stopPropagation()} // Image par click karne se na band ho
+        className="relative w-full max-w-7xl h-[65vh] md:h-[80vh] flex items-center justify-center" 
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking image area
       >
         <Image
-          src={`/${photo.src}`}
+          src={imageSrc}
           alt={photo.caption}
           fill
-          className="object-contain" // Photo apna shape maintain karegi
+          className="object-contain drop-shadow-2xl" 
           sizes="100vw"
-          quality={90} // Thoda high quality jab user zoom kare
+          quality={95}
           priority
         />
       </div>
 
-      {/* Caption (Image ke neeche) */}
+      {/* 📝 Premium Glassmorphism Caption Box */}
       <div 
-        className="mt-4 text-center max-w-4xl bg-black/60 p-4 border border-white/10 rounded-sm"
+        className="mt-6 text-center max-w-4xl bg-black/50 backdrop-blur-lg border border-white/10 p-4 md:p-6 rounded-2xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {photo.year && (
-          <span className="text-gray-400 text-sm font-bold block mb-1 uppercase tracking-wider">
+          <span className="inline-block bg-white/10 text-white/90 text-[11px] md:text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
             {photo.year}
           </span>
         )}
-        <p className="text-white text-base sm:text-lg leading-relaxed">
+        <p className="text-white/90 text-base md:text-lg leading-relaxed font-medium">
           {photo.caption}
         </p>
       </div>
