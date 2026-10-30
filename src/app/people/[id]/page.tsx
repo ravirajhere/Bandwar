@@ -3,10 +3,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getPeopleData } from "@/lib/data";
 import { Metadata } from "next";
+import { Edit3 } from "lucide-react"; // 👈 Edit3 import kiya
 
-// ==========================================
-// 1. Generate Static Params (For SSG)
-// ==========================================
 export async function generateStaticParams() {
   const data = getPeopleData();
   return data.people.map((person) => ({
@@ -14,9 +12,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// ==========================================
-// 2. Dynamic SEO Metadata (2026 Standard)
-// ==========================================
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const data = getPeopleData();
@@ -28,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   return {
     title: `${person.name} | People of Bandwar`,
-    description: person.bio.substring(0, 160), // First 160 chars for SEO
+    description: person.bio.substring(0, 160),
     openGraph: {
       title: `${person.name} - ${person.role}`,
       description: person.bio.substring(0, 160),
@@ -37,26 +32,21 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
-// ==========================================
-// 3. Main Page Component
-// ==========================================
 export default async function PersonProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const data = getPeopleData();
   const person = data.people.find((p) => p.id === id);
 
   if (!person) {
-    notFound(); // Renders the custom 404 page
+    notFound();
   }
 
-  // Check if person is deceased
   const isDeceased = !!person.deathDate;
 
   return (
     <div className="bg-background min-h-screen py-10 md:py-16">
       <div className="container-custom">
         
-        {/* 🧭 Breadcrumbs */}
         <nav className="mb-8 text-sm text-muted flex items-center gap-2 no-print">
           <Link href="/" className="hover:text-brand transition-colors">Home</Link>
           <span>/</span>
@@ -65,20 +55,16 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
           <span className="text-foreground font-medium truncate">{person.name}</span>
         </nav>
 
-        {/* 🏛️ Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
-          {/* ==========================================
-              LEFT COLUMN: Sticky Infobox (Desktop)
-             ========================================== */}
+          {/* LEFT COLUMN: Sticky Infobox */}
           <aside className="lg:col-span-4 order-2 lg:order-1 no-print">
             <div className="lg:sticky lg:top-24 bg-card border border-border rounded-xl shadow-card overflow-hidden">
               
-              {/* Photo Section */}
               <div className="relative w-full aspect-square bg-muted-background">
                 {person.photo ? (
                   <Image
-                    src={person.photo}
+                    src={person.photo.startsWith("/") ? person.photo : `/${person.photo}`}
                     alt={person.photoAlt || person.name}
                     fill
                     className="object-cover"
@@ -99,7 +85,6 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                 )}
               </div>
 
-              {/* Quick Info (Infobox Style) */}
               <div className="p-6">
                 <h2 className="font-serif text-2xl text-foreground mb-1 leading-tight">
                   {person.name}
@@ -109,7 +94,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                 </p>
 
                 <dl className="space-y-4 text-sm">
-                  {person.dob || person.deathDate ? (
+                  {(person.dob || person.deathDate) && (
                     <div>
                       <dt className="text-muted font-medium mb-1">Lifespan</dt>
                       <dd className="text-foreground">
@@ -120,7 +105,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                             : `Died: ${person.deathDate}`}
                       </dd>
                     </div>
-                  ) : null}
+                  )}
 
                   {person.birthplace && (
                     <div>
@@ -155,12 +140,9 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
             </div>
           </aside>
 
-          {/* ==========================================
-              RIGHT COLUMN: Biography & Journey
-             ========================================== */}
+          {/* RIGHT COLUMN: Biography & Journey */}
           <main className="lg:col-span-8 order-1 lg:order-2">
             
-            {/* Header for Mobile */}
             <div className="mb-8 lg:mb-10">
               <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4 font-semibold">
                 {person.name}
@@ -168,7 +150,6 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
               <p className="text-xl text-brand font-medium">{person.role}</p>
             </div>
 
-            {/* Biography */}
             <section className="mb-12">
               <h3 className="text-2xl font-serif text-foreground mb-4 border-b border-border pb-2">
                 Biography
@@ -178,7 +159,6 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
               </div>
             </section>
 
-            {/* Journey / Life Story (If available) */}
             {person.journey && (
               <section className="mb-12">
                 <h3 className="text-2xl font-serif text-foreground mb-4 border-b border-border pb-2">
@@ -192,7 +172,6 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
               </section>
             )}
 
-            {/* Tags */}
             {person.tags && person.tags.length > 0 && (
               <section className="mt-16 pt-6 border-t border-border-subtle">
                 <div className="flex flex-wrap gap-2 items-center">
@@ -206,8 +185,23 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
               </section>
             )}
 
-            {/* Back Button */}
-            <div className="mt-12 no-print">
+            {/* 🚀 NAYA SECTION: Contribute Info */}
+            <div className="mt-12 bg-muted-background border border-border rounded-xl p-6 sm:p-8 text-center no-print">
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
+                Know more about {person.name}?
+              </h3>
+              <p className="text-muted mb-6">
+                If you have historical photos or additional information about their life, please share it with us.
+              </p>
+              <Link 
+                href={`/contribute?person=${person.id}`} 
+                className="inline-flex items-center gap-2 bg-brand text-white px-6 py-3 rounded-lg font-medium hover:bg-brand-hover transition-colors shadow-sm"
+              >
+                <Edit3 size={18} /> Contribute Info
+              </Link>
+            </div>
+
+            <div className="mt-8 no-print">
               <Link 
                 href="/people" 
                 className="inline-flex items-center text-brand hover:text-brand-hover font-medium transition-colors"
