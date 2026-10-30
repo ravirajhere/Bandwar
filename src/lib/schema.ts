@@ -199,15 +199,24 @@ export const VisionSchema = z.object({
 });
 
 // ==========================================
-// 6. People Schema
+// 6. People Schema (⭐ UPDATED FOR MAHANT JI & OTHERS)
 // ==========================================
 export const PersonSchema = z.object({
   id: IdSchema, 
   name: z.string(), 
   role: z.string(), 
-  locality: z.string(), 
+  locality: z.string().optional(), // Optional kar diya taaki error na aaye
   bio: z.string(), 
   photo: z.string().optional(),
+  
+  // Naye fields jo hum add kar rahe hain (Optional rakhe hain taaki purana data break na ho)
+  photoAlt: z.string().optional(),
+  dob: z.string().optional(), // "1965" ya "1965-01-01" dono chalega
+  deathDate: z.string().optional(), // "2026-10-29"
+  birthplace: z.string().optional(),
+  titles: z.array(z.string()).optional(),
+  journey: z.string().optional(),
+  tags: z.array(z.string()).optional(),
 });
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 
@@ -223,7 +232,7 @@ export const CategorySchema = z.object({
 export const CategoriesDataSchema = z.object({ categories: z.array(CategorySchema) });
 
 // ==========================================
-// 8. Directory Schema (NEW)
+// 8. Directory Schema
 // ==========================================
 export const DirectoryItemSchema = z.object({
   id: z.string(),
