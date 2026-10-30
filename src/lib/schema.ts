@@ -96,16 +96,22 @@ export const MasterSchema = z.object({
 });
 
 // ==========================================
-// 3. Article Schema
+// 3. Article Schema (SEO Upgraded)
 // ==========================================
 export const ArticleSchema = z.object({
   id: IdSchema,
   title: z.string(),
+  metaTitle: z.string().optional(), // ✅ Added for SEO
+  metaDescription: z.string().optional(), // ✅ Added for SEO
   subtitle: z.string(),
   categories: z.array(z.string()),
   summary: z.string(),
   hero: z.string().optional(),
-  photos: z.array(z.object({ src: z.string(), caption: z.string() })).default([]),
+  photos: z.array(z.object({ 
+    src: z.string(), 
+    caption: z.string(),
+    imageAlt: z.string().optional() // ✅ Added for Image SEO
+  })).default([]),
   infobox: z.record(z.string()).optional(),
   lastUpdated: DateSchema,
   content: z.array(z.object({ heading: z.string(), text: z.string() })),
@@ -143,7 +149,7 @@ export const LandmarkSchema = z.object({
   id: z.string().optional(),
   title: z.string().optional(), 
   name: z.string().optional(),  
-  icon: z.string().optional(), // ✅ FIX: Added icon to resolve PlaceClient TypeScript error
+  icon: z.string().optional(), 
   lat: z.number(),
   lng: z.number(),
   description: z.string().optional(),
@@ -200,7 +206,7 @@ export const VisionSchema = z.object({
 });
 
 // ==========================================
-// 6. People Schema (⭐ UPDATED FOR MAHANT JI & OTHERS)
+// 6. People Schema
 // ==========================================
 export const PersonSchema = z.object({
   id: IdSchema, 
