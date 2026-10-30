@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getMasterData, getAllArticles } from "@/lib/data";
+import { getMasterData, getAllArticles, getMediaData } from "@/lib/data"; // 👈 getMediaData import kiya
+import { MapPin } from "lucide-react";
+import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper"; // 👈 Map import kiya
 
 interface MetaItem { label: string; value: string; }
 interface StatItem { label: string; value: string; }
@@ -9,6 +11,7 @@ export default function Home() {
   const config = getMasterData();
   const home = config.home;
   const allArticles = getAllArticles();
+  const media = getMediaData(); // 👈 Map ka data fetch kiya
   const latestArticles = allArticles.slice(0, 4);
 
   if (!home) return null;
@@ -17,11 +20,8 @@ export default function Home() {
     <div className="bg-background min-h-screen pb-16">
       <div className="container-custom pt-8">
         
-        {/* =========================================
-            1. HERO SECTION (Professional & Impactful)
-            ========================================= */}
-        <section className="relative w-full rounded-2xl overflow-hidden mb-8 md:mb-12 shadow-elevated border border-border">
-          {/* Background Image */}
+        {/* 1. HERO SECTION */}
+        <section className="relative w-full rounded-2xl overflow-hidden mb-12 shadow-elevated border border-border">
           <div className="absolute inset-0 bg-black/50 z-10"></div>
           <Image
             src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`}
@@ -30,8 +30,6 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          
-          {/* Hero Content */}
           <div className="relative z-20 px-6 py-20 md:py-32 flex flex-col items-center text-center">
             <span className="text-brand bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium tracking-wide mb-6">
               📍 {home.hero.location}
@@ -43,26 +41,18 @@ export default function Home() {
               {home.hero.tagline}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link 
-                href={home.cta.href}
-                className="bg-brand hover:bg-brand-hover text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-sm"
-              >
-                Discover Our Village
+              <Link href="/section" className="bg-brand hover:bg-brand-hover text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-sm">
+                Read Our History
               </Link>
-              <Link 
-                href="/directory"
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-3 rounded-lg font-medium transition-colors"
-              >
-                Emergency Directory
+              <Link href="/gallery" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-3 rounded-lg font-medium transition-colors">
+                View Gallery
               </Link>
             </div>
           </div>
         </section>
 
-        {/* =========================================
-            2. QUICK ACCESS (Senior Priority: Top on Mobile)
-            ========================================= */}
-        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+        {/* 2. QUICK ACCESS */}
+        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
           <Link href="/directory" className="bg-card border border-border p-6 rounded-xl shadow-card hover:shadow-elevated hover:border-brand/50 transition-all group flex flex-col items-center text-center">
             <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <span className="text-2xl">🚨</span>
@@ -71,12 +61,12 @@ export default function Home() {
             <p className="text-sm text-muted">Doctors, Police, Ambulance</p>
           </Link>
           
-          <Link href="/place" className="bg-card border border-border p-6 rounded-xl shadow-card hover:shadow-elevated hover:border-brand/50 transition-all group flex flex-col items-center text-center">
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-              <span className="text-2xl">🗺️</span>
+          <Link href="/people" className="bg-card border border-border p-6 rounded-xl shadow-card hover:shadow-elevated hover:border-brand/50 transition-all group flex flex-col items-center text-center">
+            <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <span className="text-2xl">👥</span>
             </div>
-            <h3 className="font-bold text-lg text-foreground mb-1">Places & Map</h3>
-            <p className="text-sm text-muted">Temples, Schools, Landmarks</p>
+            <h3 className="font-bold text-lg text-foreground mb-1">Our People</h3>
+            <p className="text-sm text-muted">Legends, Leaders & Elders</p>
           </Link>
 
           <Link href="/section" className="bg-card border border-border p-6 rounded-xl shadow-card hover:shadow-elevated hover:border-brand/50 transition-all group flex flex-col items-center text-center">
@@ -88,15 +78,29 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* =========================================
-            3. MAIN GRID (About + Latest Articles)
-            ========================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* 🚀 3. NEW MAP SECTION (Interactive Explorer) */}
+        <section className="mb-16">
+          <div className="flex items-center gap-4 mb-6">
+            <h2 className="font-serif text-3xl font-semibold text-foreground flex items-center gap-2">
+              <MapPin className="text-brand" size={28} /> Explore the Village Map
+            </h2>
+            <div className="h-px bg-border flex-grow rounded-full"></div>
+          </div>
           
-          {/* LEFT COLUMN: About & Articles */}
+          <div className="bg-card border border-border rounded-2xl shadow-card overflow-hidden h-[400px] md:h-[500px] relative z-0">
+            <LandmarkMapWrapper 
+              landmarks={media.landmarks || []} 
+              activeLandmark={null} 
+            />
+          </div>
+          <p className="text-center text-sm text-muted mt-4">
+            Click on the markers to see the exact location of temples, schools, and landmarks in Bandwar.
+          </p>
+        </section>
+
+        {/* 4. ABOUT & ARTICLES GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 space-y-10">
-            
-            {/* About Section */}
             <section className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-border bg-muted-background">
                 <h2 className="font-serif text-xl font-semibold text-foreground m-0">
@@ -122,17 +126,13 @@ export default function Home() {
                       {p}
                     </p>
                   ))}
-                  <Link 
-                    href={home.cta.href}
-                    className="inline-flex items-center text-brand hover:text-brand-hover font-medium mt-4 no-underline"
-                  >
+                  <Link href="/about" className="inline-flex items-center text-brand hover:text-brand-hover font-medium mt-4 no-underline">
                     Read full history <span className="ml-2">→</span>
                   </Link>
                 </div>
               </div>
             </section>
 
-            {/* Latest Articles Section */}
             <section>
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-serif text-2xl font-semibold text-foreground">
@@ -161,13 +161,10 @@ export default function Home() {
                 ))}
               </div>
             </section>
-
           </div>
 
-          {/* RIGHT COLUMN: Sidebar (Stats, Pullquote) */}
+          {/* SIDEBAR (Stats & Pullquote) */}
           <div className="lg:col-span-4 space-y-6">
-            
-            {/* Stats Section */}
             <section className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
               <div className="px-5 py-3 border-b border-border bg-muted-background">
                 <h2 className="font-bold text-foreground text-sm uppercase tracking-wider m-0">
@@ -188,22 +185,16 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Did You Know? (Pullquote) */}
             <section className="bg-brand/5 border border-brand/20 rounded-xl p-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10">
-                <svg className="w-16 h-16 text-brand" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-              </div>
               <h3 className="font-serif text-xl font-semibold text-foreground mb-3">Did you know?</h3>
               <p className="text-foreground/80 text-sm leading-relaxed italic mb-4 relative z-10">
                 "{home.pullquote.text}"
               </p>
               <p className="text-brand font-medium text-sm text-right m-0">— {home.pullquote.cite}</p>
             </section>
-
           </div>
         </div>
+
       </div>
     </div>
   );
