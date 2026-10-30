@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MasterConfig } from "@/lib/schema";
 import { ArrowUp, Mail, Heart } from "lucide-react";
+import { LiveWeatherWidget } from "@/components/shared/LiveWeatherWidget"; // 👈 Weather Widget Import kiya
 
 export function Footer({ config }: { config: MasterConfig }) {
   const currentYear = new Date().getFullYear();
@@ -77,22 +78,31 @@ export function Footer({ config }: { config: MasterConfig }) {
           </div>
         </div>
         
-        {/* 🌟 Bottom Bar (Credits & Back to Top) */}
-        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted">
-          <span>{config.footer?.credit || "Bandwar Village Archive"}</span>
+        {/* 🌟 Bottom Bar (Credits, Weather & Back to Top) */}
+        <div className="mt-16 pt-8 border-t border-border flex flex-col lg:flex-row items-center justify-between gap-6 text-sm text-muted">
           
-          <span className="flex items-center gap-1.5">
-            Made with <Heart size={14} className="text-red-500 fill-red-500" /> by the Community
-          </span>
+          {/* Left Side: Credit & Weather Widget */}
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <span>{config.footer?.credit || "Bandwar Village Archive"}</span>
+            
+            {/* 👇 Weather Widget yahan integrate hai 👇 */}
+            <LiveWeatherWidget />
+          </div>
+          
+          {/* Right Side: Made with Love & Back to Top */}
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-1.5">
+              Made with <Heart size={14} className="text-red-500 fill-red-500" /> by the Community
+            </span>
 
-          {/* Back to Top Button */}
-          <a 
-            href="#top" 
-            className="flex items-center gap-2 hover:text-brand transition-colors font-medium bg-muted-background hover:bg-brand/10 px-4 py-2 rounded-full"
-            aria-label="Back to top"
-          >
-            Back to top <ArrowUp size={16} />
-          </a>
+            <a 
+              href="#top" 
+              className="flex items-center gap-2 hover:text-brand transition-colors font-medium bg-muted-background hover:bg-brand/10 px-4 py-2 rounded-full"
+              aria-label="Back to top"
+            >
+              Back to top <ArrowUp size={16} />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
