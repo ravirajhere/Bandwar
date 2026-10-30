@@ -2,19 +2,41 @@
   "categories": [
     { "id": "emergency", "title": "Emergency", "icon": "🚨" },
     { "id": "health", "title": "Health & Medical", "icon": "🏥" },
+    { "id": "government", "title": "District Administration", "icon": "🏛️" },
+    { "id": "women-child", "title": "Women & Child", "icon": "👩‍👧" },
+    { "id": "utilities", "title": "Utilities & Services", "icon": "⚡" },
     { "id": "shops", "title": "Shops & Markets", "icon": "🛒" },
-    { "id": "government", "title": "Government", "icon": "🏛️" },
     { "id": "transport", "title": "Transport", "icon": "🚌" }
   ],
   "items": [
     {
-      "id": "health-sub-centre-bandwar",
-      "name": "Health Sub-Centre, Bandwar",
-      "categoryId": "health",
-      "description": "Government health sub-centre providing basic medical care, maternal health services, and vaccinations.",
+      "id": "national-emergency-112",
+      "name": "National Emergency (ERSS)",
+      "categoryId": "emergency",
+      "description": "Single emergency number for Police, Fire, and Ambulance across India.",
+      "phone": "112",
+      "address": "All India",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "ambulance-service-102-108",
+      "name": "Ambulance Service",
+      "categoryId": "emergency",
+      "description": "Free government ambulance service for emergencies and hospital transfers.",
       "phone": "102",
-      "address": "Main Road, Bandwar",
-      "timing": "9 AM - 4 PM (Emergency 24x7)",
+      "address": "District Wide Service",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "fire-brigade-begusarai",
+      "name": "Fire Brigade, Begusarai",
+      "categoryId": "emergency",
+      "description": "District fire and rescue services.",
+      "phone": "101",
+      "address": "Begusarai Fire Station",
+      "timing": "24x7",
       "isEmergency": true
     },
     {
@@ -28,14 +50,114 @@
       "isEmergency": true
     },
     {
-      "id": "ambulance-service-102",
-      "name": "Ambulance Service (102)",
-      "categoryId": "emergency",
-      "description": "Free government ambulance service for emergencies and hospital transfers.",
-      "phone": "102",
-      "address": "District Wide Service",
+      "id": "sp-begusarai",
+      "name": "SP Office, Begusarai",
+      "categoryId": "government",
+      "description": "Superintendent of Police (SP) Office for district-level police issues.",
+      "phone": "9431800011",
+      "address": "Office of SP, Katchahri Road, Begusarai",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "dm-begusarai",
+      "name": "DM Office (District Magistrate), Begusarai",
+      "categoryId": "government",
+      "description": "District Magistrate office for administrative grievances and land matters.",
+      "phone": "06243-222285",
+      "address": "Collectorate Campus, Begusarai",
+      "timing": "10 AM - 4 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "ddc-begusarai",
+      "name": "DDC Office, Begusarai",
+      "categoryId": "government",
+      "description": "Deputy Development Commissioner office for rural development schemes.",
+      "phone": "06243-222343",
+      "address": "DRDA, Vikas Bhawan, Begusarai",
+      "timing": "10 AM - 4 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "gram-panchayat-bhawan-bandwar",
+      "name": "Gram Panchayat Bhawan",
+      "categoryId": "government",
+      "description": "Village administrative office for certificates, land records, and local schemes.",
+      "phone": "06243-XXXXXX",
+      "address": "Village Centre, Bandwar",
+      "timing": "10 AM - 4 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "child-helpline",
+      "name": "Child Helpline",
+      "categoryId": "women-child",
+      "description": "National helpline for children in distress, abuse, or missing.",
+      "phone": "1098",
+      "address": "National",
       "timing": "24x7",
       "isEmergency": true
+    },
+    {
+      "id": "women-helpline",
+      "name": "Women Helpline",
+      "categoryId": "women-child",
+      "description": "National helpline for women in distress or facing domestic violence.",
+      "phone": "181",
+      "address": "National",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "begusarai-women-one-stop-centre",
+      "name": "One Stop Centre (Women), Begusarai",
+      "categoryId": "women-child",
+      "description": "District center for women affected by violence (medical, legal, police help).",
+      "phone": "9771468005",
+      "address": "Collectorate Campus, Above DM Office, Begusarai",
+      "timing": "10 AM - 5 PM",
+      "isEmergency": false
+    },
+    {
+      "id": "health-sub-centre-bandwar",
+      "name": "Health Sub-Centre, Bandwar",
+      "categoryId": "health",
+      "description": "Government health sub-centre providing basic medical care, maternal health services, and vaccinations.",
+      "phone": "102",
+      "address": "Main Road, Bandwar",
+      "timing": "9 AM - 4 PM (Emergency 24x7)",
+      "isEmergency": true
+    },
+    {
+      "id": "electricity-complaint",
+      "name": "Electricity Complaint (NBPDCL)",
+      "categoryId": "utilities",
+      "description": "Report power cuts, transformer issues, or billing problems.",
+      "phone": "1912",
+      "address": "North Bihar Power Distribution Company Ltd",
+      "timing": "24x7",
+      "isEmergency": false
+    },
+    {
+      "id": "cyber-crime-helpline",
+      "name": "Cyber Crime Helpline",
+      "categoryId": "utilities",
+      "description": "Report online fraud, hacking, or cyberbullying.",
+      "phone": "1930",
+      "address": "National Cyber Crime Portal",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "alcohol-prohibition",
+      "name": "Alcohol Prohibition Helpline",
+      "categoryId": "utilities",
+      "description": "Report illegal liquor sale or consumption in Bihar.",
+      "phone": "15545",
+      "address": "Bihar State",
+      "timing": "24x7",
+      "isEmergency": false
     },
     {
       "id": "jitendra-medical-store-bandwar",
@@ -45,16 +167,6 @@
       "phone": "9876543210",
       "address": "Bandwar Main Rd, Behind Petrol Pump",
       "timing": "8 AM - 9 PM",
-      "isEmergency": false
-    },
-    {
-      "id": "gram-panchayat-bhawan-bandwar",
-      "name": "Gram Panchayat Bhawan",
-      "categoryId": "government",
-      "description": "Village administrative office for certificates, land records, and government schemes.",
-      "phone": "06243-XXXXXX",
-      "address": "Village Centre, Bandwar",
-      "timing": "10 AM - 4 PM (Mon-Sat)",
       "isEmergency": false
     },
     {
