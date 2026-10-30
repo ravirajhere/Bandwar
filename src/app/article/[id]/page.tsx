@@ -5,7 +5,6 @@ import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
-import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; // 👈 Naya Import
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3 } from "lucide-react"; 
@@ -59,6 +58,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   return (
     <article className="bg-background min-h-screen py-10 md:py-16 relative">
       <ReadingProgress />
+
+      {/* 🖨️ PRINT-ONLY HEADER (Sirf PDF me dikhega) */}
+      <div className="hidden print-only mb-8 pb-4 border-b-2 border-black">
+        <div className="flex justify-between items-end">
+          <div>
+            <h1 className="text-2xl font-bold font-serif m-0">Bandwar Village Portal</h1>
+            <p className="text-sm m-0 mt-1">bandwar.vercel.app</p>
+          </div>
+          <div className="text-sm text-right">
+            <p className="m-0">Printed Document</p>
+            <p className="m-0">Date: {new Date().toLocaleDateString()}</p>
+          </div>
+        </div>
+      </div>
 
       <div className="container-custom grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_340px] gap-8 xl:gap-12">
         
@@ -126,9 +139,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
             
-            {/* 🚀 HERO IMAGE WITH EDIT BUTTON */}
             {article.hero && (
-              // 👈 'group' class add ki hai taaki hover par pencil dikhe
               <div className="relative w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-card mb-10 bg-muted-background group">
                 <Image
                   src={article.hero.startsWith("/") ? article.hero : `/${article.hero}`}
@@ -138,8 +149,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
-                {/* 👇 Pencil Button yahan add kiya hai */}
-                <ImageUpdateButton contextName={`Article: ${article.title}`} />
               </div>
             )}
 
@@ -149,11 +158,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </header>
 
           <div className="flow-root">
+            {/* 🖨️ Print Infobox (Top par dikhega PDF me) */}
             {article.infobox && (
-              <div className="xl:hidden mb-8 print-infobox">
+              <div className="xl:hidden mb-8 print-infobox hidden">
                 <Infobox data={article.infobox} title={article.title} />
               </div>
             )}
+            {/* 👆 Note: Maine isko hidden karke print CSS se visible karwaya hai */}
 
             <div className="space-y-10">
               {article.content.map((block: { heading: string, text: string }, index: number) => (
@@ -195,7 +206,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* 🚀 NAYA SECTION: Suggest an Edit */}
           <div className="mt-12 bg-muted-background border border-border rounded-xl p-6 sm:p-8 text-center no-print">
             <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
               Is this information incorrect or incomplete?
