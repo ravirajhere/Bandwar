@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getPeopleData } from "@/lib/data";
+import { AddContentModal } from "@/components/shared/AddContentModal"; // 👈 Naya Import
 
 export const metadata = {
   title: "People | Bandwar Portal",
@@ -14,15 +15,25 @@ export default function PeoplePage() {
     <div className="bg-background min-h-screen py-12">
       <div className="container-custom">
         
-        {/* 🏛️ Page Header (Heritage Style) */}
-        <div className="mb-12 max-w-3xl">
-          <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4 font-semibold">
-            The People of Bandwar
-          </h1>
-          <div className="w-20 h-1 bg-brand mb-6 rounded-full"></div>
-          <p className="text-lg text-muted leading-relaxed">
-            A record of the notable personalities, elders, leaders, and legends who have shaped our village's history, culture, and identity.
-          </p>
+        {/* 🏛️ Page Header (Updated with Flex Layout for Add Button) */}
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-3xl">
+            <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-4 font-semibold">
+              The People of Bandwar
+            </h1>
+            <div className="w-20 h-1 bg-brand mb-6 rounded-full"></div>
+            <p className="text-lg text-muted leading-relaxed">
+              A record of the notable personalities, elders, leaders, and legends who have shaped our village's history, culture, and identity.
+            </p>
+          </div>
+          
+          {/* 👇 Yahan "Add a Person" button add kiya hai 👇 */}
+          <div className="shrink-0 pb-2">
+            <AddContentModal 
+              type="person" 
+              customButtonText="Add a Person" 
+            />
+          </div>
         </div>
 
         {/* 👥 People Directory Grid (Premium Cards) */}
@@ -37,7 +48,7 @@ export default function PeoplePage() {
               <div className="relative w-full aspect-[4/3] bg-muted-background overflow-hidden">
                 {person.photo ? (
                   <Image
-                    src={person.photo}
+                    src={person.photo.startsWith("/") ? person.photo : `/${person.photo}`}
                     alt={person.photoAlt || person.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
