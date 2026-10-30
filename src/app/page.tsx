@@ -4,6 +4,9 @@ import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
 import { MapPin } from "lucide-react";
 import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper";
 
+// 👇 Yahan icon.png ko import kiya hai
+import iconImage from "@/app/icon.png"; 
+
 interface MetaItem { label: string; value: string; }
 interface StatItem { label: string; value: string; }
 
@@ -110,9 +113,9 @@ export default function Home() {
               <div className="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start">
                 <div className="w-full md:w-1/3 shrink-0 rounded-lg overflow-hidden border border-border-subtle shadow-sm">
                   <div className="relative w-full aspect-[4/3]">
-                    {/* 👇 YAHAN IMAGE PATH CHANGE KIYA HAI 👇 */}
+                    {/* 👇 Yahan imported iconImage use kiya hai */}
                     <Image
-                      src="/images/home/hero.jpg" 
+                      src={iconImage} 
                       alt="About Bandwar Village"
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
