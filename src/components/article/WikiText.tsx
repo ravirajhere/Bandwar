@@ -30,14 +30,9 @@ export function WikiText({ text }: WikiTextProps) {
             <Link 
               key={index} 
               href={`/article/${id}`} 
-              title={displayLabel} // Wikipedia-style tooltip on hover
-              // 3. Exact Wikipedia link styling:
-              // - Standard wiki blue color (text-wiki-link)
-              // - Visited state (visited:text-wiki-link-visited)
-              // - No underline by default, underline on hover
-              // - Accessible focus ring for keyboard users
-              // - Added focus:ring-offset-wiki-bg for perfect Dark Mode support
-              className="text-wiki-link visited:text-wiki-link-visited hover:underline focus:outline-none focus:ring-2 focus:ring-wiki-link focus:ring-offset-1 focus:ring-offset-wiki-bg rounded-sm transition-colors"
+              title={displayLabel}
+              // ✅ Senior Fix: Naye tokens (text-brand) aur accessible focus ring use kiya hai
+              className="text-brand visited:text-brand-visited font-medium underline decoration-brand/30 underline-offset-4 hover:decoration-brand hover:text-brand-hover transition-all focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background rounded-sm"
             >
               {displayLabel}
             </Link>
