@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MasterConfig } from "@/lib/schema";
-import { ArrowUp, Mail, Heart } from "lucide-react";
-import { LiveWeatherWidget } from "@/components/shared/LiveWeatherWidget"; // 👈 Weather Widget Import kiya
+import { ArrowUp, Mail } from "lucide-react"; // 👈 Heart icon hata diya kyunki JSON me emoji hai
+import { LiveWeatherWidget } from "@/components/shared/LiveWeatherWidget";
 
 export function Footer({ config }: { config: MasterConfig }) {
   const currentYear = new Date().getFullYear();
@@ -13,7 +13,7 @@ export function Footer({ config }: { config: MasterConfig }) {
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           
-          {/* 🏛️ Brand & Description (Takes up 2 columns on desktop) */}
+          {/* 🏛️ Brand & Description */}
           <div className="lg:col-span-2">
             <Link 
               href="/" 
@@ -25,7 +25,7 @@ export function Footer({ config }: { config: MasterConfig }) {
               {config.site.description}
             </p>
             
-            {/* Contact Info (From Schema) */}
+            {/* Contact Info */}
             {config.contact?.email && (
               <a 
                 href={`mailto:${config.contact.email}`}
@@ -78,31 +78,29 @@ export function Footer({ config }: { config: MasterConfig }) {
           </div>
         </div>
         
-        {/* 🌟 Bottom Bar (Credits, Weather & Back to Top) */}
+        {/* 🌟 Bottom Bar (Clean & Structured) */}
         <div className="mt-16 pt-8 border-t border-border flex flex-col lg:flex-row items-center justify-between gap-6 text-sm text-muted">
           
-          {/* Left Side: Credit & Weather Widget */}
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <span>{config.footer?.credit || "Bandwar Village Archive"}</span>
-            
-            {/* 👇 Weather Widget yahan integrate hai 👇 */}
+          {/* Left Side: Credit & Weather */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 w-full lg:w-auto justify-center lg:justify-start">
+            <span className="font-medium">
+              {config.footer?.credit || "Bandwar Village Archive"}
+            </span>
+            <span className="hidden sm:block text-border">|</span>
             <LiveWeatherWidget />
           </div>
-          
-          {/* Right Side: Made with Love & Back to Top */}
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5">
-              Made with <Heart size={14} className="text-red-500 fill-red-500" /> by the Community
-            </span>
 
+          {/* Right Side: Back to Top */}
+          <div className="flex items-center justify-center w-full lg:w-auto">
             <a 
               href="#top" 
-              className="flex items-center gap-2 hover:text-brand transition-colors font-medium bg-muted-background hover:bg-brand/10 px-4 py-2 rounded-full"
+              className="flex items-center gap-2 hover:text-brand transition-colors font-medium bg-muted-background hover:bg-brand/10 px-5 py-2.5 rounded-full"
               aria-label="Back to top"
             >
               Back to top <ArrowUp size={16} />
             </a>
           </div>
+          
         </div>
       </div>
     </footer>
