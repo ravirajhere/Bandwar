@@ -1,40 +1,69 @@
 {
-  "intro": "Bandwar is a historic village in the Begusarai district of Bihar, located approximately 18 km from the district headquarters. Whether you are an NRI returning to your roots, a researcher, or a traveler, here is a comprehensive guide on how to reach Bandwar by air, rail, and road.",
+  "intro": "Bandwar is a historic village in the Begusarai district of Bihar, located approximately 18 km from the district headquarters. Whether you are an NRI returning to your roots, a researcher, or a traveler, here is a comprehensive guide on how to reach Bandwar by air, rail, and road, along with local travel tips and nearby attractions.",
   "options": [
     {
       "mode": "By Air (Flight)",
       "icon": "✈️",
-      "details": "The nearest major airport is Jay Prakash Narayan International Airport (PAT) in Patna, located approximately 125 km away. From Patna, you can hire a taxi (which takes about 2 to 2.5 hours) or take a train to Begusarai. Another viable option is Darbhanga Airport (DBR), which is well-connected to major Indian cities. From either airport, the onward journey to Begusarai is by road or rail."
+      "distance": "125 km from Patna Airport",
+      "travelTime": "2.5 - 3 hours by taxi",
+      "details": "The nearest major airport is Jay Prakash Narayan International Airport (PAT) in Patna, located approximately 125 km away. From Patna, you can hire a taxi (which takes about 2.5 to 3 hours) or take a train to Begusarai. Another viable option is Darbhanga Airport (DBR), which is well-connected to major Indian cities. From either airport, the onward journey to Begusarai is by road or rail.",
+      "tips": "Pre-book your taxi from Patna airport to avoid last-minute hassles. Shared cabs are also available but may take longer due to multiple stops."
     },
     {
       "mode": "By Train (Railway)",
       "icon": "🚆",
-      "details": "The nearest railway station is Begusarai Railway Station (BGS), located about 15-18 km from Bandwar. It is well-connected to major cities like Patna, Delhi, Kolkata, and Guwahati. Trains like the Koshi Express, Intercity Express, and Rajya Rani Express connect Patna to Begusarai. The nearby Barauni Junction is a major rail hub in the region. From the station, you can easily hire an auto or taxi to reach the village."
+      "distance": "15-18 km from Begusarai Station (BGS)",
+      "travelTime": "30-40 minutes by auto/taxi",
+      "details": "The nearest railway station is Begusarai Railway Station (BGS), located about 15-18 km from Bandwar. It is well-connected to major cities like Patna, Delhi, Kolkata, and Guwahati. Trains like the Koshi Express, Intercity Express, and Rajya Rani Express connect Patna to Begusarai. The nearby Barauni Junction (BUJ) is a major rail hub in the region. From the station, you can easily hire an auto or taxi to reach the village.",
+      "tips": "Book your train tickets in advance, especially during festivals like Chhath Puja and Diwali. Barauni Junction is a bigger halt, so check if your train stops there for more options."
     },
     {
       "mode": "By Road (Bus/Taxi)",
       "icon": "🚌",
-      "details": "Bandwar is well-connected via National Highway 31 (NH-31) and State Highway 55 (SH-55). Patna is about 124 km away and can be reached by bus or car. Regular buses and shared jeeps run frequently from Patna and other major cities to Begusarai. From the Begusarai bus stand, you can easily get a shared auto or e-rickshaw to Bandwar. Private buses also operate directly to the village."
+      "distance": "124 km from Patna via NH-31",
+      "travelTime": "3 - 4 hours by car/bus",
+      "details": "Bandwar is well-connected via National Highway 31 (NH-31) and State Highway 55 (SH-55). Patna is about 124 km away and can be reached by bus or car. Regular buses and shared jeeps run frequently from Patna and other major cities to Begusarai. From the Begusarai bus stand, you can easily get a shared auto or e-rickshaw to Bandwar. Private buses also operate directly to the village.",
+      "tips": "If driving from Patna, take the NH-31 route via Bakhtiyarpur and Barh. The roads are generally good, but expect heavy traffic near Barauni. For bus travel, both Bihar State Road Transport Corporation (BSRTC) and private operators run regular services."
     },
     {
       "mode": "Local Transport in Bandwar",
       "icon": "🛺",
-      "details": "Once you reach Bandwar, e-rickshaws and auto-rickshaws are the primary means of local transport. The main landmarks to identify the village entrance are the Shaheed Ramchandra Dwar (Main Gate) and the SBI Bank branch on Bandwar Road. Fares are nominal; it is advisable to agree on the fare before starting your journey."
+      "distance": "Within village",
+      "travelTime": "5-15 minutes",
+      "details": "Once you reach Bandwar, e-rickshaws and auto-rickshaws are the primary means of local transport. The main landmarks to identify the village entrance are the Shaheed Ramchandra Dwar (Main Gate) and the SBI Bank branch on Bandwar Road.",
+      "tips": "Fares are nominal and typically range from ₹20 to ₹50 depending on the distance. It is advisable to agree on the fare before starting your journey. For local sightseeing, you can hire an e-rickshaw for half a day (approx. ₹200-₹300)."
     },
     {
       "mode": "Where to Stay",
       "icon": "🏨",
-      "details": "Bandwar does not have commercial hotels or guest houses. Visitors typically stay with relatives or commute from Begusarai town. Begusarai has several decent accommodation options, including Hotel Kamala Inn, Hotel Royal, Zero Mile Rooms, Kasa Courtyard & Banquets, and Hotel Harsh Garden. It is highly recommended to book your stay in Begusarai in advance."
+      "distance": "18-20 km from Bandwar (in Begusarai town)",
+      "travelTime": "30-40 minutes",
+      "details": "Bandwar does not have commercial hotels or guest houses. Visitors typically stay with relatives or commute from Begusarai town. Begusarai has several decent accommodation options, including Hotel Kamala Inn, Hotel Royal, Zero Mile Rooms, Kasa Courtyard & Banquets, and Hotel Harsh Garden.",
+      "tips": "It is highly recommended to book your stay in Begusarai in advance, especially during the winter season and festival periods. Zero Mile Rooms is conveniently located near the Barauni bypass and is a popular choice among travelers."
     },
     {
       "mode": "Best Time to Visit",
       "icon": "🌤️",
-      "details": "The best time to visit Bandwar is during the winter months (November to February) when the weather is pleasant and comfortable for travel. Summers (March to June) can be extremely hot. The monsoon season (July to September) brings heavy rainfall and can cause flooding in the region, which might disrupt travel plans."
+      "distance": "N/A",
+      "travelTime": "N/A",
+      "details": "The best time to visit Bandwar is during the winter months (November to February) when the weather is pleasant and comfortable for travel. Summers (March to June) can be extremely hot, with temperatures often crossing 40°C. The monsoon season (July to September) brings heavy rainfall and can cause flooding in the region, which might disrupt travel plans.",
+      "tips": "If you are visiting during the monsoon, check the weather forecast and road conditions in advance. Carry light woolens for winter mornings and evenings."
     },
     {
       "mode": "Nearby Attractions",
       "icon": "📍",
-      "details": "While in Bandwar, you can also explore the nearby Kanwar (Kabartal) Lake Bird Sanctuary, a Ramsar-listed wetland and one of Asia's largest oxbow lakes, located about 22 km from Begusarai town. The Naulakha Temple in Garhpura and the Simaria Ghat on the Ganges are also notable local heritage and pilgrimage sites."
+      "distance": "12-30 km from Begusarai",
+      "travelTime": "30 minutes - 1 hour",
+      "details": "While in Bandwar, you can also explore the nearby Kanwar (Kabartal) Lake Bird Sanctuary, a Ramsar-listed wetland and one of Asia's largest oxbow lakes, located about 22 km from Begusarai town. The Naulakha Temple in Bishanpur (12-15 km from Begusarai) and the Simaria Ghat on the Ganges are also notable local heritage and pilgrimage sites.",
+      "tips": "Kanwar Lake is a paradise for bird watchers, especially between November and February when migratory birds arrive. Naulakha Temple is dedicated to Lord Shiva and is a peaceful spot for morning visits."
+    },
+    {
+      "mode": "Emergency Contacts for Travelers",
+      "icon": "🚨",
+      "distance": "N/A",
+      "travelTime": "N/A",
+      "details": "For any emergency during your travel, you can contact the National Emergency Number (112), Ambulance (102), or the local Begusarai Police. The District Magistrate (DM) office and Superintendent of Police (SP) office are located in Begusarai town.",
+      "tips": "Save these numbers on your phone before you start your journey. The 112 helpline is a single point of contact for police, fire, and medical emergencies."
     }
   ]
 }
