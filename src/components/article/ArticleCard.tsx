@@ -1,7 +1,7 @@
-// src/components/article/ArticleCard.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { Article } from "@/lib/schema";
+import { Calendar } from "lucide-react";
 
 const formatDate = (dateString: string) => {
   try {
@@ -10,52 +10,64 @@ const formatDate = (dateString: string) => {
 };
 
 export function ArticleCard({ article }: { article: Article }) {
+  // Safe image path check
+  const imageSrc = article.hero 
+    ? (article.hero.startsWith("/") ? article.hero : `/${article.hero}`) 
+    : null;
+
   return (
     <Link 
       href={`/article/${article.id}`}
-      // Wikipedia Style: White background, thin border, no heavy shadows or animations
-      className="group bg-wiki-bg border border-wiki-border-light flex flex-col sm:flex-row h-full hover:bg-wiki-bg-alt transition-colors"
+      className="group flex flex-col bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-elevated hover:border-brand/30 transition-all duration-300 h-full"
     >
-      {/* Thumbnail Image (Left Side on Desktop) */}
-      <div className="relative w-full sm:w-[160px] shrink-0 aspect-[4/3] sm:aspect-auto bg-wiki-bg-alt border-b sm:border-b-0 sm:border-r border-wiki-border-light overflow-hidden">
-        {article.hero ? (
+      {/* 🖼️ Thumbnail Image (Top) */}
+      <div className="relative w-full aspect-[16/9] sm:aspect-[2/1] bg-muted-background overflow-hidden shrink-0">
+        {imageSrc ? (
           <Image
-            src={`/${article.hero}`}
+            src={imageSrc}
             alt={article.title}
             fill
-            // 👇 Yahan object-contain aur p-1 add kiya hai taaki image pure dikhe 👇
-            className="object-contain p-1"
-            sizes="(max-width: 640px) 100vw, 160px"
+            // ✅ Senior Fix: object-cover lagaya taaki image box ko poora bhare aur professional lage
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-3xl opacity-20">📄</div>
+          <div className="absolute inset-0 flex items-center justify-center text-4xl opacity-20 bg-muted-background">
+            📄
+          </div>
         )}
+        
+        {/* Category Badge (Floating on Image) */}
+        <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-md text-[11px] font-bold text-foreground uppercase tracking-wider shadow-sm z-10">
+          {article.categories[0] || "General"}
+        </div>
       </div>
 
-      {/* Text Content */}
-      <div className="p-3 sm:p-4 flex-grow flex flex-col justify-center">
+      {/* 📝 Text Content */}
+      <div className="p-5 flex flex-col flex-grow">
         
-        {/* Category Tag (Small & Subtle) */}
-        <span className="text-[11px] font-bold text-wiki-text-muted uppercase tracking-wider mb-1">
-          {article.categories[0]}
-        </span>
-
-        {/* Title (Classic Blue Link) */}
-        <h3 className="font-serif text-lg font-bold text-wiki-link group-hover:underline leading-tight mb-1">
+        {/* Title */}
+        <h3 className="font-serif text-xl font-bold text-foreground group-hover:text-brand transition-colors leading-snug mb-2 line-clamp-2">
           {article.title}
         </h3>
         
-        {/* Subtitle / Date */}
-        <div className="text-[12px] text-wiki-text-muted mb-2 flex flex-wrap items-center gap-x-2">
-          {article.subtitle && <span className="italic">{article.subtitle}</span>}
-          {article.subtitle && <span aria-hidden="true">•</span>}
-          <time dateTime={article.lastUpdated}>Updated: {formatDate(article.lastUpdated)}</time>
-        </div>
-
         {/* Summary */}
-        <p className="text-[13px] text-wiki-text leading-relaxed line-clamp-2">
+        <p className="text-[15px] text-muted leading-relaxed line-clamp-2 mb-4 flex-grow">
           {article.summary}
         </p>
+
+        {/* Footer Meta (Date) */}
+        <div className="mt-auto pt-4 border-t border-border-subtle flex items-center justify-between text-xs text-muted font-medium">
+          <div className="flex items-center gap-1.5">
+            <Calendar size={14} className="text-brand/70" />
+            <time dateTime={article.lastUpdated}>{formatDate(article.lastUpdated)}</time>
+          </div>
+          
+          <span className="text-brand flex items-center font-semibold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+            Read →
+          </span>
+        </div>
+
       </div>
     </Link>
   );
