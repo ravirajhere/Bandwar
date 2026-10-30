@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Phone, MapPin, Clock } from "lucide-react";
+import { Search, Phone, MapPin, Clock, X, AlertCircle } from "lucide-react";
 import { DirectoryItem } from "@/lib/schema";
 
 interface DirectoryClientProps {
@@ -26,19 +26,23 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
   });
 
   return (
-    <div className="flex flex-col md:flex-row gap-6">
+    <div className="flex flex-col md:flex-row gap-8">
       
-      {/* LEFT SIDEBAR: Categories */}
-      <aside className="w-full md:w-64 shrink-0">
-        <div className="border border-wiki-border-light bg-wiki-bg-alt sticky top-20">
-          <div className="p-3 border-b border-wiki-border-light bg-[#eaecf0]">
-            <h2 className="font-bold text-wiki-text text-sm">Categories</h2>
+      {/* =========================================
+          LEFT SIDEBAR: Categories (Desktop Only)
+         ========================================= */}
+      <aside className="hidden md:block w-64 shrink-0">
+        <div className="bg-card border border-border rounded-xl shadow-sm sticky top-24 overflow-hidden">
+          <div className="p-4 border-b border-border bg-muted-background">
+            <h2 className="font-serif font-semibold text-foreground">Categories</h2>
           </div>
-          <div className="flex flex-col text-sm">
+          <div className="flex flex-col p-2">
             <button
               onClick={() => setActiveCategory("all")}
-              className={`text-left px-4 py-2 hover:bg-wiki-bg transition-colors ${
-                activeCategory === "all" ? "bg-wiki-bg font-bold text-wiki-text border-l-4 border-wiki-link" : "text-wiki-text-muted"
+              className={`text-left px-4 py-2.5 rounded-lg text-[15px] transition-colors mb-1 ${
+                activeCategory === "all" 
+                  ? "bg-brand/10 font-bold text-brand" 
+                  : "text-foreground/70 hover:bg-muted-background hover:text-foreground font-medium"
               }`}
             >
               All Listings
@@ -47,68 +51,132 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`text-left px-4 py-2 hover:bg-wiki-bg transition-colors flex items-center gap-2 ${
-                  activeCategory === cat.id ? "bg-wiki-bg font-bold text-wiki-text border-l-4 border-wiki-link" : "text-wiki-text-muted"
+                className={`text-left px-4 py-2.5 rounded-lg text-[15px] transition-colors flex items-center gap-3 mb-1 ${
+                  activeCategory === cat.id 
+                    ? "bg-brand/10 font-bold text-brand" 
+                    : "text-foreground/70 hover:bg-muted-background hover:text-foreground font-medium"
                 }`}
               >
-                <span>{cat.icon}</span> {cat.title}
+                <span className="text-lg">{cat.icon}</span> {cat.title}
               </button>
             ))}
           </div>
         </div>
       </aside>
 
-      {/* RIGHT CONTENT: Search & List */}
+      {/* =========================================
+          RIGHT CONTENT: Search & List
+         ========================================= */}
       <div className="flex-grow min-w-0">
         
         {/* Search Bar */}
         <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-wiki-text-muted" size={18} />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={20} />
           <input
             type="text"
             placeholder="Search for doctors, shops, addresses..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-wiki-border focus:outline-none focus:ring-2 focus:ring-wiki-link focus:border-wiki-link bg-wiki-bg text-wiki-text"
+            className="w-full pl-12 pr-12 py-3.5 bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand text-foreground text-lg shadow-sm transition-all"
           />
+          {searchQuery && (
+            <button 
+              onClick={() => setSearchQuery("")}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-foreground p-1"
+              aria-label="Clear search"
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
+
+        {/* 📱 Mobile Categories (Horizontal Scroll) */}
+        <div className="md:hidden flex overflow-x-auto pb-4 mb-2 gap-2 scrollbar-hide">
+          <button
+            onClick={() => setActiveCategory("all")}
+            className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
+              activeCategory === "all" 
+                ? "bg-brand text-white border-brand" 
+                : "bg-card text-foreground border-border"
+            }`}
+          >
+            All
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors border flex items-center gap-1.5 ${
+                activeCategory === cat.id 
+                  ? "bg-brand text-white border-brand" 
+                  : "bg-card text-foreground border-border"
+              }`}
+            >
+              <span>{cat.icon}</span> {cat.title}
+            </button>
+          ))}
         </div>
 
         {/* Listings */}
         <div className="space-y-4">
           {filteredItems.length === 0 ? (
-            <div className="text-center py-10 text-wiki-text-muted border border-dashed border-wiki-border-light">
-              No results found. Try a different search term.
+            <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-card border border-dashed border-border rounded-xl">
+              <AlertCircle size={40} className="text-muted mb-4 opacity-50" />
+              <h3 className="text-lg font-semibold text-foreground mb-1">No results found</h3>
+              <p className="text-muted">We couldn't find anything matching "{searchQuery}". Try a different term.</p>
+              <button 
+                onClick={() => { setSearchQuery(""); setActiveCategory("all"); }}
+                className="mt-6 text-brand font-medium hover:underline"
+              >
+                Clear all filters
+              </button>
             </div>
           ) : (
             filteredItems.map((item) => (
-              <div key={item.id} className="border border-wiki-border-light bg-wiki-bg-alt p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-wiki-border transition-colors">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-bold text-lg text-wiki-text">{item.name}</h3>
+              <div 
+                key={item.id} 
+                className="bg-card border border-border rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5"
+              >
+                <div className="flex-grow">
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <h3 className="font-serif font-bold text-xl text-foreground">{item.name}</h3>
+                    
+                    {/* Emergency Badge */}
                     {item.isEmergency && (
-                      <span className="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase border border-red-200">
+                      <span className="bg-red-500/10 text-red-600 dark:text-red-400 text-[11px] font-bold px-2.5 py-0.5 rounded-md uppercase tracking-wider border border-red-500/20 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                         Emergency
                       </span>
                     )}
                   </div>
-                  {item.description && <p className="text-[14px] text-wiki-text-muted mb-2">{item.description}</p>}
                   
-                  <div className="flex flex-col sm:flex-row gap-x-4 gap-y-1 text-[13px] text-wiki-text">
+                  {item.description && (
+                    <p className="text-foreground/70 text-base mb-3 leading-relaxed">
+                      {item.description}
+                    </p>
+                  )}
+                  
+                  <div className="flex flex-col sm:flex-row gap-x-6 gap-y-2 text-sm text-muted font-medium">
                     {item.address && (
-                      <span className="flex items-center gap-1.5"><MapPin size={14} className="text-wiki-text-muted"/> {item.address}</span>
+                      <span className="flex items-center gap-1.5">
+                        <MapPin size={16} className="text-brand/70"/> {item.address}
+                      </span>
                     )}
                     {item.timing && (
-                      <span className="flex items-center gap-1.5"><Clock size={14} className="text-wiki-text-muted"/> {item.timing}</span>
+                      <span className="flex items-center gap-1.5">
+                        <Clock size={16} className="text-brand/70"/> {item.timing}
+                      </span>
                     )}
                   </div>
                 </div>
 
+                {/* Call Button */}
                 {item.phone && (
                   <a 
                     href={`tel:${item.phone}`}
-                    className="shrink-0 flex items-center justify-center gap-2 bg-wiki-bg border border-wiki-border text-wiki-link px-4 py-2 hover:bg-[#eaecf0] transition-colors font-bold text-sm w-full sm:w-auto"
+                    className="shrink-0 flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white px-6 py-3 rounded-xl transition-all shadow-sm hover:shadow font-semibold text-base w-full sm:w-auto mt-2 sm:mt-0"
                   >
-                    <Phone size={16} /> Call Now
+                    <Phone size={18} /> Call Now
                   </a>
                 )}
               </div>
