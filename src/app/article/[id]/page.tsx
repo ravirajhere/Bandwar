@@ -4,10 +4,10 @@ import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
-import { ReadingProgress } from "@/components/article/ReadingProgress"; // ✅ Naya Import
+import { ReadingProgress } from "@/components/article/ReadingProgress";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ChevronRight } from "lucide-react";
+import { Calendar, ChevronRight, Edit3 } from "lucide-react"; // 👈 Edit3 import kiya
 
 export async function generateStaticParams() {
   const articles = getAllArticles();
@@ -20,7 +20,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
   if (!article) return { title: "Not Found" };
 
-  // ✅ SEO Fix: metaTitle aur metaDescription use kar rahe hain
   return {
     title: article.metaTitle || `${article.title} | Bandwar Portal`,
     description: article.metaDescription || article.summary.slice(0, 160),
@@ -39,7 +38,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
   if (!article) notFound();
 
-  // 1. SEO Expert: FAQ Schema
   const faqJsonLd = article.faqs && article.faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -50,19 +48,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     }))
   } : null;
 
-  // 2. UX Expert: Generate ID for Table of Contents
   const generateAnchorId = (heading: string) => 
     heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-  // 3. TTS Expert: Extract all text
   const fullContentText = `${article.summary}. ` + article.content.map((block: { heading: string, text: string }) => `${block.heading}. ${block.text}`).join(" ");
 
-  // 4. Senior Addition: Get Related Articles
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
 
   return (
     <article className="bg-background min-h-screen py-10 md:py-16 relative">
-      {/* ✅ Reading Progress Bar yahan add kiya hai */}
       <ReadingProgress />
 
       <div className="container-custom grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_340px] gap-8 xl:gap-12">
@@ -71,7 +65,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
         )}
 
-        {/* 🟢 LEFT COLUMN: Table of Contents (Desktop Only) */}
+        {/* LEFT COLUMN */}
         <aside className="hidden lg:block no-print">
           <div className="sticky top-28 bg-card border border-border rounded-xl shadow-sm p-5 text-sm overflow-hidden">
             <h4 className="font-serif font-semibold text-foreground mb-4 pb-3 border-b border-border text-lg">
@@ -101,10 +95,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </div>
         </aside>
 
-        {/* 🟢 MIDDLE COLUMN: Main Article Content */}
+        {/* MIDDLE COLUMN */}
         <div className="min-w-0 article-body-wrapper">
           
-          {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-sm text-muted mb-6 no-print flex-wrap">
             <Link href="/" className="hover:text-brand transition-colors">Home</Link>
             <ChevronRight size={14} className="text-border" />
@@ -115,7 +108,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             <span className="text-foreground font-medium truncate max-w-[200px] sm:max-w-none">{article.title}</span>
           </nav>
 
-          {/* Header */}
           <header className="mb-8">
             <h1 className="font-serif text-3xl md:text-5xl text-foreground mb-3 leading-tight font-semibold tracking-tight">
               {article.title}
@@ -125,7 +117,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               {article.subtitle}
             </p>
 
-            {/* Meta & Toolbar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-border mb-8 no-print">
               <div className="flex items-center gap-2 text-sm text-muted">
                 <Calendar size={16} />
@@ -134,12 +125,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
             
-            {/* Hero Image (Premium Cover) */}
             {article.hero && (
               <div className="relative w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-card mb-10 bg-muted-background">
                 <Image
                   src={article.hero.startsWith("/") ? article.hero : `/${article.hero}`}
-                  alt={article.title}
+                  alt={article.photos?.[0]?.imageAlt || article.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 800px"
                   className="object-cover hover:scale-[1.02] transition-transform duration-700"
@@ -148,23 +138,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             )}
 
-            {/* Lead Paragraph */}
             <p className="text-lg md:text-xl text-foreground/90 leading-relaxed font-medium">
               {article.summary}
             </p>
           </header>
 
-          {/* Content & Infobox Container */}
           <div className="flow-root">
-            
-            {/* Mobile Infobox */}
             {article.infobox && (
               <div className="xl:hidden mb-8 print-infobox">
                 <Infobox data={article.infobox} title={article.title} />
               </div>
             )}
 
-            {/* Article Content Blocks */}
             <div className="space-y-10">
               {article.content.map((block: { heading: string, text: string }, index: number) => (
                 <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-28">
@@ -179,14 +164,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-          {/* FAQs */}
           <div id="faqs" className="scroll-mt-28 mt-16">
             {article.faqs && article.faqs.length > 0 && (
               <FaqAccordion faqs={article.faqs} />
             )}
           </div>
 
-          {/* 🚀 Senior Addition: Related Articles */}
           {relatedArticles.length > 0 && (
             <div className="mt-16 pt-8 border-t border-border no-print">
               <h3 className="font-serif text-2xl font-semibold text-foreground mb-6">Read Next</h3>
@@ -207,14 +190,29 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* Footer Info */}
-          <div className="mt-12 pt-6 border-t border-border text-sm text-muted flex flex-col md:flex-row justify-between items-center gap-2">
+          {/* 🚀 NAYA SECTION: Suggest an Edit */}
+          <div className="mt-12 bg-muted-background border border-border rounded-xl p-6 sm:p-8 text-center no-print">
+            <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
+              Is this information incorrect or incomplete?
+            </h3>
+            <p className="text-muted mb-6">
+              Help us keep the village archive accurate. If you have more details or found a mistake, let us know.
+            </p>
+            <Link 
+              href={`/contribute?page=${article.id}`} 
+              className="inline-flex items-center gap-2 bg-brand text-white px-6 py-3 rounded-lg font-medium hover:bg-brand-hover transition-colors shadow-sm"
+            >
+              <Edit3 size={18} /> Suggest an Edit
+            </Link>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-border text-sm text-muted flex flex-col md:flex-row justify-between items-center gap-2">
             <span>Last updated: {article.lastUpdated}</span>
             <span>Source: Bandwar Village Portal</span>
           </div>
         </div>
 
-        {/* 🟢 RIGHT COLUMN: Infobox (Desktop Only) */}
+        {/* RIGHT COLUMN */}
         <aside className="hidden xl:block no-print">
           <div className="sticky top-28">
             {article.infobox && <Infobox data={article.infobox} title={article.title} />}
