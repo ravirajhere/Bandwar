@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Article } from "@/lib/schema";
-import { Calendar } from "lucide-react";
+import { Calendar, Image as ImageIcon } from "lucide-react"; // ImageIcon import kiya
 
 const formatDate = (dateString: string) => {
   try {
@@ -21,19 +21,20 @@ export function ArticleCard({ article }: { article: Article }) {
       className="group flex flex-col bg-card border border-border rounded-xl overflow-hidden shadow-sm hover:shadow-elevated hover:border-brand/30 transition-all duration-300 h-full"
     >
       {/* 🖼️ Thumbnail Image (Top) */}
-      <div className="relative w-full aspect-[16/9] sm:aspect-[2/1] bg-muted-background overflow-hidden shrink-0">
+      <div className="relative w-full aspect-[16/9] bg-muted-background overflow-hidden shrink-0 flex items-center justify-center">
         {imageSrc ? (
           <Image
             src={imageSrc}
             alt={article.title}
             fill
-            // ✅ Senior Fix: object-cover lagaya taaki image box ko poora bhare aur professional lage
             className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-4xl opacity-20 bg-muted-background">
-            📄
+          // ✅ Fallback: Agar image nahi hai toh yeh dikhega
+          <div className="flex flex-col items-center justify-center text-muted opacity-60">
+            <ImageIcon size={40} className="mb-2" />
+            <span className="text-xs font-medium uppercase tracking-wider">No Image Available</span>
           </div>
         )}
         
