@@ -3,8 +3,8 @@ import path from "path";
 import { z } from "zod";
 import { 
   MasterSchema, ArticleListSchema, MediaSchema, VisionSchema, 
-  PeopleDataSchema, CategoriesDataSchema, DirectoryDataSchema, // 👈 Naya import
-  MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData, DirectoryData // 👈 Naya type
+  PeopleDataSchema, CategoriesDataSchema, DirectoryDataSchema, 
+  MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData, DirectoryData 
 } from "./schema";
 
 // ==========================================
@@ -15,6 +15,9 @@ import {
 const readJsonFile = (filePath: string) => {
   const fullPath = path.join(process.cwd(), "data", filePath);
   try {
+    if (!fs.existsSync(fullPath)) {
+      throw new Error(`File not found`);
+    }
     const fileContent = fs.readFileSync(fullPath, "utf8");
     return JSON.parse(fileContent);
   } catch (error) {
@@ -37,14 +40,13 @@ function validateData<T extends z.ZodTypeAny>(schema: T, data: unknown, fileName
     );
   }
   
-  // TypeScript ko explicitly output type bata rahe hain
   return parsed.data as z.infer<T>;
 }
 
 // ==========================================
 // 2. CACHE (Performance Optimization)
 // ==========================================
-// Solo Editor ke liye: Build ke time data sirf EK BAAR load hoga memory mein
+// Build ke time data sirf EK BAAR load hoga memory mein
 let articlesCache: Article[] | null = null;
 
 // ==========================================
@@ -57,7 +59,6 @@ export function getMasterData(): MasterConfig {
 }
 
 export function getAllArticles(): Article[] {
-  // Agar cache mein data hai, toh disk mat padho
   if (articlesCache) return articlesCache;
 
   const articlesDir = path.join(process.cwd(), "data", "articles");
@@ -77,14 +78,23 @@ export function getAllArticles(): Article[] {
     }
   }
 
-  // Data ko cache mein save karo
+  // 🚀 SENIOR FIX: Sort articles by date (Newest first)
+  // Isse Homepage par latest articles sabse upar aayenge
+  allArticles.sort((a, b) => {
+    return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+  });
+
   articlesCache = allArticles;
   return allArticles;
 }
 
 export function getArticleById(id: string): Article | undefined {
-  // Ye ab cached getAllArticles() use karega, disk baar-baar nahi padhega
   return getAllArticles().find((a) => a.id === id);
+}
+
+// 🚀 NAYA FUNCTION: Category wise articles fetch karne ke liye (Aage kaam aayega)
+export function getArticlesByCategory(categoryId: string): Article[] {
+  return getAllArticles().filter((a) => a.categories.includes(categoryId));
 }
 
 export function getMediaData(): Media {
@@ -107,7 +117,6 @@ export function getCategoriesData(): CategoriesData {
   return validateData(CategoriesDataSchema, rawData, "categories.json");
 }
 
-// 👇 NAYA FUNCTION: Directory Data Fetch
 export function getDirectoryData(): DirectoryData {
   const rawData = readJsonFile("directory.json");
   return validateData(DirectoryDataSchema, rawData, "directory.json");
