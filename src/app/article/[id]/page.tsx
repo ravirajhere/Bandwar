@@ -5,9 +5,10 @@ import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
+import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; // 👈 Naya Import
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ChevronRight, Edit3 } from "lucide-react"; // 👈 Edit3 import kiya
+import { Calendar, ChevronRight, Edit3 } from "lucide-react"; 
 
 export async function generateStaticParams() {
   const articles = getAllArticles();
@@ -125,16 +126,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
             
+            {/* 🚀 HERO IMAGE WITH EDIT BUTTON */}
             {article.hero && (
-              <div className="relative w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-card mb-10 bg-muted-background">
+              // 👈 'group' class add ki hai taaki hover par pencil dikhe
+              <div className="relative w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-card mb-10 bg-muted-background group">
                 <Image
                   src={article.hero.startsWith("/") ? article.hero : `/${article.hero}`}
                   alt={article.photos?.[0]?.imageAlt || article.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 800px"
-                  className="object-cover hover:scale-[1.02] transition-transform duration-700"
+                  className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
+                {/* 👇 Pencil Button yahan add kiya hai */}
+                <ImageUpdateButton contextName={`Article: ${article.title}`} />
               </div>
             )}
 
