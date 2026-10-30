@@ -3,14 +3,17 @@
     {
       "id": "snk-high-school-bandwar",
       "title": "Bhagwandutt S.N.K. High School, Bandwar",
+      "metaTitle": "S.N.K. High School Bandwar (Est. 1942) - History & Info",
+      "metaDescription": "Discover Bhagwandutt S.N.K. High School, Bandwar (Est. 1942). The oldest school in Begusarai, Bihar. UDISE Code: 10201013302. Read history & current status.",
       "subtitle": "The village's oldest school — established in 1942 as a Sanskrit gurukul",
       "categories": ["education", "history"],
-      "summary": "Bhagwandutt S.N.K. High School is the oldest educational institution in Bandwar village, Begusarai, Bihar. Established in 1942 by Pandit Taradutt Pathak in memory of his father Pandit Bhagwan Dutt Pathak, it began as a free Sanskrit gurukul serving students from across Bihar. Today it operates as a government secondary school (Classes 9-10) under the Bihar Department of Education.",
+      "summary": "Established in 1942 by Pandit Taradutt Pathak, S.N.K. High School is the oldest educational institution in Bandwar, Begusarai. Originally a free Sanskrit gurukul, it now operates as a government secondary school (Classes 9-10) with UDISE code 10201013302.",
       "hero": "images/education/snk-high-school-bandwar-campus.jpg",
       "photos": [
         { 
           "src": "images/education/snk-high-school-bandwar-campus.jpg", 
-          "caption": "The main building of Bhagwandutt S.N.K. High School, Bandwar." 
+          "caption": "The main building of Bhagwandutt S.N.K. High School, Bandwar.",
+          "imageAlt": "Front view of the historic S.N.K. High School building in Bandwar, Begusarai"
         }
       ],
       "infobox": {
@@ -22,7 +25,8 @@
         "Classes": "9–10",
         "Medium": "Hindi",
         "Students": "12",
-        "Teachers": "4"
+        "Teachers": "4",
+        "Location": "Bandwar, Begusarai, Bihar"
       },
       "lastUpdated": "2026-10-15",
       "content": [
@@ -38,21 +42,24 @@
         { "q": "How many students study at S.N.K. High School today?", "a": "According to the UDISE+ report for 2025-26, the school has 12 students — 2 boys and 10 girls — taught by 4 teachers. The low enrolment reflects the wider challenges of rural secondary education in Bihar." },
         { "q": "Was S.N.K. High School always a government school?", "a": "No — it began in 1942 as a private Sanskrit gurukul, providing free education, food, and lodging to students from across Bihar. After independence, it was brought under the Department of Education and became a government secondary school." }
       ],
-      "related": ["uhs-plus-2-bandwar", "ms-bandwar-middle-school", "vaani-vilas-library-bandwar", "gps-paschimibandwar-school", "historic-well", "shaheed-dwar"],
+      "related": ["uhs-plus-2-bandwar", "ms-bandwar-middle-school", "vaani-vilas-library-bandwar", "gps-paschimibandwar-school"],
       "location": { "lat": 25.5010, "lng": 86.1605 },
       "tags": ["snk high school bandwar", "1942 gurukul bihar", "begusarai education", "sanskrit school bandwar", "udise 10201013302", "oldest school bandwar"]
     },
     {
       "id": "uhs-plus-2-bandwar",
       "title": "UHS +2 Bandwar (Higher Secondary School)",
+      "metaTitle": "UHS +2 Bandwar (Higher Secondary) - Begusarai, Bihar",
+      "metaDescription": "UHS +2 Bandwar is the largest school in the village (Classes 9-12). UDISE Code: 10201008406. Learn about its 601 students, facilities, and educational impact.",
       "subtitle": "The village's main higher secondary school — Classes 9 to 12",
       "categories": ["education", "history"],
-      "summary": "UHS +2 Bandwar (Upgraded High School +2) is the higher secondary school of Bandwar village in Begusarai, Bihar. Established in 1955 and holding UDISE code 10201008406, it provides education from Class 9 to Class 12 with a total enrolment of 601 students — the largest school in Bandwar.",
+      "summary": "UHS +2 Bandwar (Upgraded High School +2) is the largest higher secondary school in Bandwar, Begusarai. Established in 1955 (UDISE: 10201008406), it provides education from Class 9 to 12 to 601 students, with a focus on inclusivity.",
       "hero": "images/education/uhs-plus-2-bandwar-school-building.jpg",
       "photos": [
         { 
           "src": "images/education/uhs-plus-2-bandwar-school-building.jpg", 
-          "caption": "The main building of UHS +2 Bandwar, the largest school in the village." 
+          "caption": "The main building of UHS +2 Bandwar, the largest school in the village.",
+          "imageAlt": "UHS Plus 2 Bandwar school building in Begusarai"
         }
       ],
       "infobox": {
@@ -63,7 +70,8 @@
         "Medium": "Hindi",
         "Students": "601",
         "Teachers": "15",
-        "Management": "State Government"
+        "Management": "State Government",
+        "Location": "Bandwar, Begusarai, Bihar"
       },
       "lastUpdated": "2026-10-15",
       "content": [
@@ -80,21 +88,24 @@
         { "q": "Does UHS +2 Bandwar have a library?", "a": "No — the school does not have a library or a playground. Students often rely on the Vaani Vilas Pustakalaya, the village library on Bandwar Road, for their reading needs." },
         { "q": "What is the student-teacher ratio at UHS +2 Bandwar?", "a": "The school has 15 teachers for 601 students, giving a pupil-teacher ratio of roughly 40:1 — above the ideal ratio prescribed by the Right to Education Act." }
       ],
-      "related": ["snk-high-school-bandwar", "ms-bandwar-middle-school", "gps-bandwar-musahri-school", "vaani-vilas-library-bandwar", "nps-kunjartol-wd-9", "adharsh-vikash-vidhya-mandir"],
+      "related": ["snk-high-school-bandwar", "ms-bandwar-middle-school", "vaani-vilas-library-bandwar", "nps-kunjartol-wd-9"],
       "location": { "lat": 25.5004, "lng": 86.1608 },
       "tags": ["uhs plus 2 bandwar", "higher secondary school bandwar", "begusarai school", "class 9 to 12 bihar", "udise 10201008406", "rural education bihar"]
     },
     {
       "id": "ms-bandwar-middle-school",
       "title": "MS Bandwar (Rajkiyakrit Madhya Vidyalaya)",
+      "metaTitle": "MS Bandwar (Middle School) - Classes 1 to 8 | Begusarai",
+      "metaDescription": "Government middle school in Bandwar, Begusarai. UDISE: 10201008401. Serving 669 students from Class 1 to 8. View facilities, teachers, and history.",
       "subtitle": "The village's main government middle school — Classes 1 to 8",
       "categories": ["education", "history"],
-      "summary": "MS Bandwar (Middle School Bandwar) is the government middle school of Bandwar village in Begusarai, Bihar. Established in 1955 with UDISE code 10201008401, it serves Classes 1 through 8 with an enrolment of 669 students — one of the largest middle schools in the area.",
+      "summary": "MS Bandwar (Middle School Bandwar) is the main government middle school in Bandwar, Begusarai. Established in 1955 (UDISE: 10201008401), it serves Classes 1 to 8 with 669 students, making it the most inclusive school in the village.",
       "hero": "images/education/ms-bandwar-middle-school-building.jpg",
       "photos": [
         { 
           "src": "images/education/ms-bandwar-middle-school-building.jpg", 
-          "caption": "The main building of MS Bandwar (Rajkiyakrit Madhya Vidyalaya)." 
+          "caption": "The main building of MS Bandwar (Rajkiyakrit Madhya Vidyalaya).",
+          "imageAlt": "Rajkiyakrit Madhya Vidyalaya Bandwar building in Begusarai"
         }
       ],
       "infobox": {
@@ -105,7 +116,8 @@
         "Medium": "Hindi, Sanskrit, English",
         "Students": "669",
         "Teachers": "17",
-        "Management": "State Government"
+        "Management": "State Government",
+        "Location": "Bandwar, Begusarai, Bihar"
       },
       "lastUpdated": "2026-10-15",
       "content": [
@@ -122,275 +134,34 @@
         { "q": "What is the condition of MS Bandwar's classrooms?", "a": "The school runs from 3 pucca building blocks with 8 classrooms. All 8 classrooms, however, need major repair, and the boundary wall is pucca but broken." },
         { "q": "Does MS Bandwar have a library and playground?", "a": "Yes — the school has both a library and a playground, along with electricity, internet, and rainwater harvesting." }
       ],
-      "related": ["snk-high-school-bandwar", "uhs-plus-2-bandwar", "gps-paschimibandwar-school", "gps-bandwar-musahri-school", "vaani-vilas-library-bandwar", "adharsh-vikash-vidhya-mandir"],
+      "related": ["snk-high-school-bandwar", "uhs-plus-2-bandwar", "gps-paschimibandwar-school", "vaani-vilas-library-bandwar"],
       "location": { "lat": 25.5003, "lng": 86.1612 },
       "tags": ["ms bandwar", "madhya vidyalaya bandwar", "middle school begusarai", "class 1 to 8 bihar", "udise 10201008401", "government school bandwar"]
     },
     {
-      "id": "gps-paschimibandwar-school",
-      "title": "GPS Paschimibandwar (Government Primary School)",
-      "subtitle": "Primary school in West Bandwar — established 1952",
-      "categories": ["education"],
-      "summary": "GPS Paschimibandwar (Government Primary School, West Bandwar) is a government primary school in the western part of Bandwar village, Begusarai, Bihar. Established in 1952 with UDISE code 10201008402, it serves Classes 1 through 5 with 150 students.",
-      "hero": "images/education/gps-paschimibandwar-school-building.jpg",
-      "photos": [
-        { 
-          "src": "images/education/gps-paschimibandwar-school-building.jpg", 
-          "caption": "The main building of GPS Paschimibandwar in West Bandwar." 
-        }
-      ],
-      "infobox": {
-        "Type": "Government primary school",
-        "Established": "1952",
-        "UDISE Code": "10201008402",
-        "Classes": "1–5",
-        "Medium": "Hindi",
-        "Students": "150",
-        "Teachers": "9",
-        "Management": "State Government"
-      },
-      "lastUpdated": "2026-10-15",
-      "content": [
-        { "heading": "Overview", "text": "GPS Paschimibandwar is a government primary school in the western part of Bandwar, close to the embankment that runs along the [[burhi-gandak|Burhi Gandak]]. Established in 1952 with UDISE code 10201008402, it is one of the oldest schools in the village. The school's name reflects its location: 'Paschimi' means 'western' in Hindi, and the school serves the families living in the western part of the village." },
-        { "heading": "Enrolment", "text": "As per the UDISE+ report for 2025-26, the school has 150 students — 83 boys and 67 girls. 118 students are from Other Backward Classes, 27 from Scheduled Castes, and 29 from Muslim families. 126 students — 84% — belong to Below Poverty Line households." },
-        { "heading": "Infrastructure", "text": "The school operates from 3 pucca building blocks with 7 classrooms — 5 in good condition and 2 in need of major repair. It has a playground, drinking water, electricity, internet, and rainwater harvesting. It does not have a library, and the boundary wall is pucca but broken." },
-        { "heading": "Teachers", "text": "The school has 9 teachers — 4 male and 5 female. Only 1 holds a B.Ed. qualification, and 5 teachers are below graduate level. The school received ₹30,000 in grants for 2025-26." },
-        { "heading": "Context", "text": "GPS Paschimibandwar is one of three government primary schools in Bandwar — the others being [[gps-mohanpur-kanya-school|GPS Mohanpur Kanya]] and [[gps-bandwar-musahri-school|GPS Bandwar Musahri]]. Together, these three schools serve the bulk of the village's primary-age children." }
-      ],
-      "faqs": [
-        { "q": "When was GPS Paschimibandwar established?", "a": "GPS Paschimibandwar was established in 1952 — one of the oldest schools in Bandwar village. Its UDISE code is 10201008402." },
-        { "q": "How many students study at GPS Paschimibandwar?", "a": "According to the UDISE+ report for 2025-26, the school has 150 students — 83 boys and 67 girls. 84% of students belong to Below Poverty Line households." },
-        { "q": "Does GPS Paschimibandwar have a playground?", "a": "Yes — the school has a playground, along with drinking water, electricity, internet, and rainwater harvesting." },
-        { "q": "Why is the school called 'Paschimibandwar'?", "a": "'Paschimi' means 'western' in Hindi. The school is located in the western part of Bandwar village." }
-      ],
-      "related": ["gps-mohanpur-kanya-school", "gps-bandwar-musahri-school", "ms-bandwar-middle-school", "nps-kunjartol-wd-9", "burhi-gandak", "bandh"],
-      "location": { "lat": 25.5008, "lng": 86.1598 },
-      "tags": ["gps paschimibandwar", "west bandwar primary school", "begusarai primary school", "udise 10201008402", "government school bihar"]
-    },
-    {
-      "id": "gps-mohanpur-kanya-school",
-      "title": "GPS Mohanpur Kanya (Girls' Primary School)",
-      "subtitle": "The village's dedicated girls' primary school — established 1956",
-      "categories": ["education"],
-      "summary": "GPS Mohanpur Kanya is the girls-only government primary school serving Bandwar panchayat in Begusarai, Bihar. Established in 1956 with UDISE code 10201009102, it serves Classes 1 through 5 exclusively for girls, with an enrolment of 74 students.",
-      "hero": "images/education/gps-mohanpur-kanya-school-building.jpg",
-      "photos": [
-        { 
-          "src": "images/education/gps-mohanpur-kanya-school-building.jpg", 
-          "caption": "The main building of GPS Mohanpur Kanya, the girls-only primary school." 
-        }
-      ],
-      "infobox": {
-        "Type": "Government primary school (girls only)",
-        "Established": "1956",
-        "UDISE Code": "10201009102",
-        "Classes": "1–5",
-        "Medium": "Hindi",
-        "Students": "74 (all girls)",
-        "Teachers": "8",
-        "Management": "State Government"
-      },
-      "lastUpdated": "2026-10-15",
-      "content": [
-        { "heading": "Overview", "text": "GPS Mohanpur Kanya is the girls-only government primary school serving the Bandwar panchayat area. Established in 1956 with UDISE code 10201009102, it provides primary education exclusively to girls from Class 1 to Class 5." },
-        { "heading": "The School", "text": "According to its UDISE+ report card for 2025-26, the school has 74 girls on its rolls — 47 from Other Backward Classes, 25 from the general category, and 2 each from Scheduled Caste and Muslim families. 69 of the 74 students — 93% — belong to Below Poverty Line households." },
-        { "heading": "Facilities", "text": "The school runs from a single pucca block with 6 classrooms — 4 in good condition and 2 in need of major repair. It has a library, drinking water, electricity, internet, and ramps, but no playground and no boundary wall." },
-        { "heading": "Teachers", "text": "The school has 8 teachers — 3 male and 5 female. Only 1 holds a B.Ed. qualification and 1 holds a D.El.Ed. diploma. 4 teachers are below graduate level. The school's instructional days for 2025-26 were 236." },
-        { "heading": "Girls' Education in Bandwar", "text": "The existence of a dedicated girls' school in Bandwar reflects a broader shift in attitudes towards girls' education in the village. Today, girls outnumber boys at several schools in the village — including [[snk-high-school-bandwar|S.N.K. High School]] and [[nps-kunjartol-wd-9|NPS Kunjartol WD-9]]." }
-      ],
-      "faqs": [
-        { "q": "Is GPS Mohanpur Kanya a girls-only school?", "a": "Yes — GPS Mohanpur Kanya is the girls-only government primary school serving Bandwar panchayat." },
-        { "q": "When was GPS Mohanpur Kanya established?", "a": "GPS Mohanpur Kanya was established in 1956. Its UDISE code is 10201009102." },
-        { "q": "How many girls study at GPS Mohanpur Kanya?", "a": "According to the UDISE+ report for 2025-26, the school has 74 girls on its rolls. 93% belong to Below Poverty Line households." },
-        { "q": "Does GPS Mohanpur Kanya have a library?", "a": "Yes — the school has a library, along with drinking water, electricity, internet, and ramps." }
-      ],
-      "related": ["gps-paschimibandwar-school", "gps-bandwar-musahri-school", "ms-bandwar-middle-school", "nps-kunjartol-wd-9", "snk-high-school-bandwar", "vaani-vilas-library-bandwar"],
-      "location": { "lat": 25.5004, "lng": 86.1609 },
-      "tags": ["gps mohanpur kanya", "girls school bandwar", "begusarai girls education", "udise 10201009102", "primary school bihar"]
-    },
-    {
-      "id": "gps-bandwar-musahri-school",
-      "title": "GPS Bandwar Musahri (Government Primary School)",
-      "subtitle": "Primary school in the Musahri tola — established 1995",
-      "categories": ["education"],
-      "summary": "GPS Bandwar Musahri is a government primary school in the Musahri tola of Bandwar village, Begusarai, Bihar. Established in 1995 with UDISE code 10201008403, it serves Classes 1 through 5 with an enrolment of 196 students — the majority from Scheduled Caste and Below Poverty Line households.",
-      "hero": "images/education/gps-bandwar-musahri-school-building.jpg",
-      "photos": [
-        { 
-          "src": "images/education/gps-bandwar-musahri-school-building.jpg", 
-          "caption": "The main building of GPS Bandwar Musahri in the Musahri tola." 
-        }
-      ],
-      "infobox": {
-        "Type": "Government primary school",
-        "Established": "1995",
-        "UDISE Code": "10201008403",
-        "Classes": "1–5",
-        "Medium": "Hindi",
-        "Students": "196",
-        "Teachers": "9",
-        "Management": "State Government"
-      },
-      "lastUpdated": "2026-10-15",
-      "content": [
-        { "heading": "Overview", "text": "GPS Bandwar Musahri is a government primary school in the Musahri tola of Bandwar. Established in 1995 with UDISE code 10201008403, it is the largest primary school in the village, with 196 students on its rolls in the 2025-26 academic year." },
-        { "heading": "A Mahadalit-Majority School", "text": "According to the UDISE+ report card for 2025-26, 172 of the school's 196 students — 88% — belong to Scheduled Caste families. 162 students belong to Below Poverty Line households. The presence of a well-enrolled primary school in the Musahri tola reflects the village's commitment to ensuring that education reaches all communities." },
-        { "heading": "Enrolment", "text": "The school has 103 boys and 93 girls — a notable gender balance. Class sizes range from 24 (Class IV) to 68 (Class I). It has 4 classrooms, all in good condition, and 2 functional toilets." },
-        { "heading": "Facilities and Grants", "text": "The school has a library, drinking water, electricity, internet, and ramps. It received ₹75,000 in grants for 2025-26. It does not have a playground or a boundary wall. The presence of a library is notable — students in the Musahri tola have limited access to books at home, and the school's library is often their first exposure to a reading culture." },
-        { "heading": "Context", "text": "GPS Bandwar Musahri is one of three government primary schools in Bandwar — the others being [[gps-paschimibandwar-school|GPS Paschimibandwar]] and [[gps-mohanpur-kanya-school|GPS Mohanpur Kanya]]. Students from GPS Bandwar Musahri move on to [[ms-bandwar-middle-school|MS Bandwar]] for upper primary education." }
-      ],
-      "faqs": [
-        { "q": "When was GPS Bandwar Musahri established?", "a": "GPS Bandwar Musahri was established in 1995 — more than four decades after the village's other primary schools. Its UDISE code is 10201008403." },
-        { "q": "How many students study at GPS Bandwar Musahri?", "a": "According to the UDISE+ report for 2025-26, the school has 196 students — 103 boys and 93 girls — making it the largest primary school in Bandwar." },
-        { "q": "What is the Musahri tola?", "a": "The Musahri tola is a locality within Bandwar village, historically home to families from Scheduled Caste and Mahadalit communities." },
-        { "q": "Does GPS Bandwar Musahri have a playground?", "a": "No — the school does not have a playground or a boundary wall. It does have a library, drinking water, electricity, internet, ramps, and 2 functional toilets." }
-      ],
-      "related": ["gps-mohanpur-kanya-school", "ms-bandwar-middle-school", "gps-paschimibandwar-school", "nps-kunjartol-wd-9", "uhs-plus-2-bandwar", "vaani-vilas-library-bandwar"],
-      "location": { "lat": 25.5002, "lng": 86.1607 },
-      "tags": ["gps bandwar musahri", "musahri tola school", "begusarai primary school", "mahadalit education bihar", "udise 10201008403", "government school bandwar"]
-    },
-    {
-      "id": "nps-kunjartol-wd-9",
-      "title": "NPS Kunjartol WD-9 (New Primary School)",
-      "subtitle": "Primary school in Ward 9 — established 2007",
-      "categories": ["education"],
-      "summary": "NPS Kunjartol WD-9 (New Primary School, Kunjartol Ward 9) is a government primary school in the Kunjartol tola of Bandwar village, Begusarai, Bihar. Established in 2007 with UDISE code 10201013301, it serves Classes 1 through 5 with an enrolment of 327 students.",
-      "hero": "images/education/nps-kunjartol-wd-9-school-building.jpg",
-      "photos": [
-        { 
-          "src": "images/education/nps-kunjartol-wd-9-school-building.jpg", 
-          "caption": "The main building of NPS Kunjartol WD-9 in Bandwar." 
-        }
-      ],
-      "infobox": {
-        "Type": "Government primary school",
-        "Established": "2007",
-        "UDISE Code": "10201013301",
-        "Classes": "1–5",
-        "Medium": "Hindi",
-        "Students": "327",
-        "Teachers": "14",
-        "Management": "State Government"
-      },
-      "lastUpdated": "2026-10-15",
-      "content": [
-        { "heading": "Overview", "text": "NPS Kunjartol WD-9 is a government primary school in the Kunjartol tola of Bandwar, Ward 9. Established in 2007 with UDISE code 10201013301, it serves Classes 1 through 5 with 327 students — the second-largest primary school in the village." },
-        { "heading": "A Diverse Enrolment", "text": "According to the UDISE+ report card for 2025-26, the school has 152 boys and 175 girls — one of the few schools in Bandwar where girls outnumber boys. 265 students are from Other Backward Classes, 186 from Muslim families, and 60 from Scheduled Castes. 321 students — 98% — belong to Below Poverty Line households." },
-        { "heading": "Facilities", "text": "The school runs from a single pucca building block with 3 classrooms, all in good condition. It has a library, drinking water, electricity, internet, ramps, and medical checkup facilities — but no playground and no boundary wall." },
-        { "heading": "Teachers", "text": "The school has 14 teachers — 10 male and 4 female. 10 hold D.El.Ed. diplomas, 2 hold B.Ed. qualifications, and 7 are graduates. The pupil-teacher ratio is roughly 23:1 — one of the better ratios among Bandwar's schools." },
-        { "heading": "Context", "text": "NPS Kunjartol WD-9 is the newest of Bandwar's government primary schools, and its enrolment has grown rapidly since its founding. Along with [[gps-bandwar-musahri-school|GPS Bandwar Musahri]] and [[gps-paschimibandwar-school|GPS Paschimibandwar]], it serves the bulk of the village's primary-age children." }
-      ],
-      "faqs": [
-        { "q": "What does 'NPS' stand for in NPS Kunjartol WD-9?", "a": "'NPS' stands for 'New Primary School' — a designation used by the Bihar government for schools established under the Sarva Shiksha Abhiyan." },
-        { "q": "How many students study at NPS Kunjartol WD-9?", "a": "According to the UDISE+ report for 2025-26, the school has 327 students — 152 boys and 175 girls — the second-largest primary school in Bandwar." },
-        { "q": "Where is NPS Kunjartol WD-9 located?", "a": "The school is in the Kunjartol tola of Bandwar village, Ward 9." },
-        { "q": "Does NPS Kunjartol WD-9 offer medical checkups?", "a": "Yes — the school has medical checkup facilities, along with a library, drinking water, electricity, internet, and ramps." }
-      ],
-      "related": ["gps-bandwar-musahri-school", "gps-mohanpur-kanya-school", "gps-paschimibandwar-school", "ms-bandwar-middle-school", "uhs-plus-2-bandwar", "vaani-vilas-library-bandwar"],
-      "location": { "lat": 25.5005, "lng": 86.1612 },
-      "tags": ["nps kunjartol", "kunjartol school bandwar", "ward 9 school bihar", "sarva shiksha abhiyan school", "udise 10201013301", "primary school begusarai"]
-    },
-    {
-      "id": "adharsh-vikash-vidhya-mandir",
-      "title": "Adharsh Vikash Vidhya Mandir, Bandwar",
-      "subtitle": "A private primary school in Bandwar — established 2015",
-      "categories": ["education"],
-      "summary": "Adharsh Vikash Vidhya Mandir is a private unaided primary school in Bandwar village, Begusarai, Bihar. Established in 2015 with UDISE code 10201008405, it offers Classes 1 through 8 in Hindi medium.",
-      "hero": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
-      "photos": [
-        { 
-          "src": "images/education/adharsh-vikash-vidhya-mandir-building.jpg", 
-          "caption": "The building of Adharsh Vikash Vidhya Mandir in Bandwar." 
-        }
-      ],
-      "infobox": {
-        "Type": "Private unaided school",
-        "Established": "2015",
-        "UDISE Code": "10201008405",
-        "Classes": "1–8",
-        "Medium": "Hindi",
-        "Students": "151",
-        "Teachers": "15",
-        "Management": "Private Unaided (Recognized)"
-      },
-      "lastUpdated": "2026-10-15",
-      "content": [
-        { "heading": "Overview", "text": "Adharsh Vikash Vidhya Mandir is a private unaided school in Bandwar, established in 2015 with UDISE code 10201008405. It offers primary education (Classes 1–5) with upper primary classes (6–8), and is one of only two private schools in the village — the other being [[st-paul-school-bandwar|St. Paul School]]." },
-        { "heading": "Why It Matters", "text": "Until 2015, most schools in Bandwar were government-run. The opening of Adharsh Vikash Vidhya Mandir gave parents a private alternative. The school's enrolment of 151 students — 111 from Other Backward Classes, 34 from the general category — reflects the demand for private schooling in rural Bihar." },
-        { "heading": "Facilities", "text": "The school operates from a rented building with 14 classrooms, all in good condition. It has a library, playground, drinking water, electricity, internet, medical checkups, and ramps. Furniture availability, however, is minimal." },
-        { "heading": "Teachers", "text": "The school has 15 teachers — 7 male and 8 female. 11 of the 15 teachers do not hold a formal teaching qualification (neither B.Ed. nor D.El.Ed.). Only 1 holds a D.El.Ed. diploma. This is a common pattern among low-cost private schools in rural India." },
-        { "heading": "Context", "text": "Adharsh Vikash Vidhya Mandir is one of two private schools in Bandwar, and one of three schools in the village offering the full Class 1–8 range (along with [[ms-bandwar-middle-school|MS Bandwar]] and [[st-paul-school-bandwar|St. Paul School]])." }
-      ],
-      "faqs": [
-        { "q": "When was Adharsh Vikash Vidhya Mandir established?", "a": "Adharsh Vikash Vidhya Mandir was established in 2015 — one of the first private schools in Bandwar. Its UDISE code is 10201008405." },
-        { "q": "What classes does Adharsh Vikash Vidhya Mandir offer?", "a": "The school offers Classes 1 through 8 — primary with upper primary." },
-        { "q": "How many students study at Adharsh Vikash Vidhya Mandir?", "a": "According to the UDISE+ report for 2025-26, the school has 151 students — 84 boys and 67 girls." },
-        { "q": "Do teachers at Adharsh Vikash have formal teaching qualifications?", "a": "Most do not — 11 of the school's 15 teachers hold neither a B.Ed. nor a D.El.Ed. qualification." }
-      ],
-      "related": ["st-paul-school-bandwar", "ms-bandwar-middle-school", "gps-bandwar-musahri-school", "uhs-plus-2-bandwar", "nps-kunjartol-wd-9", "vaani-vilas-library-bandwar"],
-      "location": { "lat": 25.5006, "lng": 86.1616 },
-      "tags": ["adharsh vikash vidhya mandir", "private school bandwar", "begusarai private school", "udise 10201008405", "hindi medium school bihar"]
-    },
-    {
-      "id": "st-paul-school-bandwar",
-      "title": "St. Paul School, Bandwar",
-      "subtitle": "A private English-medium school — established 2015",
-      "categories": ["education"],
-      "summary": "St. Paul School is a private unaided English-medium school in Bandwar village, Begusarai, Bihar. Established in 2015 with UDISE code 10201008404, it offers Classes 1 through 8 in English and Hindi medium. It serves primarily middle-income families, with only 7% of students from Below Poverty Line households.",
-      "hero": "images/education/st-paul-school-bandwar-building.jpg",
-      "photos": [
-        { 
-          "src": "images/education/st-paul-school-bandwar-building.jpg", 
-          "caption": "The main building of St. Paul School, Bandwar." 
-        }
-      ],
-      "infobox": {
-        "Type": "Private unaided school",
-        "Established": "2015",
-        "UDISE Code": "10201008404",
-        "Classes": "1–8",
-        "Medium": "English, Hindi",
-        "Students": "209",
-        "Teachers": "14",
-        "Management": "Private Unaided (Recognized)"
-      },
-      "lastUpdated": "2026-10-15",
-      "content": [
-        { "heading": "Overview", "text": "St. Paul School is a private unaided English-medium school in Bandwar, established in 2015 with UDISE code 10201008404. It offers Classes 1 through 8 and is one of the only two private schools in the village — the other being [[adharsh-vikash-vidhya-mandir|Adharsh Vikash Vidhya Mandir]]." },
-        { "heading": "A Different Enrolment", "text": "According to the UDISE+ report for 2025-26, St. Paul School has 209 students — 149 boys and 60 girls. Only 15 students (7%) belong to Below Poverty Line households, compared to 87–98% in the village's government schools. 62 students are from the general category." },
-        { "heading": "Infrastructure", "text": "The school has 11 classrooms (8 in good condition), a private pucca building, a library, an ICT lab, drinking water, electricity, internet, medical checkups, and ramps. It does not have a playground. The school received formal recognition for its primary classes in 2017 and for upper primary in 2020." },
-        { "heading": "Teachers", "text": "The school has 14 teachers — 11 male and 3 female. Only 2 hold B.Ed. qualifications; 5 teachers have no formal teaching qualification. This is consistent with the wider pattern of private unaided schools in rural Bihar." },
-        { "heading": "A Contrast With Government Schools", "text": "The differences between St. Paul School and Bandwar's government schools are stark. Where [[ms-bandwar-middle-school|MS Bandwar]] has 95% BPL students, St. Paul has just 7%. Where [[uhs-plus-2-bandwar|UHS +2 Bandwar]] has a pupil-teacher ratio of 40:1, St. Paul's is closer to 15:1." }
-      ],
-      "faqs": [
-        { "q": "What is the medium of instruction at St. Paul School?", "a": "St. Paul School's medium of instruction is primarily English, with Hindi as a secondary language." },
-        { "q": "When was St. Paul School established?", "a": "St. Paul School was established in 2015 — one of the first private schools in Bandwar. Its UDISE code is 10201008404." },
-        { "q": "How many students study at St. Paul School?", "a": "According to the UDISE+ report for 2025-26, the school has 209 students — 149 boys and 60 girls." },
-        { "q": "Does St. Paul School have an ICT lab?", "a": "Yes — the school has an ICT (Information and Communication Technology) lab, along with a library, drinking water, electricity, internet, and medical checkups." }
-      ],
-      "related": ["adharsh-vikash-vidhya-mandir", "ms-bandwar-middle-school", "uhs-plus-2-bandwar", "snk-high-school-bandwar", "vaani-vilas-library-bandwar", "gps-bandwar-musahri-school"],
-      "location": { "lat": 25.5003, "lng": 86.1610 },
-      "tags": ["st paul school bandwar", "english medium school bandwar", "private school begusarai", "udise 10201008404", "ict lab school bihar"]
-    },
-    {
       "id": "vaani-vilas-library-bandwar",
       "title": "Vaani Vilas Pustakalaya (Village Library)",
+      "metaTitle": "Vaani Vilas Pustakalaya - Village Library | Bandwar",
+      "metaDescription": "The historic village library of Bandwar (Est. 1945). Inaugurated in 2025 by MP Rakesh Sinha. Features Wi-Fi, seed library, and reading rooms. Visit the digital portal.",
       "subtitle": "The village library on Bandwar Road — established 1945",
       "categories": ["education", "culture"],
-      "summary": "Vaani Vilas Pustakalaya (वाणी विलास पुस्तकालय) is the village library of Bandwar, located on Bandwar Road near the Shaheed Ramchandra Dwar. Established on 5 November 1945, its current building was inaugurated on 5 September 2025 by Rajya Sabha MP Rakesh Sinha.",
+      "summary": "Vaani Vilas Pustakalaya (वाणी विलास पुस्तकालय) is the historic village library of Bandwar, established in 1945. Its new building, funded by MPLAD and Panchayat, was inaugurated in 2025 by MP Rakesh Sinha, offering Wi-Fi, a seed library, and modern reading spaces.",
       "hero": "images/education/vaani-vilas-library-bandwar-building.jpg",
       "photos": [
         { 
           "src": "images/education/vaani-vilas-library-bandwar-reading-room.jpg", 
-          "caption": "The shared reading table at Vaani Vilas Pustakalaya, with space for students and local readers." 
+          "caption": "The shared reading table at Vaani Vilas Pustakalaya, with space for students and local readers.",
+          "imageAlt": "Reading room with wooden table and chairs at Vaani Vilas Library Bandwar"
         },
         { 
           "src": "images/education/vaani-vilas-library-bandwar-inauguration.jpg", 
-          "caption": "Commemorative plaques record the library’s foundation and inauguration." 
+          "caption": "Commemorative plaques record the library’s foundation and inauguration.",
+          "imageAlt": "Inauguration plaque of Vaani Vilas Pustakalaya Bandwar"
         },
         { 
           "src": "images/education/vaani-vilas-library-bandwar-book-cabinets.jpg", 
-          "caption": "Numbered wooden cabinets preserve the library’s book collection." 
+          "caption": "Numbered wooden cabinets preserve the library’s book collection.",
+          "imageAlt": "Wooden cabinets filled with books at Bandwar village library"
         }
       ],
       "infobox": {
@@ -420,7 +191,7 @@
         { "q": "Who inaugurated the current building?", "a": "The current building was inaugurated by Rajya Sabha MP Rakesh Sinha on 5 September 2025 (Teachers' Day)." },
         { "q": "Where is the library located?", "a": "It is located on Bandwar Road, near the Shaheed Ramchandra Dwar. The official website is https://vanivilaspushtakalya.netlify.app." }
       ],
-      "related": ["snk-high-school-bandwar", "ms-bandwar-middle-school", "gps-bandwar-musahri-school", "gps-mohanpur-kanya-school", "shaheed-dwar", "historic-well"],
+      "related": ["snk-high-school-bandwar", "ms-bandwar-middle-school", "shaheed-dwar", "historic-well"],
       "location": { "lat": 25.5007, "lng": 86.1618 },
       "tags": ["vaani vilas pustakalaya", "bandwar library", "1945 library bihar", "muktinath singh", "rakesh sinha mplad", "seed library bihar", "village library begusarai"]
     }
