@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google"; // Upgraded Font
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { getMasterData } from "@/lib/data";
 import { getSearchIndex } from "@/lib/search-data"; 
@@ -16,12 +16,16 @@ const inter = Inter({
 const playfair = Playfair_Display({ 
   subsets: ["latin"], 
   weight: ["400", "500", "600", "700"],
-  variable: "--font-playfair", // New variable name
+  variable: "--font-playfair",
   display: "swap"
 });
 
+// 🏛️ Senior POV: Dynamic Theme Color (Mobile Status Bar)
 export const viewport: Viewport = {
-  themeColor: "#FAFAF9",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FAFAF9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0C0A09" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -47,6 +51,10 @@ export async function generateMetadata(): Promise<Metadata> {
       title: config.site.name,
       description: config.site.description,
     },
+    // 2026 Standard: Add basic icons for browsers
+    icons: {
+      icon: "/favicon.ico",
+    }
   };
 }
 
@@ -54,10 +62,25 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const config = getMasterData();
   const searchIndex = getSearchIndex(); 
 
+  // 🔍 2026 SEO: JSON-LD Structured Data for AI & Search Engines
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: config.site.name,
+    url: config.site.url,
+    description: config.site.description,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${config.site.url}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+    // en-IN batata hai ki yeh Indian English context hai
+    <html lang="en-IN" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
-        {/* Theme Flash Prevention Script */}
+        {/* Theme Flash Prevention Script (Saves user preference) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -72,13 +95,31 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             `,
           }}
         />
+        {/* JSON-LD Schema for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="bg-background text-foreground font-sans antialiased min-h-screen flex flex-col pb-16 md:pb-0 transition-colors duration-300">
+        
+        {/* ♿ Senior Accessibility: Skip to Content Link (Hidden visually, visible on keyboard Tab) */}
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand focus:text-white focus:rounded-md focus:shadow-lg transition-all"
+        >
+          Skip to main content
+        </a>
+
         <Header config={config} searchIndex={searchIndex} />
-        <main className="flex-grow w-full">
+        
+        {/* id="main-content" is used by the Skip link. tabIndex={-1} allows focus */}
+        <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
           {children}
         </main>
+        
         <Footer config={config} />
+        
         <EmergencyBar config={config} />
       </body>
     </html>
