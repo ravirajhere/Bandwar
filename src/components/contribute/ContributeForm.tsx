@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation"; // 👈 Import kiya
+import { useSearchParams } from "next/navigation";
 import { Loader2, Send } from "lucide-react";
 
 export function ContributeForm() {
@@ -11,7 +11,7 @@ export function ContributeForm() {
   
   const searchParams = useSearchParams();
 
-  // URL se parameter padhna (jaise ?page=snk-high-school ya ?person=mahant-surendra-das)
+  // URL se page ya person ki ID padhna
   useEffect(() => {
     const pageId = searchParams.get("page");
     const personId = searchParams.get("person");
@@ -28,7 +28,7 @@ export function ContributeForm() {
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key daalein
+    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key yahan daalein
     formData.append("subject", "New Contribution for Bandwar Portal");
     formData.append("from_name", "Bandwar Website Visitor");
 
@@ -99,7 +99,7 @@ export function ContributeForm() {
         <input 
           type="text" 
           name="page_url" 
-          defaultValue={defaultUrl} // 👈 Yahan auto-fill hoga
+          defaultValue={defaultUrl}
           placeholder="e.g. /article/snk-high-school-bandwar" 
           className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all text-sm"
         />
