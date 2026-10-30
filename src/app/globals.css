@@ -8,7 +8,7 @@
 @layer base {
   :root {
     /* ☀️ Light Mode (Warm Editorial) */
-    --bg-main: #FAFAF9;           /* Warm Off-White (Stripe style) */
+    --bg-main: #FAFAF9;           /* Warm Off-White */
     --bg-card: #FFFFFF;           /* Pure White for Cards */
     --bg-card-hover: #F5F5F4;
     --bg-muted: #F5F5F4;          /* For headers/table backgrounds */
@@ -48,9 +48,17 @@
     --selection-text: #0C0A09;
   }
 
+  /* Senior Accessibility: Base font slightly larger */
   html {
     scroll-behavior: smooth;
-    font-size: 16px;
+    font-size: 17px; /* 16px se badha kar 17px kiya for better readability */
+  }
+
+  /* Motion sickness fix */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -60,11 +68,18 @@
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-inter), sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
     background-color: var(--selection-bg);
     color: var(--selection-text);
+  }
+
+  /* Accessibility Focus Ring (Keyboard Navigation) */
+  *:focus-visible {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
   }
 
   img {
@@ -74,11 +89,16 @@
   }
 
   /* Typography (Editorial Style) */
+  /* FIX: Global p tag se max-width hata diya gaya hai taaki cards/footers na tootein */
   p {
-    max-width: 75ch; 
-    line-height: 1.75; 
+    line-height: 1.7; 
     margin-bottom: 1.5rem; 
     font-size: 1.05rem; 
+  }
+
+  /* Sirf Article (prose) ke andar max-width lagega */
+  article p, .prose p {
+    max-width: 75ch;
   }
 
   a {
@@ -96,19 +116,21 @@
     font-family: var(--font-playfair), Georgia, serif;
     font-weight: 600;
     letter-spacing: -0.02em;
+    scroll-margin-top: 100px; /* FIX: Sticky header ke liye space */
   }
 
-  h1 { font-size: 2.5rem; margin-bottom: 1rem; line-height: 1.2; }
+  /* FIX: Mobile Responsive Headings using Clamp */
+  h1 { font-size: clamp(2rem, 5vw, 2.5rem); margin-bottom: 1rem; line-height: 1.2; }
 
   h2 {
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 4vw, 1.75rem);
     margin-top: 3rem; 
     margin-bottom: 1.25rem; 
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-main); 
   }
 
-  h3 { font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+  h3 { font-size: clamp(1.25rem, 3vw, 1.35rem); margin-top: 2rem; margin-bottom: 0.75rem; }
 
   /* Tables (Modern Data Sheet) */
   table {
@@ -138,8 +160,16 @@
     width: 35%; 
   }
 
-  ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.75; }
+  ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.7; }
   li { margin-bottom: 0.5rem; }
+  
+  /* Form Elements (Professional Touch) */
+  input, select, textarea {
+    @apply w-full px-4 py-2 border border-border-main rounded-lg bg-background text-foreground focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors;
+  }
+  button {
+    @apply cursor-pointer transition-colors;
+  }
 }
 
 @layer components {
