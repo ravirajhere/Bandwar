@@ -1,125 +1,136 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 
-export function ContributeForm({ email }: { email: string }) {
-  const [type, setType] = useState("correction");
-  const [isSent, setIsSent] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    contact: "",
-    target: "",
-    details: "",
-    source: "",
-  });
+export function ContributeForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Format the email subject based on type
-    const subject = `[${type.toUpperCase()}] Contribution for Bandwar Portal`;
-    
-    // Format the email body beautifully
-    const body = `Name: ${formData.name}
-Contact (Email/Phone): ${formData.contact}
-Page/Article Name: ${formData.target}
+    setIsSubmitting(true);
 
-Details of Contribution:
-${formData.details}
+    const formData = new FormData(e.currentTarget);
+    // Web3Forms Access Key
+    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Yahan apni key daalein
+    formData.append("subject", "New Contribution for Bandwar Portal");
+    formData.append("from_name", "Bandwar Website Visitor");
 
-Source/Reference (if any):
-${formData.source}
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
 
----
-Sent via Bandwar Village Portal`;
+      const data = await response.json();
 
-    // Create mailto link
-    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Trigger email client
-    window.location.href = mailtoLink;
-    setIsSent(true);
-    
-    // Reset message after 5 seconds
-    setTimeout(() => setIsSent(false), 5000);
+      if (data.success) {
+        setIsSuccess(true);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      alert("Error submitting form.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (isSuccess) {
+    return (
+      <div className="text-center py-16">
+        <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
+          <Send size={32} />
+        </div>
+        <h2 className="font-serif text-2xl font-bold text-foreground mb-2">Dhanyawad! (Thank You)</h2>
+        <p className="text-muted">Your contribution has been sent to the village editors for review.</p>
+        <button 
+          onClick={() => setIsSuccess(false)}
+          className="mt-6 text-brand font-medium hover:underline"
+        >
+          Submit another response
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="border border-wiki-border-light bg-wiki-bg p-4 md:p-6 shadow-sm">
-      <form onSubmit={handleSubmit} className="space-y-5">
-        
-        {/* Contribution Type Selector */}
+    <form onSubmit={handleSubmit} className="space-y-6">
+      
+      {/* Row 1: Name & Contact */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="block text-[14px] font-bold text-wiki-text mb-2">
-            What are you contributing?
-          </label>
-          <select 
-            value={type} 
-            onChange={(e) => setType(e.target.value)}
-            className="w-full p-2.5 border border-wiki-border focus:outline-none focus:ring-2 focus:ring-wiki-link bg-wiki-bg-alt text-wiki-text text-[15px]"
-          >
-            <option value="correction">✏️ Suggest a Correction</option>
-            <option value="information">➕ Add Information</option>
-            <option value="person">👤 Add a Person</option>
-            <option value="photo">📸 Submit a Photo</option>
-            <option value="issue">🐞 Report an Issue</option>
-          </select>
+          <label className="block text-sm font-medium text-foreground mb-2">Your Name (Optional)</label>
+          <input 
+            type="text" 
+            name="name" 
+            placeholder="e.g. Ramesh Kumar" 
+            className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all"
+          />
         </div>
-
-        {/* Common Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-[13px] font-bold text-wiki-text-muted mb-1">Your Name <span className="text-red-500">*</span></label>
-            <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full p-2 border border-wiki-border-light focus:outline-none focus:border-wiki-link text-[14px]" placeholder="e.g., Ravi Raj" />
-          </div>
-          <div>
-            <label className="block text-[13px] font-bold text-wiki-text-muted mb-1">Your Email / Phone <span className="text-red-500">*</span></label>
-            <input required type="text" name="contact" value={formData.contact} onChange={handleChange} className="w-full p-2 border border-wiki-border-light focus:outline-none focus:border-wiki-link text-[14px]" placeholder="So we can contact you" />
-          </div>
-        </div>
-
         <div>
-          <label className="block text-[13px] font-bold text-wiki-text-muted mb-1">
-            {type === "photo" ? "Photo Location / Description" : "Article Name / URL"} <span className="text-red-500">*</span>
-          </label>
-          <input required type="text" name="target" value={formData.target} onChange={handleChange} className="w-full p-2 border border-wiki-border-light focus:outline-none focus:border-wiki-link text-[14px]" placeholder={type === "photo" ? "e.g., Old temple photo, 1970s" : "e.g., SNK High School"} />
+          <label className="block text-sm font-medium text-foreground mb-2">Contact Number / Email</label>
+          <input 
+            type="text" 
+            name="contact" 
+            placeholder="So we can reach you" 
+            className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all"
+          />
         </div>
+      </div>
 
-        <div>
-          <label className="block text-[13px] font-bold text-wiki-text-muted mb-1">Details / Message <span className="text-red-500">*</span></label>
-          <textarea required name="details" value={formData.details} onChange={handleChange} rows={4} className="w-full p-2 border border-wiki-border-light focus:outline-none focus:border-wiki-link text-[14px] resize-y" placeholder="Please provide the exact details here..."></textarea>
-        </div>
-
-        <div>
-          <label className="block text-[13px] font-bold text-wiki-text-muted mb-1">Source / Reference (Optional)</label>
-          <input type="text" name="source" value={formData.source} onChange={handleChange} className="w-full p-2 border border-wiki-border-light focus:outline-none focus:border-wiki-link text-[14px]" placeholder="Where did you get this info?" />
-        </div>
-
-        {/* Submit Button */}
-        <button 
-          type="submit" 
-          className="w-full flex items-center justify-center gap-2 bg-wiki-link text-white p-3 font-bold text-[15px] hover:bg-blue-800 transition-colors"
+      {/* Row 2: Type of Contribution */}
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-2">What are you contributing?</label>
+        <select 
+          name="contribution_type" 
+          required
+          className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all"
         >
-          {isSent ? (
-            <>
-              <CheckCircle2 size={18} /> Email Draft Opened!
-            </>
-          ) : (
-            <>
-              <Send size={18} /> Send via Email
-            </>
-          )}
-        </button>
-        
-        <p className="text-[12px] text-wiki-text-muted text-center mt-2">
-          Clicking this will open your default email app (like Gmail) with the information pre-filled.
-        </p>
-      </form>
-    </div>
+          <option value="correction">Correction / Edit an existing page</option>
+          <option value="new_article">New Article / History</option>
+          <option value="photo">Historical Photo / Gallery</option>
+          <option value="directory">Update Directory Info (Doctor, Shop, etc.)</option>
+          <option value="other">Other Suggestion</option>
+        </select>
+      </div>
+
+      {/* Row 3: Page URL (Auto-filled) */}
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-2">Which page is this about? (Optional)</label>
+        <input 
+          type="text" 
+          name="page_url" 
+          placeholder="e.g. /article/snk-high-school-bandwar" 
+          className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all text-sm"
+        />
+      </div>
+
+      {/* Row 4: Details */}
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-2">Details / Message</label>
+        <textarea 
+          name="message" 
+          required
+          rows={5}
+          placeholder="Please explain what needs to be changed or added. Be as detailed as possible..."
+          className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all resize-y"
+        ></textarea>
+      </div>
+
+      {/* Submit Button */}
+      <button 
+        type="submit" 
+        disabled={isSubmitting}
+        className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 rounded-xl font-semibold text-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? (
+          <><Loader2 size={20} className="animate-spin" /> Sending...</>
+        ) : (
+          <><Send size={20} /> Submit Contribution</>
+        )}
+      </button>
+    </form>
   );
 }
