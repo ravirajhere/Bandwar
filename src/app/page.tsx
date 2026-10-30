@@ -14,157 +14,195 @@ export default function Home() {
   if (!home) return null;
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 md:px-6 py-8">
-      
-      {/* WIKIPEDIA STYLE HEADER / WELCOME BANNER */}
-      <div className="border border-wiki-border bg-wiki-bg-alt p-6 md:p-8 text-center mb-8">
-        <h1 className="font-serif text-3xl md:text-5xl text-wiki-text mb-2">
-          Welcome to <span className="font-bold">{home.hero.title}</span>
-        </h1>
-        <p className="text-wiki-text-muted text-lg md:text-xl max-w-3xl mx-auto">
-          {home.hero.tagline}
-        </p>
-        <div className="mt-4 text-sm text-wiki-text-muted">
-          The community-built digital portal of {home.hero.location}.
-        </div>
-      </div>
-
-      {/* MAIN GRID LAYOUT */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
-
-        {/* LEFT COLUMN (Main Content: About & Articles) */}
-        <div className="md:col-span-8 space-y-8">
+    <div className="bg-background min-h-screen pb-16">
+      <div className="container-custom pt-8">
+        
+        {/* =========================================
+            1. HERO SECTION (Professional & Impactful)
+            ========================================= */}
+        <section className="relative w-full rounded-2xl overflow-hidden mb-8 md:mb-12 shadow-elevated border border-border">
+          {/* Background Image */}
+          <div className="absolute inset-0 bg-black/50 z-10"></div>
+          <Image
+            src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`}
+            alt={home.hero.alt}
+            fill
+            className="object-cover"
+            priority
+          />
           
-          {/* 1. About Section */}
-          <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2">
-              <h2 className="font-bold text-wiki-text m-0 text-base">
-                About the Village
-              </h2>
+          {/* Hero Content */}
+          <div className="relative z-20 px-6 py-20 md:py-32 flex flex-col items-center text-center">
+            <span className="text-brand bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-medium tracking-wide mb-6">
+              📍 {home.hero.location}
+            </span>
+            <h1 className="font-serif text-4xl md:text-6xl text-white mb-4 font-semibold max-w-4xl leading-tight">
+              Welcome to <span className="text-brand">{home.hero.title}</span>
+            </h1>
+            <p className="text-white/90 text-lg md:text-xl max-w-2xl mb-8">
+              {home.hero.tagline}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link 
+                href={home.cta.href}
+                className="bg-brand hover:bg-brand-hover text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-sm"
+              >
+                Discover Our Village
+              </Link>
+              <Link 
+                href="/directory"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-3 rounded-lg font-medium transition-colors"
+              >
+                Emergency Directory
+              </Link>
             </div>
-            <div className="p-4 md:p-6 flex flex-col md:flex-row gap-6">
-              {home.hero.image && (
-                <div className="w-full md:w-[250px] shrink-0 border border-wiki-border-light">
-                  <div className="relative w-full h-[180px]">
+          </div>
+        </section>
+
+        {/* =========================================
+            2. QUICK ACCESS (Senior Priority: Top on Mobile)
+            ========================================= */}
+        <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+          <Link href="/directory" className="bg-card border border-border p-6 rounded-xl shadow-card hover:shadow-elevated hover:border-brand/50 transition-all group flex flex-col items-center text-center">
+            <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <span className="text-2xl">🚨</span>
+            </div>
+            <h3 className="font-bold text-lg text-foreground mb-1">Emergency</h3>
+            <p className="text-sm text-muted">Doctors, Police, Ambulance</p>
+          </Link>
+          
+          <Link href="/place" className="bg-card border border-border p-6 rounded-xl shadow-card hover:shadow-elevated hover:border-brand/50 transition-all group flex flex-col items-center text-center">
+            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <span className="text-2xl">🗺️</span>
+            </div>
+            <h3 className="font-bold text-lg text-foreground mb-1">Places & Map</h3>
+            <p className="text-sm text-muted">Temples, Schools, Landmarks</p>
+          </Link>
+
+          <Link href="/section" className="bg-card border border-border p-6 rounded-xl shadow-card hover:shadow-elevated hover:border-brand/50 transition-all group flex flex-col items-center text-center">
+            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <span className="text-2xl">📚</span>
+            </div>
+            <h3 className="font-bold text-lg text-foreground mb-1">Village Archive</h3>
+            <p className="text-sm text-muted">History, Culture, Articles</p>
+          </Link>
+        </section>
+
+        {/* =========================================
+            3. MAIN GRID (About + Latest Articles)
+            ========================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* LEFT COLUMN: About & Articles */}
+          <div className="lg:col-span-8 space-y-10">
+            
+            {/* About Section */}
+            <section className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-border bg-muted-background">
+                <h2 className="font-serif text-xl font-semibold text-foreground m-0">
+                  About {home.hero.title}
+                </h2>
+              </div>
+              <div className="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start">
+                <div className="w-full md:w-1/3 shrink-0 rounded-lg overflow-hidden border border-border-subtle shadow-sm">
+                  <div className="relative w-full aspect-[4/3]">
                     <Image
                       src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`}
                       alt={home.hero.alt}
                       fill
-                      sizes="(max-width: 768px) 100vw, 250px"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover"
-                      priority
                     />
                   </div>
-                  <div className="p-1 text-[11px] text-wiki-text-muted text-center bg-wiki-bg-alt border-t border-wiki-border-light">
-                    {home.hero.alt}
-                  </div>
                 </div>
-              )}
-              <div className="text-wiki-text text-[15px] leading-relaxed">
-                <h3 className="font-serif text-2xl mb-2">{home.about.title}</h3>
-                {home.about.paragraphs.map((p: string, idx: number) => (
-                  <p key={idx} className="mb-3">{p}</p>
-                ))}
-                <Link 
-                  href={home.cta.href}
-                  className="text-wiki-link hover:underline font-bold text-sm"
-                >
-                  Read more about the village →
+                <div className="prose dark:prose-invert max-w-none">
+                  <h3 className="font-serif text-2xl mt-0 mb-4">{home.about.title}</h3>
+                  {home.about.paragraphs.map((p: string, idx: number) => (
+                    <p key={idx} className="text-foreground/80 leading-relaxed text-lg">
+                      {p}
+                    </p>
+                  ))}
+                  <Link 
+                    href={home.cta.href}
+                    className="inline-flex items-center text-brand hover:text-brand-hover font-medium mt-4 no-underline"
+                  >
+                    Read full history <span className="ml-2">→</span>
+                  </Link>
+                </div>
+              </div>
+            </section>
+
+            {/* Latest Articles Section */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-serif text-2xl font-semibold text-foreground">
+                  Latest from the Archive
+                </h2>
+                <Link href="/section" className="text-brand text-sm font-medium hover:underline">
+                  View all articles →
                 </Link>
               </div>
-            </div>
-          </section>
-
-          {/* 2. Latest Articles */}
-          <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2 flex justify-between items-center">
-              <h2 className="font-bold text-wiki-text m-0 text-base">
-                From the Archive
-              </h2>
-              <Link href="/section" className="text-wiki-link text-xs hover:underline">
-                View all
-              </Link>
-            </div>
-            <div className="p-4 md:p-6">
-              <ul className="list-disc pl-5 space-y-3 text-[15px] text-wiki-text">
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {latestArticles.map((article) => (
-                  <li key={article.id}>
-                    <Link href={`/article/${article.id}`} className="text-wiki-link hover:underline font-bold">
+                  <Link 
+                    href={`/article/${article.id}`} 
+                    key={article.id}
+                    className="bg-card border border-border rounded-lg p-5 shadow-sm hover:shadow-card hover:border-brand/30 transition-all group flex flex-col h-full"
+                  >
+                    <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-brand transition-colors mb-2">
                       {article.title}
-                    </Link>
-                    <span className="text-wiki-text-muted ml-2">
-                      — {article.summary.slice(0, 100)}...
-                    </span>
-                  </li>
+                    </h3>
+                    <p className="text-muted text-sm line-clamp-3 mb-4 flex-grow">
+                      {article.summary}
+                    </p>
+                    <span className="text-brand text-sm font-medium mt-auto">Read Article →</span>
+                  </Link>
                 ))}
-              </ul>
-            </div>
-          </section>
+              </div>
+            </section>
 
-        </div>
+          </div>
 
-        {/* RIGHT COLUMN (Sidebar: Quick Access, Stats) */}
-        <div className="md:col-span-4 space-y-6">
+          {/* RIGHT COLUMN: Sidebar (Stats, Pullquote) */}
+          <div className="lg:col-span-4 space-y-6">
+            
+            {/* Stats Section */}
+            <section className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
+              <div className="px-5 py-3 border-b border-border bg-muted-background">
+                <h2 className="font-bold text-foreground text-sm uppercase tracking-wider m-0">
+                  Village Statistics
+                </h2>
+              </div>
+              <div className="p-5">
+                <dl className="text-sm m-0 space-y-3">
+                  {home.stats.map((stat: StatItem, idx: number) => (
+                    <div key={idx} className="flex justify-between items-center border-b border-border-subtle last:border-0 pb-3 last:pb-0">
+                      <dt className="text-muted font-medium">{stat.label}</dt>
+                      <dd className="text-foreground font-bold bg-muted-background px-2.5 py-1 rounded-md">
+                        {stat.value === "{{articleCount}}" ? allArticles.length : stat.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </section>
 
-          {/* 3. Quick Access (Events link removed) */}
-          <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2">
-              <h2 className="font-bold text-wiki-text m-0 text-base">
-                Quick Access
-              </h2>
-            </div>
-            <div className="p-4">
-              <ul className="space-y-3 text-[15px]">
-                <li>
-                  <Link href="/directory" className="text-wiki-link hover:underline flex items-center gap-2">
-                    <span className="text-red-600 font-bold">●</span> Emergency & Directory
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/place" className="text-wiki-link hover:underline flex items-center gap-2">
-                    <span className="text-blue-600 font-bold">●</span> Places & Map
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/section" className="text-wiki-link hover:underline flex items-center gap-2">
-                    <span className="text-green-600 font-bold">●</span> All Articles
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </section>
+            {/* Did You Know? (Pullquote) */}
+            <section className="bg-brand/5 border border-brand/20 rounded-xl p-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <svg className="w-16 h-16 text-brand" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+              </div>
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">Did you know?</h3>
+              <p className="text-foreground/80 text-sm leading-relaxed italic mb-4 relative z-10">
+                "{home.pullquote.text}"
+              </p>
+              <p className="text-brand font-medium text-sm text-right m-0">— {home.pullquote.cite}</p>
+            </section>
 
-          {/* 4. Stats */}
-          <section className="border border-wiki-border bg-wiki-bg p-0">
-            <div className="bg-wiki-header border-b border-wiki-border px-4 py-2">
-              <h2 className="font-bold text-wiki-text m-0 text-base">
-                Village Statistics
-              </h2>
-            </div>
-            <div className="p-4">
-              <dl className="text-sm m-0">
-                {home.stats.map((stat: StatItem, idx: number) => (
-                  <div key={idx} className="flex border-b border-wiki-border-light last:border-0 py-2">
-                    <dt className="w-1/2 text-wiki-text-muted font-medium">{stat.label}</dt>
-                    <dd className="w-1/2 text-wiki-text font-bold">
-                      {stat.value === "{{articleCount}}" ? allArticles.length : stat.value}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </section>
-
-          {/* 5. Meta Information */}
-          <section className="border border-wiki-border bg-wiki-bg-alt p-4 text-sm text-wiki-text-muted">
-            <h3 className="font-bold text-wiki-text mb-2">Did you know?</h3>
-            <p className="m-0 text-[13px] leading-relaxed">
-              {home.pullquote.text} 
-              <br/><br/>
-              <span className="font-bold text-wiki-text">— {home.pullquote.cite}</span>
-            </p>
-          </section>
-
+          </div>
         </div>
       </div>
     </div>
