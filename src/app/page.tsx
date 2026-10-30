@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getMasterData, getAllArticles, getMediaData } from "@/lib/data"; // 👈 getMediaData import kiya
+import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
 import { MapPin } from "lucide-react";
-import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper"; // 👈 Map import kiya
+import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper";
 
 interface MetaItem { label: string; value: string; }
 interface StatItem { label: string; value: string; }
@@ -11,7 +11,7 @@ export default function Home() {
   const config = getMasterData();
   const home = config.home;
   const allArticles = getAllArticles();
-  const media = getMediaData(); // 👈 Map ka data fetch kiya
+  const media = getMediaData();
   const latestArticles = allArticles.slice(0, 4);
 
   if (!home) return null;
@@ -20,7 +20,7 @@ export default function Home() {
     <div className="bg-background min-h-screen pb-16">
       <div className="container-custom pt-8">
         
-        {/* 1. HERO SECTION */}
+        {/* 1. HERO SECTION (Top Image - From JSON) */}
         <section className="relative w-full rounded-2xl overflow-hidden mb-12 shadow-elevated border border-border">
           <div className="absolute inset-0 bg-black/50 z-10"></div>
           <Image
@@ -78,7 +78,7 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* 🚀 3. NEW MAP SECTION (Interactive Explorer) */}
+        {/* 🚀 3. MAP SECTION */}
         <section className="mb-16">
           <div className="flex items-center gap-4 mb-6">
             <h2 className="font-serif text-3xl font-semibold text-foreground flex items-center gap-2">
@@ -110,9 +110,10 @@ export default function Home() {
               <div className="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start">
                 <div className="w-full md:w-1/3 shrink-0 rounded-lg overflow-hidden border border-border-subtle shadow-sm">
                   <div className="relative w-full aspect-[4/3]">
+                    {/* 👇 YAHAN IMAGE PATH CHANGE KIYA HAI 👇 */}
                     <Image
-                      src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`}
-                      alt={home.hero.alt}
+                      src="/images/home/hero.jpg" 
+                      alt="About Bandwar Village"
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover"
