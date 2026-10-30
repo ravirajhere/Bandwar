@@ -2,30 +2,39 @@
 
 A community-built digital portal for Bandwar village, Begusarai (Bihar) — a living, interactive website designed for the village, its residents, and their descendants. 
 
-Built with a **Wikipedia-inspired, distraction-free UI**, this portal prioritizes accessibility (especially for senior citizens), speed, and a strict data-driven architecture.
+Built with a **Modern Heritage UI** and **Wikipedia-inspired editing**, this portal prioritizes accessibility (especially for senior citizens), speed, and a strict data-driven architecture. It is designed to be maintained by a **Solo Editor** while allowing seamless **Community Contributions** without requiring a traditional backend.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-blue?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 [![Zod](https://img.shields.io/badge/Zod-3.23-blueviolet?style=flat-square&logo=zod)](https://zod.dev/)
+[![Web3Forms](https://img.shields.io/badge/Web3Forms-Community_Edits-orange?style=flat-square)](https://web3forms.com/)
 [![Vercel](https://img.shields.io/badge/Deployed_on_Vercel-black?style=flat-square&logo=vercel)](https://vercel.com/)
 
 ---
 
 ## ✨ Key Features
 
-- **Wikipedia-Style Layout:** Clean 3-column article layout (TOC, Content, Infobox), sharp borders, and no distracting animations.
-- **Senior-Friendly Accessibility:** 
-  - Dark/Light Mode toggle (saves user preference).
-  - **"Listen to Article"** (Text-to-Speech) in Hindi for easy listening.
-  - Print Article & WhatsApp Share options.
-- **Living Village Features:** 
-  - Village Directory (Searchable list of doctors, shops, emergency contacts).
-  - Mobile Emergency Sticky Bar (Direct call buttons).
-  - Interactive Village Map with Satellite View toggle.
-  - Photo Gallery with a full-screen Lightbox.
-- **Global Search:** Instant search modal to find any article across the portal.
-- **Zero-Database Architecture:** 100% static site powered by JSON files. No backend costs, ultra-fast load times.
-- **Pre-Build Validation:** Zod validates all JSON data before deployment. If data is malformed, the Vercel build fails, ensuring the live site never crashes.
+### 🎨 UI/UX & Accessibility
+- **Premium Heritage Design:** Warm earthy colors, Glassmorphism navbar, and Playfair Display + Inter typography.
+- **Senior-Friendly:** Large touch targets, high contrast, and readable font sizes.
+- **Dark/Light Mode:** Saves user preference via `localStorage` with no flash on load.
+- **Live Weather & Time Widget:** Integrated in the footer using Open-Meteo API (updates every 30 mins).
+- **Reading Progress Bar:** A sleek green line at the top of articles indicating scroll progress.
+- **Text-to-Speech (TTS):** "Listen to Article" in Hindi for easy listening.
+
+### 🌐 Community Contributions (The "No-Backend" Magic)
+The website uses **Web3Forms** to allow visitors to suggest edits without a database.
+- **Universal Add Content Modal:** Visitors can submit new Articles, Directory entries, People profiles, and Gallery photos directly from their respective pages.
+- **Google Maps Level Location Picker:** If a map marker is wrong, users can drag the map (with fixed center pin), use the search bar (Nominatim API), or use GPS to suggest exact coordinates.
+- **Inline Edit Buttons:** Pencil icons on Directory phone numbers, Images, and Articles to suggest quick corrections.
+- **Editor Approval:** All submissions go directly to the Editor's email. Once approved, the Editor manually updates the JSON and pushes to GitHub.
+
+### 🗺️ Core Pages & Features
+- **Home Dashboard:** Interactive Satellite Map (Esri), Quick Access buttons, Latest Articles, and Village Stats.
+- **Directory:** Searchable list of doctors, shops, and emergency contacts with inline editing.
+- **Gallery:** Dedicated visual archive with category filters and a full-screen Lightbox. Includes auto-hide logic for missing images.
+- **Article Archive:** Clean 3-column layout (TOC, Content, Infobox) with FAQ Schema and internal linking `[[article-id|label]]`.
+- **Zero-Database Architecture:** 100% static site powered by JSON files. Ultra-fast load times and zero hosting costs for the database.
 
 ---
 
@@ -34,186 +43,114 @@ Built with a **Wikipedia-inspired, distraction-free UI**, this portal prioritize
 - **Framework:** Next.js 15 (App Router, Static Site Generation)
 - **Styling:** Tailwind CSS (with CSS Variables for Dark Mode & Themes)
 - **Data Validation:** Zod (Strict Type-Safety)
-- **Maps:** React Leaflet (with Esri Satellite tiles)
+- **Maps:** React Leaflet (Esri Satellite tiles, Marker Clustering)
 - **Icons:** Lucide React
+- **Forms:** Web3Forms (Serverless email submissions & file uploads)
+- **Weather:** Open-Meteo API (No API key required)
 - **Deployment:** Vercel
 
 ---
 
 ## 📂 Detailed File Structure
 
-```text
-bandwar-portal/
-├── data/                       # 👑 CONTENT WORKSPACE (Update JSONs here)
-│   ├── master.json             # Site Config, Homepage, Footer, Nav, SEO, Emergency Contacts
-│   ├── directory.json          # Local services, doctors, shops, emergency numbers
-│   ├── reach.json              # How to reach the village (bus/train info)
-│   ├── media.json              # Gallery photos, Timeline events, Map landmarks
-│   ├── people.json             # Notable personalities directory
-│   ├── vision.json             # Vision 2035 Manifesto data
-│   ├── categories.json         # Article categories (History, Religion, etc.)
-│   └── articles/               # All articles (Split into files by category)
-│       ├── education.json  
-│       ├── culture.json    
-│       ├── health.json
-│       ├── geography.json
-│       ├── landmarks.json
-│       ├── religion.json
-│       └── infrastructure.json
-│
-├── public/                     # 📸 STATIC ASSETS
-│   └── images/                 # Put all photos here (organized by folders)
-│       ├── education/
-│       ├── religion/
-│       ├── infrastructure/
-│       ├── geography/
-│       ├── culture/
-│       ├── health/
-│       └── landmarks/
-│
-├── scripts/                    # ⚙️ AUTOMATION
-│   └── validate.ts             # The engine that checks JSON for errors
-│
-├── src/                        # 💻 CORE APPLICATION CODE
-│   ├── app/                    # Next.js App Router (Pages)
-│   │   ├── article/[id]/       # Dynamic Article Page (3-column layout)
-│   │   ├── about/              # About page
-│   │   ├── contribute/         # Form to submit corrections/photos via Email
-│   │   ├── directory/          # Village Directory page (Search & Filter)
-│   │   ├── place/              # Map & Gallery page
-│   │   ├── section/            # Archive/Category listing page
-│   │   ├── vision/             # Vision 2035 page (With Before/After slider)
-│   │   ├── globals.css         # Global Tailwind styles, CSS Variables, Print styles
-│   │   ├── layout.tsx          # Main Layout (Header, Footer, Theme scripts)
-│   │   ├── not-found.tsx       # Custom 404 Page
-│   │   ├── page.tsx            # Homepage (Portal Grid, Stats, Latest Articles)
-│   │   ├── robots.ts           # Auto-generates robots.txt
-│   │   └── sitemap.ts          # Auto-generates sitemap.xml for Google
-│   │
-│   ├── components/             # Reusable UI Components
-│   │   ├── article/            # Article components
-│   │   │   ├── ArticleToolbar.tsx # Listen, Print, Share controls
-│   │   │   ├── FaqAccordion.tsx   # Collapsible FAQs
-│   │   │   ├── Infobox.tsx        # Right-side data sheet on articles
-│   │   │   └── WikiText.tsx       # Parses [[id|label]] internal links
-│   │   ├── contribute/         # Form components for Contribute page
-│   │   ├── directory/          # Search & Filter components for Directory
-│   │   ├── layout/             # Layout components
-│   │   │   ├── Header.tsx         # Navbar with Theme & Search toggles
-│   │   │   ├── Footer.tsx         # Site footer
-│   │   │   ├── EmergencyBar.tsx   # Sticky mobile emergency bar
-│   │   │   ├── SearchModal.tsx    # Global search overlay
-│   │   │   └── ThemeToggle.tsx    # Dark/Light mode switch
-│   │   └── place/              # Map & Gallery components
-│   │       ├── GalleryGrid.tsx    # Photo grid with category filters
-│   │       ├── Lightbox.tsx       # Full-screen image viewer
-│   │       └── LandmarkMap.tsx    # Leaflet map with Satellite toggle
-│   │
-│   └── lib/                    # Core Logic
-│       ├── data.ts             # Functions to read JSON and pass to pages
-│       ├── search-data.ts      # Aggregates data for the Global Search index
-│       └── schema.ts           # Zod schemas for strict data validation
-│
-├── next.config.mjs             # Next.js configuration
-├── package.json                # Project dependencies and scripts
-├── tailwind.config.ts          # Tailwind custom colors (Wiki theme) and fonts
-└── tsconfig.json               # TypeScript configuration
-```
+    bandwar-portal/
+    ├── data/                       # 👑 CONTENT WORKSPACE (Update JSONs here)
+    │   ├── master.json             # Site Config, Homepage, Footer, Nav, SEO
+    │   ├── directory.json          # Local services, doctors, shops
+    │   ├── reach.json              # How to reach the village
+    │   ├── media.json              # Gallery photos, Timeline events, Map landmarks
+    │   ├── people.json             # Notable personalities directory
+    │   ├── vision.json             # Vision 2035 Manifesto data
+    │   ├── categories.json         # Article categories
+    │   └── articles/               # All articles split by category
+    │       ├── education.json  
+    │       ├── culture.json    
+    │       └── ...
+    │
+    ├── public/                     # 📸 STATIC ASSETS
+    │   ├── admin/                  # (Optional) CMS files if added later
+    │   └── images/                 # All photos organized by category
+    │
+    ├── scripts/                    # ⚙️ AUTOMATION
+    │   └── validate.ts             # The engine that checks JSON for errors before build
+    │
+    ├── src/                        # 💻 CORE APPLICATION CODE
+    │   ├── app/                    # Next.js App Router (Pages)
+    │   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
+    │   │   ├── gallery/            # Dedicated Photo Gallery Page
+    │   │   ├── directory/          # Village Directory Page
+    │   │   ├── people/             # People Directory & Dynamic Profiles
+    │   │   ├── contribute/         # Main contribution hub (Web3Forms)
+    │   │   ├── section/            # Archive/Category listing
+    │   │   ├── globals.css         # Global styles, Tokens, Leaflet Overrides
+    │   │   ├── layout.tsx          # Main Layout (Header, Footer, JSON-LD SEO)
+    │   │   └── page.tsx            # Homepage (Hero, Map, Stats)
+    │   │
+    │   ├── components/             # Reusable UI Components
+    │   │   ├── article/            # ArticleToolbar, FaqAccordion, Infobox, ReadingProgress
+    │   │   ├── contribute/         # ContributeForm (Hub)
+    │   │   ├── directory/          # DirectoryClient, EditContactModal
+    │   │   ├── layout/             # Header, Footer, SearchModal
+    │   │   ├── people/             # PersonCard (implied)
+    │   │   ├── place/              # LandmarkMap, EditLocationModal, GalleryGrid, Lightbox
+    │   │   └── shared/             # AddContentModal, ImageUpdateButton, LiveWeatherWidget
+    │   │
+    │   └── lib/                    # Core Logic
+    │       ├── data.ts             # Reads JSON, Filters missing images, Sorts articles
+    │       ├── search-data.ts      # Aggregates data for Global Search
+    │       └── schema.ts           # Zod schemas (Strict typing for all JSON)
+    │
+    ├── tailwind.config.ts          # Custom colors (Heritage theme) and fonts
+    └── package.json                # Dependencies
 
 ---
 
 ## 🛠️ Local Setup
 
 1. Install dependencies:
-   ```bash
    npm install
-   ```
 
-2. Start the local development server:
-   ```bash
+2. **Important:** Open `src/components/shared/AddContentModal.tsx` and `src/components/place/EditLocationModal.tsx` and replace `YOUR_ACCESS_KEY_HERE` with your actual **Web3Forms Access Key**.
+
+3. Start the local development server:
    npm run dev
-   ```
-   *The website will be live at `http://localhost:3000`.*
 
 ---
 
-## ✍️ How to Update Content (Editor Workflow)
+## ✍️ Editor Workflow (How to handle Contributions)
 
-### 1. Adding or Updating an Article
-- **File Location:** `data/articles/` (e.g., `education.json`).
-- **Strict Rules:**
-  - `id`: Must be lowercase, unique, and use hyphens (e.g., `snk-high-school-bandwar`).
-  - `lastUpdated`: Must be in `YYYY-MM-DD` format.
-  - **Internal Links:** To link to another article, use `[[article-id|Display Text]]`.
+Since the site is static, you act as the database manager.
 
-### 2. Adding a Directory Entry (Doctor, Shop, etc.)
-- **File Location:** `data/directory.json`.
-- Add an object to the `items` array. Set `isEmergency: true` for urgent contacts.
+1. **Receive Email:** When a user submits a form (Add Article, Fix Location, Update Number), Web3Forms sends an email to `ravirajbandwar@gmail.com`.
+2. **Review:** Open the email. It contains all the exact data (and new Latitude/Longitude if it's a map fix).
+3. **Update JSON:** 
+   - If it's a new Article, add it to `data/articles/`.
+   - If it's a Map fix, update the `lat` and `lng` in `data/media.json` inside the `landmarks` array.
+4. **Push:** `git add .`, `git commit`, `git push`. Vercel will automatically update the live site.
 
-### 3. Adding a New Photo
-- **Step 1:** Place the photo in `public/images/` inside the correct category folder (e.g., `public/images/education/`).
-- **Step 2:** Open `data/media.json` and add it to the `gallery.photos` array.
-- **Path Rule:** Write paths as `images/education/photo-name.jpg` (No leading slash `/`). 
-- **SEO Rule:** Name images with hyphens and location (e.g., `snk-high-school-bandwar-campus.jpg`).
-
-### 4. Updating Emergency Contacts (Mobile Bar)
-- **File Location:** `data/master.json`.
-- Update the `emergencyContacts` array.
+### Special Rule: Auto-Hide Missing Images
+In `src/lib/data.ts`, we implemented an `fs.existsSync` check. If you add a photo to `media.json` but forget to upload the actual file to `public/images/`, the website will **automatically hide** it to prevent broken image icons on the live site. Check your terminal build logs to see warnings about missing images.
 
 ---
 
-## 💻 How to Update UI & Code (Developer Workflow)
+## 🛡️ Data Validation (Crucial)
 
-If you want to change the design, layout, or add new features, here is where you need to look:
+Because the website relies on Zod and JSON, a single missing comma will break the build.
 
-- **Change Colors or Fonts:** Update `tailwind.config.ts` (for colors) and `src/app/layout.tsx` (for fonts).
-- **Change Global Spacing/Typography/Dark Mode Variables:** Edit `src/app/globals.css`.
-- **Update Homepage Layout:** Edit `src/app/page.tsx`.
-- **Update Article Layout:** Edit `src/app/article/[id]/page.tsx`.
-- **Update Navigation/Footer:** Edit `src/components/layout/Header.tsx` and `Footer.tsx`.
-- **Add a new field to JSON:** You MUST update the Zod Schema in `src/lib/schema.ts` first, otherwise the build will fail.
-
----
-
-## 🛡️ Data Validation (The Most Important Step)
-
-Because the website is built on JSON and Zod, a single missing comma or wrong date format will break the build.
-
-**Always run this command in your terminal before pushing to GitHub:**
-
-```bash
+**Always run this command before pushing to GitHub:**
 npm run validate
-```
 
-- ✅ **Green Pass:** Data is perfect. Push to GitHub.
-- ❌ **Red Fail:** The terminal will show exact errors (e.g., `Field [articles.0.title]: Required`). Fix the JSON immediately.
-
-> **🛡️ The "Prebuild" Safety Net:** Vercel is configured to run this validation *before* building. If your JSON is broken, Vercel will reject the deployment, ensuring the live site never crashes.
-
----
-
-## 🚀 Deployment (Vercel)
-
-The repository is connected directly to Vercel.
-
-1. Make your changes.
-2. Push your code to GitHub:
-   ```bash
-   git add .
-   git commit -m "feat: added new article and updated JSON"
-   git push origin main
-   ```
-3. Vercel will automatically build and deploy.
+- ✅ **Green Pass:** Data is perfect.
+- ❌ **Red Fail:** The terminal will show exactly which field is missing.
 
 ---
 
 ## 🏆 Golden Rules
 
-1. **Backup before UI changes:** If you are modifying files inside `src/`, test them locally first using `npm run dev`.
-2. **JSON Syntax:** Always use double quotes (`"key": "value"`). JSON does not accept single quotes or comments (`//`).
-3. **Strict Dates:** Always use `YYYY-MM-DD` format for `lastUpdated`.
-4. **Unique IDs:** Every article, person, and photo must have a unique, lowercase `id`.
-5. **Before deploying:** Always run `npm run validate` to ensure data integrity.
+1. **Web3Forms Key:** Never commit your real API key if the repo is public. (In Next.js static sites, it is exposed to the client, which is fine for Web3Forms, but still good practice to keep it clean).
+2. **JSON Syntax:** Always use double quotes. No comments allowed in JSON.
+3. **Image Paths:** Do not use a leading slash in JSON (`images/home/hero.jpg`, NOT `/images/home/hero.jpg`). The code handles the slash automatically.
+4. **Map Coordinates:** Always use decimal degrees (e.g., `25.5009`) for Latitude and Longitude.
 
 ---
 *Made with ❤️ & Curiosity by the Bandwar Village Community.*
