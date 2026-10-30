@@ -2,6 +2,7 @@ import { getMediaData } from "@/lib/data";
 import { GalleryGrid } from "@/components/place/GalleryGrid";
 import { Metadata } from "next";
 import { Camera } from "lucide-react";
+import { AddContentModal } from "@/components/shared/AddContentModal"; // 👈 Naya Import
 
 export const metadata: Metadata = {
   title: "Photo Gallery | Bandwar Portal",
@@ -24,12 +25,20 @@ export default function GalleryPage() {
             Village Gallery
           </h1>
           <div className="w-20 h-1 bg-brand mb-6 rounded-full mx-auto"></div>
-          <p className="text-lg text-muted leading-relaxed">
+          <p className="text-lg text-muted leading-relaxed mb-8">
             A visual archive of Bandwar — from historic temples and festivals to everyday life. Click any photo to view in full size.
           </p>
+          
+          {/* 👇 Yahan Upload Button add kiya hai 👇 */}
+          <div className="flex justify-center">
+            <AddContentModal 
+              type="image" 
+              customButtonText="Upload a Photo to Gallery" 
+            />
+          </div>
         </div>
 
-        {/* Gallery Grid (Ab full width me aayega) */}
+        {/* Gallery Grid */}
         <GalleryGrid 
           photos={media.gallery.photos} 
           categories={media.gallery.categories} 
