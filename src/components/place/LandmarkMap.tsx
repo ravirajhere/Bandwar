@@ -8,16 +8,13 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { EditLocationModal } from "./EditLocationModal"; // 👈 Naya Import
+import { EditLocationModal } from "./EditLocationModal"; // 👈 Import kiya
 
 // 🎨 Custom SVG Icon Generator
 const createIcon = (category: string, iconEmoji?: string) => {
   const colors: Record<string, string> = {
-    religion: "#ea580c",
-    education: "#2563eb",
-    infrastructure: "#16a34a",
-    landmarks: "#dc2626",
-    geography: "#0284c7",
+    religion: "#ea580c", education: "#2563eb", infrastructure: "#16a34a",
+    landmarks: "#dc2626", geography: "#0284c7",
   };
   const color = colors[category] || "#52525b";
 
@@ -25,25 +22,19 @@ const createIcon = (category: string, iconEmoji?: string) => {
     className: "custom-map-pin",
     html: `
       <div style="
-        background-color: ${color}; 
-        width: 32px; height: 32px; 
-        border-radius: 50% 50% 50% 0; 
-        transform: rotate(-45deg); 
-        border: 3px solid white; 
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        background-color: ${color}; width: 32px; height: 32px; 
+        border-radius: 50% 50% 50% 0; transform: rotate(-45deg); 
+        border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         display: flex; align-items: center; justify-content: center;
       ">
-        <span style="transform: rotate(45deg); font-size: 14px; line-height: 1;">
-          ${iconEmoji || ""}
-        </span>
+        <span style="transform: rotate(45deg); font-size: 14px; line-height: 1;">${iconEmoji || ""}</span>
       </div>
     `,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
+    iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32],
   });
 };
 
+// 🎬 Controller for Fly-To Animation
 function MapController({ activeLandmark }: { activeLandmark: any }) {
   const map = useMap();
   useEffect(() => {
@@ -57,9 +48,7 @@ function MapController({ activeLandmark }: { activeLandmark: any }) {
 export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: any[], activeLandmark: any }) {
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   if (!mounted) return (
     <div className="h-full min-h-[400px] w-full bg-muted-background border border-border flex items-center justify-center text-muted">
@@ -78,6 +67,7 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
       >
         <MapController activeLandmark={activeLandmark} />
 
+        {/* 🛰️ Sirf Satellite View (Esri) */}
         <TileLayer
           attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
@@ -128,7 +118,7 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
                       Get Directions
                     </a>
                     
-                    {/* 👇 Naya Button: Wrong Location Suggest */}
+                    {/* 👇 Naya Advanced Modal yahan add kiya hai */}
                     <EditLocationModal 
                       landmarkName={place.name || place.title} 
                       currentLat={place.lat} 
@@ -149,12 +139,7 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
         .marker-cluster-medium { background-color: rgba(202, 138, 4, 0.6) !important; }
         .marker-cluster-medium div { background-color: #ca8a04 !important; color: white; font-weight: bold; }
         .leaflet-container { z-index: 0; }
-        
-        /* Popup close button ko thoda premium banaya hai */
-        .leaflet-popup-close-button {
-          color: #64748b !important;
-          padding: 8px !important;
-        }
+        .leaflet-popup-close-button { color: #64748b !important; padding: 8px !important; }
       `}</style>
     </div>
   );
