@@ -8,33 +8,30 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { EditLocationModal } from "./EditLocationModal"; // 👈 Naya Import
 
-// 🎨 Custom SVG Icon Generator (Category based)
+// 🎨 Custom SVG Icon Generator
 const createIcon = (category: string, iconEmoji?: string) => {
   const colors: Record<string, string> = {
-    religion: "#ea580c",      // Orange
-    education: "#2563eb",     // Blue
-    infrastructure: "#16a34a", // Green
-    landmarks: "#dc2626",     // Red
-    geography: "#0284c7",     // Light Blue
+    religion: "#ea580c",
+    education: "#2563eb",
+    infrastructure: "#16a34a",
+    landmarks: "#dc2626",
+    geography: "#0284c7",
   };
   const color = colors[category] || "#52525b";
 
-  // Emoji ya dot ke saath ek premium pin design
   return L.divIcon({
     className: "custom-map-pin",
     html: `
       <div style="
         background-color: ${color}; 
-        width: 32px; 
-        height: 32px; 
+        width: 32px; height: 32px; 
         border-radius: 50% 50% 50% 0; 
         transform: rotate(-45deg); 
         border: 3px solid white; 
         box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex; align-items: center; justify-content: center;
       ">
         <span style="transform: rotate(45deg); font-size: 14px; line-height: 1;">
           ${iconEmoji || ""}
@@ -42,12 +39,11 @@ const createIcon = (category: string, iconEmoji?: string) => {
       </div>
     `,
     iconSize: [32, 32],
-    iconAnchor: [16, 32], // Pin ka neecha hissa location ko point karega
+    iconAnchor: [16, 32],
     popupAnchor: [0, -32],
   });
 };
 
-// 🎬 Controller for Fly-To Animation
 function MapController({ activeLandmark }: { activeLandmark: any }) {
   const map = useMap();
   useEffect(() => {
@@ -82,13 +78,11 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
       >
         <MapController activeLandmark={activeLandmark} />
 
-        {/* 🛰️ Sirf Satellite View (Esri) */}
         <TileLayer
           attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
         />
 
-        {/* 📍 Markers with Clustering */}
         <MarkerClusterGroup chunkedLoading>
           {landmarks.map((place) => (
             <Marker 
@@ -97,7 +91,6 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
               icon={createIcon(place.category, place.icon)}
             >
               <Popup>
-                {/* Premium Popup Card */}
                 <div className="min-w-[220px] max-w-[260px] p-1">
                   <div className="flex items-start gap-2 mb-2">
                     <span className="text-xl shrink-0 mt-0.5">{place.icon || "📍"}</span>
@@ -117,7 +110,6 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
                     </p>
                   )}
                   
-                  {/* Actions */}
                   <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-border">
                     {place.article && (
                       <Link 
@@ -135,6 +127,13 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
                     >
                       Get Directions
                     </a>
+                    
+                    {/* 👇 Naya Button: Wrong Location Suggest */}
+                    <EditLocationModal 
+                      landmarkName={place.name || place.title} 
+                      currentLat={place.lat} 
+                      currentLng={place.lng} 
+                    />
                   </div>
                 </div>
               </Popup>
@@ -143,19 +142,19 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
         </MarkerClusterGroup>
       </MapContainer>
 
-      {/* 🎨 Custom CSS for Clustering & Leaflet Overrides */}
       <style>{`
-        /* Remove default Leaflet white background from pins */
         .custom-map-pin { background: transparent; border: none; }
-        
-        /* Cluster colors to match theme */
         .marker-cluster-small { background-color: rgba(22, 101, 52, 0.6) !important; }
         .marker-cluster-small div { background-color: #166534 !important; color: white; font-weight: bold; }
         .marker-cluster-medium { background-color: rgba(202, 138, 4, 0.6) !important; }
         .marker-cluster-medium div { background-color: #ca8a04 !important; color: white; font-weight: bold; }
-        
-        /* Ensure Leaflet controls don't overlap header */
         .leaflet-container { z-index: 0; }
+        
+        /* Popup close button ko thoda premium banaya hai */
+        .leaflet-popup-close-button {
+          color: #64748b !important;
+          padding: 8px !important;
+        }
       `}</style>
     </div>
   );
