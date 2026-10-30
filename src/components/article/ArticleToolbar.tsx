@@ -7,7 +7,7 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
-  // 1. Voice load karna (Browser mein voices async load hoti hain)
+  // 1. Voice load karna
   useEffect(() => {
     const loadVoices = () => {
       setVoices(window.speechSynthesis.getVoices());
@@ -19,7 +19,7 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
     }
   }, []);
 
-  // 2. Text to Speech Logic (Hindi Accent ke sath)
+  // 2. Text to Speech Logic
   const handleListen = () => {
     if (isSpeaking) {
       window.speechSynthesis.cancel();
@@ -31,27 +31,23 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
     const textToRead = `${title}. ${contentText}`;
     const utterance = new SpeechSynthesisUtterance(textToRead);
     
-    // 👇 Hindi Voice Select karne ka logic 👇
-    // Yeh browser mein available 'hi-IN' ya 'hi' wali voice dhoondhega
+    // Hindi Voice Select karne ka logic
     const hindiVoice = voices.find(v => v.lang === "hi-IN" || v.lang === "hi" || v.lang.startsWith("hi"));
     
     if (hindiVoice) {
       utterance.voice = hindiVoice;
-      utterance.lang = hindiVoice.lang; // e.g., 'hi-IN'
+      utterance.lang = hindiVoice.lang;
     } else {
-      // Agar device mein Hindi voice nahi hai, toh fallback (Indian English try karega)
       const indianEnglish = voices.find(v => v.lang === "en-IN");
       if (indianEnglish) {
         utterance.voice = indianEnglish;
         utterance.lang = indianEnglish.lang;
       } else {
-        // Last fallback: Default Hindi code (browser apna best try karega)
         utterance.lang = "hi-IN"; 
       }
     }
     
-    // Seniors ke liye speed thodi slow (0.9x)
-    utterance.rate = 0.9; 
+    utterance.rate = 0.9; // Seniors ke liye speed slow
     utterance.pitch = 1;
 
     utterance.onend = () => setIsSpeaking(false);
@@ -61,18 +57,34 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
     setIsSpeaking(true);
   };
 
-  // Clean up speech on unmount (Agar user page change kar de toh aawaz band ho jaye)
+  // Clean up speech on unmount
   useEffect(() => {
     return () => {
       window.speechSynthesis.cancel();
     };
   }, []);
 
-  // Share via WhatsApp
-  const handleShare = () => {
+  // 3. Share Logic (Native Share API with WhatsApp fallback)
+  const handleShare = async () => {
     if (typeof window !== "undefined") {
       const url = window.location.href;
       const text = `Check out this article about ${title} on the Bandwar Portal: `;
+
+      // 🚀 2026 Standard: Native Share Sheet (Works on Mobile)
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: title,
+            text: text,
+            url: url,
+          });
+          return; // Native share successful
+        } catch (error) {
+          console.log("Error sharing:", error);
+        }
+      }
+
+      // Fallback to WhatsApp (Desktop or unsupported browsers)
       window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, "_blank");
     }
   };
@@ -83,38 +95,41 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
   };
 
   return (
-    <div className="no-print border border-wiki-border-light bg-wiki-bg-alt flex flex-wrap items-center gap-2 p-2 mb-6 text-[13px] text-wiki-text">
+    <div className="no-print bg-card border border-border rounded-xl shadow-sm flex flex-wrap items-center gap-2 sm:gap-3 p-2 sm:p-3">
       
-      {/* Listen Button */}
+      {/* 🔊 Listen Button (Primary Action) */}
       <button 
         onClick={handleListen}
         title={isSpeaking ? "Stop reading" : "Listen to this article in Hindi"}
-        className={`flex items-center gap-1.5 px-3 py-1.5 border transition-colors ${
+        aria-label={isSpeaking ? "Stop reading" : "Listen to this article"}
+        className={`flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm sm:text-base font-semibold transition-all duration-300 border ${
           isSpeaking 
-            ? "bg-red-50 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 font-bold" 
-            : "bg-wiki-bg border-wiki-border-light hover:bg-wiki-header"
+            ? "bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400 animate-pulse" 
+            : "bg-brand/10 border-brand/20 text-brand hover:bg-brand hover:text-white"
         }`}
       >
-        {isSpeaking ? <Square size={14} fill="currentColor" /> : <Volume2 size={16} />}
+        {isSpeaking ? <Square size={18} fill="currentColor" /> : <Volume2 size={20} />}
         {isSpeaking ? "Stop Reading" : "Listen (हिंदी)"}
       </button>
 
-      {/* Print Button */}
+      {/* 🖨️ Print Button */}
       <button 
         onClick={handlePrint}
         title="Print this article"
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-wiki-bg border border-wiki-border-light hover:bg-wiki-header transition-colors"
+        aria-label="Print this article"
+        className="flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 bg-muted-background border border-border rounded-lg text-sm sm:text-base font-medium text-foreground/80 hover:bg-border hover:text-foreground transition-colors"
       >
-        <Printer size={16} /> Print
+        <Printer size={18} /> Print
       </button>
 
-      {/* Share Button */}
+      {/* 📤 Share Button */}
       <button 
         onClick={handleShare}
-        title="Share on WhatsApp"
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-wiki-bg border border-wiki-border-light hover:bg-wiki-header transition-colors"
+        title="Share this article"
+        aria-label="Share this article"
+        className="flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 bg-muted-background border border-border rounded-lg text-sm sm:text-base font-medium text-foreground/80 hover:bg-border hover:text-foreground transition-colors"
       >
-        <Share2 size={16} /> WhatsApp
+        <Share2 size={18} /> Share
       </button>
 
     </div>
