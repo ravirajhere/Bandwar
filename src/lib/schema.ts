@@ -143,6 +143,7 @@ export const LandmarkSchema = z.object({
   id: z.string().optional(),
   title: z.string().optional(), 
   name: z.string().optional(),  
+  icon: z.string().optional(), // ✅ FIX: Added icon to resolve PlaceClient TypeScript error
   lat: z.number(),
   lng: z.number(),
   description: z.string().optional(),
@@ -205,14 +206,12 @@ export const PersonSchema = z.object({
   id: IdSchema, 
   name: z.string(), 
   role: z.string(), 
-  locality: z.string().optional(), // Optional kar diya taaki error na aaye
+  locality: z.string().optional(), 
   bio: z.string(), 
   photo: z.string().optional(),
-  
-  // Naye fields jo hum add kar rahe hain (Optional rakhe hain taaki purana data break na ho)
   photoAlt: z.string().optional(),
-  dob: z.string().optional(), // "1965" ya "1965-01-01" dono chalega
-  deathDate: z.string().optional(), // "2026-10-29"
+  dob: z.string().optional(), 
+  deathDate: z.string().optional(), 
   birthplace: z.string().optional(),
   titles: z.array(z.string()).optional(),
   journey: z.string().optional(),
