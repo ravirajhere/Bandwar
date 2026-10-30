@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Media } from "@/lib/schema";
 import { Lightbox } from "./Lightbox";
+import { Image as ImageIcon } from "lucide-react";
 
 type Photo = Media["gallery"]["photos"][0];
 type Category = Media["gallery"]["categories"][0];
@@ -18,14 +19,14 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
 
   return (
     <div>
-      {/* Filter Tabs (Wikipedia Style Boxes) */}
-      <div className="flex flex-wrap gap-2 mb-6 border-b border-wiki-border-light pb-3">
+      {/* 🏷️ Filter Tabs (Modern Pills) */}
+      <div className="flex overflow-x-auto pb-4 mb-6 gap-2 scrollbar-hide">
         <button
           onClick={() => setActiveTab("all")}
-          className={`px-3 py-1.5 text-[14px] border transition-colors ${
+          className={`whitespace-nowrap px-5 py-2.5 rounded-full text-[15px] font-medium transition-all duration-200 border ${
             activeTab === "all" 
-              ? "bg-wiki-bg-alt font-bold border-wiki-border text-wiki-text" 
-              : "bg-wiki-bg border-wiki-border-light text-wiki-link hover:bg-wiki-bg-alt"
+              ? "bg-brand text-white border-brand shadow-sm" 
+              : "bg-card text-foreground/70 border-border hover:bg-muted-background hover:text-foreground"
           }`}
         >
           All Photos
@@ -34,61 +35,65 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
           <button
             key={cat.id}
             onClick={() => setActiveTab(cat.id)}
-            className={`px-3 py-1.5 text-[14px] border transition-colors flex items-center gap-1.5 ${
+            className={`whitespace-nowrap px-5 py-2.5 rounded-full text-[15px] font-medium transition-all duration-200 border flex items-center gap-2 ${
               activeTab === cat.id 
-                ? "bg-wiki-bg-alt font-bold border-wiki-border text-wiki-text" 
-                : "bg-wiki-bg border-wiki-border-light text-wiki-link hover:bg-wiki-bg-alt"
+                ? "bg-brand text-white border-brand shadow-sm" 
+                : "bg-card text-foreground/70 border-border hover:bg-muted-background hover:text-foreground"
             }`}
           >
-            <span aria-hidden="true">{cat.icon}</span>
+            <span aria-hidden="true" className="text-lg">{cat.icon}</span>
             {cat.title}
           </button>
         ))}
       </div>
 
-      {/* Photo Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {/* 🖼️ Photo Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
         {filteredPhotos.map((photo) => (
-          <div 
+          <button 
             key={photo.id} 
-            className="border border-wiki-border-light bg-wiki-bg-alt flex flex-col hover:border-wiki-border transition-colors cursor-pointer group"
+            className="group flex flex-col bg-card border border-border rounded-xl shadow-sm hover:shadow-elevated transition-all duration-300 overflow-hidden text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             onClick={() => setSelectedPhoto(photo)}
+            aria-label={`View photo: ${photo.caption}`}
           >
             {/* Image Container */}
-            <div className="relative aspect-[4/3] bg-wiki-bg border-b border-wiki-border-light overflow-hidden">
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted-background">
               <Image
-                src={`/${photo.src}`}
+                src={photo.src.startsWith("/") ? photo.src : `/${photo.src}`}
                 alt={photo.caption}
                 fill
-                // 👇 Yahan object-contain aur p-1 add kiya hai taaki image pure dikhe 👇
-                className="object-contain p-1 group-hover:opacity-90 transition-opacity"
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               />
-              {/* Optional visual cue on hover */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 pointer-events-none">
-                 <span className="text-white text-2xl font-bold drop-shadow-md">🔍</span>
+              {/* Premium Hover Overlay */}
+              <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                 <div className="bg-white/20 backdrop-blur-md p-3 rounded-full text-white transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                   <ImageIcon size={24} />
+                 </div>
               </div>
             </div>
             
-            {/* Caption Box */}
-            <div className="p-2.5 flex-grow flex flex-col justify-start">
+            {/* Caption Area */}
+            <div className="p-4 flex-grow flex flex-col justify-start border-t border-border-subtle bg-card w-full">
               {photo.year && (
-                <span className="text-[11px] font-bold text-wiki-text-muted uppercase tracking-wider mb-1">
+                <span className="text-[11px] font-bold text-brand uppercase tracking-wider mb-1.5">
                   {photo.year}
                 </span>
               )}
-              <p className="text-[13px] text-wiki-text leading-snug line-clamp-2">
+              <p className="text-[15px] text-foreground font-medium leading-snug line-clamp-2 group-hover:text-brand transition-colors">
                 {photo.caption}
               </p>
             </div>
-          </div>
+          </button>
         ))}
       </div>
       
-      {/* Empty State */}
+      {/* 📭 Empty State */}
       {filteredPhotos.length === 0 && (
-        <div className="text-center border border-dashed border-wiki-border-light py-12 text-wiki-text-muted text-[15px]">
-          No photos found in this category.
+        <div className="flex flex-col items-center justify-center py-20 bg-card border border-dashed border-border rounded-xl">
+          <ImageIcon size={48} className="text-muted opacity-30 mb-4" />
+          <h3 className="text-lg font-semibold text-foreground mb-1">No photos here yet</h3>
+          <p className="text-muted text-[15px]">We haven't added photos to this category.</p>
         </div>
       )}
 
