@@ -1,19 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation"; // 👈 Import kiya
 import { Loader2, Send } from "lucide-react";
 
 export function ContributeForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [defaultUrl, setDefaultUrl] = useState("");
+  
+  const searchParams = useSearchParams();
+
+  // URL se parameter padhna (jaise ?page=snk-high-school ya ?person=mahant-surendra-das)
+  useEffect(() => {
+    const pageId = searchParams.get("page");
+    const personId = searchParams.get("person");
+    
+    if (pageId) {
+      setDefaultUrl(`/article/${pageId}`);
+    } else if (personId) {
+      setDefaultUrl(`/people/${personId}`);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    // Web3Forms Access Key
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Yahan apni key daalein
+    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key daalein
     formData.append("subject", "New Contribution for Bandwar Portal");
     formData.append("from_name", "Bandwar Website Visitor");
 
@@ -57,37 +72,20 @@ export function ContributeForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      
-      {/* Row 1: Name & Contact */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">Your Name (Optional)</label>
-          <input 
-            type="text" 
-            name="name" 
-            placeholder="e.g. Ramesh Kumar" 
-            className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all"
-          />
+          <input type="text" name="name" placeholder="e.g. Ramesh Kumar" className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all" />
         </div>
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">Contact Number / Email</label>
-          <input 
-            type="text" 
-            name="contact" 
-            placeholder="So we can reach you" 
-            className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all"
-          />
+          <input type="text" name="contact" placeholder="So we can reach you" className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all" />
         </div>
       </div>
 
-      {/* Row 2: Type of Contribution */}
       <div>
         <label className="block text-sm font-medium text-foreground mb-2">What are you contributing?</label>
-        <select 
-          name="contribution_type" 
-          required
-          className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all"
-        >
+        <select name="contribution_type" required className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all">
           <option value="correction">Correction / Edit an existing page</option>
           <option value="new_article">New Article / History</option>
           <option value="photo">Historical Photo / Gallery</option>
@@ -96,40 +94,24 @@ export function ContributeForm() {
         </select>
       </div>
 
-      {/* Row 3: Page URL (Auto-filled) */}
       <div>
         <label className="block text-sm font-medium text-foreground mb-2">Which page is this about? (Optional)</label>
         <input 
           type="text" 
           name="page_url" 
+          defaultValue={defaultUrl} // 👈 Yahan auto-fill hoga
           placeholder="e.g. /article/snk-high-school-bandwar" 
           className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all text-sm"
         />
       </div>
 
-      {/* Row 4: Details */}
       <div>
         <label className="block text-sm font-medium text-foreground mb-2">Details / Message</label>
-        <textarea 
-          name="message" 
-          required
-          rows={5}
-          placeholder="Please explain what needs to be changed or added. Be as detailed as possible..."
-          className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all resize-y"
-        ></textarea>
+        <textarea name="message" required rows={5} placeholder="Please explain what needs to be changed or added. Be as detailed as possible..." className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all resize-y"></textarea>
       </div>
 
-      {/* Submit Button */}
-      <button 
-        type="submit" 
-        disabled={isSubmitting}
-        className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 rounded-xl font-semibold text-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
-      >
-        {isSubmitting ? (
-          <><Loader2 size={20} className="animate-spin" /> Sending...</>
-        ) : (
-          <><Send size={20} /> Submit Contribution</>
-        )}
+      <button type="submit" disabled={isSubmitting} className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 rounded-xl font-semibold text-lg transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
+        {isSubmitting ? <><Loader2 size={20} className="animate-spin" /> Sending...</> : <><Send size={20} /> Submit Contribution</>}
       </button>
     </form>
   );
