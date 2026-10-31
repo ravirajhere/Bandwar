@@ -1,10 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
-import { MapPin } from "lucide-react";
+import { MapPin, Clock, ShieldCheck } from "lucide-react"; // 👈 Naye icons import kiye
 import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper";
 
-// 👇 Yahan icon.png ko import kiya hai
 import iconImage from "@/app/icon.png"; 
 
 interface MetaItem { label: string; value: string; }
@@ -15,6 +14,8 @@ export default function Home() {
   const home = config.home;
   const allArticles = getAllArticles();
   const media = getMediaData();
+  
+  // Data.ts me articles pehle se lastUpdated ke hisaab se sort hote hain (Newest first)
   const latestArticles = allArticles.slice(0, 4);
 
   if (!home) return null;
@@ -23,7 +24,7 @@ export default function Home() {
     <div className="bg-background min-h-screen pb-16">
       <div className="container-custom pt-8">
         
-        {/* 1. HERO SECTION (Top Image - From JSON) */}
+        {/* 1. HERO SECTION */}
         <section className="relative w-full rounded-2xl overflow-hidden mb-12 shadow-elevated border border-border">
           <div className="absolute inset-0 bg-black/50 z-10"></div>
           <Image
@@ -104,6 +105,8 @@ export default function Home() {
         {/* 4. ABOUT & ARTICLES GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 space-y-10">
+            
+            {/* About Section */}
             <section className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-border bg-muted-background">
                 <h2 className="font-serif text-xl font-semibold text-foreground m-0">
@@ -113,7 +116,6 @@ export default function Home() {
               <div className="p-6 md:p-8 flex flex-col md:flex-row gap-8 items-start">
                 <div className="w-full md:w-1/3 shrink-0 rounded-lg overflow-hidden border border-border-subtle shadow-sm">
                   <div className="relative w-full aspect-[4/3]">
-                    {/* 👇 Yahan imported iconImage use kiya hai */}
                     <Image
                       src={iconImage} 
                       alt="About Bandwar Village"
@@ -137,10 +139,11 @@ export default function Home() {
               </div>
             </section>
 
+            {/* 🚀 NAYA: Recently Updated Section */}
             <section>
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-serif text-2xl font-semibold text-foreground">
-                  Latest from the Archive
+                <h2 className="font-serif text-2xl font-semibold text-foreground flex items-center gap-2">
+                  <Clock size={24} className="text-brand" /> Recently Updated
                 </h2>
                 <Link href="/section" className="text-brand text-sm font-medium hover:underline">
                   View all articles →
@@ -152,15 +155,31 @@ export default function Home() {
                   <Link 
                     href={`/article/${article.id}`} 
                     key={article.id}
-                    className="bg-card border border-border rounded-lg p-5 shadow-sm hover:shadow-card hover:border-brand/30 transition-all group flex flex-col h-full"
+                    className="bg-card border border-border rounded-xl p-5 shadow-sm hover:shadow-card hover:border-brand/30 transition-all group flex flex-col h-full"
                   >
-                    <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-brand transition-colors mb-2">
+                    <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-brand transition-colors mb-2 leading-tight">
                       {article.title}
                     </h3>
-                    <p className="text-muted text-sm line-clamp-3 mb-4 flex-grow">
+                    <p className="text-muted text-[14px] line-clamp-2 mb-5 flex-grow">
                       {article.summary}
                     </p>
-                    <span className="text-brand text-sm font-medium mt-auto">Read Article →</span>
+                    
+                    {/* 👇 Trust Badge (Date & Editor Name) */}
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] text-muted font-medium mt-auto pt-4 border-t border-border-subtle">
+                      <span className="flex items-center gap-1">
+                        <Clock size={12} className="text-brand/70" />
+                        {article.lastUpdated}
+                      </span>
+                      {article.lastEditedBy && (
+                        <>
+                          <span className="text-border">•</span>
+                          <span className="flex items-center gap-1 text-brand/80">
+                            <ShieldCheck size={12} />
+                            By {article.lastEditedBy}
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </Link>
                 ))}
               </div>
