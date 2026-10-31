@@ -1,6 +1,7 @@
+import { Suspense } from "react"; // 👈 Suspense import kiya
 import { Metadata } from "next";
 import { ContributeForm } from "@/components/contribute/ContributeForm";
-import { Pencil, Image as ImageIcon, MapPin, Phone, PlusCircle, MessageSquare } from "lucide-react";
+import { Pencil, MapPin, Phone, PlusCircle, MessageSquare } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contribute & Feedback | Bandwar Portal",
@@ -95,7 +96,15 @@ export default function ContributePage() {
           </div>
           
           <div className="bg-card border border-border rounded-2xl shadow-sm p-6 md:p-8">
-            <ContributeForm />
+            {/* 👇 Suspense Boundary Add Kiya 👇 */}
+            <Suspense fallback={
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="w-8 h-8 border-4 border-brand/30 border-t-brand rounded-full animate-spin mb-4"></div>
+                <p className="text-muted font-medium text-sm">Loading form...</p>
+              </div>
+            }>
+              <ContributeForm />
+            </Suspense>
           </div>
         </div>
 
