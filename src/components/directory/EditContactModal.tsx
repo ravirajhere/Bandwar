@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Pencil, X, Loader2, CheckCircle2 } from "lucide-react";
-import { useToast } from "@/components/ui/Toast"; // 👈 Naya Import
+import { useToast } from "@/components/ui/Toast"; 
 
 interface EditContactModalProps {
   itemName: string;
@@ -10,7 +10,7 @@ interface EditContactModalProps {
 }
 
 export function EditContactModal({ itemName, currentPhone }: EditContactModalProps) {
-  const { toast } = useToast(); // 👈 Hook call kiya
+  const { toast } = useToast(); 
 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,15 +22,16 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
     setIsSubmitting(true);
 
     const formData = new FormData();
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key yahan daalein
-    formData.append("subject", `Update Phone Request: ${itemName}`);
-    formData.append("from_name", "Bandwar Portal Visitor");
-    formData.append("item_name", itemName);
-    formData.append("old_phone", currentPhone);
-    formData.append("new_phone", newPhone);
+    
+    // 👇 Telegram API ke liye data format 👇
+    formData.append("type", "Directory Contact Update");
+    formData.append("Item Name", itemName);
+    formData.append("Old Phone Number", currentPhone);
+    formData.append("New Phone Number", newPhone);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 📱 Telegram par bhej rahe hain
+      const response = await fetch("/api/telegram-submit", {
         method: "POST",
         body: formData,
       });
@@ -38,7 +39,7 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Number update request sent successfully!", "success"); // 👈 TOAST ADDED
+        toast("Number update sent to Telegram!", "success"); 
         setNewPhone("");
         // Auto close after 2.5 seconds
         setTimeout(() => {
@@ -46,10 +47,10 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
           setTimeout(() => setIsSuccess(false), 300);
         }, 2500);
       } else {
-        toast("Something went wrong. Please try again.", "error"); // 👈 ALERT REPLACED
+        toast(data.details || "Something went wrong. Please try again.", "error"); 
       }
     } catch (error) {
-      toast("Error sending request. Please check your connection.", "error"); // 👈 ALERT REPLACED
+      toast("Error sending request. Please check your connection.", "error"); 
     } finally {
       setIsSubmitting(false);
     }
@@ -93,7 +94,7 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
                 <div className="text-center py-6">
                   <CheckCircle2 size={40} className="text-green-500 mx-auto mb-3 animate-bounce" />
                   <h4 className="text-base font-bold text-foreground mb-1">Dhanyawad!</h4>
-                  <p className="text-xs text-muted">Your update has been sent to the editor for review.</p>
+                  <p className="text-xs text-muted">Your update has been sent to the editor's Telegram.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
