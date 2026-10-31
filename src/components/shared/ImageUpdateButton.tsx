@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Pencil, X, UploadCloud, Loader2, CheckCircle2 } from "lucide-react";
+import { useToast } from "@/components/ui/Toast"; // 👈 Naya Import
 
 interface ImageUpdateButtonProps {
   contextName: string; // Jaise "S.N.K. High School" ya "Mahant Surendra Das"
@@ -9,6 +10,8 @@ interface ImageUpdateButtonProps {
 }
 
 export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButtonProps) {
+  const { toast } = useToast(); // 👈 Hook call kiya
+
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -32,11 +35,12 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
       
       if (data.success) {
         setIsSuccess(true);
+        toast("Photo sent successfully! Editor will review it soon.", "success"); // 👈 TOAST ADDED
       } else {
-        alert("Failed to upload. File might be too large (Max 5MB).");
+        toast("Failed to upload. File might be too large (Max 5MB).", "error"); // 👈 ALERT REPLACED
       }
     } catch (error) {
-      alert("Error submitting image.");
+      toast("Error submitting image. Please check your connection.", "error"); // 👈 ALERT REPLACED
     } finally {
       setIsSubmitting(false);
     }
