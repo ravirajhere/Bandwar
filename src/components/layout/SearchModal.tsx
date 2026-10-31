@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Search, X } from "lucide-react";
+import { Search, X, FileText, User, Phone, MapPin, CornerDownLeft } from "lucide-react";
 import { SearchItem } from "@/lib/search-data";
 
 interface SearchModalProps {
@@ -13,90 +13,197 @@ interface SearchModalProps {
 
 export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) {
   const [query, setQuery] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
 
-  // Focus input when modal opens
+  // Filter results
+  const results = query.trim() === "" 
+    ? [] 
+    : searchIndex.filter(item => 
+        item.title.toLowerCase().includes(query.toLowerCase()) || 
+        item.description.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 10); // Top 10 results
+
+  // Reset selected index when query changes
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [query]);
+
+  // Focus input & Lock scroll
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
-      setQuery(""); // Reset query on close
+      setQuery("");
     }
     return () => { document.body.style.overflow = "unset"; };
   }, [isOpen]);
 
-  // Escape key to close
+  // Handle Keyboard (Esc to close, Up/Down to navigate, Enter to select)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (!isOpen) return;
+
+      if (e.key === "Escape") {
+        onClose();
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev + 1) % results.length);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
+      } else if (e.key === "Enter" && results.length > 0) {
+        e.preventDefault();
+        // Navigate to the selected result
+        window.location.href = results[selectedIndex].url;
+        onClose();
+      }
     };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [isOpen, onClose, results, selectedIndex]);
+
+  // Scroll selected item into view
+  useEffect(() => {
+    if (listRef.current) {
+      const selectedElement = listRef.current.children[selectedIndex] as HTMLElement;
+      if (selectedElement) {
+        selectedElement.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [selectedIndex]);
 
   if (!isOpen) return null;
 
-  // Filter results (Only Articles)
-  const results = query.trim() === "" 
-    ? [] 
-    : searchIndex.filter(item => 
-        item.title.toLowerCase().includes(query.toLowerCase()) || 
-        item.description.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 15); // Show only top 15 results
+  // Type Icon Helper
+  const getIcon = (type: string) => {
+    switch (type) {
+      case "Article": return <FileText size={16} className="text-blue-500" />;
+      case "Person": return <User size={16} className="text-orange-500" />;
+      case "Contact": return <Phone size={16} className="text-green-500" />;
+      case "Place": return <MapPin size={16} className="text-red-500" />;
+      default: return <FileText size={16} />;
+    }
+  };
+
+  // Highlight matched text
+  const highlightText = (text: string, highlight: string) => {
+    if (!highlight.trim()) return text;
+    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+    return parts.map((part, i) => 
+      part.toLowerCase() === highlight.toLowerCase() 
+        ? <span key={i} className="bg-brand/20 text-brand font-bold px-0.5 rounded">{part}</span> 
+        : part
+    );
+  };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/60 flex items-start justify-center pt-20 px-4 sm:pt-32 backdrop-blur-sm" onClick={onClose}>
+    <div 
+      className="fixed inset-0 z-[100] bg-background/80 dark:bg-black/80 flex items-start justify-center pt-20 px-4 sm:pt-32 backdrop-blur-md animate-in fade-in duration-200" 
+      onClick={onClose}
+    >
       <div 
-        className="bg-wiki-bg w-full max-w-2xl border border-wiki-border shadow-2xl flex flex-col max-h-[80vh]"
-        onClick={(e) => e.stopPropagation()} // Click inside doesn't close
+        className="bg-card w-full max-w-2xl border border-border rounded-2xl shadow-2xl flex flex-col max-h-[70vh] overflow-hidden animate-in zoom-in-95 duration-200"
+        onClick={(e) => e.stopPropagation()} 
       >
         {/* Search Input Bar */}
-        <div className="flex items-center border-b border-wiki-border-light p-3">
-          <Search className="text-wiki-text-muted ml-1 mr-3" size={22} />
+        <div className="flex items-center border-b border-border p-4 bg-muted-background">
+          <Search className="text-muted ml-1 mr-3 shrink-0" size={22} />
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search articles..." 
+            placeholder="Search articles, people, places..." 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-grow bg-transparent text-wiki-text text-lg outline-none placeholder:text-wiki-text-muted"
+            className="flex-grow bg-transparent text-foreground text-lg outline-none placeholder:text-muted"
           />
-          <button onClick={onClose} className="p-1 text-wiki-text-muted hover:text-wiki-text hover:bg-wiki-bg-alt transition-colors">
+          <button 
+            onClick={onClose} 
+            className="p-1.5 text-muted hover:text-foreground hover:bg-background rounded-md transition-colors shrink-0"
+          >
             <X size={20} />
           </button>
         </div>
 
         {/* Results Area */}
-        <div className="overflow-y-auto p-2">
+        <div className="overflow-y-auto p-2 custom-scrollbar">
           {query.trim() === "" ? (
-            <div className="text-center py-10 text-wiki-text-muted text-sm">
-              Type something to search across all articles...
+            <div className="flex flex-col items-center justify-center py-16 text-muted">
+              <Search size={48} className="mb-4 opacity-20" />
+              <p className="text-sm font-medium">Type to search across the entire portal</p>
+              <p className="text-xs mt-1">Try "Mahant", "School", or "Emergency"</p>
             </div>
           ) : results.length === 0 ? (
-            <div className="text-center py-10 text-wiki-text-muted text-sm">
-              No articles found for "<strong>{query}</strong>". Try a different keyword.
+            <div className="text-center py-16 text-muted text-sm">
+              No results found for "<strong className="text-foreground">{query}</strong>".<br/>
+              <span className="text-xs mt-2 block">Try a different keyword.</span>
             </div>
           ) : (
-            <ul className="space-y-1">
-              {results.map((item) => (
-                <li key={item.id}>
-                  <Link 
-                    href={item.url}
-                    onClick={onClose}
-                    className="block p-3 hover:bg-wiki-bg-alt border border-transparent hover:border-wiki-border-light transition-colors"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-wiki-text text-[15px]">{item.title}</span>
-                      {/* Category tag hidden for now since it's all articles */}
-                    </div>
-                    <p className="text-[13px] text-wiki-text-muted line-clamp-1">{item.description}</p>
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-1" ref={listRef}>
+              {results.map((item, index) => {
+                const isSelected = index === selectedIndex;
+                return (
+                  <li key={item.id}>
+                    <Link 
+                      href={item.url}
+                      onClick={onClose}
+                      onMouseEnter={() => setSelectedIndex(index)}
+                      className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 rounded-xl transition-all border ${
+                        isSelected 
+                          ? "bg-brand/5 border-brand/20 shadow-sm" 
+                          : "border-transparent hover:bg-muted-background"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 mb-1 sm:mb-0">
+                        <div className={`p-2 rounded-lg ${isSelected ? "bg-brand/10" : "bg-muted-background"}`}>
+                          {getIcon(item.type)}
+                        </div>
+                        <div>
+                          <span className={`font-bold text-[15px] block ${isSelected ? "text-brand" : "text-foreground"}`}>
+                            {highlightText(item.title, query)}
+                          </span>
+                          <p className="text-[13px] text-muted line-clamp-1 mt-0.5">
+                            {highlightText(item.description, query)}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* Type Badge (Desktop only) */}
+                      <span className="hidden sm:block text-[10px] uppercase tracking-wider font-bold text-muted bg-muted-background px-2 py-1 rounded-md shrink-0">
+                        {item.type}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           )}
+        </div>
+
+        {/* Footer (Keyboard Shortcuts Hint - Desktop Only) */}
+        <div className="hidden md:flex items-center justify-between px-4 py-3 border-t border-border bg-muted-background text-xs text-muted">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <kbd className="bg-background border border-border px-1.5 py-0.5 rounded text-[10px] font-mono">↑</kbd>
+              <kbd className="bg-background border border-border px-1.5 py-0.5 rounded text-[10px] font-mono">↓</kbd>
+              to navigate
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="bg-background border border-border px-1.5 py-0.5 rounded text-[10px] font-mono">Enter</kbd>
+              to select
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="bg-background border border-border px-1.5 py-0.5 rounded text-[10px] font-mono">Esc</kbd>
+              to close
+            </span>
+          </div>
+          <span className="flex items-center gap-1 font-medium text-brand">
+            <CornerDownLeft size={12} /> Search
+          </span>
         </div>
       </div>
     </div>
