@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPeopleData, getMasterData } from "@/lib/data"; // 👈 getMasterData import kiya
+import { getPeopleData, getMasterData } from "@/lib/data"; 
 import { Metadata } from "next";
 import { Edit3 } from "lucide-react"; 
+import { UniversalEditModal } from "@/components/shared/UniversalEditModal"; // 👈 Naya Import
 
 export async function generateStaticParams() {
   const data = getPeopleData();
@@ -25,7 +26,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const baseUrl = config.site.url;
   const personUrl = `${baseUrl}/people/${person.id}`;
   
-  // Absolute image URL generate karna
   const imageUrl = person.photo 
     ? (person.photo.startsWith("http") ? person.photo : `${baseUrl}/${person.photo.startsWith("/") ? person.photo.slice(1) : person.photo}`)
     : `${baseUrl}/icon.png`;
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function PersonProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const data = getPeopleData();
-  const config = getMasterData(); // 👈 Schema ke liye config fetch kiya
+  const config = getMasterData(); 
   const person = data.people.find((p) => p.id === id);
 
   if (!person) {
@@ -77,20 +77,13 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
     "description": person.bio,
     "image": imageUrl,
     "url": personUrl,
-    // Optional fields (Agar data available hai tabhi add honge)
     ...(person.dob && { "birthDate": person.dob }),
     ...(person.deathDate && { "deathDate": person.deathDate }),
     ...(person.birthplace && { 
-      "birthPlace": {
-        "@type": "Place",
-        "name": person.birthplace
-      } 
+      "birthPlace": { "@type": "Place", "name": person.birthplace } 
     }),
     ...(person.locality && {
-      "homeLocation": {
-        "@type": "Place",
-        "name": person.locality
-      }
+      "homeLocation": { "@type": "Place", "name": person.locality }
     })
   };
 
@@ -98,24 +91,9 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": baseUrl
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "People",
-        "item": `${baseUrl}/people`
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": person.name,
-        "item": personUrl
-      }
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+      { "@type": "ListItem", "position": 2, "name": "People", "item": `${baseUrl}/people` },
+      { "@type": "ListItem", "position": 3, "name": person.name, "item": personUrl }
     ]
   };
 
@@ -124,7 +102,6 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
   return (
     <div className="bg-background min-h-screen py-10 md:py-16">
       
-      {/* 🚀 Advanced JSON-LD Script Injection */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedJsonLd) }}
@@ -171,23 +148,45 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
               </div>
 
               <div className="p-6">
-                <h2 className="font-serif text-2xl text-foreground mb-1 leading-tight">
-                  {person.name}
-                </h2>
-                <p className="text-brand font-medium text-sm mb-6 pb-4 border-b border-border-subtle">
-                  {person.role}
-                </p>
+                {/* 🚀 Name with Edit */}
+                <div className="flex items-start gap-2 mb-1 group">
+                  <h2 className="font-serif text-2xl text-foreground leading-tight m-0">
+                    {person.name}
+                  </h2>
+                  <div className="mt-1 shrink-0">
+                    <UniversalEditModal fieldName="Full Name" currentValue={person.name} contextId={person.id} contextType="Person" variant="icon" />
+                  </div>
+                </div>
+
+                {/* 🚀 Role with Edit */}
+                <div className="flex items-start gap-2 mb-6 pb-4 border-b border-border-subtle group">
+                  <p className="text-brand font-medium text-sm m-0 leading-snug">
+                    {person.role}
+                  </p>
+                  <div className="mt-0.5 shrink-0">
+                    <UniversalEditModal fieldName="Role" currentValue={person.role} contextId={person.id} contextType="Person" variant="icon" />
+                  </div>
+                </div>
 
                 <dl className="space-y-4 text-sm">
                   {(person.dob || person.deathDate) && (
                     <div>
                       <dt className="text-muted font-medium mb-1">Lifespan</dt>
-                      <dd className="text-foreground">
-                        {person.dob && person.deathDate 
-                          ? `${person.dob} – ${person.deathDate}` 
-                          : person.dob 
-                            ? `Born: ${person.dob}` 
-                            : `Died: ${person.deathDate}`}
+                      <dd className="text-foreground flex items-center justify-between group">
+                        <span>
+                          {person.dob && person.deathDate 
+                            ? `${person.dob} – ${person.deathDate}` 
+                            : person.dob 
+                              ? `Born: ${person.dob}` 
+                              : `Died: ${person.deathDate}`}
+                        </span>
+                        <div className="shrink-0 opacity-50 group-hover:opacity-100 transition-opacity">
+                          <UniversalEditModal 
+                            fieldName="Lifespan (DOB/DOD)" 
+                            currentValue={`${person.dob || ''} - ${person.deathDate || ''}`} 
+                            contextId={person.id} contextType="Person" variant="icon" 
+                          />
+                        </div>
                       </dd>
                     </div>
                   )}
@@ -195,15 +194,23 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                   {person.birthplace && (
                     <div>
                       <dt className="text-muted font-medium mb-1">Birthplace</dt>
-                      <dd className="text-foreground">{person.birthplace}</dd>
+                      <dd className="text-foreground flex items-center justify-between group">
+                        <span>{person.birthplace}</span>
+                        <div className="shrink-0 opacity-50 group-hover:opacity-100 transition-opacity">
+                          <UniversalEditModal fieldName="Birthplace" currentValue={person.birthplace} contextId={person.id} contextType="Person" variant="icon" />
+                        </div>
+                      </dd>
                     </div>
                   )}
 
                   {person.locality && (
                     <div>
                       <dt className="text-muted font-medium mb-1">Locality</dt>
-                      <dd className="text-foreground flex items-center gap-1">
-                        <span className="text-brand">📍</span> {person.locality}
+                      <dd className="text-foreground flex items-center justify-between group">
+                        <span className="flex items-center gap-1"><span className="text-brand">📍</span> {person.locality}</span>
+                        <div className="shrink-0 opacity-50 group-hover:opacity-100 transition-opacity">
+                          <UniversalEditModal fieldName="Locality" currentValue={person.locality} contextId={person.id} contextType="Person" variant="icon" />
+                        </div>
                       </dd>
                     </div>
                   )}
@@ -240,7 +247,13 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                 Biography
               </h3>
               <div className="prose prose-lg dark:prose-invert max-w-none text-foreground/90 leading-relaxed">
-                <p>{person.bio}</p>
+                <p className="m-0">
+                  {person.bio}
+                  {/* 🚀 Bio Inline Edit */}
+                  <span className="inline-block ml-2 not-prose no-print">
+                    <UniversalEditModal fieldName="Biography" currentValue={person.bio} contextId={person.id} contextType="Person" variant="inline" />
+                  </span>
+                </p>
               </div>
             </section>
 
@@ -250,8 +263,12 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                   Unki Kahani (Life Journey)
                 </h3>
                 <div className="bg-card border-l-4 border-brand p-6 rounded-r-xl shadow-sm">
-                  <p className="text-lg leading-relaxed text-foreground/90 italic">
+                  <p className="text-lg leading-relaxed text-foreground/90 italic m-0">
                     "{person.journey}"
+                    {/* 🚀 Journey Inline Edit */}
+                    <span className="inline-block ml-2 not-prose no-print">
+                      <UniversalEditModal fieldName="Life Journey" currentValue={person.journey} contextId={person.id} contextType="Person" variant="inline" />
+                    </span>
                   </p>
                 </div>
               </section>
@@ -270,7 +287,6 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
               </section>
             )}
 
-            {/* 🚀 NAYA SECTION: Contribute Info */}
             <div className="mt-12 bg-muted-background border border-border rounded-xl p-6 sm:p-8 text-center no-print">
               <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
                 Know more about {person.name}?
