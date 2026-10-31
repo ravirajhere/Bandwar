@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import { getAllArticles, getArticleById } from "@/lib/data";
+import { getAllArticles, getArticleById, getMasterData } from "@/lib/data"; // 👈 getMasterData import kiya
 import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
-import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; // 👈 Naya Import
+import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; 
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3 } from "lucide-react"; 
@@ -18,17 +18,31 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const article = getArticleById(resolvedParams.id);
+  const config = getMasterData();
   
   if (!article) return { title: "Not Found" };
 
+  // Image path format fix
+  const ogImage = article.hero 
+    ? (article.hero.startsWith("/") ? article.hero : `/${article.hero}`) 
+    : "/icon.png";
+
   return {
-    title: article.metaTitle || `${article.title} | Bandwar Portal`,
+    title: article.metaTitle || `${article.title} | ${config.site.name}`,
     description: article.metaDescription || article.summary.slice(0, 160),
     openGraph: {
       title: article.metaTitle || article.title,
       description: article.metaDescription || article.summary,
-      images: article.hero ? [{ url: `/${article.hero}`, width: 1200, height: 630, alt: article.title }] : [],
+      url: `${config.site.url}/article/${article.id}`,
+      siteName: config.site.name,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: article.title }],
+      type: "article",
+      publishedTime: article.lastUpdated,
+      modifiedTime: article.lastUpdated,
     },
+    alternates: {
+      canonical: `${config.site.url}/article/${article.id}`,
+    }
   };
 }
 
@@ -36,8 +50,74 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const resolvedParams = await params;
   const article = getArticleById(resolvedParams.id);
   const allArticles = getAllArticles();
+  const config = getMasterData(); // 👈 Schema ke liye config fetch kiya
 
   if (!article) notFound();
+
+  const baseUrl = config.site.url;
+  const articleUrl = `${baseUrl}/article/${article.id}`;
+  
+  // Absolute image URL for Schema
+  const imageUrl = article.hero 
+    ? (article.hero.startsWith("http") ? article.hero : `${baseUrl}/${article.hero.startsWith("/") ? article.hero.slice(1) : article.hero}`) 
+    : `${baseUrl}/icon.png`;
+
+  const categoryTitle = article.categories[0].charAt(0).toUpperCase() + article.categories[0].slice(1);
+
+  // ==========================================
+  // 🚀 2026 SEO: Advanced Structured Data (JSON-LD)
+  // ==========================================
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": articleUrl
+    },
+    "headline": article.title,
+    "description": article.summary,
+    "image": [imageUrl],
+    "author": {
+      "@type": "Organization",
+      "name": config.site.name,
+      "url": baseUrl
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": config.site.name,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/icon.png`
+      }
+    },
+    "datePublished": article.lastUpdated,
+    "dateModified": article.lastUpdated
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": categoryTitle,
+        "item": `${baseUrl}/section/${article.categories[0]}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": article.title,
+        "item": articleUrl
+      }
+    ]
+  };
 
   const faqJsonLd = article.faqs && article.faqs.length > 0 ? {
     "@context": "https://schema.org",
@@ -49,6 +129,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     }))
   } : null;
 
+  // Combine all schemas into one array
+  const combinedJsonLd = [articleJsonLd, breadcrumbJsonLd, faqJsonLd].filter(Boolean);
+
+
   const generateAnchorId = (heading: string) => 
     heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -58,14 +142,21 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
   return (
     <article className="bg-background min-h-screen py-10 md:py-16 relative">
+      
+      {/* 🚀 Advanced JSON-LD Script Injection */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedJsonLd) }}
+      />
+
       <ReadingProgress />
 
-      {/* 🖨️ PRINT-ONLY HEADER (Sirf PDF me dikhega) */}
+      {/* 🖨️ PRINT-ONLY HEADER */}
       <div className="hidden print-only mb-8 pb-4 border-b-2 border-black">
         <div className="flex justify-between items-end">
           <div>
-            <h1 className="text-2xl font-bold font-serif m-0">Bandwar Village Portal</h1>
-            <p className="text-sm m-0 mt-1">bandwar.vercel.app</p>
+            <h1 className="text-2xl font-bold font-serif m-0">{config.site.name}</h1>
+            <p className="text-sm m-0 mt-1">{baseUrl.replace("https://", "")}</p>
           </div>
           <div className="text-sm text-right">
             <p className="m-0">Printed Document</p>
@@ -76,10 +167,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
       <div className="container-custom grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_340px] gap-8 xl:gap-12">
         
-        {faqJsonLd && (
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-        )}
-
         {/* LEFT COLUMN */}
         <aside className="hidden lg:block no-print">
           <div className="sticky top-28 bg-card border border-border rounded-xl shadow-sm p-5 text-sm overflow-hidden">
@@ -151,7 +238,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
-                {/* 👇 Pencil Button yahan add kiya hai 👇 */}
                 <ImageUpdateButton contextName={`Article: ${article.title}`} />
               </div>
             )}
@@ -162,7 +248,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </header>
 
           <div className="flow-root">
-            {/* 🖨️ Print Infobox (Top par dikhega PDF me) */}
+            {/* 🖨️ Print Infobox */}
             {article.infobox && (
               <div className="xl:hidden mb-8 print-infobox hidden">
                 <Infobox data={article.infobox} title={article.title} />
@@ -226,7 +312,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
           <div className="mt-8 pt-6 border-t border-border text-sm text-muted flex flex-col md:flex-row justify-between items-center gap-2">
             <span>Last updated: {article.lastUpdated}</span>
-            <span>Source: Bandwar Village Portal</span>
+            <span>Source: {config.site.name}</span>
           </div>
         </div>
 
