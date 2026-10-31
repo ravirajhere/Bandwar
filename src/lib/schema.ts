@@ -59,6 +59,24 @@ export const MasterSchema = z.object({
     address: z.string().optional(),
     coordinates: z.object({ lat: z.number(), lng: z.number() }).optional(),
   }),
+
+  // 👇 YEH NAYA BLOCK ADD KIYA HAI 👇
+  organization: z.object({
+    name: z.string(),
+    type: z.string().optional(),
+    foundingDate: z.string().optional(),
+    founders: z.array(z.string()).optional(),
+    areaServed: z.string().optional(),
+  }).optional(),
+
+  social: z.object({
+    github: z.string().optional(),
+    youtube: z.string().optional(),
+    instagram: z.string().optional(),
+    twitter: z.string().optional(),
+  }).optional(),
+  // 👆 NAYA BLOCK KHATAM 👆
+
   about: z.object({
     intro: z.string(),
     story: z.array(z.string()),
@@ -101,8 +119,8 @@ export const MasterSchema = z.object({
 export const ArticleSchema = z.object({
   id: IdSchema,
   title: z.string(),
-  metaTitle: z.string().optional(), // ✅ Added for SEO
-  metaDescription: z.string().optional(), // ✅ Added for SEO
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
   subtitle: z.string(),
   categories: z.array(z.string()),
   summary: z.string(),
@@ -110,7 +128,7 @@ export const ArticleSchema = z.object({
   photos: z.array(z.object({ 
     src: z.string(), 
     caption: z.string(),
-    imageAlt: z.string().optional() // ✅ Added for Image SEO
+    imageAlt: z.string().optional()
   })).default([]),
   infobox: z.record(z.string()).optional(),
   lastUpdated: DateSchema,
