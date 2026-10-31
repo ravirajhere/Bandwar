@@ -6,10 +6,11 @@ import { useToast } from "@/components/ui/Toast";
 
 interface ImageUpdateButtonProps {
   contextName: string; 
+  contextId: string; // 👈 Naya Prop: JSON generate karne ke liye (e.g., "snk-high-school-bandwar")
   currentImage?: string; 
 }
 
-// 🖼️ Image Compression Function (Badi image ko chhota karne ke liye)
+// 🖼️ Image Compression Function
 const compressImage = async (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -55,7 +56,7 @@ const compressImage = async (file: File): Promise<File> => {
   });
 };
 
-export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButtonProps) {
+export function ImageUpdateButton({ contextName, contextId, currentImage }: ImageUpdateButtonProps) {
   const { toast } = useToast(); 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -81,12 +82,16 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
       }
     }
 
-    // 👇 Telegram API ke liye zaroori data append karna
+    // 👇 Telegram API ke liye zaroori data (JSON generate karne ke liye)
     formData.append("type", "Image Update Suggestion");
+    formData.append("contextId", contextId);
     formData.append("Context Name", contextName);
+    
+    // User ka naam (Credit ke liye)
+    const submittedName = formData.get("submitter_name") as string;
+    formData.append("submitterName", submittedName || "Anonymous Visitor");
 
     try {
-      // 📱 Telegram par bhej rahe hain
       const response = await fetch("/api/telegram-submit", {
         method: "POST",
         body: formData,
@@ -182,8 +187,19 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
                     <label className="block text-sm font-medium text-foreground mb-1.5">Where did you get this photo?</label>
                     <input 
                       type="text" 
-                      name="Source / Reason" 
+                      name="source_reason" 
                       placeholder="e.g., Old family album, taken in 1990" 
+                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none" 
+                    />
+                  </div>
+
+                  {/* Your Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1.5">Your Name (For Credit)</label>
+                    <input 
+                      type="text" 
+                      name="submitter_name" 
+                      placeholder="e.g., Ramesh Kumar" 
                       className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none" 
                     />
                   </div>
