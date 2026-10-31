@@ -12,16 +12,19 @@ export async function POST(req: Request) {
 
     const type = formData.get("type") as string;
     const imageFile = formData.get("image") as File | null;
-    const contextId = formData.get("contextId") as string || formData.get("Article Title") as string || "Unknown";
-    const userName = formData.get("submitterName") as string || formData.get("Your Name") as string || "Anonymous Visitor";
+    
+    // User ka naam nikalna (Credit ke liye)
+    const userName = formData.get("Submitter Name") as string || formData.get("submitterName") as string || "Anonymous Visitor";
 
-    let message = `<b>🔔 New ${type} Update</b>\n<b>━━━━━━━━━━━━━━━━━━</b>\n`;
-    let jsonSnippet = "";
+    let message = `<b>✨ New ${type.toUpperCase()}</b>\n<b>━━━━━━━━━━━━━━━━━━</b>\n`;
+    let jsonObj: Record<string, string> = {
+      lastUpdated: new Date().toISOString().split('T')[0],
+      lastEditedBy: userName
+    };
 
-    // ==========================================
-    // 1. INLINE TEXT EDIT LOGIC
-    // ==========================================
-    if (type.includes("Article") || type.includes("Person") || type.includes("Infobox")) {
+    // Agar inline edit hai (jisme contextId aur field hota hai)
+    if (formData.has("contextId")) {
+      const contextId = formData.get("contextId") as string;
       const field = formData.get("field") as string;
       const oldValue = formData.get("currentValue") as string;
       const newValue = formData.get("suggestedValue") as string;
@@ -32,48 +35,29 @@ export async function POST(req: Request) {
       message += `✅ <b>New:</b> ${newValue}\n`;
       message += `👤 <b>Suggested By:</b> ${userName}\n\n`;
 
-      // Ready to copy JSON for the specific field
-      jsonSnippet = `<b>📋 COPY-PASTE THIS:</b>\n<pre>{
-  "lastUpdated": "${new Date().toISOString().split('T')[0]}",
-  "lastEditedBy": "${userName}",
-  "update_field": "${field}",
-  "new_value": "${newValue}"
-}</pre>`;
-
-    } 
-    // ==========================================
-    // 2. NEW CONTENT ADD LOGIC (Article, Person, etc.)
-    // ==========================================
-    else if (type.includes("New")) {
-      let jsonObj: Record<string, string> = {
+      jsonObj = {
         lastUpdated: new Date().toISOString().split('T')[0],
-        lastEditedBy: userName
+        lastEditedBy: userName,
+        update_field: field,
+        new_value: newValue
       };
-      
-      formData.forEach((value, key) => {
-        if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
-          message += `<b>${key}:</b> ${value}\n`;
-          const jsonKey = key.toLowerCase().replace(/\s+/g, '_');
-          jsonObj[jsonKey] = value;
-        }
-      });
-
-      jsonSnippet = `<b>📋 COPY-PASTE THIS OBJECT:</b>\n<pre>${JSON.stringify(jsonObj, null, 2)}</pre>`;
     } 
-    // ==========================================
-    // 3. GENERAL FEEDBACK / MAP / DIRECTORY
-    // ==========================================
+    // Agar naya content add ho raha hai (Article, Person, Directory)
     else {
       formData.forEach((value, key) => {
         if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
           message += `<b>${key}:</b> ${value}\n`;
+          
+          // JSON key format (e.g., "Article Title" -> "article_title")
+          const jsonKey = key.toLowerCase().replace(/\s+/g, '_');
+          jsonObj[jsonKey] = value;
         }
       });
     }
 
+    const jsonSnippet = `\n<b>📋 COPY-PASTE THIS JSON:</b>\n<pre>${JSON.stringify(jsonObj, null, 2)}</pre>`;
     const finalMessage = message + jsonSnippet;
 
-    // Bhejna Telegram par
     if (imageFile && imageFile.size > 0) {
       const photoFormData = new FormData();
       photoFormData.append("chat_id", chatId);
@@ -81,12 +65,17 @@ export async function POST(req: Request) {
       photoFormData.append("parse_mode", "HTML");
       photoFormData.append("photo", imageFile, imageFile.name);
 
-      await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
         method: "POST",
         body: photoFormData,
       });
+
+      const data = await response.json();
+      if (!data.ok) {
+        return NextResponse.json({ error: "Telegram API failed", details: data.description }, { status: 500 });
+      }
     } else {
-      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -95,6 +84,11 @@ export async function POST(req: Request) {
           parse_mode: "HTML",
         }),
       });
+
+      const data = await response.json();
+      if (!data.ok) {
+        return NextResponse.json({ error: "Telegram API failed", details: data.description }, { status: 500 });
+      }
     }
 
     return NextResponse.json({ success: true });
