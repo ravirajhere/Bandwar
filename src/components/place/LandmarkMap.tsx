@@ -8,7 +8,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { EditLocationModal } from "./EditLocationModal"; // 👈 Import kiya
+import { EditLocationModal } from "./EditLocationModal"; 
 
 // 🎨 Custom SVG Icon Generator
 const createIcon = (category: string, iconEmoji?: string) => {
@@ -118,9 +118,10 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
                       Get Directions
                     </a>
                     
-                    {/* 👇 Naya Advanced Modal yahan add kiya hai */}
+                    {/* 👇 Yahan contextId pass kiya hai 👇 */}
                     <EditLocationModal 
                       landmarkName={place.name || place.title} 
+                      contextId={place.id || place.name || "unknown-landmark"} 
                       currentLat={place.lat} 
                       currentLng={place.lng} 
                     />
