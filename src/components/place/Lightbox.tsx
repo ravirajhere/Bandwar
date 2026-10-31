@@ -95,10 +95,15 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
     >
       {/* 🟢 HEADER (Counter & Close) */}
       <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex justify-between items-center z-50 bg-gradient-to-b from-black/80 to-transparent">
-        {/* Counter */}
-        <div className="text-white/80 font-medium text-sm md:text-base bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10">
-          {currentIndex + 1} / {photos.length}
-        </div>
+        
+        {/* 👇 Counter (Sirf tab dikhega jab 1 se zyada photos hongi) 👇 */}
+        {photos.length > 1 ? (
+          <div className="text-white/80 font-medium text-sm md:text-base bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10">
+            {currentIndex + 1} / {photos.length}
+          </div>
+        ) : (
+          <div></div> // Empty div to keep flex-between layout intact
+        )}
 
         {/* Close Button */}
         <button 
@@ -125,7 +130,7 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
           onClick={(e) => e.stopPropagation()}
         >
           <Image
-            key={currentPhoto.id} // Key forces re-render on change (can add animation here)
+            key={currentPhoto.id} // Key forces re-render on change
             src={imageSrc}
             alt={currentPhoto.caption}
             fill
@@ -136,7 +141,7 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
           />
         </div>
 
-        {/* Desktop Navigation Arrows */}
+        {/* Desktop Navigation Arrows (Sirf tab dikhenge jab 1 se zyada photos hongi) */}
         {photos.length > 1 && (
           <>
             <button 
@@ -163,16 +168,20 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
           className="text-center max-w-3xl pointer-events-auto bg-white/10 backdrop-blur-xl border border-white/20 p-4 md:p-5 rounded-2xl shadow-2xl transform transition-all animate-in slide-in-from-bottom-4 duration-300"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center justify-center gap-2 mb-2">
-            {currentPhoto.year && (
-              <span className="bg-brand text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                {currentPhoto.year}
-              </span>
-            )}
-            <span className="text-white/60 text-xs font-semibold uppercase tracking-wider">
-              {currentPhoto.category}
-            </span>
-          </div>
+          {(currentPhoto.year || currentPhoto.category) && (
+            <div className="flex items-center justify-center gap-2 mb-2">
+              {currentPhoto.year && (
+                <span className="bg-brand text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                  {currentPhoto.year}
+                </span>
+              )}
+              {currentPhoto.category && (
+                <span className="text-white/60 text-xs font-semibold uppercase tracking-wider">
+                  {currentPhoto.category}
+                </span>
+              )}
+            </div>
+          )}
           <p className="text-white text-base md:text-lg leading-snug font-medium">
             {currentPhoto.caption}
           </p>
