@@ -2,15 +2,61 @@
 
 import { useState } from "react";
 import { Pencil, X, UploadCloud, Loader2, CheckCircle2 } from "lucide-react";
-import { useToast } from "@/components/ui/Toast"; // 👈 Naya Import
+import { useToast } from "@/components/ui/Toast"; 
 
 interface ImageUpdateButtonProps {
-  contextName: string; // Jaise "S.N.K. High School" ya "Mahant Surendra Das"
-  currentImage?: string; // Optional: Agar current image dikhana hai modal me
+  contextName: string; 
+  currentImage?: string; 
 }
 
+// 🖼️ Image Compression Function (Badi image ko chhota karne ke liye)
+const compressImage = async (file: File): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        const maxWidth = 1200; 
+
+        if (width > maxWidth) {
+          height = (height * maxWidth) / width;
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              });
+              resolve(compressedFile);
+            } else {
+              reject(new Error("Image compression failed"));
+            }
+          },
+          "image/jpeg",
+          0.8 
+        );
+      };
+    };
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButtonProps) {
-  const { toast } = useToast(); // 👈 Hook call kiya
+  const { toast } = useToast(); 
 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,25 +68,40 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key yahan daalein
-    formData.append("subject", `New Image Upload for: ${contextName}`);
-    formData.append("from_name", "Bandwar Portal Image Contributor");
+    
+    // 📸 Image Compression
+    const imageFile = formData.get("attachment") as File;
+    if (imageFile && imageFile.size > 0) {
+      try {
+        const compressedFile = await compressImage(imageFile);
+        formData.delete("attachment"); 
+        formData.append("image", compressedFile);
+      } catch (error) {
+        console.error("Compression failed", error);
+      }
+    }
+
+    // 👇 Telegram API ke liye zaroori data append karna
+    formData.append("type", "Image Update Suggestion");
+    formData.append("Context Name", contextName);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 📱 Telegram par bhej rahe hain
+      const response = await fetch("/api/telegram-submit", {
         method: "POST",
         body: formData,
       });
+      
       const data = await response.json();
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Photo sent successfully! Editor will review it soon.", "success"); // 👈 TOAST ADDED
+        toast("Photo sent to Telegram! Editor will review it.", "success");
       } else {
-        toast("Failed to upload. File might be too large (Max 5MB).", "error"); // 👈 ALERT REPLACED
+        toast(data.details || "Failed to send photo.", "error");
       }
     } catch (error) {
-      toast("Error submitting image. Please check your connection.", "error"); // 👈 ALERT REPLACED
+      toast("Error submitting image. Please check your connection.", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -59,7 +120,7 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
       {/* 🖊️ The Pencil Button */}
       <button
         onClick={(e) => {
-          e.preventDefault(); // Agar image link ke andar hai toh page change na ho
+          e.preventDefault(); 
           setIsOpen(true);
         }}
         className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-brand text-white p-2 rounded-full backdrop-blur-md transition-all shadow-lg group-hover:opacity-100 opacity-0 md:opacity-100"
@@ -88,7 +149,7 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
                 <div className="text-center py-8">
                   <CheckCircle2 size={48} className="text-green-500 mx-auto mb-4" />
                   <h4 className="text-lg font-bold text-foreground mb-2">Photo Sent Successfully!</h4>
-                  <p className="text-sm text-muted mb-6">Thank you. The editor will review and upload it soon.</p>
+                  <p className="text-sm text-muted mb-6">Thank you. The photo has been sent to the editor's Telegram.</p>
                   <button onClick={handleClose} className="bg-brand text-white px-6 py-2 rounded-lg font-medium hover:bg-brand-hover">
                     Close
                   </button>
@@ -113,7 +174,7 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
                     <p className="text-sm font-medium text-foreground">
                       {fileName ? fileName : "Click to select an image"}
                     </p>
-                    <p className="text-xs text-muted mt-1">JPG, PNG or WebP (Max 5MB)</p>
+                    <p className="text-xs text-muted mt-1">JPG, PNG or WebP (Auto-compressed)</p>
                   </div>
 
                   {/* Caption/Context */}
@@ -121,7 +182,7 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
                     <label className="block text-sm font-medium text-foreground mb-1.5">Where did you get this photo?</label>
                     <input 
                       type="text" 
-                      name="source" 
+                      name="Source / Reason" 
                       placeholder="e.g., Old family album, taken in 1990" 
                       className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none" 
                     />
@@ -133,7 +194,7 @@ export function ImageUpdateButton({ contextName, currentImage }: ImageUpdateButt
                     disabled={isSubmitting || !fileName}
                     className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-3 rounded-xl font-semibold transition-all shadow-sm disabled:opacity-50"
                   >
-                    {isSubmitting ? <><Loader2 size={18} className="animate-spin" /> Uploading...</> : "Send Photo to Editor"}
+                    {isSubmitting ? <><Loader2 size={18} className="animate-spin" /> Compressing & Sending...</> : "Send Photo to Editor"}
                   </button>
                 </form>
               )}
