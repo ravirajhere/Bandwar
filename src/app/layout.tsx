@@ -5,7 +5,7 @@ import { getMasterData } from "@/lib/data";
 import { getSearchIndex } from "@/lib/search-data"; 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { ToastProvider } from "@/components/ui/Toast"; // 👈 Naya Import
+import { ToastProvider } from "@/components/ui/Toast";
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -51,7 +51,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description: config.site.description,
     },
     icons: {
-      icon: "/favicon.ico",
+      icon: "/icon.png", // Update: icon.png use kiya hai jo humne src/app me daala tha
+      apple: "/icon.png",
     }
   };
 }
@@ -60,22 +61,66 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const config = getMasterData();
   const searchIndex = getSearchIndex(); 
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: config.site.name,
-    url: config.site.url,
-    description: config.site.description,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${config.site.url}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
-  };
+  // ==========================================
+  // 🚀 2026 SEO: Advanced Structured Data (JSON-LD)
+  // ==========================================
+  const jsonLd = [
+    // 1. Website Schema (Search Action)
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": `${config.site.url}/#website`,
+      url: config.site.url,
+      name: config.site.name,
+      description: config.site.description,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${config.site.url}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string"
+      }
+    },
+    // 2. Organization Schema (Portal Identity)
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": `${config.site.url}/#organization`,
+      name: config.organization?.name || config.site.name,
+      url: config.site.url,
+      logo: `${config.site.url}/icon.png`,
+      description: config.site.description,
+      foundingDate: config.organization?.foundingDate,
+      email: config.contact?.email,
+      sameAs: [
+        config.social?.github
+      ].filter(Boolean) // Khali links ko hata dega
+    },
+    // 3. Place Schema (Village Location for Local SEO)
+    ...(config.village ? [{
+      "@context": "https://schema.org",
+      "@type": "Place",
+      "@id": `${config.site.url}/#place`,
+      name: config.village.name,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: config.village.name,
+        addressRegion: config.village.state,
+        postalCode: config.village.pincode,
+        addressCountry: config.village.country
+      },
+      ...(config.village.coordinates && {
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: config.village.coordinates.lat,
+          longitude: config.village.coordinates.lng
+        }
+      })
+    }] : [])
+  ];
 
   return (
     <html lang="en-IN" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
+        {/* Theme Flash Prevention Script */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -90,6 +135,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             `,
           }}
         />
+        
+        {/* 🚀 Advanced JSON-LD Schema Array */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -98,7 +145,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       
       <body className="bg-background text-foreground font-sans antialiased min-h-screen flex flex-col transition-colors duration-300">
         
-        {/* 👇 ToastProvider se poore app ko wrap kiya 👇 */}
         <ToastProvider>
           <a 
             href="#main-content" 
