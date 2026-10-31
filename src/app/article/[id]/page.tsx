@@ -256,9 +256,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </header>
 
           <div className="flow-root">
-            {/* 🖨️ Print Infobox (Ab editable hai) */}
+            {/* 🖨️ Mobile & Print Infobox (Ab 'hidden' nahi hai) */}
             {article.infobox && (
-              <div className="xl:hidden mb-8 print-infobox hidden">
+              <div className="xl:hidden mb-8 print-infobox">
                 <Infobox data={article.infobox} title={article.title} articleId={article.id} />
               </div>
             )}
@@ -339,7 +339,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         {/* RIGHT COLUMN */}
         <aside className="hidden xl:block no-print">
           <div className="sticky top-28">
-            {/* 🖨️ Desktop Infobox (Ab editable hai) */}
+            {/* 🖨️ Desktop Infobox */}
             {article.infobox && <Infobox data={article.infobox} title={article.title} articleId={article.id} />}
           </div>
         </aside>
