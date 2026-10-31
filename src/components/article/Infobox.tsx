@@ -1,4 +1,5 @@
-import { UniversalEditModal } from "@/components/shared/UniversalEditModal"; // 👈 Naya Import
+import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
+import { Info } from "lucide-react"; // 👈 Header ke liye icon import kiya
 
 export function Infobox({ data, title, articleId }: { data: Record<string, string>; title: string; articleId?: string }) {
   if (!data || Object.keys(data).length === 0) return null;
@@ -6,35 +7,36 @@ export function Infobox({ data, title, articleId }: { data: Record<string, strin
   return (
     <aside 
       aria-label={`Quick facts about ${title}`}
-      className="bg-card border border-border rounded-xl shadow-sm w-full mb-6 overflow-hidden"
+      className="bg-card border border-border rounded-2xl shadow-sm w-full mb-8 overflow-hidden"
     >
-      {/* 📌 Infobox Header */}
-      <div className="bg-muted-background px-4 py-3 border-b border-border text-center">
-        <h3 className="font-serif font-bold text-foreground text-lg m-0 tracking-tight">
+      {/* 📌 Infobox Header (Premium Look) */}
+      <div className="bg-muted-background/80 px-5 py-4 border-b border-border flex items-center gap-2">
+        <Info size={18} className="text-brand shrink-0" />
+        <h3 className="font-serif font-bold text-foreground text-[17px] m-0 tracking-tight truncate">
           {title}
         </h3>
       </div>
 
       {/* 📊 Infobox Data Rows */}
       <div className="p-0">
-        <dl className="m-0 text-sm sm:text-[15px]">
+        <dl className="m-0 divide-y divide-border-subtle">
           {Object.entries(data).map(([key, value]) => (
             <div 
               key={key} 
-              className="flex border-b border-border-subtle last:border-0 hover:bg-muted-background/30 transition-colors group"
+              className="flex group hover:bg-muted-background/40 transition-colors duration-200"
             >
-              {/* Key Column (Left - Muted Background) */}
-              <dt className="w-[35%] sm:w-[40%] px-4 py-3 bg-muted-background/50 text-foreground/70 font-semibold border-r border-border-subtle leading-snug">
+              {/* Key Column (Left) */}
+              <dt className="w-[38%] sm:w-[40%] px-5 py-3.5 text-foreground/60 font-medium text-[13px] sm:text-[14px] leading-snug flex items-center">
                 {key}
               </dt>
               
-              {/* Value Column (Right - Card Background) */}
-              <dd className="w-[65%] sm:w-[60%] px-4 py-3 text-foreground leading-relaxed break-words text-pretty flex justify-between items-start gap-2">
+              {/* Value Column (Right) */}
+              <dd className="w-[62%] sm:w-[60%] px-5 py-3.5 text-foreground text-[14px] sm:text-[15px] font-medium leading-relaxed break-words text-pretty flex items-center justify-between gap-2">
                 <span>{value}</span>
                 
-                {/* 🚀 Edit Button (Sirf tab dikhega jab articleId pass hoga) */}
+                {/* 🚀 Edit Button (Desktop pe hover par, Mobile pe always visible) */}
                 {articleId && (
-                  <div className="no-print shrink-0 mt-0.5">
+                  <div className="no-print shrink-0">
                     <UniversalEditModal 
                       fieldName={`Infobox: ${key}`} 
                       currentValue={value} 
