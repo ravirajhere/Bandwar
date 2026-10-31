@@ -1,79 +1,100 @@
 import { MetadataRoute } from 'next';
-import { getMasterData, getAllArticles, getMediaData } from '@/lib/data';
+import { getMasterData, getAllArticles, getPeopleData, getCategoriesData } from "@/lib/data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // 1. Base URL config se utha rahe hain
-  const master = getMasterData();
-  const baseUrl = master.site.url.replace(/\/$/, ''); // Trailing slash remove
+  const config = getMasterData();
+  const baseUrl = config.site.url;
 
-  // 2. Main Static Pages
+  // 1. STATIC PAGES (Jo hamesha rahenge)
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/directory`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${baseUrl}/place`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/people`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${baseUrl}/time`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${baseUrl}/reach`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.6 },
-    { url: `${baseUrl}/vision`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/section`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${baseUrl}/contribute`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.5 },
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 1.0, // Homepage ki priority sabse zyada
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/directory`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9, // Directory bahut important hai
+    },
+    {
+      url: `${baseUrl}/gallery`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/people`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/reach`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/vision`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/section`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contribute`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.5,
+    },
   ];
 
-  // 3. Articles aur unki images
+  // 2. DYNAMIC CATEGORY PAGES (`/section/[id]`)
+  const categories = getCategoriesData().categories;
+  const categoryRoutes: MetadataRoute.Sitemap = categories.map((cat) => ({
+    url: `${baseUrl}/section/${cat.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
+  // 3. DYNAMIC ARTICLE PAGES (`/article/[id]`)
   const articles = getAllArticles();
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => {
-    const imageSet = new Set<string>();
-    
-    // Hero image add karein
-    if (article.hero) {
-      imageSet.add(`${baseUrl}/${article.hero.replace(/^\//, '')}`);
-    }
-    
-    // Gallery photos add karein (agar hain toh)
-    if (article.photos && article.photos.length > 0) {
-      article.photos.forEach((photo) => {
-        imageSet.add(`${baseUrl}/${photo.src.replace(/^\//, '')}`);
-      });
-    }
+  const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
+    url: `${baseUrl}/article/${article.id}`,
+    lastModified: new Date(article.lastUpdated), // Article ki actual last updated date use ki
+    changeFrequency: 'monthly',
+    priority: 0.9, // Articles high priority
+  }));
 
-    const uniqueImages = Array.from(imageSet);
-    
-    // Date parse error se bachne ke liye fallback
-    const lastModDate = article.lastUpdated ? new Date(article.lastUpdated) : new Date();
+  // 4. DYNAMIC PEOPLE PAGES (`/people/[id]`)
+  const people = getPeopleData().people;
+  const peopleRoutes: MetadataRoute.Sitemap = people.map((person) => ({
+    url: `${baseUrl}/people/${person.id}`,
+    lastModified: new Date(), // Agar future me lastUpdated add karein toh wo use karein
+    changeFrequency: 'yearly', // People ki profile jaldi nahi badalti
+    priority: 0.7,
+  }));
 
-    return {
-      url: `${baseUrl}/article/${article.id}`,
-      lastModified: isNaN(lastModDate.getTime()) ? new Date() : lastModDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-      images: uniqueImages.length > 0 ? uniqueImages : undefined, 
-    };
-  });
-
-  // 4. Gallery Images ko map karna (Place page ke andar)
-  let galleryImages: string[] = [];
-  try {
-    const media = getMediaData();
-    if (media.gallery && media.gallery.photos) {
-      galleryImages = media.gallery.photos.map(
-        (photo) => `${baseUrl}/${photo.src.replace(/^\//, '')}`
-      );
-    }
-  } catch (e) {
-    console.error("Sitemap Error: Could not read media data for images.");
-  }
-
+  // Combine all routes
   return [
     ...staticRoutes,
+    ...categoryRoutes,
     ...articleRoutes,
-    // Agar gallery images hain, toh unhe /place route ke sath link kar dete hain
-    ...(galleryImages.length > 0 ? [{
-      url: `${baseUrl}/place`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-      images: galleryImages
-    }] : [])
+    ...peopleRoutes,
   ];
 }
