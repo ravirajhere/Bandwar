@@ -26,7 +26,8 @@ Built with a **Modern Heritage UI** and **Wikipedia-inspired inline editing**, t
 The website uses a custom **Telegram Bot integration** to allow visitors to suggest edits without any backend or database.
 - **Wikipedia-Style Inline Editing:** Visitors can click the pencil (✏️) icon next to *any* text, paragraph, or Infobox data to suggest a correction.
 - **Universal Add Content Modal:** Visitors can submit new Articles, Directory entries, People profiles, and Gallery photos directly from their respective pages.
-- **Auto Image Compression:** When a visitor uploads a photo, it is compressed **on their device** before sending. This ensures you receive high-quality, lightweight images directly on Telegram.
+- **Auto Image Compression & SEO Naming:** When a visitor uploads a photo, it is compressed **on their device**. The system also auto-generates an SEO-friendly filename (e.g., `old-thakurbari-bandwar.jpg`) based on the title they enter, which is sent directly to Telegram.
+- **Ready-to-Copy JSON Snippets:** Every Telegram message includes a perfectly formatted JSON block. The Editor can simply copy this block and paste it into the site's JSON files without typing anything manually.
 - **Google Maps Level Location Picker:** If a map marker is wrong, users can drag the map, use the search bar (Nominatim API), or use GPS to suggest exact coordinates.
 - **Red Links (Missing Articles):** Internal links to non-existent articles appear in red. Clicking them prompts the visitor to submit a request for that new article.
 - **Auto-Backlinks:** Articles automatically show a "Mentioned In" section if other articles link to them.
@@ -78,8 +79,7 @@ The website uses a custom **Telegram Bot integration** to allow visitors to sugg
     │
     ├── src/                        # 💻 CORE APPLICATION CODE
     │   ├── app/                    # Next.js App Router (Pages)
-    │   │   ├── api/telegram-submit/# Next.js API route for Telegram Bot
-    │   │   ├── api/telegram/       # Next.js API route for Inline Edits
+    │   │   ├── api/telegram-submit/# Next.js API route for all Telegram integrations
     │   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
     │   │   ├── gallery/            # Dedicated Photo Gallery Page
     │   │   ├── directory/          # Village Directory Page
@@ -125,15 +125,16 @@ The website uses a custom **Telegram Bot integration** to allow visitors to sugg
 
 ## ✍️ Editor Workflow (How to handle Contributions)
 
-Since the site is static, you act as the database manager, but your workflow is now incredibly simple.
+Since the site is static, you act as the database manager, but your workflow is now incredibly simple thanks to the Telegram Bot.
 
 1. **Receive Telegram Message:** When a user submits a form, your Bandwar Bot will instantly send you a formatted message.
-2. **Review:** Open the message on your phone. It contains the page ID, exact field name, old text, and new text (along with a Google Maps link for location fixes or compressed images for gallery updates).
+2. **Review & Copy:** Open the message on your phone. It contains the page ID, exact field name, old text, and new text. At the bottom, there is a **"📋 COPY-PASTE THIS JSON"** block. Tap on it to copy it.
 3. **Update JSON (Mobile):** 
    - Open the **GitHub Mobile App**.
    - Navigate to the specific JSON file (e.g., `data/articles/education.json`).
-   - Tap edit, make the necessary change (copy the suggested text), and commit the change.
-4. **Auto Deploy:** Vercel detects the GitHub commit and automatically builds/deploys the new version.
+   - Tap edit, make the necessary change (paste the data), add the `lastEditedBy` name for credit, and commit the change.
+4. **Handle Images:** If a user uploaded a photo, download the compressed image from Telegram. Rename it exactly as suggested in the Telegram message (e.g., `old-thakurbari-bandwar.jpg`). Upload it to the specified folder (e.g., `public/images/religion/`), and update the `media.json` file with the exact filename.
+5. **Auto Deploy:** Vercel detects the GitHub commit and automatically builds/deploys the new version.
 
 ### Special Rule: Auto-Hide Missing Images
 In `src/lib/data.ts`, we implemented an `fs.existsSync` check. If you add a photo to `media.json` but forget to upload the actual file to `public/images/`, the website will **automatically hide** it to prevent broken image icons on the live site. Check your terminal build logs to see warnings about missing images.
