@@ -5,6 +5,7 @@ import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
+import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; // 👈 Naya Import
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3 } from "lucide-react"; 
@@ -139,6 +140,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
             
+            {/* 🚀 HERO IMAGE WITH EDIT BUTTON */}
             {article.hero && (
               <div className="relative w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-card mb-10 bg-muted-background group">
                 <Image
@@ -149,6 +151,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
+                {/* 👇 Pencil Button yahan add kiya hai 👇 */}
+                <ImageUpdateButton contextName={`Article: ${article.title}`} />
               </div>
             )}
 
@@ -164,7 +168,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                 <Infobox data={article.infobox} title={article.title} />
               </div>
             )}
-            {/* 👆 Note: Maine isko hidden karke print CSS se visible karwaya hai */}
 
             <div className="space-y-10">
               {article.content.map((block: { heading: string, text: string }, index: number) => (
