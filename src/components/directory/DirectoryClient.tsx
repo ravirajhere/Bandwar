@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search, Phone, MapPin, Clock, X, AlertCircle } from "lucide-react";
 import { DirectoryItem } from "@/lib/schema";
-import { EditContactModal } from "./EditContactModal"; // 👈 Import kiya
+import { EditContactModal } from "./EditContactModal"; 
 
 interface DirectoryClientProps {
   items: DirectoryItem[];
@@ -153,13 +153,17 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                     )}
                   </div>
 
-                  {/* 🚀 NAYA: Phone Number with Edit Button */}
+                  {/* 🚀 Phone Number with Edit Button */}
                   {item.phone && (
                     <div className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground bg-muted-background border border-border-subtle px-3 py-1.5 rounded-lg">
                       <Phone size={14} className="text-brand" /> 
                       {item.phone}
-                      {/* Pencil Button */}
-                      <EditContactModal itemName={item.name} currentPhone={item.phone} />
+                      {/* 👇 Yahan itemId pass kiya hai 👇 */}
+                      <EditContactModal 
+                        itemName={item.name} 
+                        itemId={item.id} 
+                        currentPhone={item.phone} 
+                      />
                     </div>
                   )}
                 </div>
