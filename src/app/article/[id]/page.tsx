@@ -5,10 +5,9 @@ import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
-import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; 
 import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
-import { MobileTOC } from "@/components/article/MobileTOC"; // 👈 Naya Import
-import Image from "next/image";
+import { MobileTOC } from "@/components/article/MobileTOC"; 
+import { ArticleHeroImage } from "@/components/article/ArticleHeroImage"; // 👈 Naya Import
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; 
 
@@ -131,7 +130,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
       <ReadingProgress />
 
-      {/* 🚀 MOBILE FLOATING TOC */}
       <MobileTOC 
         content={article.content} 
         hasFaqs={!!(article.faqs && article.faqs.length > 0)} 
@@ -232,18 +230,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
             
+            {/* 🚀 UPDATED: Hero Image with Lightbox */}
             {article.hero && (
-              <div className="relative w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-card mb-10 bg-muted-background group">
-                <Image
-                  src={article.hero.startsWith("/") ? article.hero : `/${article.hero}`}
-                  alt={article.photos?.[0]?.imageAlt || article.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 800px"
-                  className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
-                  priority
-                />
-                <ImageUpdateButton contextName={`Article: ${article.title}`} contextId={article.id} currentImage={article.hero} />
-              </div>
+              <ArticleHeroImage 
+                hero={article.hero}
+                title={article.title}
+                articleId={article.id}
+                altText={article.photos?.[0]?.imageAlt || article.title}
+              />
             )}
 
             <div className="flex items-start gap-2 group">
