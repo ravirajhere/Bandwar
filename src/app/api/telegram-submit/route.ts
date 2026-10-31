@@ -12,43 +12,45 @@ export async function POST(req: Request) {
 
     const type = formData.get("type") as string;
     const imageFile = formData.get("image") as File | null;
+    const contextId = formData.get("contextId") as string || "unknown";
+    const userName = formData.get("submitterName") as string || "Anonymous Visitor";
     
-    // User ka naam nikalna (Credit ke liye)
-    const userName = formData.get("Submitter Name") as string || formData.get("submitterName") as string || "Anonymous Visitor";
-
-    let message = `<b>✨ New ${type.toUpperCase()}</b>\n<b>━━━━━━━━━━━━━━━━━━</b>\n`;
+    let message = `<b>🔔 New ${type.toUpperCase()}</b>\n<b>━━━━━━━━━━━━━━━━━━</b>\n`;
     let jsonObj: Record<string, string> = {
       lastUpdated: new Date().toISOString().split('T')[0],
       lastEditedBy: userName
     };
 
-    // Agar inline edit hai (jisme contextId aur field hota hai)
-    if (formData.has("contextId")) {
-      const contextId = formData.get("contextId") as string;
-      const field = formData.get("field") as string;
-      const oldValue = formData.get("currentValue") as string;
-      const newValue = formData.get("suggestedValue") as string;
-      
-      message += `📍 <b>Target ID:</b> <code>${contextId}</code>\n`;
-      message += `📝 <b>Field:</b> ${field}\n`;
-      message += `❌ <b>Old:</b> ${oldValue}\n`;
-      message += `✅ <b>New:</b> ${newValue}\n`;
+    // ==========================================
+    // 1. IMAGE UPDATE LOGIC (Article/People Photo Replace)
+    // ==========================================
+    if (type === "Image Update Suggestion") {
+      const contextName = formData.get("Context Name") as string;
+      const currentImage = formData.get("currentImagePath") as string || "Unknown Path";
+      const sourceReason = formData.get("source_reason") as string || "Not provided";
+
+      message += `📍 <b>Target:</b> ${contextName}\n`;
+      message += `🆔 <b>Context ID:</b> <code>${contextId}</code>\n`;
+      message += `💡 <b>Source:</b> ${sourceReason}\n`;
       message += `👤 <b>Suggested By:</b> ${userName}\n\n`;
+      
+      message += `⚠️ <b>INSTRUCTION:</b>\n`;
+      message += `Download the attached photo and <b>rename it exactly to</b> the file name below. Then upload it to your GitHub repo to overwrite the old image.\n\n`;
+      message += `📁 <b>File to Overwrite:</b>\n<code>${currentImage}</code>\n\n`;
 
       jsonObj = {
         lastUpdated: new Date().toISOString().split('T')[0],
         lastEditedBy: userName,
-        update_field: field,
-        new_value: newValue
+        action: "Image updated (file overwritten)"
       };
-    } 
-    // Agar naya content add ho raha hai (Article, Person, Directory)
+    }
+    // ==========================================
+    // 2. NEW CONTENT / INLINE EDIT LOGIC (Same as before)
+    // ==========================================
     else {
       formData.forEach((value, key) => {
         if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
           message += `<b>${key}:</b> ${value}\n`;
-          
-          // JSON key format (e.g., "Article Title" -> "article_title")
           const jsonKey = key.toLowerCase().replace(/\s+/g, '_');
           jsonObj[jsonKey] = value;
         }
@@ -58,6 +60,7 @@ export async function POST(req: Request) {
     const jsonSnippet = `\n<b>📋 COPY-PASTE THIS JSON:</b>\n<pre>${JSON.stringify(jsonObj, null, 2)}</pre>`;
     const finalMessage = message + jsonSnippet;
 
+    // Send to Telegram
     if (imageFile && imageFile.size > 0) {
       const photoFormData = new FormData();
       photoFormData.append("chat_id", chatId);
@@ -70,9 +73,8 @@ export async function POST(req: Request) {
         body: photoFormData,
       });
 
-      const data = await response.json();
-      if (!data.ok) {
-        return NextResponse.json({ error: "Telegram API failed", details: data.description }, { status: 500 });
+      if (!(await response.json()).ok) {
+        return NextResponse.json({ error: "Telegram API failed" }, { status: 500 });
       }
     } else {
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -85,9 +87,8 @@ export async function POST(req: Request) {
         }),
       });
 
-      const data = await response.json();
-      if (!data.ok) {
-        return NextResponse.json({ error: "Telegram API failed", details: data.description }, { status: 500 });
+      if (!(await response.json()).ok) {
+        return NextResponse.json({ error: "Telegram API failed" }, { status: 500 });
       }
     }
 
