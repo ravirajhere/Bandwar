@@ -5,7 +5,7 @@ import { getMasterData } from "@/lib/data";
 import { getSearchIndex } from "@/lib/search-data"; 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-// ❌ EmergencyBar ka import hata diya
+import { ToastProvider } from "@/components/ui/Toast"; // 👈 Naya Import
 
 const inter = Inter({ 
   subsets: ["latin"], 
@@ -96,25 +96,25 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       
-      {/* ✅ FIX: body se 'pb-16 md:pb-0' hata diya hai taaki neeche khali jagah na bache */}
       <body className="bg-background text-foreground font-sans antialiased min-h-screen flex flex-col transition-colors duration-300">
         
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand focus:text-white focus:rounded-md focus:shadow-lg transition-all"
-        >
-          Skip to main content
-        </a>
+        {/* 👇 ToastProvider se poore app ko wrap kiya 👇 */}
+        <ToastProvider>
+          <a 
+            href="#main-content" 
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-brand focus:text-white focus:rounded-md focus:shadow-lg transition-all"
+          >
+            Skip to main content
+          </a>
 
-        <Header config={config} searchIndex={searchIndex} />
-        
-        <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
-          {children}
-        </main>
-        
-        <Footer config={config} />
-        
-        {/* ❌ <EmergencyBar config={config} /> yahan se remove kar diya */}
+          <Header config={config} searchIndex={searchIndex} />
+          
+          <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
+            {children}
+          </main>
+          
+          <Footer config={config} />
+        </ToastProvider>
         
       </body>
     </html>
