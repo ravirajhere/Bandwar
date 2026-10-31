@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { createPortal } from "react-dom"; // 👈 React Portal Import kiya
+import { createPortal } from "react-dom";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapPinOff, X, Loader2, CheckCircle2, Search, Navigation, MapPin } from "lucide-react";
+import { useToast } from "@/components/ui/Toast"; // 👈 Naya Import
 
 function MapTracker({ onCenterChange }: { onCenterChange: (lat: number, lng: number) => void }) {
   const map = useMapEvents({
@@ -32,8 +33,10 @@ interface EditLocationModalProps {
 }
 
 export function EditLocationModal({ landmarkName, currentLat, currentLng }: EditLocationModalProps) {
+  const { toast } = useToast(); // 👈 Hook call kiya
+
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false); // 👈 Client side check ke liye
+  const [mounted, setMounted] = useState(false); 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
@@ -72,6 +75,7 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
       setShowResults(true);
     } catch (error) {
       console.error("Search failed", error);
+      toast("Failed to search location. Try again.", "error"); // 👈 ALERT REPLACED
     } finally {
       setIsSearching(false);
     }
@@ -88,11 +92,12 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setFlyTo({ lat: position.coords.latitude, lng: position.coords.longitude, zoom: 18 });
+          toast("Location found!", "success"); // 👈 Toast added
         },
-        () => alert("Could not get your location. Please check browser permissions.")
+        () => toast("Could not get your location. Check permissions.", "error") // 👈 ALERT REPLACED
       );
     } else {
-      alert("Geolocation is not supported by this browser.");
+      toast("Geolocation is not supported by this browser.", "error"); // 👈 ALERT REPLACED
     }
   };
 
@@ -119,15 +124,16 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
       
       if (data.success) {
         setIsSuccess(true);
+        toast("Location updated successfully! Sent for review.", "success"); // 👈 Toast added
         setTimeout(() => {
           setIsOpen(false);
           setTimeout(() => setIsSuccess(false), 300);
         }, 3000);
       } else {
-        alert("Something went wrong. Please try again.");
+        toast("Something went wrong. Please try again.", "error"); // 👈 ALERT REPLACED
       }
     } catch (error) {
-      alert("Error sending request.");
+      toast("Error sending request. Check your connection.", "error"); // 👈 ALERT REPLACED
     } finally {
       setIsSubmitting(false);
     }
@@ -281,7 +287,6 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
         <MapPinOff size={14} /> Location is wrong?
       </button>
 
-      {/* 👇 Yahan createPortal use kiya hai taaki modal popup se bahar nikle 👇 */}
       {isOpen && mounted ? createPortal(modalContent, document.body) : null}
     </>
   );
