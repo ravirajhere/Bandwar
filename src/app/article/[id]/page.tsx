@@ -247,10 +247,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
-                {/* 👇 Yahan contextId pass kiya hai 👇 */}
+                {/* 👇 Yahan currentImage={article.hero} add kiya hai 👇 */}
                 <ImageUpdateButton 
                   contextName={`Article: ${article.title}`} 
                   contextId={article.id} 
+                  currentImage={article.hero} 
                 />
               </div>
             )}
