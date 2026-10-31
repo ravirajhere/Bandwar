@@ -6,7 +6,7 @@ import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
 import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; 
-import { UniversalEditModal } from "@/components/shared/UniversalEditModal"; // 👈 Naya Import
+import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3 } from "lucide-react"; 
@@ -256,10 +256,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </header>
 
           <div className="flow-root">
-            {/* 🖨️ Print Infobox */}
+            {/* 🖨️ Print Infobox (Ab editable hai) */}
             {article.infobox && (
               <div className="xl:hidden mb-8 print-infobox hidden">
-                <Infobox data={article.infobox} title={article.title} />
+                <Infobox data={article.infobox} title={article.title} articleId={article.id} />
               </div>
             )}
 
@@ -314,7 +314,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* Bottom generic edit box (Optional, as we have inline now) */}
+          {/* Bottom generic edit box */}
           <div className="mt-12 bg-muted-background border border-border rounded-xl p-6 sm:p-8 text-center no-print">
             <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
               Something else is incorrect?
@@ -339,7 +339,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         {/* RIGHT COLUMN */}
         <aside className="hidden xl:block no-print">
           <div className="sticky top-28">
-            {article.infobox && <Infobox data={article.infobox} title={article.title} />}
+            {/* 🖨️ Desktop Infobox (Ab editable hai) */}
+            {article.infobox && <Infobox data={article.infobox} title={article.title} articleId={article.id} />}
           </div>
         </aside>
 
