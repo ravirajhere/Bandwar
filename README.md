@@ -12,32 +12,47 @@ Built with a **Modern Heritage UI** and **Wikipedia-inspired inline editing**, t
 
 ---
 
+## 📸 Screenshots
+
+*(Yahan aap apni website ke screenshots add kar sakte hain)*
+
+| Desktop View | Mobile View |
+| :---: | :---: |
+| `![Desktop View](https://via.placeholder.com/800x450?text=Desktop+View)` | `![Mobile View](https://via.placeholder.com/300x600?text=Mobile+View)` |
+| **Article Page** | **Interactive Map** |
+| `![Article](https://via.placeholder.com/800x450?text=Article+Page)` | `![Map](https://via.placeholder.com/800x450?text=Map+View)` |
+
+---
+
 ## ✨ Key Features
 
 ### 🎨 UI/UX & Accessibility
 - **Premium Heritage Design:** Warm earthy colors, Glassmorphism navbar, and Playfair Display + Inter typography.
 - **Senior-Friendly:** Large touch targets, high contrast, and readable font sizes.
 - **Dark/Light Mode:** Saves user preference via `localStorage` with no flash on load.
-- **Live Weather & Time Widget:** Integrated in the footer using Open-Meteo API.
+- **Hero Image Lightbox:** Clicking an article's main image opens it in a full-screen, distraction-free Lightbox.
+- **Mobile Floating TOC:** A native app-style floating button on mobile that opens the Table of Contents in a bottom sheet, helping users navigate long articles easily.
+- **Verified Trust Badge:** Articles display a green "Verified by [Name] on [Date]" badge to build visitor trust.
+- **Premium Category Tags:** Beautiful, clickable category badges at the bottom of articles with icons.
 - **Reading Progress Bar:** A sleek green line at the top of articles indicating scroll progress.
 - **Text-to-Speech (TTS):** "Listen to Article" in Hindi for easy listening.
+- **Live Weather & Time Widget:** Integrated in the footer using Open-Meteo API.
 
 ### 🌐 Community Contributions (The "Telegram Magic")
 The website uses a custom **Telegram Bot integration** to allow visitors to suggest edits without any backend or database.
 - **Wikipedia-Style Inline Editing:** Visitors can click the pencil (✏️) icon next to *any* text, paragraph, or Infobox data to suggest a correction.
 - **Universal Add Content Modal:** Visitors can submit new Articles, Directory entries, People profiles, and Gallery photos directly from their respective pages.
-- **Auto Image Compression & SEO Naming:** When a visitor uploads a photo, it is compressed **on their device**. The system also auto-generates an SEO-friendly filename (e.g., `old-thakurbari-bandwar.jpg`) based on the title they enter, which is sent directly to Telegram.
+- **Auto Image Compression & SEO Naming:** When a visitor uploads a photo, it is compressed **on their device** (saving your bandwidth). The system also auto-generates an SEO-friendly filename (e.g., `old-thakurbari-bandwar.jpg`) based on the title they enter.
 - **Ready-to-Copy JSON Snippets:** Every Telegram message includes a perfectly formatted JSON block. The Editor can simply copy this block and paste it into the site's JSON files without typing anything manually.
 - **Google Maps Level Location Picker:** If a map marker is wrong, users can drag the map, use the search bar (Nominatim API), or use GPS to suggest exact coordinates.
 - **Red Links (Missing Articles):** Internal links to non-existent articles appear in red. Clicking them prompts the visitor to submit a request for that new article.
 - **Auto-Backlinks:** Articles automatically show a "Mentioned In" section if other articles link to them.
-- **Zero Email Jhanjhat:** All submissions (Text, Image, Map, Feedback) go directly to the Editor's Telegram Bot in a beautifully formatted message.
 
 ### 🗺️ Core Pages & Features
-- **Home Dashboard:** Interactive Satellite Map (Esri), Quick Access buttons, Latest Articles, and Village Stats.
+- **Home Dashboard:** Interactive Satellite Map (Esri), Quick Access buttons, "Recently Updated" articles, and Village Stats.
 - **Directory:** Searchable list of doctors, shops, and emergency contacts with inline editing.
 - **Gallery:** Dedicated visual archive with category filters and a full-screen Lightbox. Includes auto-hide logic for missing images.
-- **Article Archive:** Clean 3-column layout (TOC, Content, Infobox) with FAQ Schema and internal linking `[[article-id|label]]`.
+- **Article Archive:** Clean 3-column layout (TOC, Content, Infobox) with FAQ Schema.
 - **Zero-Database Architecture:** 100% static site powered by JSON files. Ultra-fast load times and zero hosting costs for the database.
 
 ---
@@ -67,9 +82,13 @@ The website uses a custom **Telegram Bot integration** to allow visitors to sugg
     │   ├── vision.json             # Vision 2035 Manifesto data
     │   ├── categories.json         # Article categories
     │   └── articles/               # All articles split by category
-    │       ├── education.json  
-    │       ├── culture.json    
-    │       └── ...
+    │       ├── culture.json
+    │       ├── education.json
+    │       ├── geography.json
+    │       ├── health.json
+    │       ├── infrastructure.json
+    │       ├── landmarks.json
+    │       └── religion.json
     │
     ├── public/                     # 📸 STATIC ASSETS
     │   └── images/                 # All photos organized by category
@@ -91,11 +110,11 @@ The website uses a custom **Telegram Bot integration** to allow visitors to sugg
     │   │   └── page.tsx            # Homepage (Hero, Map, Stats)
     │   │
     │   ├── components/             # Reusable UI Components
-    │   │   ├── article/            # ArticleToolbar, FaqAccordion, Infobox, ReadingProgress
+    │   │   ├── article/            # ArticleToolbar, FaqAccordion, Infobox, ReadingProgress, MobileTOC, ArticleHeroImage
     │   │   ├── contribute/         # ContributeForm (General Feedback)
     │   │   ├── directory/          # DirectoryClient, EditContactModal
     │   │   ├── layout/             # Header, Footer, SearchModal
-    │   │   ├── place/              # LandmarkMap, EditLocationModal, GalleryGrid, Lightbox
+    │   │   ├── place/              # LandmarkMap, EditLocationModal, GalleryGrid, Lightbox, AddLandmarkModal
     │   │   └── shared/             # AddContentModal, UniversalEditModal, ImageUpdateButton, LiveWeatherWidget, Toast
     │   │
     │   └── lib/                    # Core Logic
