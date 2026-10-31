@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 👈 useEffect import kiya
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MasterConfig } from "@/lib/schema";
@@ -19,9 +19,22 @@ export function Header({ config, searchIndex }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
 
+  // 👇 NAYA CODE: Ctrl+K ya Cmd+K dabane par search khulega (Sirf Laptop/Desktop ke liye) 👇
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault(); // Browser ka default search rokne ke liye
+        setIsSearchOpen(true);
+      }
+    };
+    
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+  // 👆 NAYA CODE KHATAM 👆
+
   return (
     <>
-      {/* 👇 site-header aur no-print class add ki hai 👇 */}
       <header className="site-header no-print sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-300">
         <div className="container-custom h-20 flex items-center justify-between gap-4">
           
@@ -58,13 +71,19 @@ export function Header({ config, searchIndex }: HeaderProps) {
 
             {/* Desktop Controls */}
             <div className="flex items-center gap-2 xl:gap-3 pl-3 xl:pl-5 border-l border-border shrink-0">
+              {/* Search Button with Tooltip Hint */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2.5 text-foreground/70 hover:text-foreground bg-card hover:bg-muted-background border border-border rounded-full transition-all duration-200 shadow-sm hover:shadow"
-                title="Search Articles"
-                aria-label="Search Articles"
+                className="group relative p-2.5 text-foreground/70 hover:text-foreground bg-card hover:bg-muted-background border border-border rounded-full transition-all duration-200 shadow-sm hover:shadow"
+                title="Search (Ctrl+K)"
+                aria-label="Search"
               >
                 <Search size={18} />
+                
+                {/* Optional: Chhota sa Ctrl+K hint jo hover par dikhega */}
+                <span className="hidden xl:block absolute -bottom-8 right-0 bg-popover text-popover-foreground text-[10px] px-1.5 py-0.5 rounded border border-border opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  Ctrl + K
+                </span>
               </button>
               <ThemeToggle />
             </div>
@@ -75,7 +94,7 @@ export function Header({ config, searchIndex }: HeaderProps) {
             <button 
               onClick={() => setIsSearchOpen(true)}
               className="p-2.5 text-foreground/70 hover:text-foreground bg-card border border-border rounded-full transition-all duration-200 shadow-sm"
-              aria-label="Search Articles"
+              aria-label="Search"
             >
               <Search size={20} />
             </button>
