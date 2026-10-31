@@ -9,6 +9,7 @@ import L from "leaflet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { EditLocationModal } from "./EditLocationModal"; 
+import { AddLandmarkModal } from "./AddLandmarkModal"; // 👈 Naya Import
 
 // 🎨 Custom SVG Icon Generator
 const createIcon = (category: string, iconEmoji?: string) => {
@@ -58,6 +59,10 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
 
   return (
     <div className="h-full w-full overflow-hidden z-0 relative">
+      
+      {/* 👇 Naya Add Landmark Button 👇 */}
+      <AddLandmarkModal />
+
       <MapContainer 
         center={[25.5009, 86.1606]} 
         zoom={14} 
@@ -67,7 +72,6 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
       >
         <MapController activeLandmark={activeLandmark} />
 
-        {/* 🛰️ Sirf Satellite View (Esri) */}
         <TileLayer
           attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
@@ -118,7 +122,6 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
                       Get Directions
                     </a>
                     
-                    {/* 👇 Yahan contextId pass kiya hai 👇 */}
                     <EditLocationModal 
                       landmarkName={place.name || place.title} 
                       contextId={place.id || place.name || "unknown-landmark"} 
