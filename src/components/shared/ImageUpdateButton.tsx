@@ -6,8 +6,8 @@ import { useToast } from "@/components/ui/Toast";
 
 interface ImageUpdateButtonProps {
   contextName: string; 
-  contextId: string; // 👈 Naya Prop: JSON generate karne ke liye (e.g., "snk-high-school-bandwar")
-  currentImage?: string; 
+  contextId: string; // 👈 JSON generate karne ke liye
+  currentImage?: string; // 👈 Purani image ka path (overwrite karne ke liye)
 }
 
 // 🖼️ Image Compression Function
@@ -82,10 +82,13 @@ export function ImageUpdateButton({ contextName, contextId, currentImage }: Imag
       }
     }
 
-    // 👇 Telegram API ke liye zaroori data (JSON generate karne ke liye)
+    // 👇 Telegram API ke liye zaroori data
     formData.append("type", "Image Update Suggestion");
     formData.append("contextId", contextId);
     formData.append("Context Name", contextName);
+    
+    // 👇 YEH SABSE ZAROORI HAI: Purani image ka path bhej rahe hain 👇
+    formData.append("currentImagePath", currentImage || "Unknown Path");
     
     // User ka naam (Credit ke liye)
     const submittedName = formData.get("submitter_name") as string;
