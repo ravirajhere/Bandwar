@@ -11,7 +11,7 @@ interface AddContentModalProps {
   customButtonText?: string;
 }
 
-// 🖼️ Client-Side Image Compression Function
+// 🖼️ Client-Side Image Compression
 const compressImage = async (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -23,7 +23,7 @@ const compressImage = async (file: File): Promise<File> => {
         const canvas = document.createElement("canvas");
         let width = img.width;
         let height = img.height;
-        const maxWidth = 1200; // Max width 1200px
+        const maxWidth = 1200;
 
         if (width > maxWidth) {
           height = (height * maxWidth) / width;
@@ -49,7 +49,7 @@ const compressImage = async (file: File): Promise<File> => {
             }
           },
           "image/jpeg",
-          0.8 // 80% quality (Good balance of size and quality)
+          0.8
         );
       };
     };
@@ -66,7 +66,6 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
   const [fileName, setFileName] = useState("");
   const [isCompressing, setIsCompressing] = useState(false);
 
-  // Dynamic config based on type
   const config = {
     article: {
       title: "Suggest New Article",
@@ -85,7 +84,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
           </select>
           <input type="text" name="Image Link" placeholder="Image Link (Google Drive/URL) - Optional" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
           <textarea name="Story" required placeholder="Write the full story or details here..." rows={4} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3 resize-y" />
-          <input type="text" name="Submitted By" required placeholder="Your Name" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
+          <input type="text" name="Submitter Name" required placeholder="Your Name" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
         </>
       )
     },
@@ -105,13 +104,13 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
           </select>
           <input type="text" name="Year" placeholder="Year of photo (e.g., 1995) - Optional" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
           
-          {/* File Upload Box */}
           <div className="border-2 border-dashed border-border rounded-xl p-4 text-center hover:bg-muted-background transition-colors relative cursor-pointer mb-3">
             <input type="file" name="attachment" accept="image/*" required onChange={(e) => setFileName(e.target.files?.[0]?.name || "")} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
             <UploadCloud size={24} className="text-brand mx-auto mb-1" />
             <p className="text-sm font-medium text-foreground">{fileName ? fileName : "Click to select image"}</p>
             <p className="text-[11px] text-muted mt-0.5">Auto-compressed before sending</p>
           </div>
+          <input type="text" name="Submitter Name" required placeholder="Your Name" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
         </>
       )
     },
@@ -133,6 +132,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
           <input type="tel" name="Phone Number" required placeholder="Phone Number" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
           <input type="text" name="Address" placeholder="Address / Landmark (Optional)" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
           <input type="text" name="Timing" placeholder="Timing (e.g., 9 AM - 8 PM) - Optional" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
+          <input type="text" name="Submitter Name" required placeholder="Your Name" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
         </>
       )
     },
@@ -150,6 +150,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
           </div>
           <input type="text" name="Photo Link" placeholder="Photo Link (URL) - Optional" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
           <textarea name="Biography" required placeholder="Short Biography / Life Journey..." rows={4} className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3 resize-y" />
+          <input type="text" name="Submitter Name" required placeholder="Your Name" className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm mb-3" />
         </>
       )
     }
@@ -169,11 +170,10 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
       setIsCompressing(true);
       try {
         const compressedFile = await compressImage(imageFile);
-        formData.delete("attachment"); // Purani badi image hatao
-        formData.append("image", compressedFile); // Compressed image add karo
+        formData.delete("attachment"); 
+        formData.append("image", compressedFile); 
       } catch (error) {
         console.error("Compression failed", error);
-        // Agar fail ho jaye, toh original bhej denge
         formData.delete("attachment");
         formData.append("image", imageFile);
       } finally {
@@ -181,11 +181,10 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
       }
     }
 
-    // Form type add karo taaki Telegram me pata chale kis type ka submission hai
-    formData.append("type", type);
+    // type ko properly define kiya
+    formData.append("type", `New ${type.charAt(0).toUpperCase() + type.slice(1)}`);
 
     try {
-      // 📱 Telegram API route par bhej rahe hain
       const response = await fetch("/api/telegram-submit", {
         method: "POST",
         body: formData,
@@ -212,7 +211,6 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
 
   return (
     <>
-      {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
         className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-sm"
@@ -221,12 +219,10 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
         {customButtonText || `Add New ${type.charAt(0).toUpperCase() + type.slice(1)}`}
       </button>
 
-      {/* Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-border flex flex-col max-h-[90vh]">
             
-            {/* Header */}
             <div className="flex justify-between items-center p-4 border-b border-border bg-muted-background shrink-0">
               <div>
                 <h3 className="font-serif font-semibold text-foreground text-base">{activeConfig.title}</h3>
@@ -237,7 +233,6 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
               </button>
             </div>
 
-            {/* Scrollable Body */}
             <div className="p-5 overflow-y-auto custom-scrollbar flex-grow">
               {isSuccess ? (
                 <div className="text-center py-12">
@@ -252,7 +247,6 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
               )}
             </div>
 
-            {/* Footer (Submit Button) */}
             {!isSuccess && (
               <div className="p-4 border-t border-border bg-muted-background shrink-0">
                 <button 
