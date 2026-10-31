@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getAllArticles, getArticleById, getMasterData } from "@/lib/data";
+import { getAllArticles, getArticleById, getMasterData, getCategoriesData } from "@/lib/data"; // 👈 getCategoriesData import kiya
 import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
@@ -9,7 +9,7 @@ import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton";
 import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ChevronRight, Edit3, Link2 } from "lucide-react"; 
+import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; // 👈 ShieldCheck import kiya
 
 export async function generateStaticParams() {
   const articles = getAllArticles();
@@ -51,6 +51,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const article = getArticleById(resolvedParams.id);
   const allArticles = getAllArticles();
   const config = getMasterData(); 
+  const categoriesData = getCategoriesData().categories; // 👈 Categories fetch ki
 
   if (!article) notFound();
 
@@ -228,11 +229,24 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
+            {/* 🚀 NAYA: Verified Trust Badge & Toolbar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-border mb-8 no-print">
-              <div className="flex items-center gap-2 text-sm text-muted">
-                <Calendar size={16} />
-                <span>Updated: {article.lastUpdated}</span>
+              
+              {/* Trust Badge */}
+              <div className="flex items-center gap-2">
+                {article.lastEditedBy ? (
+                  <div className="flex items-center gap-1.5 bg-brand/10 text-brand px-3 py-1.5 rounded-md text-[13px] font-medium border border-brand/20 shadow-sm">
+                    <ShieldCheck size={16} />
+                    <span>Verified by {article.lastEditedBy} on {article.lastUpdated}</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1.5 text-muted text-[13px] font-medium bg-muted-background px-3 py-1.5 rounded-md border border-border">
+                    <Calendar size={16} />
+                    <span>Last updated on {article.lastUpdated}</span>
+                  </div>
+                )}
               </div>
+
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
             
@@ -247,7 +261,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
-                {/* 👇 Yahan currentImage={article.hero} add kiya hai 👇 */}
                 <ImageUpdateButton 
                   contextName={`Article: ${article.title}`} 
                   contextId={article.id} 
@@ -312,8 +325,31 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             )}
           </div>
 
+          {/* 🚀 NAYA SECTION: Premium Category Tags */}
+          <div className="mt-16 pt-8 border-t border-border no-print">
+            <h3 className="text-sm font-bold text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-brand"></span> Explore Categories
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {article.categories.map((catId) => {
+                const cat = categoriesData.find(c => c.id === catId);
+                return (
+                  <Link
+                    key={catId}
+                    href={`/section/${catId}`}
+                    className="inline-flex items-center gap-2 bg-card hover:bg-muted-background border border-border px-4 py-2.5 rounded-xl text-sm font-semibold text-foreground transition-all duration-200 shadow-sm hover:shadow hover:border-brand/40 group"
+                  >
+                    <span className="text-lg opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform">{cat?.icon || "📁"}</span>
+                    <span>{cat?.title || catId}</span>
+                    <ChevronRight size={16} className="text-muted group-hover:text-brand transition-colors ml-1" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
           {relatedArticles.length > 0 && (
-            <div className="mt-16 pt-8 border-t border-border no-print">
+            <div className="mt-12 pt-8 border-t border-border no-print">
               <h3 className="font-serif text-2xl font-semibold text-foreground mb-6">Read Next</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {relatedArticles.map((rel: any) => (
