@@ -28,11 +28,12 @@ function MapFlyer({ lat, lng, zoom }: { lat: number; lng: number; zoom: number }
 
 interface EditLocationModalProps {
   landmarkName: string;
+  contextId: string; // 👈 Naya Prop: JSON generate karne ke liye (e.g., "shaheed-dwar")
   currentLat: number;
   currentLng: number;
 }
 
-export function EditLocationModal({ landmarkName, currentLat, currentLng }: EditLocationModalProps) {
+export function EditLocationModal({ landmarkName, contextId, currentLat, currentLng }: EditLocationModalProps) {
   const { toast } = useToast(); 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -108,10 +109,17 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
     
     // 👇 Telegram API ke liye zaroori data append karna 👇
     formData.append("type", "Map Location Update");
+    formData.append("contextId", contextId); // JSON generator isko use karega
     formData.append("Landmark Name", landmarkName);
-    formData.append("Old Coordinates", `${currentLat}, ${currentLng}`);
-    formData.append("New Coordinates", `${center.lat.toFixed(6)}, ${center.lng.toFixed(6)}`);
+    formData.append("old_lat", currentLat.toString());
+    formData.append("old_lng", currentLng.toString());
+    formData.append("new_lat", center.lat.toFixed(6));
+    formData.append("new_lng", center.lng.toFixed(6));
     formData.append("Google Maps Link", `https://www.google.com/maps?q=${center.lat.toFixed(6)},${center.lng.toFixed(6)}`);
+
+    // User ka naam (Credit ke liye)
+    const submittedName = formData.get("submitter_name") as string;
+    formData.append("submitterName", submittedName || "Anonymous Visitor");
 
     try {
       // 📱 Telegram par bhej rahe hain
@@ -166,7 +174,7 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
             <form onSubmit={handleSubmit} className="flex flex-col flex-grow h-full sm:h-auto">
               
               {/* Map Container */}
-              <div className="relative flex-grow min-h-[350px] sm:min-h-[300px] bg-muted-background">
+              <div className="relative flex-grow min-h-[300px] sm:min-h-[250px] bg-muted-background">
                 <MapContainer 
                   center={[currentLat, currentLng]} 
                   zoom={16} 
@@ -239,7 +247,7 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
 
               {/* Bottom Action Area */}
               <div className="p-4 bg-card border-t border-border shrink-0 sm:rounded-b-2xl">
-                <div className="flex items-center justify-between text-xs mb-4 bg-muted-background p-3 rounded-lg border border-border">
+                <div className="flex items-center justify-between text-xs mb-3 bg-muted-background p-3 rounded-lg border border-border">
                   <div>
                     <span className="text-muted block text-[10px] uppercase tracking-wider font-semibold mb-1">New Coordinates</span>
                     <span className="font-mono text-brand font-bold text-sm">{center.lat.toFixed(5)}, {center.lng.toFixed(5)}</span>
@@ -256,7 +264,13 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
                 <div className="flex flex-col gap-3">
                   <input 
                     type="text" 
-                    name="Note" 
+                    name="submitter_name" 
+                    placeholder="Your Name (For Credit) - Optional" 
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm" 
+                  />
+                  <input 
+                    type="text" 
+                    name="Source / Reason" 
                     placeholder="Any specific detail? (Optional)" 
                     className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm" 
                   />
