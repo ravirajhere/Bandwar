@@ -31,27 +31,30 @@ export function UniversalEditModal({
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key daalein
-    formData.append("subject", `Edit Request: ${contextType} - ${fieldName}`);
-    formData.append("from_name", "Bandwar Portal Visitor");
-    
-    // Editor ke liye structured data
-    formData.append("Context ID", contextId);
-    formData.append("Context Type", contextType);
-    formData.append("Field", fieldName);
-    formData.append("Current Value", currentValue);
-    formData.append("Suggested Value", suggestedValue);
+    const userName = formData.get("submitter_name") as string;
+    const sourceReason = formData.get("source_reason") as string;
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 👇 Telegram API Route par request bhej rahe hain 👇
+      const response = await fetch("/api/telegram", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contextId,
+          fieldName,
+          currentValue,
+          suggestedValue,
+          userName: userName || "Anonymous",
+          sourceReason,
+          contextType,
+        }),
       });
+      
       const data = await response.json();
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Edit suggestion sent successfully!", "success");
+        toast("Suggestion sent to Telegram!", "success");
         setTimeout(() => {
           setIsOpen(false);
           setTimeout(() => { 
@@ -60,7 +63,7 @@ export function UniversalEditModal({
           }, 300);
         }, 2500);
       } else {
-        toast("Something went wrong. Please try again.", "error");
+        toast("Failed to send. Please try again.", "error");
       }
     } catch (error) {
       toast("Error sending request. Check connection.", "error");
@@ -123,7 +126,7 @@ export function UniversalEditModal({
                 <div className="text-center py-12">
                   <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4 animate-bounce" />
                   <h4 className="text-xl font-bold text-foreground mb-2">Dhanyawad!</h4>
-                  <p className="text-sm text-muted px-4">Your suggestion has been sent to the editor for review.</p>
+                  <p className="text-sm text-muted px-4">Your suggestion has been sent to the editor.</p>
                 </div>
               ) : (
                 <form id="universal-edit-form" onSubmit={handleSubmit} className="space-y-4">
@@ -165,7 +168,7 @@ export function UniversalEditModal({
                       <input 
                         type="text" 
                         name="source_reason" 
-                        placeholder="e.g. Official record, I live here" 
+                        placeholder="e.g. Official record" 
                         className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm" 
                       />
                     </div>
