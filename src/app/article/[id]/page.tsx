@@ -9,7 +9,7 @@ import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton";
 import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ChevronRight, Edit3 } from "lucide-react"; 
+import { Calendar, ChevronRight, Edit3, Link2 } from "lucide-react"; // 👈 Link2 icon import kiya
 
 export async function generateStaticParams() {
   const articles = getAllArticles();
@@ -50,10 +50,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const resolvedParams = await params;
   const article = getArticleById(resolvedParams.id);
   const allArticles = getAllArticles();
-  
-  // 👇 Valid Articles ki list banayi (Red Links ke liye)
-  const validArticleIds = allArticles.map(a => a.id); 
-  
   const config = getMasterData(); 
 
   if (!article) notFound();
@@ -66,6 +62,21 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     : `${baseUrl}/icon.png`;
 
   const categoryTitle = article.categories[0].charAt(0).toUpperCase() + article.categories[0].slice(1);
+
+  const validArticleIds = allArticles.map(a => a.id);
+
+  // ==========================================
+  // 🔗 AUTO-BACKLINKS LOGIC (Wikipedia Style)
+  // ==========================================
+  // Yeh check karega ki kis article ke content me current article ka link hai
+  const backlinks = allArticles.filter(a => {
+    if (a.id === article.id) return false;
+    return a.content.some(block => {
+      // Regex to match [[current-id]] or [[current-id|Label]]
+      const regex = new RegExp(`\\[\\[${article.id}(\\|.*?)?\\]\\]`, 'i');
+      return regex.test(block.text);
+    });
+  });
 
   // ==========================================
   // 🚀 2026 SEO: Advanced Structured Data (JSON-LD)
@@ -274,7 +285,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                     {block.heading}
                   </h2>
                   <div className="text-foreground/80 text-[17px] md:text-[18px] leading-[1.8] prose prose-lg dark:prose-invert max-w-none">
-                    {/* 👇 Yahan validIds pass kiye hain Red Links ke liye 👇 */}
                     <WikiText text={block.text} validIds={validArticleIds} />
                     
                     {/* 🚀 INLINE EDIT FOR PARAGRAPH */}
@@ -316,6 +326,31 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   </Link>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* 🔗 NAYA SECTION: Backlinks (Mentioned In) */}
+          {backlinks.length > 0 && (
+            <div className="mt-12 pt-8 border-t border-border no-print">
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Link2 size={20} className="text-brand" /> Mentioned In
+              </h3>
+              <p className="text-sm text-muted mb-4">
+                This article is referenced in the following pages:
+              </p>
+              <ul className="space-y-2">
+                {backlinks.map((link) => (
+                  <li key={link.id}>
+                    <Link 
+                      href={`/article/${link.id}`}
+                      className="text-brand hover:text-brand-hover hover:underline text-[15px] font-medium flex items-center gap-2"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand/40"></span>
+                      {link.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
