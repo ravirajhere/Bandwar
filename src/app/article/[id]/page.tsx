@@ -50,6 +50,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const resolvedParams = await params;
   const article = getArticleById(resolvedParams.id);
   const allArticles = getAllArticles();
+  
+  // 👇 Valid Articles ki list banayi (Red Links ke liye)
+  const validArticleIds = allArticles.map(a => a.id); 
+  
   const config = getMasterData(); 
 
   if (!article) notFound();
@@ -256,7 +260,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </header>
 
           <div className="flow-root">
-            {/* 🖨️ Mobile & Print Infobox (Ab 'hidden' nahi hai) */}
+            {/* 🖨️ Mobile & Print Infobox */}
             {article.infobox && (
               <div className="xl:hidden mb-8 print-infobox">
                 <Infobox data={article.infobox} title={article.title} articleId={article.id} />
@@ -270,7 +274,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                     {block.heading}
                   </h2>
                   <div className="text-foreground/80 text-[17px] md:text-[18px] leading-[1.8] prose prose-lg dark:prose-invert max-w-none">
-                    <WikiText text={block.text} />
+                    {/* 👇 Yahan validIds pass kiye hain Red Links ke liye 👇 */}
+                    <WikiText text={block.text} validIds={validArticleIds} />
                     
                     {/* 🚀 INLINE EDIT FOR PARAGRAPH */}
                     <div className="inline-block mt-2 not-prose no-print">
