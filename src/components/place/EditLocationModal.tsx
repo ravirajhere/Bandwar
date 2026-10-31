@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapPinOff, X, Loader2, CheckCircle2, Search, Navigation, MapPin } from "lucide-react";
-import { useToast } from "@/components/ui/Toast"; // 👈 Naya Import
+import { useToast } from "@/components/ui/Toast"; 
 
 function MapTracker({ onCenterChange }: { onCenterChange: (lat: number, lng: number) => void }) {
   const map = useMapEvents({
@@ -33,7 +33,7 @@ interface EditLocationModalProps {
 }
 
 export function EditLocationModal({ landmarkName, currentLat, currentLng }: EditLocationModalProps) {
-  const { toast } = useToast(); // 👈 Hook call kiya
+  const { toast } = useToast(); 
 
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false); 
@@ -49,7 +49,6 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
   const [showResults, setShowResults] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // Portal ke liye mount check
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -75,7 +74,7 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
       setShowResults(true);
     } catch (error) {
       console.error("Search failed", error);
-      toast("Failed to search location. Try again.", "error"); // 👈 ALERT REPLACED
+      toast("Failed to search location. Try again.", "error"); 
     } finally {
       setIsSearching(false);
     }
@@ -92,12 +91,12 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setFlyTo({ lat: position.coords.latitude, lng: position.coords.longitude, zoom: 18 });
-          toast("Location found!", "success"); // 👈 Toast added
+          toast("Location found!", "success"); 
         },
-        () => toast("Could not get your location. Check permissions.", "error") // 👈 ALERT REPLACED
+        () => toast("Could not get your location. Check permissions.", "error") 
       );
     } else {
-      toast("Geolocation is not supported by this browser.", "error"); // 👈 ALERT REPLACED
+      toast("Geolocation is not supported by this browser.", "error"); 
     }
   };
 
@@ -106,17 +105,17 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key daalein
-    formData.append("subject", `Location Fix Required: ${landmarkName}`);
-    formData.append("from_name", "Bandwar Map Visitor");
-    formData.append("landmark_name", landmarkName);
-    formData.append("old_coordinates", `${currentLat}, ${currentLng}`);
-    formData.append("new_lat", center.lat.toFixed(6));
-    formData.append("new_lng", center.lng.toFixed(6));
-    formData.append("google_maps_link", `https://www.google.com/maps?q=${center.lat.toFixed(6)},${center.lng.toFixed(6)}`);
+    
+    // 👇 Telegram API ke liye zaroori data append karna 👇
+    formData.append("type", "Map Location Update");
+    formData.append("Landmark Name", landmarkName);
+    formData.append("Old Coordinates", `${currentLat}, ${currentLng}`);
+    formData.append("New Coordinates", `${center.lat.toFixed(6)}, ${center.lng.toFixed(6)}`);
+    formData.append("Google Maps Link", `https://www.google.com/maps?q=${center.lat.toFixed(6)},${center.lng.toFixed(6)}`);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 📱 Telegram par bhej rahe hain
+      const response = await fetch("/api/telegram-submit", {
         method: "POST",
         body: formData,
       });
@@ -124,16 +123,16 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Location updated successfully! Sent for review.", "success"); // 👈 Toast added
+        toast("Location updated successfully! Sent to Telegram.", "success"); 
         setTimeout(() => {
           setIsOpen(false);
           setTimeout(() => setIsSuccess(false), 300);
         }, 3000);
       } else {
-        toast("Something went wrong. Please try again.", "error"); // 👈 ALERT REPLACED
+        toast(data.details || "Something went wrong. Please try again.", "error"); 
       }
     } catch (error) {
-      toast("Error sending request. Check your connection.", "error"); // 👈 ALERT REPLACED
+      toast("Error sending request. Check your connection.", "error"); 
     } finally {
       setIsSubmitting(false);
     }
@@ -161,7 +160,7 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
             <div className="text-center py-20 px-6">
               <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4 animate-bounce" />
               <h4 className="text-xl font-bold text-foreground mb-2">Dhanyawad!</h4>
-              <p className="text-sm text-muted">Exact location has been sent to the editor for review.</p>
+              <p className="text-sm text-muted">Exact location has been sent to the editor's Telegram.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col flex-grow h-full sm:h-auto">
@@ -257,7 +256,7 @@ export function EditLocationModal({ landmarkName, currentLat, currentLng }: Edit
                 <div className="flex flex-col gap-3">
                   <input 
                     type="text" 
-                    name="note" 
+                    name="Note" 
                     placeholder="Any specific detail? (Optional)" 
                     className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm" 
                   />
