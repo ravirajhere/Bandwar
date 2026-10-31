@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Search, X, FileText, User, Phone, MapPin, CornerDownLeft } from "lucide-react";
+import { Search, X, FileText, CornerDownLeft } from "lucide-react";
 import { SearchItem } from "@/lib/search-data";
 
 interface SearchModalProps {
@@ -17,13 +17,13 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  // Filter results
+  // Filter results (Sirf Articles)
   const results = query.trim() === "" 
     ? [] 
     : searchIndex.filter(item => 
         item.title.toLowerCase().includes(query.toLowerCase()) || 
         item.description.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 10); // Top 10 results
+      ).slice(0, 10);
 
   // Reset selected index when query changes
   useEffect(() => {
@@ -42,7 +42,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
     return () => { document.body.style.overflow = "unset"; };
   }, [isOpen]);
 
-  // Handle Keyboard (Esc to close, Up/Down to navigate, Enter to select)
+  // Handle Keyboard (Esc, Up/Down, Enter)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -57,7 +57,6 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
       } else if (e.key === "Enter" && results.length > 0) {
         e.preventDefault();
-        // Navigate to the selected result
         window.location.href = results[selectedIndex].url;
         onClose();
       }
@@ -78,17 +77,6 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
   }, [selectedIndex]);
 
   if (!isOpen) return null;
-
-  // Type Icon Helper
-  const getIcon = (type: string) => {
-    switch (type) {
-      case "Article": return <FileText size={16} className="text-blue-500" />;
-      case "Person": return <User size={16} className="text-orange-500" />;
-      case "Contact": return <Phone size={16} className="text-green-500" />;
-      case "Place": return <MapPin size={16} className="text-red-500" />;
-      default: return <FileText size={16} />;
-    }
-  };
 
   // Highlight matched text
   const highlightText = (text: string, highlight: string) => {
@@ -116,7 +104,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search articles, people, places..." 
+            placeholder="Search articles..." // 👈 Placeholder update kiya
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="flex-grow bg-transparent text-foreground text-lg outline-none placeholder:text-muted"
@@ -134,12 +122,12 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
           {query.trim() === "" ? (
             <div className="flex flex-col items-center justify-center py-16 text-muted">
               <Search size={48} className="mb-4 opacity-20" />
-              <p className="text-sm font-medium">Type to search across the entire portal</p>
-              <p className="text-xs mt-1">Try "Mahant", "School", or "Emergency"</p>
+              <p className="text-sm font-medium">Type to search across all articles</p>
+              <p className="text-xs mt-1">Try "School", "Temple", or "History"</p>
             </div>
           ) : results.length === 0 ? (
             <div className="text-center py-16 text-muted text-sm">
-              No results found for "<strong className="text-foreground">{query}</strong>".<br/>
+              No articles found for "<strong className="text-foreground">{query}</strong>".<br/>
               <span className="text-xs mt-2 block">Try a different keyword.</span>
             </div>
           ) : (
@@ -160,7 +148,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
                     >
                       <div className="flex items-center gap-3 mb-1 sm:mb-0">
                         <div className={`p-2 rounded-lg ${isSelected ? "bg-brand/10" : "bg-muted-background"}`}>
-                          {getIcon(item.type)}
+                          <FileText size={16} className="text-brand" />
                         </div>
                         <div>
                           <span className={`font-bold text-[15px] block ${isSelected ? "text-brand" : "text-foreground"}`}>
@@ -171,11 +159,6 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
                           </p>
                         </div>
                       </div>
-                      
-                      {/* Type Badge (Desktop only) */}
-                      <span className="hidden sm:block text-[10px] uppercase tracking-wider font-bold text-muted bg-muted-background px-2 py-1 rounded-md shrink-0">
-                        {item.type}
-                      </span>
                     </Link>
                   </li>
                 );
