@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getAllArticles, getArticleById, getMasterData, getCategoriesData } from "@/lib/data"; // 👈 getCategoriesData import kiya
+import { getAllArticles, getArticleById, getMasterData, getCategoriesData } from "@/lib/data"; 
 import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
@@ -7,9 +7,10 @@ import { ArticleToolbar } from "@/components/article/ArticleToolbar";
 import { ReadingProgress } from "@/components/article/ReadingProgress";
 import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; 
 import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
+import { MobileTOC } from "@/components/article/MobileTOC"; // 👈 Naya Import
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; // 👈 ShieldCheck import kiya
+import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; 
 
 export async function generateStaticParams() {
   const articles = getAllArticles();
@@ -51,7 +52,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const article = getArticleById(resolvedParams.id);
   const allArticles = getAllArticles();
   const config = getMasterData(); 
-  const categoriesData = getCategoriesData().categories; // 👈 Categories fetch ki
+  const categoriesData = getCategoriesData().categories; 
 
   if (!article) notFound();
 
@@ -66,9 +67,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
   const validArticleIds = allArticles.map(a => a.id);
 
-  // ==========================================
-  // 🔗 AUTO-BACKLINKS LOGIC (Wikipedia Style)
-  // ==========================================
   const backlinks = allArticles.filter(a => {
     if (a.id === article.id) return false;
     return a.content.some(block => {
@@ -77,9 +75,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     });
   });
 
-  // ==========================================
-  // 🚀 2026 SEO: Advanced Structured Data (JSON-LD)
-  // ==========================================
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -136,6 +131,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
       <ReadingProgress />
 
+      {/* 🚀 MOBILE FLOATING TOC */}
+      <MobileTOC 
+        content={article.content} 
+        hasFaqs={!!(article.faqs && article.faqs.length > 0)} 
+      />
+
       {/* 🖨️ PRINT-ONLY HEADER */}
       <div className="hidden print-only mb-8 pb-4 border-b-2 border-black">
         <div className="flex justify-between items-end">
@@ -152,7 +153,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
       <div className="container-custom grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_340px] gap-8 xl:gap-12">
         
-        {/* LEFT COLUMN */}
+        {/* LEFT COLUMN (Desktop TOC) */}
         <aside className="hidden lg:block no-print">
           <div className="sticky top-28 bg-card border border-border rounded-xl shadow-sm p-5 text-sm overflow-hidden">
             <h4 className="font-serif font-semibold text-foreground mb-4 pb-3 border-b border-border text-lg">
@@ -196,43 +197,25 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </nav>
 
           <header className="mb-8">
-            
-            {/* 🚀 TITLE WITH EDIT */}
             <div className="flex items-start gap-2 md:gap-3 group">
               <h1 className="font-serif text-3xl md:text-5xl text-foreground mb-3 leading-tight font-semibold tracking-tight">
                 {article.title}
               </h1>
               <div className="mt-1 md:mt-2 no-print">
-                <UniversalEditModal 
-                  fieldName="Article Title" 
-                  currentValue={article.title} 
-                  contextId={article.id} 
-                  contextType="Article" 
-                  variant="icon" 
-                />
+                <UniversalEditModal fieldName="Article Title" currentValue={article.title} contextId={article.id} contextType="Article" variant="icon" />
               </div>
             </div>
             
-            {/* 🚀 SUBTITLE WITH EDIT */}
             <div className="flex items-start gap-2 mb-6 group">
               <p className="text-lg md:text-xl text-muted leading-relaxed font-light m-0">
                 {article.subtitle}
               </p>
               <div className="mt-1 no-print">
-                <UniversalEditModal 
-                  fieldName="Article Subtitle" 
-                  currentValue={article.subtitle} 
-                  contextId={article.id} 
-                  contextType="Article" 
-                  variant="icon" 
-                />
+                <UniversalEditModal fieldName="Article Subtitle" currentValue={article.subtitle} contextId={article.id} contextType="Article" variant="icon" />
               </div>
             </div>
 
-            {/* 🚀 NAYA: Verified Trust Badge & Toolbar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-border mb-8 no-print">
-              
-              {/* Trust Badge */}
               <div className="flex items-center gap-2">
                 {article.lastEditedBy ? (
                   <div className="flex items-center gap-1.5 bg-brand/10 text-brand px-3 py-1.5 rounded-md text-[13px] font-medium border border-brand/20 shadow-sm">
@@ -246,11 +229,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   </div>
                 )}
               </div>
-
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
             
-            {/* 🚀 HERO IMAGE */}
             {article.hero && (
               <div className="relative w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-card mb-10 bg-muted-background group">
                 <Image
@@ -261,33 +242,21 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
-                <ImageUpdateButton 
-                  contextName={`Article: ${article.title}`} 
-                  contextId={article.id} 
-                  currentImage={article.hero} 
-                />
+                <ImageUpdateButton contextName={`Article: ${article.title}`} contextId={article.id} currentImage={article.hero} />
               </div>
             )}
 
-            {/* 🚀 SUMMARY WITH EDIT */}
             <div className="flex items-start gap-2 group">
               <p className="text-lg md:text-xl text-foreground/90 leading-relaxed font-medium m-0">
                 {article.summary}
               </p>
               <div className="mt-1 no-print">
-                <UniversalEditModal 
-                  fieldName="Article Summary" 
-                  currentValue={article.summary} 
-                  contextId={article.id} 
-                  contextType="Article" 
-                  variant="icon" 
-                />
+                <UniversalEditModal fieldName="Article Summary" currentValue={article.summary} contextId={article.id} contextType="Article" variant="icon" />
               </div>
             </div>
           </header>
 
           <div className="flow-root">
-            {/* 🖨️ Mobile & Print Infobox */}
             {article.infobox && (
               <div className="xl:hidden mb-8 print-infobox">
                 <Infobox data={article.infobox} title={article.title} articleId={article.id} />
@@ -302,16 +271,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   </h2>
                   <div className="text-foreground/80 text-[17px] md:text-[18px] leading-[1.8] prose prose-lg dark:prose-invert max-w-none">
                     <WikiText text={block.text} validIds={validArticleIds} />
-                    
-                    {/* 🚀 INLINE EDIT FOR PARAGRAPH */}
                     <div className="inline-block mt-2 not-prose no-print">
-                      <UniversalEditModal 
-                        fieldName={`Paragraph: ${block.heading}`} 
-                        currentValue={block.text} 
-                        contextId={article.id} 
-                        contextType="Article" 
-                        variant="inline" 
-                      />
+                      <UniversalEditModal fieldName={`Paragraph: ${block.heading}`} currentValue={block.text} contextId={article.id} contextType="Article" variant="inline" />
                     </div>
                   </div>
                 </section>
@@ -325,7 +286,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             )}
           </div>
 
-          {/* 🚀 NAYA SECTION: Premium Category Tags */}
           <div className="mt-16 pt-8 border-t border-border no-print">
             <h3 className="text-sm font-bold text-muted uppercase tracking-wider mb-4 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-brand"></span> Explore Categories
@@ -368,7 +328,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* 🔗 NAYA SECTION: Backlinks (Mentioned In) */}
           {backlinks.length > 0 && (
             <div className="mt-12 pt-8 border-t border-border no-print">
               <h3 className="font-serif text-xl font-semibold text-foreground mb-4 flex items-center gap-2">
@@ -393,7 +352,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* Bottom generic edit box */}
           <div className="mt-12 bg-muted-background border border-border rounded-xl p-6 sm:p-8 text-center no-print">
             <h3 className="font-serif text-xl font-semibold text-foreground mb-2">
               Something else is incorrect?
@@ -418,7 +376,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         {/* RIGHT COLUMN */}
         <aside className="hidden xl:block no-print">
           <div className="sticky top-28">
-            {/* 🖨️ Desktop Infobox */}
             {article.infobox && <Infobox data={article.infobox} title={article.title} articleId={article.id} />}
           </div>
         </aside>
