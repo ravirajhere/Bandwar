@@ -1,25 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react"; // 👈 useEffect import kiya
-import { useSearchParams } from "next/navigation"; // 👈 useSearchParams import kiya
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Loader2, Send, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 
 export function ContributeForm() {
   const { toast } = useToast();
-  const searchParams = useSearchParams(); // 👈 Hook call kiya
+  const searchParams = useSearchParams();
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  
-  // 👇 Message ke liye state banaya
   const [message, setMessage] = useState("");
 
-  // 👇 URL Parameter check karke message auto-fill karna
+  // URL Parameter check karke message auto-fill karna (Red Links ke liye)
   useEffect(() => {
     const newArticleId = searchParams.get("new");
     if (newArticleId) {
-      // Agar URL me ?new=article-id hai, toh usko sundar format me badalna
       const formattedTitle = newArticleId
         .replace(/-/g, " ")
         .replace(/\b\w/g, (c) => c.toUpperCase());
@@ -33,12 +30,13 @@ export function ContributeForm() {
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // 👈 Apni Web3Forms key daalein
-    formData.append("subject", "General Message / Feedback for Bandwar Portal");
-    formData.append("from_name", "Bandwar Portal Visitor");
+    
+    // Telegram message format ke liye type add kar rahe hain
+    formData.append("type", "General Feedback / Message");
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 📱 Telegram API Route par bhej rahe hain
+      const response = await fetch("/api/telegram-submit", {
         method: "POST",
         body: formData,
       });
@@ -46,13 +44,13 @@ export function ContributeForm() {
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Message sent successfully!", "success");
+        toast("Message sent to Telegram!", "success");
         setTimeout(() => {
           setIsSuccess(false);
           setMessage(""); // Success ke baad message clear kar dein
         }, 3000);
       } else {
-        toast("Something went wrong. Please try again.", "error");
+        toast(data.details || "Something went wrong. Please try again.", "error");
       }
     } catch (error) {
       toast("Error sending message. Check your connection.", "error");
@@ -86,7 +84,7 @@ export function ContributeForm() {
           <label className="block text-sm font-medium text-foreground mb-1.5">Your Name (Optional)</label>
           <input 
             type="text" 
-            name="name" 
+            name="Your Name" 
             placeholder="e.g. Ramesh Kumar" 
             className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all" 
           />
@@ -95,7 +93,7 @@ export function ContributeForm() {
           <label className="block text-sm font-medium text-foreground mb-1.5">Contact (Email/Phone)</label>
           <input 
             type="text" 
-            name="contact" 
+            name="Contact" 
             placeholder="So we can reply to you" 
             className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all" 
           />
@@ -104,9 +102,8 @@ export function ContributeForm() {
 
       <div>
         <label className="block text-sm font-medium text-foreground mb-1.5">Your Message</label>
-        {/* 👇 Value aur onChange add kiya hai */}
         <textarea 
-          name="message" 
+          name="Message" 
           required
           rows={5}
           value={message}
