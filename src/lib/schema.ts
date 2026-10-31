@@ -70,10 +70,10 @@ export const MasterSchema = z.object({
   }).optional(),
 
   social: z.object({
-    github: z.string().optional(),
-    youtube: z.string().optional(),
-    instagram: z.string().optional(),
-    twitter: z.string().optional(),
+    github: z.string().nullish(),
+    youtube: z.string().nullish(),
+    instagram: z.string().nullish(),
+    twitter: z.string().nullish(),
   }).optional(),
   // 👆 NAYA BLOCK KHATAM 👆
 
@@ -132,6 +132,7 @@ export const ArticleSchema = z.object({
   })).default([]),
   infobox: z.record(z.string()).optional(),
   lastUpdated: DateSchema,
+  lastEditedBy: z.string().optional(), // ✅ YEH NAYA FIELD ADD KIYA HAI
   content: z.array(z.object({ heading: z.string(), text: z.string() })),
   faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
   related: z.array(z.string()).default([]),
@@ -239,6 +240,7 @@ export const PersonSchema = z.object({
   birthplace: z.string().optional(),
   titles: z.array(z.string()).optional(),
   journey: z.string().optional(),
+  lastEditedBy: z.string().optional(),
   tags: z.array(z.string()).optional(),
 });
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
