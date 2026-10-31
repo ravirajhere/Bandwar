@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Pencil, X, Loader2, CheckCircle2 } from "lucide-react";
+import { useToast } from "@/components/ui/Toast"; // 👈 Naya Import
 
 interface EditContactModalProps {
   itemName: string;
@@ -9,6 +10,8 @@ interface EditContactModalProps {
 }
 
 export function EditContactModal({ itemName, currentPhone }: EditContactModalProps) {
+  const { toast } = useToast(); // 👈 Hook call kiya
+
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -35,6 +38,7 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
       
       if (data.success) {
         setIsSuccess(true);
+        toast("Number update request sent successfully!", "success"); // 👈 TOAST ADDED
         setNewPhone("");
         // Auto close after 2.5 seconds
         setTimeout(() => {
@@ -42,10 +46,10 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
           setTimeout(() => setIsSuccess(false), 300);
         }, 2500);
       } else {
-        alert("Something went wrong. Please try again.");
+        toast("Something went wrong. Please try again.", "error"); // 👈 ALERT REPLACED
       }
     } catch (error) {
-      alert("Error sending request. Please check your connection.");
+      toast("Error sending request. Please check your connection.", "error"); // 👈 ALERT REPLACED
     } finally {
       setIsSubmitting(false);
     }
