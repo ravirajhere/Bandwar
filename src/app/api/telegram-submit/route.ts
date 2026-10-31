@@ -10,56 +10,91 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Telegram credentials missing" }, { status: 500 });
     }
 
-    // Form data se fields nikalna
     const type = formData.get("type") as string;
     const imageFile = formData.get("image") as File | null;
+    const contextId = formData.get("contextId") as string || formData.get("Article Title") as string || "Unknown";
+    const userName = formData.get("submitterName") as string || formData.get("Your Name") as string || "Anonymous Visitor";
 
-    // Message format banana
-    let caption = `<b>✨ New ${type.toUpperCase()} Submission</b>\n<b>━━━━━━━━━━━━━━━━━━</b>\n`;
-    
-    formData.forEach((value, key) => {
-      if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
-        caption += `<b>${key}:</b>\n${value}\n\n`;
-      }
-    });
+    let message = `<b>🔔 New ${type} Update</b>\n<b>━━━━━━━━━━━━━━━━━━</b>\n`;
+    let jsonSnippet = "";
 
-    // Agar image hai, toh sendPhoto use karenge
+    // ==========================================
+    // 1. INLINE TEXT EDIT LOGIC
+    // ==========================================
+    if (type.includes("Article") || type.includes("Person") || type.includes("Infobox")) {
+      const field = formData.get("field") as string;
+      const oldValue = formData.get("currentValue") as string;
+      const newValue = formData.get("suggestedValue") as string;
+      
+      message += `📍 <b>Target ID:</b> <code>${contextId}</code>\n`;
+      message += `📝 <b>Field:</b> ${field}\n`;
+      message += `❌ <b>Old:</b> ${oldValue}\n`;
+      message += `✅ <b>New:</b> ${newValue}\n`;
+      message += `👤 <b>Suggested By:</b> ${userName}\n\n`;
+
+      // Ready to copy JSON for the specific field
+      jsonSnippet = `<b>📋 COPY-PASTE THIS:</b>\n<pre>{
+  "lastUpdated": "${new Date().toISOString().split('T')[0]}",
+  "lastEditedBy": "${userName}",
+  "update_field": "${field}",
+  "new_value": "${newValue}"
+}</pre>`;
+
+    } 
+    // ==========================================
+    // 2. NEW CONTENT ADD LOGIC (Article, Person, etc.)
+    // ==========================================
+    else if (type.includes("New")) {
+      let jsonObj: Record<string, string> = {
+        lastUpdated: new Date().toISOString().split('T')[0],
+        lastEditedBy: userName
+      };
+      
+      formData.forEach((value, key) => {
+        if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
+          message += `<b>${key}:</b> ${value}\n`;
+          const jsonKey = key.toLowerCase().replace(/\s+/g, '_');
+          jsonObj[jsonKey] = value;
+        }
+      });
+
+      jsonSnippet = `<b>📋 COPY-PASTE THIS OBJECT:</b>\n<pre>${JSON.stringify(jsonObj, null, 2)}</pre>`;
+    } 
+    // ==========================================
+    // 3. GENERAL FEEDBACK / MAP / DIRECTORY
+    // ==========================================
+    else {
+      formData.forEach((value, key) => {
+        if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
+          message += `<b>${key}:</b> ${value}\n`;
+        }
+      });
+    }
+
+    const finalMessage = message + jsonSnippet;
+
+    // Bhejna Telegram par
     if (imageFile && imageFile.size > 0) {
       const photoFormData = new FormData();
       photoFormData.append("chat_id", chatId);
-      photoFormData.append("caption", caption);
+      photoFormData.append("caption", finalMessage.substring(0, 1020)); 
       photoFormData.append("parse_mode", "HTML");
-      
-      // Image ko Telegram par bhejne ke liye
       photoFormData.append("photo", imageFile, imageFile.name);
 
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
         method: "POST",
         body: photoFormData,
       });
-
-      const data = await response.json();
-      if (!data.ok) {
-        console.error("Telegram sendPhoto error:", data);
-        return NextResponse.json({ error: "Telegram API failed", details: data.description }, { status: 500 });
-      }
     } else {
-      // Agar image nahi hai, toh sirf text message bhejenge
-      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: chatId,
-          text: caption,
+          text: finalMessage,
           parse_mode: "HTML",
         }),
       });
-
-      const data = await response.json();
-      if (!data.ok) {
-        console.error("Telegram sendMessage error:", data);
-        return NextResponse.json({ error: "Telegram API failed", details: data.description }, { status: 500 });
-      }
     }
 
     return NextResponse.json({ success: true });
