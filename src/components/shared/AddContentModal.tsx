@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, X, Loader2, CheckCircle2, UploadCloud } from "lucide-react";
+import { useToast } from "@/components/ui/Toast"; // 👈 Naya Import
 
 type ContentType = "article" | "image" | "directory" | "person";
 
@@ -11,6 +12,8 @@ interface AddContentModalProps {
 }
 
 export function AddContentModal({ type, customButtonText }: AddContentModalProps) {
+  const { toast } = useToast(); // 👈 Hook call kiya
+
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -125,15 +128,16 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
       
       if (data.success) {
         setIsSuccess(true);
+        toast("Submission sent successfully! Editor will review it soon.", "success"); // 👈 TOAST ADDED
         setTimeout(() => {
           setIsOpen(false);
           setTimeout(() => { setIsSuccess(false); setFileName(""); }, 300);
         }, 3000);
       } else {
-        alert("Something went wrong. Please try again.");
+        toast("Something went wrong. Please try again.", "error"); // 👈 ALERT REPLACED
       }
     } catch (error) {
-      alert("Error submitting data.");
+      toast("Error submitting data. Check your connection.", "error"); // 👈 ALERT REPLACED
     } finally {
       setIsSubmitting(false);
     }
@@ -141,7 +145,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
 
   return (
     <>
-      {/* Trigger Button (Different styles based on context) */}
+      {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
         className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-sm"
