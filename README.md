@@ -2,7 +2,7 @@
 
 A community-built digital portal for Bandwar village, Begusarai (Bihar) — a living, interactive website designed for the village, its residents, and their descendants. 
 
-Built with a **Modern Heritage UI** and **Wikipedia-inspired inline editing**, this portal prioritizes accessibility (especially for senior citizens), speed, and a strict data-driven architecture. It is designed to be maintained by a **Solo Editor** while allowing seamless **Community Contributions** directly via a **Telegram Bot** (No database, no emails, zero cost).
+Built with a **Modern Heritage UI** and **Top-Website-inspired inline editing**, this portal prioritizes accessibility (especially for senior citizens), speed, and a strict data-driven architecture. It is designed to be maintained by a **Solo Editor** while allowing seamless **Community Contributions** directly via a **Telegram Bot** (No database, no emails, zero cost).
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-blue?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
