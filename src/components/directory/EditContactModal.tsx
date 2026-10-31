@@ -6,16 +6,18 @@ import { useToast } from "@/components/ui/Toast";
 
 interface EditContactModalProps {
   itemName: string;
+  itemId: string; // 👈 Naya Prop: JSON generate karne ke liye (e.g., "neema-chandpura-police-station")
   currentPhone: string;
 }
 
-export function EditContactModal({ itemName, currentPhone }: EditContactModalProps) {
+export function EditContactModal({ itemName, itemId, currentPhone }: EditContactModalProps) {
   const { toast } = useToast(); 
 
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [newPhone, setNewPhone] = useState("");
+  const [submitterName, setSubmitterName] = useState(""); // 👈 Credit ke liye state
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,11 +25,16 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
 
     const formData = new FormData();
     
-    // 👇 Telegram API ke liye data format 👇
+    // 👇 API Route (telegram-submit) ke hisaab se data 👇
     formData.append("type", "Directory Contact Update");
+    formData.append("contextId", itemId);
     formData.append("Item Name", itemName);
-    formData.append("Old Phone Number", currentPhone);
-    formData.append("New Phone Number", newPhone);
+    
+    // JSON snippet generate karne ke liye zaroori fields
+    formData.append("field", "Phone Number");
+    formData.append("currentValue", currentPhone);
+    formData.append("suggestedValue", newPhone);
+    formData.append("submitterName", submitterName || "Anonymous Visitor");
 
     try {
       // 📱 Telegram par bhej rahe hain
@@ -41,6 +48,7 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
         setIsSuccess(true);
         toast("Number update sent to Telegram!", "success"); 
         setNewPhone("");
+        setSubmitterName("");
         // Auto close after 2.5 seconds
         setTimeout(() => {
           setIsOpen(false);
@@ -121,6 +129,18 @@ export function EditContactModal({ itemName, currentPhone }: EditContactModalPro
                       onChange={(e) => setNewPhone(e.target.value)}
                       placeholder="Enter new number..." 
                       className="w-full px-3 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm font-medium" 
+                    />
+                  </div>
+
+                  {/* 👇 Your Name Input (Credit ke liye) */}
+                  <div>
+                    <label className="block text-xs font-medium text-foreground mb-1">Your Name (For Credit)</label>
+                    <input 
+                      type="text" 
+                      value={submitterName}
+                      onChange={(e) => setSubmitterName(e.target.value)}
+                      placeholder="e.g., Ramesh Kumar" 
+                      className="w-full px-3 py-2 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm" 
                     />
                   </div>
 
