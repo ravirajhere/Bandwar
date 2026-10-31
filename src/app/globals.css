@@ -25,6 +25,10 @@
     
     --selection-bg: #166534;
     --selection-text: #FFFFFF;
+
+    /* 👇 Naye Font Variables (Kyunki next/font hata diya hai) 👇 */
+    --font-inter: 'Inter', sans-serif;
+    --font-playfair: 'Playfair Display', Georgia, serif;
   }
 
   /* 🌙 Dark Mode (Luxurious Obsidian) */
