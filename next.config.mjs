@@ -1,14 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 👇 Keystatic ke liye zaroori hai 👇
-  transpilePackages: ["@keystatic/core", "@keystatic/next"],
-  experimental: {
-    outputFileTracingIncludes: {
-      '/keystatic/[[...params]]': ['./keystatic.config.ts', './data/**/*'],
-    },
-  },
-  // 👆 Keystatic config khatam 👆
-
   async redirects() {
     return [
       // --- HEALTH ---
