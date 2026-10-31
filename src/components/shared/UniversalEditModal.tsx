@@ -31,23 +31,23 @@ export function UniversalEditModal({
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    const userName = formData.get("submitter_name") as string;
-    const sourceReason = formData.get("source_reason") as string;
+    
+    // 👇 API (/api/telegram-submit) ke liye data taiyar kar rahe hain 👇
+    formData.append("type", contextType);
+    formData.append("contextId", contextId);
+    formData.append("field", fieldName);
+    formData.append("currentValue", currentValue);
+    formData.append("suggestedValue", suggestedValue);
+    
+    // User ka naam nikal rahe hain (Credit ke liye)
+    const submittedName = formData.get("submitter_name") as string;
+    formData.append("submitterName", submittedName || "Anonymous Visitor");
 
     try {
-      // 👇 Telegram API Route par request bhej rahe hain 👇
-      const response = await fetch("/api/telegram", {
+      // 📱 Naye API Route par bhej rahe hain (FormData me)
+      const response = await fetch("/api/telegram-submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contextId,
-          fieldName,
-          currentValue,
-          suggestedValue,
-          userName: userName || "Anonymous",
-          sourceReason,
-          contextType,
-        }),
+        body: formData, // FormData bhej rahe hain (JSON nahi)
       });
       
       const data = await response.json();
@@ -63,7 +63,7 @@ export function UniversalEditModal({
           }, 300);
         }, 2500);
       } else {
-        toast("Failed to send. Please try again.", "error");
+        toast(data.details || "Failed to send. Please try again.", "error");
       }
     } catch (error) {
       toast("Error sending request. Check connection.", "error");
