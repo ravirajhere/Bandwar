@@ -9,7 +9,7 @@ import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton";
 import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ChevronRight, Edit3, Link2 } from "lucide-react"; // 👈 Link2 icon import kiya
+import { Calendar, ChevronRight, Edit3, Link2 } from "lucide-react"; 
 
 export async function generateStaticParams() {
   const articles = getAllArticles();
@@ -68,11 +68,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   // ==========================================
   // 🔗 AUTO-BACKLINKS LOGIC (Wikipedia Style)
   // ==========================================
-  // Yeh check karega ki kis article ke content me current article ka link hai
   const backlinks = allArticles.filter(a => {
     if (a.id === article.id) return false;
     return a.content.some(block => {
-      // Regex to match [[current-id]] or [[current-id|Label]]
       const regex = new RegExp(`\\[\\[${article.id}(\\|.*?)?\\]\\]`, 'i');
       return regex.test(block.text);
     });
@@ -249,7 +247,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
                   priority
                 />
-                <ImageUpdateButton contextName={`Article: ${article.title}`} />
+                {/* 👇 Yahan contextId pass kiya hai 👇 */}
+                <ImageUpdateButton 
+                  contextName={`Article: ${article.title}`} 
+                  contextId={article.id} 
+                />
               </div>
             )}
 
