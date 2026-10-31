@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: config.site.description,
     },
     icons: {
-      icon: "/icon.png", // Update: icon.png use kiya hai jo humne src/app me daala tha
+      icon: "/icon.png",
       apple: "/icon.png",
     }
   };
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   // 🚀 2026 SEO: Advanced Structured Data (JSON-LD)
   // ==========================================
   const jsonLd = [
-    // 1. Website Schema (Search Action)
+    // 1. Website Schema
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -79,7 +79,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         "query-input": "required name=search_term_string"
       }
     },
-    // 2. Organization Schema (Portal Identity)
+    // 2. Organization Schema
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -88,13 +88,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       url: config.site.url,
       logo: `${config.site.url}/icon.png`,
       description: config.site.description,
-      foundingDate: config.organization?.foundingDate,
-      email: config.contact?.email,
+      ...(config.organization?.foundingDate && { foundingDate: config.organization.foundingDate }),
+      ...(config.contact?.email && { email: config.contact.email }),
       sameAs: [
-        config.social?.github
-      ].filter(Boolean) // Khali links ko hata dega
+        config.social?.github,
+        config.social?.instagram,
+        config.social?.twitter,
+        config.social?.youtube
+      ].filter((link): link is string => Boolean(link))
     },
-    // 3. Place Schema (Village Location for Local SEO)
+    // 3. Place Schema (Village Location)
     ...(config.village ? [{
       "@context": "https://schema.org",
       "@type": "Place",
@@ -120,7 +123,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en-IN" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
-        {/* Theme Flash Prevention Script */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -135,8 +137,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             `,
           }}
         />
-        
-        {/* 🚀 Advanced JSON-LD Schema Array */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
