@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPeopleData } from "@/lib/data";
+import { getPeopleData, getMasterData } from "@/lib/data"; // 👈 getMasterData import kiya
 import { Metadata } from "next";
-import { Edit3 } from "lucide-react"; // 👈 Edit3 import kiya
+import { Edit3 } from "lucide-react"; 
 
 export async function generateStaticParams() {
   const data = getPeopleData();
@@ -15,19 +15,34 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const data = getPeopleData();
+  const config = getMasterData();
   const person = data.people.find((p) => p.id === id);
 
   if (!person) {
     return { title: "Person Not Found | Bandwar Portal" };
   }
 
+  const baseUrl = config.site.url;
+  const personUrl = `${baseUrl}/people/${person.id}`;
+  
+  // Absolute image URL generate karna
+  const imageUrl = person.photo 
+    ? (person.photo.startsWith("http") ? person.photo : `${baseUrl}/${person.photo.startsWith("/") ? person.photo.slice(1) : person.photo}`)
+    : `${baseUrl}/icon.png`;
+
   return {
-    title: `${person.name} | People of Bandwar`,
+    title: `${person.name} | ${config.site.name}`,
     description: person.bio.substring(0, 160),
+    alternates: {
+      canonical: personUrl,
+    },
     openGraph: {
       title: `${person.name} - ${person.role}`,
       description: person.bio.substring(0, 160),
-      images: person.photo ? [{ url: person.photo }] : [],
+      url: personUrl,
+      siteName: config.site.name,
+      images: [{ url: imageUrl, width: 800, height: 800, alt: person.name }],
+      type: "profile",
     },
   };
 }
@@ -35,6 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function PersonProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const data = getPeopleData();
+  const config = getMasterData(); // 👈 Schema ke liye config fetch kiya
   const person = data.people.find((p) => p.id === id);
 
   if (!person) {
@@ -42,9 +58,78 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
   }
 
   const isDeceased = !!person.deathDate;
+  
+  const baseUrl = config.site.url;
+  const personUrl = `${baseUrl}/people/${person.id}`;
+  const imageUrl = person.photo 
+    ? (person.photo.startsWith("http") ? person.photo : `${baseUrl}/${person.photo.startsWith("/") ? person.photo.slice(1) : person.photo}`)
+    : `${baseUrl}/icon.png`;
+
+  // ==========================================
+  // 🚀 2026 SEO: Person & Breadcrumb Schema
+  // ==========================================
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${personUrl}/#person`,
+    "name": person.name,
+    "jobTitle": person.role,
+    "description": person.bio,
+    "image": imageUrl,
+    "url": personUrl,
+    // Optional fields (Agar data available hai tabhi add honge)
+    ...(person.dob && { "birthDate": person.dob }),
+    ...(person.deathDate && { "deathDate": person.deathDate }),
+    ...(person.birthplace && { 
+      "birthPlace": {
+        "@type": "Place",
+        "name": person.birthplace
+      } 
+    }),
+    ...(person.locality && {
+      "homeLocation": {
+        "@type": "Place",
+        "name": person.locality
+      }
+    })
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "People",
+        "item": `${baseUrl}/people`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": person.name,
+        "item": personUrl
+      }
+    ]
+  };
+
+  const combinedJsonLd = [personJsonLd, breadcrumbJsonLd];
 
   return (
     <div className="bg-background min-h-screen py-10 md:py-16">
+      
+      {/* 🚀 Advanced JSON-LD Script Injection */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedJsonLd) }}
+      />
+
       <div className="container-custom">
         
         <nav className="mb-8 text-sm text-muted flex items-center gap-2 no-print">
