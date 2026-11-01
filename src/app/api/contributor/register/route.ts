@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { ADMIN_USERNAME } from "@/lib/contributor";
 
 export async function POST(req: Request) {
   const githubToken = process.env.GITHUB_TOKEN;
@@ -12,11 +11,6 @@ export async function POST(req: Request) {
 
     if (!displayName || displayName.trim().length < 2) {
       return NextResponse.json({ error: "Name is too short." }, { status: 400 });
-    }
-
-    // Admin ko register hone se rokein
-    if (customUsername.toLowerCase() === ADMIN_USERNAME.toLowerCase()) {
-       return NextResponse.json({ error: "This username is reserved." }, { status: 403 });
     }
 
     const getFileUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
@@ -34,21 +28,27 @@ export async function POST(req: Request) {
       if (!content.contributors) content.contributors = [];
     }
 
-    // Ensure unique username
-    let finalUsername = customUsername.startsWith("@") ? customUsername : `@${customUsername}`;
-    if (content.contributors.some((c: any) => c.username.toLowerCase() === finalUsername.toLowerCase())) {
-       return NextResponse.json({ error: "Username is already taken. Please choose another." }, { status: 400 });
+    const finalUsername = customUsername.startsWith("@") ? customUsername : `@${customUsername}`;
+    
+    // Check if username already exists
+    const existingIndex = content.contributors.findIndex(
+      (c: any) => c.username.toLowerCase() === finalUsername.toLowerCase()
+    );
+
+    if (existingIndex !== -1) {
+      return NextResponse.json({ error: "Username is already taken. Please choose another." }, { status: 400 });
     }
 
+    // Create new contributor (No password, simple data)
     const newContributor = {
       id: finalUsername.replace("@", ""),
       username: finalUsername,
       displayName: displayName.trim(),
       email: email?.trim() || "",
-      bio: "", 
+      bio: "",
       photo: "",
       joinedAt: new Date().toISOString().split("T")[0],
-      hasChangedUsername: false
+      hasChangedUsername: false,
     };
 
     content.contributors.push(newContributor);
