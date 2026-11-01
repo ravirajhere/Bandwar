@@ -21,7 +21,7 @@ export const MasterSchema = z.object({
     locale: z.string().optional(),
     dir: z.string().optional(),
     established: z.string().optional()
-  }),
+  }).passthrough(),
   
   village: z.object({
     name: z.string(),
@@ -36,46 +36,45 @@ export const MasterSchema = z.object({
     population: z.number().optional(),
     area: z.string().optional(),
     censusCode: z.number().optional()
-  }).optional(),
+  }).passthrough().optional(),
 
   emergencyContacts: z.array(
     z.object({
       label: z.string(),
       number: z.string(),
       type: z.string().optional()
-    })
+    }).passthrough()
   ).optional(),
 
   brand: z.object({ 
     colors: z.record(z.string()), 
     fonts: z.record(z.string()) 
-  }).optional(),
+  }).passthrough().optional(),
 
   nav: z.array(
     z.object({ label: z.string(), href: z.string(), icon: z.string() })
   ),
+  
   contact: z.object({
-    email: z.string().email(),
+    email: z.string().email().nullable(), // 👈 FIX: Null allowed
     address: z.string().optional(),
     coordinates: z.object({ lat: z.number(), lng: z.number() }).optional(),
-  }),
+  }).passthrough(),
 
-  // 👇 YEH NAYA BLOCK ADD KIYA HAI 👇
   organization: z.object({
     name: z.string(),
     type: z.string().optional(),
     foundingDate: z.string().optional(),
     founders: z.array(z.string()).optional(),
     areaServed: z.string().optional(),
-  }).optional(),
+  }).passthrough().optional(),
 
   social: z.object({
     github: z.string().nullish(),
     youtube: z.string().nullish(),
     instagram: z.string().nullish(),
     twitter: z.string().nullish(),
-  }).optional(),
-  // 👆 NAYA BLOCK KHATAM 👆
+  }).passthrough().optional(),
 
   about: z.object({
     intro: z.string(),
@@ -83,15 +82,19 @@ export const MasterSchema = z.object({
     principles: z.array(z.object({ icon: z.string(), title: z.string(), description: z.string() })),
     sources: z.array(z.object({ type: z.string(), name: z.string(), url: z.string().optional(), detail: z.string().optional() })),
     community: z.object({ lead: z.string(), contributors: z.string() }),
-    committee: z.array(z.object({ role: z.string(), name: z.string(), link: z.string().optional() })),
-  }).optional(),
+    committee: z.array(z.object({ 
+      role: z.string(), 
+      name: z.string(), 
+      link: z.string().nullable().optional() // 👈 FIX: Null allowed
+    })),
+  }).passthrough().optional(),
   
   footer: z.object({
     copyright: z.string().optional(),
     credit: z.string().optional(),
     sections: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
     explore: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
-  }).optional(),
+  }).passthrough().optional(),
 
   home: z.object({
     hero: z.object({
@@ -110,8 +113,8 @@ export const MasterSchema = z.object({
     cta: z.object({ label: z.string(), href: z.string() }),
     pullquote: z.object({ text: z.string(), cite: z.string() }),
     stats: z.array(z.object({ label: z.string(), value: z.string() })),
-  }).optional(),
-});
+  }).passthrough().optional(),
+}).passthrough(); // 👈 FIX: Allows new sections like 'bot', 'legal', 'i18n' without failing
 
 // ==========================================
 // 3. Article Schema (SEO Upgraded)
@@ -132,13 +135,13 @@ export const ArticleSchema = z.object({
   })).default([]),
   infobox: z.record(z.string()).optional(),
   lastUpdated: DateSchema,
-  lastEditedBy: z.string().optional(), // ✅ YEH NAYA FIELD ADD KIYA HAI
+  lastEditedBy: z.string().optional(),
   content: z.array(z.object({ heading: z.string(), text: z.string() })),
   faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
   related: z.array(z.string()).default([]),
   location: z.object({ lat: z.number(), lng: z.number() }).optional(),
   tags: z.array(z.string()).default([]),
-});
+}).passthrough();
 export const ArticleListSchema = z.object({ articles: z.array(ArticleSchema) });
 
 // ==========================================
@@ -210,7 +213,7 @@ export const VisionSchema = z.object({
         photos: z.array(z.object({ src: z.string(), caption: z.string() })),
         checklist: z.array(z.string()),
       }),
-    })
+    }).passthrough()
   ),
   achievements: z.array(z.object({
     title: z.string().optional(),
@@ -242,7 +245,7 @@ export const PersonSchema = z.object({
   journey: z.string().optional(),
   lastEditedBy: z.string().optional(),
   tags: z.array(z.string()).optional(),
-});
+}).passthrough();
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 
 // ==========================================
@@ -253,7 +256,7 @@ export const CategorySchema = z.object({
   title: z.string(), 
   icon: z.string(), 
   description: z.string(),
-});
+}).passthrough();
 export const CategoriesDataSchema = z.object({ categories: z.array(CategorySchema) });
 
 // ==========================================
@@ -268,12 +271,12 @@ export const DirectoryItemSchema = z.object({
   address: z.string().optional(),
   timing: z.string().optional(),
   isEmergency: z.boolean().default(false),
-});
+}).passthrough();
 
 export const DirectoryDataSchema = z.object({
   categories: z.array(z.object({ id: z.string(), title: z.string(), icon: z.string() })),
   items: z.array(DirectoryItemSchema),
-});
+}).passthrough();
 
 // ==========================================
 // TypeScript Types Export
