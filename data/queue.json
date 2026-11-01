@@ -31,7 +31,9 @@
       "timestamp": "2026-11-01T13:19:21.228Z",
       "telegramMessageId": 53,
       "chatId": "8848904239"
-    },
+    }
+  ],
+  "approved": [
     {
       "id": "edit_1793539320401",
       "filePath": "data/articles/landmarks.json",
@@ -46,8 +48,8 @@
       "userUsername": "@Ravirajhere",
       "timestamp": "2026-11-01T13:22:00.915Z",
       "telegramMessageId": 54,
-      "chatId": "8848904239"
+      "chatId": "8848904239",
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
