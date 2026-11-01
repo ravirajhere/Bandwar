@@ -2,6 +2,7 @@ import { getAllArticles, getCategoriesData } from "@/lib/data";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { ChevronRight, FileText, FolderOpen } from "lucide-react";
 
 // Build time pe saari categories ke pages generate karega
 export async function generateStaticParams() {
@@ -32,49 +33,58 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const articles = getAllArticles().filter(a => a.categories.includes(category.id));
 
   return (
-    <div className="bg-wiki-bg min-h-screen py-8">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-6">
+    <div className="bg-canvas min-h-screen py-10 md:py-16 3xl:py-24">
+      <div className="container mx-auto px-4 md:px-0 max-w-7xl 3xl:max-w-[1600px]">
         
-        {/* Breadcrumb (Wikipedia Style) */}
-        <nav className="flex items-center gap-2 text-[13px] text-wiki-text-muted mb-6">
-          <Link href="/" className="hover:text-wiki-link hover:underline">Home</Link>
-          <span aria-hidden="true">›</span>
-          <Link href="/section" className="hover:text-wiki-link hover:underline">Archive</Link>
-          <span aria-hidden="true">›</span>
-          <span className="text-wiki-text font-bold">{category.title}</span>
+        {/* 🏛️ Breadcrumb (Standardized) */}
+        <nav className="flex flex-wrap items-center gap-2 text-sm 3xl:text-base text-ink/60 mb-8 md:mb-10 no-print" aria-label="Breadcrumb">
+          <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Home</Link>
+          <ChevronRight size={14} className="text-divider shrink-0" />
+          <Link href="/section" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Archive</Link>
+          <ChevronRight size={14} className="text-divider shrink-0" />
+          <span className="text-ink font-semibold truncate max-w-[200px] sm:max-w-none">{category.title}</span>
         </nav>
 
-        {/* Page Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-3xl" aria-hidden="true">{category.icon}</span>
-            <h1 className="font-serif text-3xl md:text-4xl text-wiki-text">
+        {/* 🏛️ Page Header */}
+        <div className="mb-10 md:mb-16">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-14 h-14 3xl:w-20 3xl:h-20 bg-surface border border-divider text-2xl 3xl:text-4xl rounded-lg flex items-center justify-center shadow-sm shrink-0">
+              {category.icon}
+            </div>
+            <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink font-semibold tracking-tight text-balance">
               {category.title}
             </h1>
           </div>
-          <div className="w-full border-b border-wiki-border-light mb-3"></div>
-          <p className="text-[15px] text-wiki-text-muted leading-relaxed max-w-3xl">
+          
+          {/* Decorative Accent Line */}
+          <div className="w-16 md:w-20 h-1 bg-accent mb-6 rounded-full"></div>
+          
+          <p className="text-base md:text-lg 3xl:text-xl text-ink/70 leading-relaxed max-w-3xl text-pretty mb-6">
             {category.description}
           </p>
-          <div className="mt-3">
-            <span className="bg-wiki-bg-alt border border-wiki-border-light text-wiki-text-muted text-[12px] font-bold px-2 py-1">
-              {articles.length} {articles.length === 1 ? "Article" : "Articles"}
-            </span>
+          
+          {/* Article Count Badge */}
+          <div className="inline-flex items-center gap-2 bg-surface border border-divider text-ink/70 text-xs 3xl:text-sm font-bold px-3 py-1.5 rounded-md shadow-sm uppercase tracking-wider">
+            <FolderOpen size={14} className="text-accent 3xl:w-4 3xl:h-4" />
+            {articles.length} {articles.length === 1 ? "Article" : "Articles"}
           </div>
         </div>
 
-        {/* Articles List (Using 2 columns for the horizontal ArticleCard) */}
+        {/* 📄 Articles Grid */}
         {articles.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-3 gap-5 md:gap-6 3xl:gap-8">
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 border border-dashed border-wiki-border-light bg-wiki-bg-alt">
-            <div className="text-4xl mb-3" aria-hidden="true">📝</div>
-            <h3 className="font-bold text-wiki-text mb-1">No articles found</h3>
-            <p className="text-wiki-text-muted text-[14px]">There are currently no articles in this category.</p>
+          /* 📭 Empty State */
+          <div className="flex flex-col items-center justify-center py-24 bg-surface border border-dashed border-divider rounded-lg text-center px-4">
+            <FileText size={56} className="text-ink/20 mb-4 3xl:w-20 3xl:h-20" />
+            <h3 className="font-serif text-xl 3xl:text-2xl font-bold text-ink mb-2">No articles found</h3>
+            <p className="text-ink/60 text-sm md:text-base 3xl:text-lg max-w-md mx-auto">
+              There are currently no articles published in this category. Please check back later.
+            </p>
           </div>
         )}
 
