@@ -1,4 +1,20 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1793544459925",
+      "type": "Image Update Suggestion",
+      "contextId": "bada-krishna-mandir-bandwar",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-01T14:47:41.010Z",
+      "pendingImageUrl": "/images/pending/edit_1793544459925.jpg",
+      "targetType": "article",
+      "currentImagePath": "images/religion/bada-krishna-mandir-bandwar.jpg",
+      "targetField": "",
+      "oldValue": "",
+      "newValue": "",
+      "sourceReason": "Official Govt. Record"
+    }
+  ],
   "approved": []
 }
