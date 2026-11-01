@@ -1,21 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1793533238211",
-      "filePath": "data/articles/landmarks.json",
-      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
-      "intent": "edit",
-      "jsonObj": {
-        "field": "Article Summary",
-        "suggestedValue": "Chhath Puja is the most significant festival in Bihar and the Mithila region, dedicated to Surya Dev (the Sun God) and Chhathi Maiya. In Bandwar, the festival is celebrated at the [[bandh|bandh]] along the [[burhi-gandak|Burhi Gandak]], with the entire village gathering on the riverbank. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh, and the village observes four days of rigorous fasting and Vedic ritual."
-      },
-      "type": "Article",
-      "userName": "Anonymous Visitor",
-      "timestamp": "2026-11-01T11:40:38.708Z",
-      "telegramMessageId": 46,
-      "chatId": "8848904239"
-    },
-    {
       "id": "edit_1793534197477",
       "filePath": "data/articles/landmarks.json",
       "contextId": "bada-krishna-mandir-bandwar",
