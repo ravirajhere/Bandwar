@@ -6,6 +6,7 @@ import {
   PeopleDataSchema, CategoriesDataSchema, DirectoryDataSchema, 
   MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData, DirectoryData 
 } from "./schema";
+import { Contributor } from "./contributor"; // 🚀 Naya Import
 
 // ==========================================
 // 1. CORE HELPERS (Optimized & Generic)
@@ -78,7 +79,6 @@ export function getArticlesByCategory(categoryId: string): Article[] {
   return getAllArticles().filter((a) => a.categories.includes(categoryId));
 }
 
-// 🚀 NAYA UPDATE YAHAN HAI (GALLERY FILTER)
 export function getMediaData(): Media {
   const rawData = readJsonFile("media.json");
   const media = validateData(MediaSchema, rawData, "media.json");
@@ -119,4 +119,35 @@ export function getCategoriesData(): CategoriesData {
 export function getDirectoryData(): DirectoryData {
   const rawData = readJsonFile("directory.json");
   return validateData(DirectoryDataSchema, rawData, "directory.json");
+}
+
+// ==========================================
+// 4. CONTRIBUTORS DATA (New)
+// ==========================================
+
+export function getContributors(): Contributor[] {
+  const fullPath = path.join(process.cwd(), "data", "contributors.json");
+  
+  // Agar file abhi tak nahi bani hai, toh crash mat karo, khali array return karo
+  if (!fs.existsSync(fullPath)) {
+    return [];
+  }
+
+  try {
+    const rawData = readJsonFile("contributors.json");
+    return rawData.contributors || [];
+  } catch (error) {
+    console.error("Failed to read contributors.json:", error);
+    return [];
+  }
+}
+
+export function getContributorByUsername(username: string): Contributor | undefined {
+  const contributors = getContributors();
+  // Handle both "@rameshkumar" and "rameshkumar"
+  const formattedUsername = username.startsWith("@") ? username : `@${username}`;
+  
+  return contributors.find(
+    (c) => c.username.toLowerCase() === formattedUsername.toLowerCase()
+  );
 }
