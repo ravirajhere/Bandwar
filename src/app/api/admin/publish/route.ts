@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Helper: Multi-file Commit
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -46,7 +45,6 @@ async function commitMultipleFiles(files: { path: string; content: string; encod
   });
 }
 
-// 🚀 Helper: Fetch File
 async function fetchGithubFile(path: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -58,7 +56,6 @@ async function fetchGithubFile(path: string) {
   return await res.json();
 }
 
-// 🚀 Helper: Delete File
 async function deleteGithubFile(path: string, sha: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -86,42 +83,45 @@ export async function POST() {
     const filesToCommit: { path: string; content: string; encoding?: "utf-8" | "base64" }[] = [];
     const fileUpdates: Record<string, any[]> = {};
 
-    // 1. Process all approved items
     for (const item of queueContent.approved) {
       
-      // 🚀 Handle Image Upload
       if (item.pendingImageUrl) {
-        // FIX: Path sahi kiya gaya hai (public add kiya)
         const pendingPath = `public${item.pendingImageUrl}`; 
         const pendingFile = await fetchGithubFile(pendingPath);
         
         if (pendingFile) {
           const base64Content = pendingFile.content.replace(/\n/g, "");
           
+          // 🚀 FIX: Purane path ko use karo, nahi toh fallback logic
           let finalPath = "";
-          if (item.targetType === "person") finalPath = `public/images/people/${item.contextId}.jpg`;
-          else if (item.targetType === "landmark") finalPath = `public/images/landmarks/${item.contextId}.jpg`;
-          else finalPath = `public/images/articles/${item.contextId}.jpg`; 
+          if (item.currentImagePath && item.currentImagePath !== "Unknown" && item.currentImagePath !== "Unknown Path") {
+             // Agar purana path hai (jaise /images/religion/ram.jpg), toh public add karke use karo
+             const cleanOldPath = item.currentImagePath.startsWith("/") ? item.currentImagePath.slice(1) : item.currentImagePath;
+             finalPath = `public/${cleanOldPath}`;
+          } else {
+             // Fallback (agar kisi wajah se purana path nahi mila)
+             if (item.targetType === "person") finalPath = `public/images/people/${item.contextId}.jpg`;
+             else if (item.targetType === "landmark") finalPath = `public/images/landmarks/${item.contextId}.jpg`;
+             else finalPath = `public/images/articles/${item.contextId}.jpg`; 
+          }
 
-          // Add final image to commit list
+          // Image ko us purane path par overwrite karo
           filesToCommit.push({ path: finalPath, content: base64Content, encoding: "base64" });
           
-          // Delete pending image from GitHub
+          // Pending folder se image delete karo
           await deleteGithubFile(pendingPath, pendingFile.sha);
 
-          const newImageUrl = `/${finalPath.replace("public/", "")}`;
-
-          // Update JSON logic
+          // JSON update logic (taaki Vercel ko naya build trigger mile, chahe path same ho)
           if (item.targetType === "person") {
              if (!fileUpdates["data/people.json"]) fileUpdates["data/people.json"] = [];
-             fileUpdates["data/people.json"].push({ type: "image", contextId: item.contextId, newPhoto: newImageUrl });
+             fileUpdates["data/people.json"].push({ type: "image", contextId: item.contextId, newPhoto: `/${finalPath.replace("public/", "")}?t=${Date.now()}` });
           } 
           else if (item.targetType === "landmark") {
              if (!fileUpdates["data/media.json"]) fileUpdates["data/media.json"] = [];
-             fileUpdates["data/media.json"].push({ type: "image", contextId: item.contextId, newPhoto: newImageUrl });
+             fileUpdates["data/media.json"].push({ type: "image", contextId: item.contextId, newPhoto: `/${finalPath.replace("public/", "")}?t=${Date.now()}` });
           }
           else {
-             // 🚀 Article Hero Image - Scan all article files
+             // Article Hero
              const articleFiles = ["culture", "education", "geography", "health", "infrastructure", "landmarks", "religion"];
              for (const cat of articleFiles) {
                const p = `data/articles/${cat}.json`;
@@ -131,8 +131,9 @@ export async function POST() {
                  const hasArticle = content.articles.some((a: any) => a.id === item.contextId);
                  if (hasArticle) {
                    if (!fileUpdates[p]) fileUpdates[p] = [];
-                   fileUpdates[p].push({ type: "image_hero", contextId: item.contextId, newImage: newImageUrl });
-                   break; // Found it, stop scanning
+                   // Cache bust karne ke liye ?t=timestamp laga rahe hain
+                   fileUpdates[p].push({ type: "image_hero", contextId: item.contextId, newImage: `/${finalPath.replace("public/", "")}?t=${Date.now()}` });
+                   break; 
                  }
                }
              }
@@ -140,14 +141,12 @@ export async function POST() {
         }
       }
 
-      // 🚀 Handle Text Edits (Agar koi text edit hua ho)
       if (item.field && item.newValue) {
         if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
         fileUpdates[item.filePath].push({ type: "text", contextId: item.contextId, field: item.field, newValue: item.newValue });
       }
     }
 
-    // 2. Process JSON Updates
     for (const [filePath, updates] of Object.entries(fileUpdates)) {
       const fileData = await fetchGithubFile(filePath);
       if (fileData) {
@@ -166,20 +165,17 @@ export async function POST() {
                return l;
              });
           }
-          // 🚀 Update Article Hero
           else if (u.type === "image_hero" && filePath.includes("articles")) {
              currentContent.articles = currentContent.articles.map((a: any) => {
                if (a.id === u.contextId) a.hero = u.newImage;
                return a;
              });
           }
-          // 🚀 Update Article Text (Title/Paragraphs)
           else if (u.type === "text" && filePath.includes("articles")) {
              currentContent.articles = currentContent.articles.map((a: any) => {
                 if (a.id === u.contextId) {
                   if (u.field === "Article Title") a.title = u.newValue;
                   else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
-                  // (Baaki fields ke liye logic yahan add kar sakte hain)
                 }
                 return a;
              });
@@ -190,17 +186,14 @@ export async function POST() {
       }
     }
 
-    // 3. Clear approved list
     queueContent.approved = [];
     filesToCommit.push({ path: queuePath, content: JSON.stringify(queueContent, null, 2) });
 
-    // 4. Commit everything at once!
     const commitMsg = `Batch Publish: ${filesToCommit.length} file(s) updated via Dashboard`;
     await commitMultipleFiles(filesToCommit, commitMsg);
 
     return NextResponse.json({ success: true, count: filesToCommit.length });
   } catch (error: any) {
-    console.error(error);
     return NextResponse.json({ error: error.message || "Publish failed" }, { status: 500 });
   }
 }
