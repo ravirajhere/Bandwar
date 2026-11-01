@@ -36,11 +36,12 @@ export default function SectionPage() {
             </p>
           </div>
           
-          {/* Write an Article Button */}
+          {/* 🚀 Write an Article Button (Dynamic Categories passed) */}
           <div className="shrink-0 pb-2 3xl:pb-4">
             <AddContentModal 
               type="article" 
               customButtonText="Write an Article" 
+              categories={categories.map(c => ({ id: c.id, title: c.title }))} 
             />
           </div>
         </div>
