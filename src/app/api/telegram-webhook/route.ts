@@ -18,15 +18,20 @@ export async function POST(req: Request) {
       const [action, contextId] = callbackData.split(":");
 
       if (action === "approve") {
-        // 1. Extract File Path and Base64 JSON
-        const filePathMatch = originalText.match(/Target File:<\/b> <code>(.*?)<\/code>/);
-        const jsonBase64Match = originalText.match(/PAYLOAD:<\/b>\n<code>(.*?)<\/code>/);
+        // ✅ FIX: Ab hum bina tags ke data extract kar rahe hain
+        // Ye code plain text mein se "Target File: data/people.json" utha lega
+        const filePathMatch = originalText.match(/Target File:\s*([^\n]+)/);
+        
+        // Ye code "📋 PAYLOAD:" ke baad wali line utha lega
+        const jsonBase64Match = originalText.match(/PAYLOAD:\s*\n([^\n]+)/);
 
         if (filePathMatch && jsonBase64Match) {
-          const filePath = filePathMatch[1];
-          const payload = JSON.parse(Buffer.from(jsonBase64Match[1], 'base64').toString('utf-8'));
+          const filePath = filePathMatch[1].trim();
+          const jsonBase64 = jsonBase64Match[1].trim();
+          
+          const payload = JSON.parse(Buffer.from(jsonBase64, 'base64').toString('utf-8'));
 
-          // 2. Fetch current file from GitHub
+          // 1. Fetch current file from GitHub
           const getFileUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
           const fileRes = await fetch(getFileUrl, {
             headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" }
@@ -39,25 +44,35 @@ export async function POST(req: Request) {
           const fileData = await fileRes.json();
           let currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
           let updatedContent = currentContent;
-
-          // 3. UPDATE LOGIC (For People.json)
           const { intent, jsonObj } = payload;
-          
+
+          // 2. UPDATE LOGIC
           if (filePath.includes("people.json")) {
             if (intent === "edit") {
               updatedContent.people = updatedContent.people.map((p: any) => {
                 if (p.id === contextId) {
-                  // Dynamic field update
+                  // Update the specific field (e.g., role -> suggestedValue)
                   p[jsonObj.field.toLowerCase()] = jsonObj.suggestedValue; 
-                  p.lastEditedBy = "Verified Editor";
+                  p.lastEditedBy = "Verified Editor (Telegram)";
                 }
                 return p;
               });
+            } else if (intent === "add") {
+               // Add logic for new person
+               const newId = jsonObj["Full Name"]?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") + "-bandwar";
+               updatedContent.people.push({
+                 id: newId,
+                 name: jsonObj["Full Name"],
+                 role: jsonObj["Role"],
+                 bio: jsonObj["Biography"],
+                 dob: jsonObj["Date of Birth"],
+                 deathDate: jsonObj["Date of Death"],
+                 lastEditedBy: "Verified Editor (Telegram)"
+               });
             }
           }
-          // You can add more file types here (directory.json, media.json, etc.)
 
-          // 4. Commit back to GitHub
+          // 3. Commit back to GitHub
           const putFileUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
           const putRes = await fetch(putFileUrl, {
             method: "PUT",
@@ -73,9 +88,12 @@ export async function POST(req: Request) {
             const errorText = await putRes.text();
             throw new Error(`GitHub PUT failed: ${putRes.status} ${errorText}`);
           }
+        } else {
+          // Agar regex fail hota hai, toh error throw karo taaki pata chale
+          throw new Error("Data extraction failed. Could not find file path or payload.");
         }
 
-        // 5. Update Telegram Message (Success)
+        // 4. Update Telegram Message (Success)
         await fetch(`https://api.telegram.org/bot${botToken}/editMessageReplyMarkup`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -98,7 +116,6 @@ export async function POST(req: Request) {
         });
       }
 
-      // Acknowledge Telegram
       await fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -109,12 +126,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   } catch (error: any) {
     console.error("Webhook Error:", error.message);
+    
     // Agar error aata hai, to Telegram par message bhejenge debug ke liye
-    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: process.env.TELEGRAM_CHAT_ID, text: `❌ Webhook Error: ${error.message}` })
     });
+
     return NextResponse.json({ error: "Webhook failed" }, { status: 500 });
   }
 }
