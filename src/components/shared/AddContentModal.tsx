@@ -7,12 +7,13 @@ import { useContributorGate } from "@/hooks/useContributorGate";
 
 type ContentType = "article" | "image" | "directory" | "person";
 
+// 🚀 Prop Interface mein categories add kiya
 interface AddContentModalProps {
   type: ContentType;
   customButtonText?: string;
+  categories?: { id: string; title: string }[]; 
 }
 
-// 🚀 Image Compression
 const compressImage = async (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -30,7 +31,6 @@ const compressImage = async (file: File): Promise<File> => {
           height = Math.round((height * maxWidth) / width);
           width = maxWidth;
         }
-
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext("2d");
@@ -51,7 +51,7 @@ const generateFileName = (title: string) => {
   return title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-") + "-bandwar.jpg";
 };
 
-export function AddContentModal({ type, customButtonText }: AddContentModalProps) {
+export function AddContentModal({ type, customButtonText, categories = [] }: AddContentModalProps) {
   const { toast } = useToast();
   const { submitWithGate, registrationModal } = useContributorGate();
   
@@ -63,7 +63,6 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
   const [liveTitle, setLiveTitle] = useState("");
   const [suggestedFileName, setSuggestedFileName] = useState("");
   
-  // 🚀 Custom Category States
   const [showCustomCat, setShowCustomCat] = useState(false);
   const [customCategory, setCustomCategory] = useState("");
 
@@ -95,11 +94,10 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
       }
     }
 
-    // 🚀 Custom Category Logic
     if (showCustomCat && customCategory.trim()) {
       const slug = customCategory.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       formData.set("Category", slug);
-      formData.set("customCategory", customCategory.trim()); // Backend ko display name bhi bhejenge
+      formData.set("customCategory", customCategory.trim());
     }
 
     const typeMap: Record<string, string> = {
@@ -143,8 +141,8 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
     });
   };
 
-  // Reusable Category Selector
-  const CategorySelector = ({ label, options }: { label: string, options: { id: string, name: string }[] }) => (
+  // 🚀 Dynamic Category Selector
+  const CategorySelector = ({ label }: { label: string }) => (
     <div className="space-y-2">
       <label className="block text-sm font-semibold text-ink">{label} <span className="text-red-500">*</span></label>
       <select 
@@ -154,7 +152,10 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
         className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none cursor-pointer"
       >
         <option value="">Select...</option>
-        {options.map(opt => <option key={opt.id} value={opt.id}>{opt.name}</option>)}
+        {/* 🚀 Yahan dynamic categories render ho rahi hain */}
+        {categories.map(cat => (
+          <option key={cat.id} value={cat.id}>{cat.title}</option>
+        ))}
         <option value="custom" className="font-bold text-accent">+ Create Custom Category</option>
       </select>
       
@@ -172,6 +173,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
   );
 
   const activeConfig = {
+    // ... (Article, Image, Directory, Person waise hi rahenge, bas CategorySelector se options hata denge)
     article: {
       title: "Submit New Article",
       btnText: "Submit Article",
@@ -181,11 +183,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
             <label className="block text-sm font-semibold text-ink mb-1.5">Article Title <span className="text-red-500">*</span></label>
             <input type="text" name="Article Title" required onChange={(e) => setLiveTitle(e.target.value)} placeholder="e.g. History of Bandwar" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none" />
           </div>
-          <CategorySelector label="Category" options={[
-            { id: "history", name: "History" }, { id: "culture", name: "Culture" },
-            { id: "education", name: "Education" }, { id: "religion", name: "Religion" },
-            { id: "infrastructure", name: "Infrastructure" }
-          ]} />
+          <CategorySelector label="Category" />
           <div>
             <label className="block text-sm font-semibold text-ink mb-1.5">Story / Details <span className="text-red-500">*</span></label>
             <textarea name="Story" required placeholder="Write the full story or details here..." rows={5} className="w-full px-4 py-3 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none resize-y" />
@@ -212,10 +210,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
-              <CategorySelector label="Category" options={[
-                { id: "temples", name: "Temples" }, { id: "festivals", name: "Festivals" },
-                { id: "nature", name: "Nature" }, { id: "daily-life", name: "Daily Life" }
-              ]} />
+              <CategorySelector label="Category" />
             </div>
             <div className="col-span-2 sm:col-span-1">
               <label className="block text-sm font-semibold text-ink mb-1.5">Year</label>
@@ -240,10 +235,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
             <label className="block text-sm font-semibold text-ink mb-1.5">Name <span className="text-red-500">*</span></label>
             <input type="text" name="Name" required placeholder="e.g. Ganesh Medical Store" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none" />
           </div>
-          <CategorySelector label="Category" options={[
-            { id: "shops", name: "Shops" }, { id: "health", name: "Health" },
-            { id: "government", name: "Government" }, { id: "transport", name: "Transport" }
-          ]} />
+          <CategorySelector label="Category" />
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-ink mb-1.5">Phone <span className="text-red-500">*</span></label>
@@ -258,6 +250,7 @@ export function AddContentModal({ type, customButtonText }: AddContentModalProps
       )
     },
     person: {
+      // Person mein category nahi hoti, isliye ye waise hi rahega
       title: "Add Notable Person",
       btnText: "Submit Profile",
       fields: (
