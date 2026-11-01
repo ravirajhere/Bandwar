@@ -59,6 +59,21 @@
       "timestamp": "2026-11-01T11:40:59.550Z",
       "telegramMessageId": 47,
       "chatId": "8848904239"
+    },
+    {
+      "id": "edit_1793533280962",
+      "filePath": "data/articles/landmarks.json",
+      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Paragraph: The Four-Day Ritual",
+        "suggestedValue": "The four-day festival begins with Nahay-Khay, when devotees bathe in river and eat a special meal of rice, chana dal, and kaddu (bottle gourd). The second day is Kharna, when a day-long fast is broken in the evening with roti and kheer. The third day — Sandhya Arghya — is the most important: as the sun sets, devotees stand in the water and offer prayers to the setting sun. The fourth day is Usha Arghya — the same ritual repeated at sunrise, ending the fast. Throughout the four days, devotees observe strict rules of cleanliness and abstinence, and the festival's rituals are considered among the most demanding of any Hindu observance."
+      },
+      "type": "Article",
+      "userName": "Anonymous Visitor",
+      "timestamp": "2026-11-01T11:41:21.419Z",
+      "telegramMessageId": 48,
+      "chatId": "8848904239"
     }
   ],
   "approved": []
