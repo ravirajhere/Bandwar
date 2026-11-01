@@ -3,7 +3,7 @@ import React from "react";
 
 interface WikiTextProps {
   text: string;
-  validIds?: string[]; // 👈 Naya Prop: Existing articles ki list
+  validIds?: string[]; 
 }
 
 export function WikiText({ text, validIds }: WikiTextProps) {
@@ -28,17 +28,17 @@ export function WikiText({ text, validIds }: WikiTextProps) {
           
           const displayLabel = rawLabel ? rawLabel.trim() : defaultLabel;
 
-          // 👇 Check karein ki article exist karta hai ya nahi
+          // Check karein ki article exist karta hai ya nahi
           const isMissing = validSet && !validSet.has(id);
 
           if (isMissing) {
-            // 🔴 RED LINK (Article nahi hai)
+            // 🔴 RED LINK (Article nahi hai - Standard Wiki Feature)
             return (
               <Link 
                 key={index} 
-                href={`/contribute?new=${id}`} // Direct Contribute page par bhejenge
+                href={`/contribute?new=${id}`} 
                 title={`${displayLabel} (Page not found. Click to suggest)`}
-                className="text-red-500 dark:text-red-400 font-medium underline decoration-red-500/40 underline-offset-4 hover:decoration-red-500 hover:text-red-600 dark:hover:text-red-300 transition-all focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-background rounded-sm"
+                className="text-red-600 dark:text-red-400 font-medium underline decoration-red-500/30 dark:decoration-red-400/30 underline-offset-4 hover:decoration-red-600 dark:hover:decoration-red-400 hover:text-red-700 dark:hover:text-red-300 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas rounded-sm"
               >
                 {displayLabel}
               </Link>
@@ -51,7 +51,7 @@ export function WikiText({ text, validIds }: WikiTextProps) {
               key={index} 
               href={`/article/${id}`} 
               title={displayLabel}
-              className="text-brand visited:text-brand-visited font-medium underline decoration-brand/30 underline-offset-4 hover:decoration-brand hover:text-brand-hover transition-all focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background rounded-sm"
+              className="text-accent visited:text-accent-visited font-medium underline decoration-accent/30 underline-offset-4 hover:decoration-accent hover:text-accent-hover transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-canvas rounded-sm"
             >
               {displayLabel}
             </Link>
