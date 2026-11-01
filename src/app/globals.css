@@ -3,24 +3,31 @@
 @tailwind utilities;
 
 /* =========================================
-   1. THEME DESIGN TOKENS (Long-Term System)
+   1. THEME DESIGN TOKENS & BASE STYLES
    ========================================= */
 @layer base {
   :root {
-    /* ☀️ Light Mode (Warm Editorial) */
-    --bg-main: #FAFAF9;           
-    --bg-card: #FFFFFF;           
+    /* 🎨 NEW IDENTITY TOKENS */
+    --bg-canvas: #FAFAF9;           
+    --bg-surface: #FFFFFF;           
+    --text-ink: #1C1917;         
+    --text-ink-muted: #78716C;        
+    --brand-accent: #166534;     
+    --brand-accent-hover: #14532D;
+    --brand-accent-visited: #4C1D95;     
+    --border-divider: #E7E5E4;       
+
+    /* 🔄 LEGACY MAPPINGS */
+    --bg-main: var(--bg-canvas);
+    --bg-card: var(--bg-surface);
     --bg-card-hover: #F5F5F4;
     --bg-muted: #F5F5F4;          
-    
-    --text-main: #1C1917;         
-    --text-muted: #78716C;        
-    
-    --brand-primary: #166534;     
-    --brand-hover: #14532D;
-    --brand-visited: #4C1D95;     
-    
-    --border-main: #E7E5E4;       
+    --text-main: var(--text-ink);         
+    --text-muted: var(--text-ink-muted);        
+    --brand-primary: var(--brand-accent);     
+    --brand-hover: var(--brand-accent-hover);
+    --brand-visited: var(--brand-accent-visited);     
+    --border-main: var(--border-divider);       
     --border-subtle: #F5F5F4;     
     
     --selection-bg: #166534;
@@ -32,19 +39,26 @@
 
   /* 🌙 Dark Mode (Luxurious Obsidian) */
   .dark {
-    --bg-main: #0C0A09;           
-    --bg-card: #1C1917;           
+    --bg-canvas: #0C0A09;           
+    --bg-surface: #1C1917;           
+    --text-ink: #FAFAF9;         
+    --text-ink-muted: #A8A29E;        
+    --brand-accent: #4ADE80;     
+    --brand-accent-hover: #22C55E;
+    --brand-accent-visited: #C084FC;
+    --border-divider: #292524;       
+
+    /* 🔄 LEGACY DARK MODE MAPPINGS */
+    --bg-main: var(--bg-canvas);
+    --bg-card: var(--bg-surface);
     --bg-card-hover: #292524;
     --bg-muted: #1C1917;
-    
-    --text-main: #FAFAF9;         
-    --text-muted: #A8A29E;        
-    
-    --brand-primary: #4ADE80;     
-    --brand-hover: #22C55E;
-    --brand-visited: #C084FC;
-    
-    --border-main: #292524;       
+    --text-main: var(--text-ink);         
+    --text-muted: var(--text-ink-muted);        
+    --brand-primary: var(--brand-accent);     
+    --brand-hover: var(--brand-accent-hover);
+    --brand-visited: var(--brand-accent-visited);     
+    --border-main: var(--border-divider);       
     --border-subtle: #1C1917;     
     
     --selection-bg: #4ADE80;
@@ -58,7 +72,6 @@
     scroll-padding-top: 6rem; 
   }
 
-  /* Scale up base font for TVs so users don't have to zoom */
   @media (min-width: 1920px) {
     html { font-size: 19px; }
   }
@@ -66,14 +79,13 @@
     html { font-size: 22px; }
   }
 
-  /* Motion sickness fix */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
   }
 
   body {
-    background-color: var(--bg-main);
-    color: var(--text-main);
+    background-color: var(--bg-canvas);
+    color: var(--text-ink);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: var(--font-inter), sans-serif;
@@ -86,14 +98,13 @@
     color: var(--selection-text);
   }
 
-  /* Accessibility: Clear Focus Ring for Keyboard & TV Remotes */
+  /* Accessibility: Clear Focus Ring */
   *:focus-visible {
-    outline: 3px solid var(--brand-primary);
+    outline: 3px solid var(--brand-accent);
     outline-offset: 4px;
     border-radius: 2px;
   }
 
-  /* Global Image Handling */
   img {
     display: block;
     max-width: 100%;
@@ -101,36 +112,31 @@
     border-radius: 6px;
   }
   
-  /* Add subtle border to images in dark mode to separate them from background */
   .dark img {
-    border: 1px solid var(--border-main);
+    border: 1px solid var(--border-divider);
   }
 
-  /* Paragraph Readability */
   p {
     line-height: 1.75; 
     margin-bottom: 1.5rem; 
-    font-size: clamp(1rem, 0.95rem + 0.4vw, 1.125rem); /* Fluid text */
+    font-size: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
   }
 
-  /* Encyclopedic Rule: Limit line width for reading comfort */
   article p, .prose p {
     max-width: 75ch;
   }
 
-  /* Links */
   a {
-    color: var(--brand-primary);
+    color: var(--brand-accent);
     text-decoration: none;
     transition: color 0.2s ease, text-decoration 0.2s ease;
   }
   a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  a:visited { color: var(--brand-visited); }
+  a:visited { color: var(--brand-accent-visited); }
 
-  /* Headings: Heritage Serif & Fluid Sizing */
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance; 
-    color: var(--text-main);
+    color: var(--text-ink);
     font-family: var(--font-playfair), Georgia, serif;
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -143,7 +149,7 @@
     margin-top: 3rem; 
     margin-bottom: 1.25rem; 
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-main); 
+    border-bottom: 1px solid var(--border-divider); 
   }
   h3 { font-size: clamp(1.25rem, 1.15rem + 1vw, 1.75rem); margin-top: 2rem; margin-bottom: 0.75rem; }
 
@@ -154,7 +160,7 @@
     -webkit-overflow-scrolling: touch;
     margin-top: 1.5rem;
     margin-bottom: 2rem;
-    border: 1px solid var(--border-main);
+    border: 1px solid var(--border-divider);
     border-radius: 6px;
   }
 
@@ -162,13 +168,13 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
-    background-color: var(--bg-card);
+    background-color: var(--bg-surface);
     text-align: left;
   }
 
   th, td {
     padding: 0.85rem 1rem; 
-    border-bottom: 1px solid var(--border-main);
+    border-bottom: 1px solid var(--border-divider);
     vertical-align: top;
     line-height: 1.5;
   }
@@ -176,8 +182,8 @@
   th {
     background-color: var(--bg-muted);
     font-weight: 600;
-    color: var(--text-main);
-    width: 35%; /* Good for Infoboxes */
+    color: var(--text-ink);
+    width: 35%; 
     white-space: nowrap;
   }
   
@@ -185,26 +191,36 @@
     border-bottom: none;
   }
 
-  /* Lists */
   ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.7; }
   li { margin-bottom: 0.5rem; }
   
-  /* 🎨 Forms & Inputs */
+  /* 🎨 Forms & Inputs (Plain CSS to avoid build error) */
   input, select, textarea {
-    @apply w-full px-4 py-2.5 border border-divider rounded-md bg-surface text-ink focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all;
+    width: 100%;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--border-divider);
+    border-radius: 6px;
+    background-color: var(--bg-surface);
+    color: var(--text-ink);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 3px rgba(22, 101, 52, 0.15);
   }
   
   button {
-    @apply cursor-pointer transition-colors duration-200;
+    cursor: pointer;
+    transition: all 0.2s ease;
   }
 }
 
 @layer components {
-  /* If you need any complex combination, add here. 
-     Otherwise, use standard Tailwind classes in components. */
   .prose-tv {
     font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.75rem);
-    max-width: 85ch; /* Wider for TV but still constrained */
+    max-width: 85ch; 
     line-height: 1.6;
   }
 }
@@ -215,37 +231,37 @@
 .leaflet-popup-content-wrapper {
   border-radius: 8px !important; 
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid var(--border-main) !important;
-  background-color: var(--bg-card) !important;
-  color: var(--text-main) !important;
+  border: 1px solid var(--border-divider) !important;
+  background-color: var(--bg-surface) !important;
+  color: var(--text-ink) !important;
   padding: 0 !important; 
 }
 .leaflet-popup-content { margin: 16px 20px !important; font-family: var(--font-inter), sans-serif; }
 .leaflet-popup-tip {
-  background-color: var(--bg-card) !important;
-  border: 1px solid var(--border-main) !important;
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border-divider) !important;
   box-shadow: none !important;
 }
 
 /* Scrollbar (Desktop Only) */
 @media (pointer: fine) {
   ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: var(--bg-main); }
+  ::-webkit-scrollbar-track { background: var(--bg-canvas); }
   ::-webkit-scrollbar-thumb {
-    background: var(--border-main);
+    background: var(--border-divider);
     border-radius: 5px; 
-    border: 2px solid var(--bg-main); 
+    border: 2px solid var(--bg-canvas); 
   }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-ink-muted); }
 }
 
 /* Leaflet Controls */
 .leaflet-control-layers {
   border-radius: 6px !important;
-  border: 1px solid var(--border-main) !important;
+  border: 1px solid var(--border-divider) !important;
   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
-  background: var(--bg-card) !important;
-  color: var(--text-main) !important;
+  background: var(--bg-surface) !important;
+  color: var(--text-ink) !important;
   font-family: var(--font-inter), sans-serif !important;
   font-size: 14px !important;
 }
@@ -268,7 +284,6 @@
     font-size: 11pt !important;
   }
 
-  /* Hide all site UI elements, but KEEP the article's internal header */
   .no-print, .site-header, .site-footer, nav, aside, button, .leaflet-container, input {
     display: none !important;
   }
@@ -289,7 +304,6 @@
     position: static !important;
   }
 
-  /* Force Infobox to show at the top in print */
   .print-infobox {
     display: block !important;
     margin-bottom: 25px !important;
@@ -297,7 +311,6 @@
     border: 1px solid #ddd !important;
   }
 
-  /* Typography for Print */
   h1 { font-size: 24pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 10px; }
   h2 { font-size: 16pt !important; color: #000000 !important; margin-top: 20px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
   h3 { font-size: 14pt !important; color: #000000 !important; }
@@ -312,7 +325,6 @@
     margin-bottom: 20px;
   }
 
-  /* Force FAQs to open in print */
   details { display: block !important; page-break-inside: avoid; margin-bottom: 15px; }
   summary { font-weight: bold; font-size: 13pt; }
   details > div { display: block !important; padding-left: 20px; }
