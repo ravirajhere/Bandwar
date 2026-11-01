@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Multi-file Commit (Supports Binary & Text)
+// 🚀 Helper: Multi-file Commit
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -46,7 +46,7 @@ async function commitMultipleFiles(files: { path: string; content: string; encod
   });
 }
 
-// 🚀 Helper: GitHub se file fetch karna
+// 🚀 Helper: Fetch File
 async function fetchGithubFile(path: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -58,7 +58,7 @@ async function fetchGithubFile(path: string) {
   return await res.json();
 }
 
-// 🚀 Helper: GitHub se file delete karna
+// 🚀 Helper: Delete File
 async function deleteGithubFile(path: string, sha: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -73,10 +73,6 @@ async function deleteGithubFile(path: string, sha: string) {
 }
 
 export async function POST() {
-  const githubToken = process.env.GITHUB_TOKEN;
-  const repoOwner = process.env.GITHUB_REPO_OWNER;
-  const repoName = process.env.GITHUB_REPO_NAME;
-
   try {
     const queuePath = "data/queue.json";
     const queueFile = await fetchGithubFile(queuePath);
@@ -93,42 +89,59 @@ export async function POST() {
     // 1. Process all approved items
     for (const item of queueContent.approved) {
       
-      // 🚀 Handle Image Upload (Move from pending to final)
+      // 🚀 Handle Image Upload
       if (item.pendingImageUrl) {
-        const pendingPath = item.pendingImageUrl.replace("/", ""); // public/images/pending/...
+        // FIX: Path sahi kiya gaya hai (public add kiya)
+        const pendingPath = `public${item.pendingImageUrl}`; 
         const pendingFile = await fetchGithubFile(pendingPath);
         
         if (pendingFile) {
           const base64Content = pendingFile.content.replace(/\n/g, "");
           
-          // Decide final path based on targetType
           let finalPath = "";
           if (item.targetType === "person") finalPath = `public/images/people/${item.contextId}.jpg`;
           else if (item.targetType === "landmark") finalPath = `public/images/landmarks/${item.contextId}.jpg`;
-          else finalPath = `public/images/articles/${item.contextId}.jpg`; // default
+          else finalPath = `public/images/articles/${item.contextId}.jpg`; 
 
           // Add final image to commit list
           filesToCommit.push({ path: finalPath, content: base64Content, encoding: "base64" });
           
-          // Add delete to pending path (Needs handling, for now let's overwrite or just leave it. We will delete it manually to keep it simple, but let's just upload for now.)
-          // Actually, deleting requires sha, we have pendingFile.sha. Let's do a separate fetch for delete.
+          // Delete pending image from GitHub
           await deleteGithubFile(pendingPath, pendingFile.sha);
 
-          // Add JSON update for image
-          let targetJsonPath = "data/people.json"; // default
-          if (item.targetType === "landmark") targetJsonPath = "data/media.json";
-          // For articles, we need to search all files, which is complex in this loop. Let's just handle people and landmarks first.
-          
+          const newImageUrl = `/${finalPath.replace("public/", "")}`;
+
+          // Update JSON logic
           if (item.targetType === "person") {
-             if (!fileUpdates[targetJsonPath]) fileUpdates[targetJsonPath] = [];
-             fileUpdates[targetJsonPath].push({ type: "image", contextId: item.contextId, newPhoto: `/${finalPath.replace("public/", "")}` });
+             if (!fileUpdates["data/people.json"]) fileUpdates["data/people.json"] = [];
+             fileUpdates["data/people.json"].push({ type: "image", contextId: item.contextId, newPhoto: newImageUrl });
+          } 
+          else if (item.targetType === "landmark") {
+             if (!fileUpdates["data/media.json"]) fileUpdates["data/media.json"] = [];
+             fileUpdates["data/media.json"].push({ type: "image", contextId: item.contextId, newPhoto: newImageUrl });
+          }
+          else {
+             // 🚀 Article Hero Image - Scan all article files
+             const articleFiles = ["culture", "education", "geography", "health", "infrastructure", "landmarks", "religion"];
+             for (const cat of articleFiles) {
+               const p = `data/articles/${cat}.json`;
+               const fileData = await fetchGithubFile(p);
+               if (fileData) {
+                 let content = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8"));
+                 const hasArticle = content.articles.some((a: any) => a.id === item.contextId);
+                 if (hasArticle) {
+                   if (!fileUpdates[p]) fileUpdates[p] = [];
+                   fileUpdates[p].push({ type: "image_hero", contextId: item.contextId, newImage: newImageUrl });
+                   break; // Found it, stop scanning
+                 }
+               }
+             }
           }
         }
       }
 
-      // 🚀 Handle Text Edits
+      // 🚀 Handle Text Edits (Agar koi text edit hua ho)
       if (item.field && item.newValue) {
-        // We assume item.filePath is correctly set from telegram-submit
         if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
         fileUpdates[item.filePath].push({ type: "text", contextId: item.contextId, field: item.field, newValue: item.newValue });
       }
@@ -141,29 +154,35 @@ export async function POST() {
         let currentContent = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8"));
 
         updates.forEach((u) => {
-          // Update Person Image
           if (u.type === "image" && filePath.includes("people.json")) {
              currentContent.people = currentContent.people.map((p: any) => {
                if (p.id === u.contextId) p.photo = u.newPhoto;
                return p;
              });
           }
-          // Update Landmark Image
           else if (u.type === "image" && filePath.includes("media.json")) {
              currentContent.landmarks = currentContent.landmarks.map((l: any) => {
                if (l.id === u.contextId) l.photo = u.newPhoto;
                return l;
              });
           }
-          // Update Text (Title, Bio, Paragraph, etc)
-          else if (u.type === "text") {
-             if (filePath.includes("people.json")) {
-                currentContent.people = currentContent.people.map((p: any) => {
-                  if (p.id === u.contextId) p[u.field.toLowerCase()] = u.newValue;
-                  return p;
-                });
-             }
-             // Add logic for articles if needed
+          // 🚀 Update Article Hero
+          else if (u.type === "image_hero" && filePath.includes("articles")) {
+             currentContent.articles = currentContent.articles.map((a: any) => {
+               if (a.id === u.contextId) a.hero = u.newImage;
+               return a;
+             });
+          }
+          // 🚀 Update Article Text (Title/Paragraphs)
+          else if (u.type === "text" && filePath.includes("articles")) {
+             currentContent.articles = currentContent.articles.map((a: any) => {
+                if (a.id === u.contextId) {
+                  if (u.field === "Article Title") a.title = u.newValue;
+                  else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
+                  // (Baaki fields ke liye logic yahan add kar sakte hain)
+                }
+                return a;
+             });
           }
         });
 
