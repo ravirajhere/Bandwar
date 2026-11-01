@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useToast } from "@/components/ui/Toast";
+import { useContributorGate } from "./useContributorGate"; 
 
 export type EditStatus = "idle" | "editing" | "saving" | "pending" | "error";
 
@@ -12,25 +13,16 @@ export function useInlineEdit(
   fieldName: string
 ) {
   const { toast } = useToast();
+  const { submitWithGate, registrationModal } = useContributorGate(); 
   const [status, setStatus] = useState<EditStatus>("idle");
   const [value, setValue] = useState(initialValue);
   const [draft, setDraft] = useState(initialValue);
 
-  const startEditing = () => {
-    setDraft(value);
-    setStatus("editing");
-  };
+  const startEditing = () => { setDraft(value); setStatus("editing"); };
+  const cancelEditing = () => { setDraft(value); setStatus("idle"); };
 
-  const cancelEditing = () => {
-    setDraft(value);
-    setStatus("idle");
-  };
-
-  const saveEdit = async (submitterName: string = "Anonymous Visitor") => {
-    if (draft.trim() === value.trim()) {
-      setStatus("idle");
-      return;
-    }
+  const saveEdit = async () => {
+    if (draft.trim() === value.trim()) { setStatus("idle"); return; }
 
     setStatus("saving");
     const formData = new FormData();
@@ -39,40 +31,30 @@ export function useInlineEdit(
     formData.append("field", fieldName);
     formData.append("currentValue", value);
     formData.append("suggestedValue", draft);
-    formData.append("submitterName", submitterName);
 
-    try {
-      const res = await fetch("/api/telegram-submit", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
+    await submitWithGate(formData, async (data) => {
+      try {
+        const res = await fetch("/api/telegram-submit", { method: "POST", body: data });
+        const resData = await res.json();
 
-      if (data.success) {
-        setValue(draft); 
-        setStatus("pending");
-        toast("Suggestion sent for review.", "success");
-        
-        setTimeout(() => {
-          setStatus("idle");
-        }, 4000);
-      } else {
+        if (resData.success) {
+          setValue(draft); 
+          setStatus("pending");
+          toast("Suggestion sent for review.", "success");
+          setTimeout(() => setStatus("idle"), 4000);
+        } else {
+          setStatus("error");
+          toast("Failed to send suggestion.", "error");
+        }
+      } catch (err) {
         setStatus("error");
-        toast("Failed to send suggestion.", "error");
+        toast("Network error.", "error");
       }
-    } catch (err) {
-      setStatus("error");
-      toast("Network error.", "error");
-    }
+    });
   };
 
   return {
-    status,
-    value,
-    draft,
-    setDraft,
-    startEditing,
-    cancelEditing,
-    saveEdit,
+    status, value, draft, setDraft, startEditing, cancelEditing, saveEdit,
+    registrationModal, 
   };
 }
