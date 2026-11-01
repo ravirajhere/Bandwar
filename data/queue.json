@@ -1,21 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1793531493229",
-      "filePath": "data/articles/landmarks.json",
-      "contextId": "st-paul-school-bandwar",
-      "intent": "edit",
-      "jsonObj": {
-        "field": "Infobox: Management",
-        "suggestedValue": "Private Unaided"
-      },
-      "type": "Article Infobox",
-      "userName": "Anonymous Visitor",
-      "timestamp": "2026-11-01T11:11:33.718Z",
-      "telegramMessageId": 44,
-      "chatId": "8848904239"
-    },
-    {
       "id": "edit_1793533093837",
       "filePath": "data/articles/landmarks.json",
       "contextId": "shaheed-ramchandra-dwar-bandwar",
