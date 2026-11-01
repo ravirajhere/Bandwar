@@ -1,4 +1,20 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1793530741971",
+      "filePath": "data/articles/landmarks.json",
+      "contextId": "ms-bandwar-middle-school",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Paragraph: Bridging Primary and Secondary",
+        "suggestedValue": "As the only government school in Bandwar offering the full Class 1–8 range, MS Bandwar plays a central role in the village's educational pipeline. Students who complete Class 8 here on move on to [[uhs-plus-2-bandwar|UHS +2 Bandwar]] or [[snk-high-school-bandwar|S.N.K. High School]] for their secondary education."
+      },
+      "type": "Article",
+      "userName": "Anonymous Visitor",
+      "timestamp": "2026-11-01T10:59:02.480Z",
+      "telegramMessageId": 43,
+      "chatId": "8848904239"
+    }
+  ],
   "approved": []
 }
