@@ -13,6 +13,9 @@ export const metadata: Metadata = {
 export default function DirectoryPage() {
   const data = getDirectoryData();
 
+  // 🚀 Dynamic categories for the form
+  const dynamicCategories = data.categories.map(c => ({ id: c.id, title: c.title }));
+
   return (
     <div className="bg-canvas min-h-screen py-8 md:py-12 3xl:py-16">
       <div className="container mx-auto px-4 md:px-0">
@@ -41,11 +44,12 @@ export default function DirectoryPage() {
             </p>
           </div>
           
-          {/* Action Button (Utility Style) */}
+          {/* 🚀 Action Button (Dynamic Categories passed) */}
           <div className="shrink-0 pt-1">
             <AddContentModal 
               type="directory" 
               customButtonText="Add New Entry" 
+              categories={dynamicCategories}
             />
           </div>
         </div>
