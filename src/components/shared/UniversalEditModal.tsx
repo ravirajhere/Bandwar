@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Pencil, X, Loader2, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 
 interface UniversalEditModalProps {
-  fieldName: string;       // Jaise: "Article Title", "Students Count"
-  currentValue: string;    // Jo abhi website par likha hai
-  contextId: string;       // Jaise: "snk-high-school-bandwar"
-  contextType: string;     // Jaise: "Article", "Person Profile", "Vision 2030"
-  variant?: "icon" | "inline"; // 'icon' = pencil button, 'inline' = [✏️ Edit] text
+  fieldName: string;       
+  currentValue: string;    
+  contextId: string;       
+  contextType: string;     
+  variant?: "icon" | "inline"; 
 }
 
 export function UniversalEditModal({ 
@@ -25,6 +25,53 @@ export function UniversalEditModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [suggestedValue, setSuggestedValue] = useState("");
+  
+  const modalRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Lock background scroll & Auto-focus
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      setTimeout(() => textareaRef.current?.focus(), 100);
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => { document.body.style.overflow = "unset"; };
+  }, [isOpen]);
+
+  // Handle Escape key & Focus Trap
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
+
+      if (e.key === "Escape" && !isSubmitting) {
+        handleClose();
+      }
+
+      if (e.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'input, textarea, button'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, isSubmitting]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,41 +79,39 @@ export function UniversalEditModal({
 
     const formData = new FormData(e.currentTarget);
     
-    // 👇 API (/api/telegram-submit) ke liye data taiyar kar rahe hain 👇
+    // API Payload Preparation
     formData.append("type", contextType);
     formData.append("contextId", contextId);
     formData.append("field", fieldName);
     formData.append("currentValue", currentValue);
     formData.append("suggestedValue", suggestedValue);
     
-    // User ka naam nikal rahe hain (Credit ke liye)
     const submittedName = formData.get("submitter_name") as string;
-    formData.append("submitterName", submittedName || "Anonymous Visitor");
+    formData.append("submitterName", submittedName || "Anonymous Contributor");
 
     try {
-      // 📱 Naye API Route par bhej rahe hain (FormData me)
       const response = await fetch("/api/telegram-submit", {
         method: "POST",
-        body: formData, // FormData bhej rahe hain (JSON nahi)
+        body: formData, 
       });
       
       const data = await response.json();
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Suggestion sent to Telegram!", "success");
+        toast("Edit suggestion submitted successfully.", "success");
         setTimeout(() => {
           setIsOpen(false);
           setTimeout(() => { 
             setIsSuccess(false); 
             setSuggestedValue(""); 
           }, 300);
-        }, 2500);
+        }, 3500); 
       } else {
-        toast(data.details || "Failed to send. Please try again.", "error");
+        toast(data.details || "Submission failed. Please try again.", "error");
       }
     } catch (error) {
-      toast("Error sending request. Check connection.", "error");
+      toast("Network error. Please verify your connection.", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -81,112 +126,166 @@ export function UniversalEditModal({
 
   return (
     <>
-      {/* 🖊️ Trigger Button (Icon OR Inline) */}
+      {/* 🖊️ Trigger Button */}
       {variant === "icon" ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="inline-flex items-center justify-center p-1.5 text-muted hover:text-brand hover:bg-brand/10 rounded-md transition-all ml-1.5"
-          title={`Suggest edit for ${fieldName}`}
+          className="inline-flex items-center justify-center p-1.5 text-ink/40 hover:text-accent hover:bg-accent/10 rounded-md transition-all ml-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent no-print"
+          title={`Suggest an edit for ${fieldName}`}
+          aria-label={`Suggest an edit for ${fieldName}`}
         >
-          <Pencil size={13} />
+          <Pencil size={14} />
         </button>
       ) : (
         <button
           onClick={() => setIsOpen(true)}
-          className="inline-flex items-center gap-1 text-[13px] text-muted hover:text-brand hover:bg-brand/10 px-1.5 py-0.5 rounded transition-all ml-2 align-baseline font-medium"
-          title={`Suggest edit for ${fieldName}`}
+          className="inline-flex items-center gap-1.5 text-[13px] text-ink/50 hover:text-accent hover:bg-accent/10 px-2.5 py-1 rounded-md transition-all ml-2 align-baseline font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent no-print"
+          title={`Suggest an edit for ${fieldName}`}
         >
-          <Pencil size={12} /> Edit
+          <Pencil size={12} /> Suggest Edit
         </button>
       )}
 
       {/* 🪟 Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-card w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-border flex flex-col max-h-[90vh]">
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-ink/70 backdrop-blur-sm animate-in fade-in duration-200 no-print"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="edit-modal-title"
+        >
+          <div 
+            ref={modalRef}
+            className="bg-surface w-full max-w-xl rounded-lg shadow-2xl overflow-hidden border border-divider flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200"
+          >
             
             {/* Header */}
-            <div className="flex justify-between items-center p-4 border-b border-border bg-muted-background shrink-0">
+            <div className="flex justify-between items-start p-5 sm:p-6 border-b border-divider bg-canvas/50 shrink-0">
               <div>
-                <h3 className="font-serif font-semibold text-foreground text-base">
-                  Suggest Correction
-                </h3>
-                <p className="text-xs text-muted mt-0.5">
-                  {contextType} • <span className="text-brand font-medium">{fieldName}</span>
+                <h2 id="edit-modal-title" className="font-serif font-bold text-ink text-xl">
+                  Suggest an Edit
+                </h2>
+                <p className="text-sm text-ink/60 mt-1">
+                  {contextType} &bull; <span className="text-accent font-medium">{fieldName}</span>
                 </p>
               </div>
-              <button onClick={handleClose} className="text-muted hover:text-foreground p-1.5 bg-background rounded-md transition-colors shadow-sm">
+              <button 
+                onClick={handleClose} 
+                disabled={isSubmitting}
+                className="text-ink/40 hover:text-ink p-2 bg-surface border border-divider rounded-md transition-colors shadow-sm disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="Close dialog"
+              >
                 <X size={18} />
               </button>
             </div>
 
             {/* Body */}
-            <div className="p-5 overflow-y-auto custom-scrollbar flex-grow">
+            <div className="p-5 sm:p-6 overflow-y-auto custom-scrollbar flex-grow">
               {isSuccess ? (
                 <div className="text-center py-12">
-                  <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4 animate-bounce" />
-                  <h4 className="text-xl font-bold text-foreground mb-2">Dhanyawad!</h4>
-                  <p className="text-sm text-muted px-4">Your suggestion has been sent to the editor.</p>
+                  <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                    <CheckCircle2 size={32} className="text-green-600 dark:text-green-500" />
+                  </div>
+                  <h3 className="text-xl font-serif font-bold text-ink mb-2">Contribution Received</h3>
+                  <p className="text-sm text-ink/70 max-w-sm mx-auto leading-relaxed">
+                    Thank you for your submission. The editorial team will review this information for accuracy before publishing.
+                  </p>
                 </div>
               ) : (
-                <form id="universal-edit-form" onSubmit={handleSubmit} className="space-y-4">
+                <form id="universal-edit-form" onSubmit={handleSubmit} className="space-y-6">
+                  
+                  {/* Current Value (Read-only) */}
                   <div>
-                    <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-1.5">
-                      Current Text (On Website)
+                    <label className="block text-xs font-semibold text-ink/50 uppercase tracking-wider mb-2">
+                      Current Information
                     </label>
-                    <div className="w-full px-3 py-2.5 rounded-lg border border-border bg-muted-background text-muted text-sm opacity-80 cursor-not-allowed max-h-[100px] overflow-y-auto custom-scrollbar">
-                      {currentValue || "No data currently"}
+                    <div className="w-full px-4 py-3 rounded-md border border-divider bg-canvas text-ink/60 text-sm max-h-[120px] overflow-y-auto cursor-not-allowed leading-relaxed">
+                      {currentValue || "No data currently available."}
                     </div>
                   </div>
 
+                  {/* New Value (Textarea) */}
                   <div>
-                    <label className="block text-xs font-semibold text-foreground mb-1.5">
-                      Suggested Correction <span className="text-red-500">*</span>
+                    <label className="block text-sm font-semibold text-ink mb-2">
+                      Proposed Update <span className="text-red-500">*</span>
                     </label>
                     <textarea 
+                      ref={textareaRef}
                       required
-                      rows={3}
+                      rows={4}
                       value={suggestedValue}
                       onChange={(e) => setSuggestedValue(e.target.value)}
-                      placeholder="Write the correct information here..." 
-                      className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm resize-y" 
+                      placeholder="Enter the accurate information here..." 
+                      className="w-full px-4 py-3 rounded-md border border-divider bg-surface text-ink text-sm resize-y focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all leading-relaxed" 
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="pt-5 border-t border-divider space-y-5">
                     <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">Your Name (Optional)</label>
-                      <input 
-                        type="text" 
-                        name="submitter_name" 
-                        placeholder="e.g. Ramesh" 
-                        className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">Source / Reason</label>
-                      <input 
-                        type="text" 
-                        name="source_reason" 
-                        placeholder="e.g. Official record" 
-                        className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none text-sm" 
-                      />
+                      <h4 className="text-sm font-semibold text-ink mb-1">Contributor Details</h4>
+                      <p className="text-xs text-ink/50 mb-4">This information is kept strictly confidential and used only for verification.</p>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Name */}
+                        <div>
+                          <label className="block text-sm font-medium text-ink mb-1.5">Full Name <span className="text-red-500">*</span></label>
+                          <input 
+                            type="text" 
+                            name="submitter_name" 
+                            required
+                            placeholder="e.g. Ramesh Kumar" 
+                            className="w-full h-11 px-4 rounded-md border border-divider bg-surface text-ink text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
+                          />
+                        </div>
+                        
+                        {/* Contact */}
+                        <div>
+                          <label className="block text-sm font-medium text-ink mb-1.5">Contact No. <span className="text-ink/40 font-normal">(Optional)</span></label>
+                          <input 
+                            type="tel" 
+                            name="submitter_contact" 
+                            placeholder="For verification" 
+                            className="w-full h-11 px-4 rounded-md border border-divider bg-surface text-ink text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
+                          />
+                        </div>
+                      </div>
+
+                      {/* Source / Reason */}
+                      <div className="mt-4">
+                        <label className="block text-sm font-medium text-ink mb-1.5">Source of Information <span className="text-red-500">*</span></label>
+                        <input 
+                          type="text" 
+                          name="source_reason" 
+                          required
+                          placeholder="e.g. Official record, Local resident, Personal knowledge" 
+                          className="w-full h-11 px-4 rounded-md border border-divider bg-surface text-ink text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
+                        />
+                      </div>
                     </div>
                   </div>
+
                 </form>
               )}
             </div>
 
             {/* Footer */}
             {!isSuccess && (
-              <div className="p-4 border-t border-border bg-muted-background shrink-0">
+              <div className="p-5 border-t border-divider bg-canvas/50 shrink-0 flex justify-end gap-3">
+                <button 
+                  type="button"
+                  onClick={handleClose}
+                  disabled={isSubmitting}
+                  className="px-5 py-2.5 rounded-md border border-divider bg-surface text-ink font-medium hover:bg-canvas transition-colors disabled:opacity-50 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  Cancel
+                </button>
                 <button 
                   type="submit" 
                   form="universal-edit-form"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-3 rounded-xl font-semibold transition-all shadow-sm disabled:opacity-50 text-sm"
+                  className="px-6 flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white py-2.5 rounded-md font-semibold transition-all shadow-sm disabled:opacity-50 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                 >
-                  {isSubmitting ? <><Loader2 size={18} className="animate-spin" /> Sending...</> : "Submit Suggestion"}
+                  {isSubmitting ? <><Loader2 size={18} className="animate-spin" /> Submitting...</> : "Submit Contribution"}
                 </button>
               </div>
             )}
