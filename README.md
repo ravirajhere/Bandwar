@@ -1,8 +1,8 @@
 # 🏛️ Bandwar Village Portal
 
-A community-built digital portal for Bandwar village, Begusarai (Bihar) — a living, interactive website designed for the village, its residents, and their descendants. 
+A community-built digital archive for Bandwar village, Begusarai (Bihar) — designed to be a living, interactive portal for residents and their descendants.
 
-Built with a **Modern Heritage UI** and **Top-Website-inspired inline editing**, this portal prioritizes accessibility (especially for senior citizens), speed, and a strict data-driven architecture. It is designed to be maintained by a **Solo Editor** while allowing seamless **Community Contributions** directly via a **Telegram Bot** (No database, no emails, zero cost).
+Built with a **Strict Heritage UI** and a **Zero-Database Architecture**, this portal prioritizes accessibility, content density, and speed. It is designed to be maintained by a **Solo Editor** while allowing seamless, automated **Community Contributions** via a **Telegram Bot and a custom Moderation Dashboard**.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-blue?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
@@ -16,169 +16,164 @@ Built with a **Modern Heritage UI** and **Top-Website-inspired inline editing**,
 
 *(Yahan aap apni website ke screenshots add kar sakte hain)*
 
-| Desktop View | Mobile View |
+| Desktop Homepage | Article Reading View |
 | :---: | :---: |
-| `![Desktop View](https://via.placeholder.com/800x450?text=Desktop+View)` | `![Mobile View](https://via.placeholder.com/300x600?text=Mobile+View)` |
-| **Article Page** | **Interactive Map** |
-| `![Article](https://via.placeholder.com/800x450?text=Article+Page)` | `![Map](https://via.placeholder.com/800x450?text=Map+View)` |
+| `![Desktop View](https://via.placeholder.com/800x450?text=Desktop+View)` | `![Article](https://via.placeholder.com/800x450?text=Article+Page)` |
+| **Moderation Dashboard** | **Interactive Map** |
+| `![Dashboard](https://via.placeholder.com/800x450?text=Moderation+Dashboard)` | `![Map](https://via.placeholder.com/800x450?text=Map+View)` |
 
 ---
 
 ## ✨ Key Features
 
-### 🎨 UI/UX & Accessibility
-- **Premium Heritage Design:** Warm earthy colors, Glassmorphism navbar, and Playfair Display + Inter typography.
-- **Senior-Friendly:** Large touch targets, high contrast, and readable font sizes.
-- **Dark/Light Mode:** Saves user preference via `localStorage` with no flash on load.
-- **Hero Image Lightbox:** Clicking an article's main image opens it in a full-screen, distraction-free Lightbox.
-- **Mobile Floating TOC:** A native app-style floating button on mobile that opens the Table of Contents in a bottom sheet, helping users navigate long articles easily.
-- **Verified Trust Badge:** Articles display a green "Verified by [Name] on [Date]" badge to build visitor trust.
-- **Premium Category Tags:** Beautiful, clickable category badges at the bottom of articles with icons.
-- **Reading Progress Bar:** A sleek green line at the top of articles indicating scroll progress.
-- **Text-to-Speech (TTS):** "Listen to Article" in Hindi for easy listening.
-- **Live Weather & Time Widget:** Integrated in the footer using Open-Meteo API.
+### 🎨 The "Warm Archive" Identity (UI/UX)
+- **Strict Heritage Design:** A completely custom design system inspired by The New York Times and Anthropic. Features a "Warm Aged Paper" background (`#FBF8F3`), "Mithila Terracotta" accents (`#7C2D12`), and editorial typography.
+- **Premium Typography:** Uses **Fraunces** (a modern serif) for headings and **Inter** for body text, with JetBrains Mono for technical data. Includes editorial Drop Caps.
+- **Senior-Friendly & Accessible:** Large touch targets, high contrast ratios, and keyboard-navigable interfaces with global `focus-visible` rings.
+- **Dark/Light Mode:** "Obsidian" dark mode that saves preference via `localStorage` without page flashing.
+- **Dynamic Scaling:** CSS scaling optimized for everything from a 320px mobile screen to 4K TVs.
 
-### 🌐 Community Contributions (The "Telegram Magic")
-The website uses a custom **Telegram Bot integration** to allow visitors to suggest edits without any backend or database.
-- **Wikipedia-Style Inline Editing:** Visitors can click the pencil (✏️) icon next to *any* text, paragraph, or Infobox data to suggest a correction.
-- **Universal Add Content Modal:** Visitors can submit new Articles, Directory entries, People profiles, and Gallery photos directly from their respective pages.
-- **Auto Image Compression & SEO Naming:** When a visitor uploads a photo, it is compressed **on their device** (saving your bandwidth). The system also auto-generates an SEO-friendly filename (e.g., `old-thakurbari-bandwar.jpg`) based on the title they enter.
-- **Ready-to-Copy JSON Snippets:** Every Telegram message includes a perfectly formatted JSON block. The Editor can simply copy this block and paste it into the site's JSON files without typing anything manually.
-- **Google Maps Level Location Picker:** If a map marker is wrong, users can drag the map, use the search bar (Nominatim API), or use GPS to suggest exact coordinates.
-- **Red Links (Missing Articles):** Internal links to non-existent articles appear in red. Clicking them prompts the visitor to submit a request for that new article.
-- **Auto-Backlinks:** Articles automatically show a "Mentioned In" section if other articles link to them.
+### 🛡️ Advanced Moderation System (Telegram + Dashboard)
+This is the core of the portal's automation. It uses GitHub as a database and Telegram as a real-time notification system.
+- **Wikipedia-Style Inline Editing:** Visitors click the pencil (✏️) icon next to any text or Infobox data to suggest a correction.
+- **Telegram Inline Buttons:** When a user submits an edit, the Bot sends a message with **[✅ Stage] [❌ Reject]** buttons.
+- **Two-Way Sync (Dashboard + Telegram):** If you approve an edit on the Telegram Bot, the custom `/admin/dashboard` updates automatically. If you approve it on the Dashboard, the Telegram message updates to show "Staged via Dashboard."
+- **Batch Publishing (Zero Build Waste):** Approving an edit only "Stages" it. The actual JSON files are only updated when you hit **"🚀 Publish Live"** on the Dashboard. This groups 10+ edits into **one single GitHub commit**, saving Vercel build minutes.
+- **Auto Image Compression:** When a visitor uploads a photo, it is compressed **on their device** (via Canvas API) before being sent to Telegram/GitHub, saving bandwidth.
 
 ### 🗺️ Core Pages & Features
-- **Home Dashboard:** Interactive Satellite Map (Esri), Quick Access buttons, "Recently Updated" articles, and Village Stats.
-- **Directory:** Searchable list of doctors, shops, and emergency contacts with inline editing.
-- **Gallery:** Dedicated visual archive with category filters and a full-screen Lightbox. Includes auto-hide logic for missing images.
-- **Article Archive:** Clean 3-column layout (TOC, Content, Infobox) with FAQ Schema.
-- **Zero-Database Architecture:** 100% static site powered by JSON files. Ultra-fast load times and zero hosting costs for the database.
+- **Home Dashboard:** Grand editorial hero section, Quick Access buttons (Emergency, People, Archive), and an interactive Satellite Map.
+- **Interactive Village Map:** Uses React Leaflet with Esri satellite tiles. Features marker clustering and a custom location-fixing tool (GPS + Drag).
+- **Directory:** Searchable index of doctors, shops, and emergency contacts with inline editing.
+- **Gallery:** A strict, high-density Masonry grid (Wikimedia Commons style) with a distraction-free Lightbox.
+- **Article Archive:** 3-column layout (Sticky TOC, Content, Sticky Infobox) with auto-generated Backlinks ("Mentioned In") and FAQ Accordions.
+- **Text-to-Speech (TTS):** "Listen to Article" feature supporting Hindi/Indian English.
 
 ---
 
 ## 🚀 Tech Stack
 
 - **Framework:** Next.js 15 (App Router, Static Site Generation)
-- **Styling:** Tailwind CSS (with CSS Variables for Dark Mode & Themes)
-- **Data Validation:** Zod (Strict Type-Safety)
-- **Maps:** React Leaflet (Esri Satellite tiles, Marker Clustering)
+- **Styling:** Tailwind CSS (Custom design tokens, @tailwindcss/typography)
+- **Data Validation:** Zod (Strict Type-Safety during build)
+- **Maps:** React Leaflet, React-Leaflet-Cluster
+- **Fonts:** Next.js next/font/google (Fraunces, Inter, JetBrains Mono)
 - **Icons:** Lucide React
-- **Forms/Notifications:** Custom Next.js API Route + Telegram Bot API
-- **Weather:** Open-Meteo API (No API key required)
+- **Automation:** Next.js API Routes (Telegram Bot API, GitHub REST API)
 - **Deployment:** Vercel
 
 ---
 
 ## 📂 Detailed File Structure
 
-    bandwar-portal/
-    ├── data/                       # 👑 CONTENT WORKSPACE (Update JSONs here)
-    │   ├── master.json             # Site Config, Homepage, Footer, Nav, SEO
-    │   ├── directory.json          # Local services, doctors, shops
-    │   ├── reach.json              # How to reach the village
-    │   ├── media.json              # Gallery photos, Timeline events, Map landmarks
-    │   ├── people.json             # Notable personalities directory
-    │   ├── vision.json             # Vision 2035 Manifesto data
-    │   ├── categories.json         # Article categories
-    │   └── articles/               # All articles split by category
-    │       ├── culture.json
-    │       ├── education.json
-    │       ├── geography.json
-    │       ├── health.json
-    │       ├── infrastructure.json
-    │       ├── landmarks.json
-    │       └── religion.json
-    │
-    ├── public/                     # 📸 STATIC ASSETS
-    │   └── images/                 # All photos organized by category
-    │
-    ├── scripts/                    # ⚙️ AUTOMATION
-    │   └── validate.ts             # The engine that checks JSON for errors before build
-    │
-    ├── src/                        # 💻 CORE APPLICATION CODE
-    │   ├── app/                    # Next.js App Router (Pages)
-    │   │   ├── api/telegram-submit/# Next.js API route for all Telegram integrations
-    │   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
-    │   │   ├── gallery/            # Dedicated Photo Gallery Page
-    │   │   ├── directory/          # Village Directory Page
-    │   │   ├── people/             # People Directory & Dynamic Profiles
-    │   │   ├── contribute/         # Guide & General Feedback Hub
-    │   │   ├── section/            # Archive/Category listing
-    │   │   ├── globals.css         # Global styles, Tokens, Leaflet Overrides
-    │   │   ├── layout.tsx          # Main Layout (Header, Footer, JSON-LD SEO)
-    │   │   └── page.tsx            # Homepage (Hero, Map, Stats)
-    │   │
-    │   ├── components/             # Reusable UI Components
-    │   │   ├── article/            # ArticleToolbar, FaqAccordion, Infobox, ReadingProgress, MobileTOC, ArticleHeroImage
-    │   │   ├── contribute/         # ContributeForm (General Feedback)
-    │   │   ├── directory/          # DirectoryClient, EditContactModal
-    │   │   ├── layout/             # Header, Footer, SearchModal
-    │   │   ├── place/              # LandmarkMap, EditLocationModal, GalleryGrid, Lightbox, AddLandmarkModal
-    │   │   └── shared/             # AddContentModal, UniversalEditModal, ImageUpdateButton, LiveWeatherWidget, Toast
-    │   │
-    │   └── lib/                    # Core Logic
-    │       ├── data.ts             # Reads JSON, Filters missing images, Sorts articles
-    │       ├── search-data.ts      # Aggregates data for Global Search
-    │       └── schema.ts           # Zod schemas (Strict typing for all JSON)
-    │
-    ├── tailwind.config.ts          # Custom colors (Heritage theme) and fonts
-    └── package.json                # Dependencies
+bandwar-portal/
+├── data/                       # 👑 CONTENT WORKSPACE (All JSONs)
+│   ├── master.json             # Site Config, Homepage, Footer, SEO
+│   ├── directory.json          # Local services, doctors, shops
+│   ├── reach.json              # How to reach the village
+│   ├── media.json              # Gallery photos, Timeline, Map landmarks
+│   ├── people.json             # Notable personalities directory
+│   ├── vision.json             # Vision 2035 Manifesto data
+│   ├── queue.json              # PENDING & STAGED community edits (Auto-managed)
+│   └── articles/               # All articles split by category
+│       ├── culture.json
+│       ├── education.json
+│       ├── landmarks.json
+│       └── ... (other categories)
+│
+├── public/                     # 📸 STATIC ASSETS
+│   └── images/                 # All photos organized by category
+│
+├── scripts/                    
+│   └── validate.ts             # Zod validation engine (Runs before build)
+│
+├── src/                        
+│   ├── app/                    # Next.js App Router
+│   │   ├── admin/              # Moderation Dashboard (Protected by cookie)
+│   │   │   ├── dashboard/      # Main review UI
+│   │   │   └── page.tsx        # Admin Login
+│   │   ├── api/                
+│   │   │   ├── admin/          # APIs for fetching queue and publishing batches
+│   │   │   ├── telegram-submit/# Receives forms, saves to queue, alerts Telegram
+│   │   │   └── telegram-webhook/# Handles Telegram button clicks (Syncs with queue)
+│   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
+│   │   ├── directory/          # Village Directory Page
+│   │   ├── gallery/            # Photo Gallery Page
+│   │   ├── people/             # People Directory & Profiles
+│   │   ├── section/            # Archive category listing
+│   │   ├── globals.css         # Custom CSS tokens, fonts, print styles
+│   │   ├── layout.tsx          # Main Layout (Header, Footer, JSON-LD SEO)
+│   │   └── page.tsx            # Homepage
+│   │
+│   ├── components/             
+│   │   ├── article/            # ArticleToolbar, FaqAccordion, Infobox, MobileTOC
+│   │   ├── contribute/         # ContributeForm
+│   │   ├── directory/          # DirectoryClient, EditContactModal
+│   │   ├── layout/             # Header, Footer, SearchModal
+│   │   ├── place/              # LandmarkMap, GalleryGrid, Lightbox
+│   │   ├── shared/             # AddContentModal, UniversalEditModal, Toast
+│   │   └── ui/                 # Button, Input primitives (if any)
+│   │
+│   └── lib/                    
+│       ├── data.ts             # Reads JSON, Filters missing images, Sorts articles
+│       ├── search-data.ts      # Aggregates data for Global Search
+│       └── schema.ts           # Zod schemas (Strict typing for all JSON)
+│
+├── tailwind.config.ts          # Identity tokens (Warm Archive theme)
+├── vercel.json                 # Ignores Vercel builds for queue.json updates
+└── package.json                # Dependencies
 
 ---
 
 ## 🛠️ Local Setup
 
-1. Install dependencies:
+1. **Install dependencies:**
    npm install
 
-2. **Environment Variables:** Create a `.env.local` file in the root directory and add your Telegram Bot credentials:
+2. **Environment Variables:** Create a .env.local file in the root directory. You will need a Telegram Bot and a GitHub Personal Access Token (PAT).
+   TELEGRAM_BOT_TOKEN="your_bot_token_here"
+   TELEGRAM_CHAT_ID="your_chat_id_here"
+   TELEGRAM_WEBHOOK_SECRET="your_secret_password"
+   GITHUB_TOKEN="ghp_your_personal_access_token"
+   GITHUB_REPO_OWNER="your_github_username"
+   GITHUB_REPO_NAME="your_repo_name"
 
-    TELEGRAM_BOT_TOKEN="your_bot_token_here"
-    TELEGRAM_CHAT_ID="your_chat_id_here"
-
-3. Start the local development server:
+3. **Start the development server:**
    npm run dev
 
 ---
 
-## ✍️ Editor Workflow (How to handle Contributions)
+## ✍️ The Editor Workflow (How to handle Contributions)
 
-Since the site is static, you act as the database manager, but your workflow is now incredibly simple thanks to the Telegram Bot.
+Thanks to the Moderation Dashboard, the Editor's life is incredibly easy. The system acts as a mini-CMS.
 
-1. **Receive Telegram Message:** When a user submits a form, your Bandwar Bot will instantly send you a formatted message.
-2. **Review & Copy:** Open the message on your phone. It contains the page ID, exact field name, old text, and new text. At the bottom, there is a **"📋 COPY-PASTE THIS JSON"** block. Tap on it to copy it.
-3. **Update JSON (Mobile):** 
-   - Open the **GitHub Mobile App**.
-   - Navigate to the specific JSON file (e.g., `data/articles/education.json`).
-   - Tap edit, make the necessary change (paste the data), add the `lastEditedBy` name for credit, and commit the change.
-4. **Handle Images:** If a user uploaded a photo, download the compressed image from Telegram. Rename it exactly as suggested in the Telegram message (e.g., `old-thakurbari-bandwar.jpg`). Upload it to the specified folder (e.g., `public/images/religion/`), and update the `media.json` file with the exact filename.
-5. **Auto Deploy:** Vercel detects the GitHub commit and automatically builds/deploys the new version.
-
-### Special Rule: Auto-Hide Missing Images
-In `src/lib/data.ts`, we implemented an `fs.existsSync` check. If you add a photo to `media.json` but forget to upload the actual file to `public/images/`, the website will **automatically hide** it to prevent broken image icons on the live site. Check your terminal build logs to see warnings about missing images.
+1. **Receive Submission:** A user submits an edit on the website. It automatically saves to data/queue.json (Pending) and sends a Telegram alert with an image preview (if applicable).
+2. **Review in Dashboard:** Go to /admin/dashboard (Default Password: bandwar_admin_2026). You will see all Pending edits with a strict Red/Green diff view.
+3. **Stage It:** Click "Stage for Publish" (or click ✅ on Telegram). The edit moves to the "Staged" tab. (Vercel will NOT rebuild during this step).
+4. **Handle Images:** If an image was submitted, download it from Telegram, rename it to match the instructions, and manually upload it to public/images/ on GitHub.
+5. **Batch Publish:** Once you have 5-10 staged edits, click the green "🚀 Publish X Updates Live" button. The Dashboard will use the GitHub API to update all target JSON files in a single commit. Vercel will trigger exactly one build and deploy the changes.
 
 ---
 
 ## 🛡️ Data Validation (Crucial)
 
-Because the website relies on Zod and JSON, a single missing comma will break the build. Vercel is configured to run validation automatically before deploying (using the `prebuild` script).
+Because the website relies on Zod and JSON, a single missing comma will break the build. Vercel is configured to run validation automatically before deploying.
 
 To run it manually:
 npm run validate
 
-- ✅ **Green Pass:** Data is perfect.
-- ❌ **Red Fail:** The terminal will show exactly which field is missing. Fix the JSON immediately.
+- ✅ Green Pass: Data is perfect.
+- ❌ Red Fail: The terminal will show exactly which field is missing (Expected string, received null, etc.). Fix the JSON immediately.
 
 ---
 
-## 🏆 Golden Rules
+## 🏆 Golden Rules for Maintenance
 
-1. **Telegram Credentials:** Never commit your `TELEGRAM_BOT_TOKEN` or `TELEGRAM_CHAT_ID` directly into the code. Always use Vercel's Environment Variables.
-2. **JSON Syntax:** Always use double quotes. No comments allowed in JSON.
-3. **Image Paths:** Do not use a leading slash in JSON (`images/home/hero.jpg`, NOT `/images/home/hero.jpg`). The code handles the slash automatically.
-4. **Map Coordinates:** Always use decimal degrees (e.g., `25.5009`) for Latitude and Longitude.
-5. **Image Optimization:** The system auto-compresses visitor images, but for your own uploads, try to keep them under 500KB (using WebP).
+1. **queue.json is Auto-managed:** Do not manually edit data/queue.json. It is managed by the API routes. If it gets corrupted, reset it to: { "pending": [], "approved": [] }.
+2. **Security:** Never commit your .env file. All tokens must live in Vercel's Environment Variables. Never expose your GitHub PAT (GITHUB_TOKEN) to the client-side code.
+3. **Vercel Builds:** The vercel.json file contains an ignoreCommand. It tells Vercel to ignore builds if only queue.json is changed. This saves your free tier limits.
+4. **Image Paths:** In JSON, use paths like images/home/hero.jpg (no leading slash).
+5. **Typography:** Use the font-serif class for headings (Fraunces) and default font-sans (Inter) for body text to maintain the identity.
 
 ---
-*Made with ❤️ & Curiosity by the Bandwar Village Community.*
+*Built with ❤️ for Bandwar. Inspired by Wikipedia, The New York Times, and GitHub.*
