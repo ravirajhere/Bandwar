@@ -160,11 +160,21 @@
       "isEmergency": false
     },
     {
+      "id": "indane-refill-booking",
+      "name": "Indane LPG Refill Booking",
+      "categoryId": "utilities",
+      "description": "Official Indane LPG cylinder refill booking service. Residents can call to schedule cylinder delivery, check booking status, or report supply-related issues.",
+      "phone": "7718955555",
+      "address": "District Wide Service, Begusarai",
+      "timing": "9 AM - 6 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
       "id": "jitendra-medical-store-bandwar",
       "name": "Jitendra Medical Store",
       "categoryId": "shops",
       "description": "Chemist shop providing all types of essential medicines and first-aid supplies.",
-      "phone": "9876543210",
+      "phone": "6202254530",
       "address": "Bandwar Main Rd, Behind Petrol Pump",
       "timing": "8 AM - 9 PM",
       "isEmergency": false
@@ -177,6 +187,36 @@
       "phone": "N/A",
       "address": "Near Shaheed Ramchandra Dwar",
       "timing": "5 AM - 9 PM",
+      "isEmergency": false
+    },
+    {
+      "id": "arvind-rickshaw-bandwar",
+      "name": "Arvind Rickshaw Service",
+      "categoryId": "transport",
+      "description": "Local rickshaw service operating from Bandwar for travel to nearby villages, markets, and Begusarai town. Available for daily commuting and personal trips.",
+      "phone": "7061567955",
+      "address": "Bandwar",
+      "timing": "6 AM - 9 PM",
+      "isEmergency": false
+    },
+    {
+      "id": "deepak-rickshaw-bandwar",
+      "name": "Deepak Rickshaw Service",
+      "categoryId": "transport",
+      "description": "Local rickshaw service based in Bandwar, offering reliable transport to nearby villages, markets, and Begusarai town. Suitable for daily commuting and personal travel needs.",
+      "phone": "9709765520",
+      "address": "Bandwar",
+      "timing": "6 AM - 9 PM",
+      "isEmergency": false
+    },
+    {
+      "id": "sonu-rickshaw-bandwar",
+      "name": "Sonu Rickshaw Service",
+      "categoryId": "transport",
+      "description": "Local rickshaw service operating from Punarbas, Bandwar, providing convenient transport to nearby villages, markets, and Begusarai town. Available for daily commuting and personal trips.",
+      "phone": "8409677218",
+      "address": "Punarbas, Bandwar",
+      "timing": "6 AM - 9 PM",
       "isEmergency": false
     }
   ]
