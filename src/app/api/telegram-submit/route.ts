@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Upload image to GitHub pending folder
 async function uploadPendingImage(file: File, editId: string): Promise<string | null> {
   const githubToken = process.env.GITHUB_TOKEN;
   const repoOwner = process.env.GITHUB_REPO_OWNER;
@@ -27,12 +26,10 @@ async function uploadPendingImage(file: File, editId: string): Promise<string | 
     if (res.ok) return `/images/pending/${fileName}`;
     return null;
   } catch (error) {
-    console.error("Pending image upload failed", error);
     return null;
   }
 }
 
-// 🚀 Save to queue.json
 async function saveToQueue(item: any) {
   const githubToken = process.env.GITHUB_TOKEN;
   const repoOwner = process.env.GITHUB_REPO_OWNER;
@@ -87,12 +84,11 @@ export async function POST(req: Request) {
     const editId = `edit_${Date.now()}`;
     let pendingImageUrl = null;
 
-    // 🚀 Upload image to pending folder (if exists)
     if (imageFile && imageFile.size > 0) {
       pendingImageUrl = await uploadPendingImage(imageFile, editId);
     }
 
-    // 🚀 Save to Queue (For Dashboard)
+    // 🚀 SAVE TO QUEUE (currentImagePath added)
     await saveToQueue({
       id: editId,
       type,
@@ -102,13 +98,14 @@ export async function POST(req: Request) {
       timestamp: new Date().toISOString(),
       pendingImageUrl,
       targetType: formData.get("targetType") || "article",
+      currentImagePath: formData.get("currentImagePath") || "", // 🚀 Yahi sabse zaroori hai
       targetField: formData.get("field") || "",
       oldValue: formData.get("currentValue") || "",
       newValue: formData.get("suggestedValue") || "",
       sourceReason: formData.get("source_reason") || ""
     });
 
-    // 🚀 Send Telegram Notification
+    // Telegram Notification
     let message = `<b>🔔 New ${type.toUpperCase()}</b>\n\n`;
     message += `👤 <b>By:</b> ${displayUser}\n`;
     message += `🎯 <b>Target:</b> <code>${contextId}</code>\n`;
@@ -131,7 +128,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Submit error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
