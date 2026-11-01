@@ -89,6 +89,21 @@
       "timestamp": "2026-11-01T11:41:35.237Z",
       "telegramMessageId": 49,
       "chatId": "8848904239"
+    },
+    {
+      "id": "edit_1793533351765",
+      "filePath": "data/articles/landmarks.json",
+      "contextId": "burhi-gandak-river-bandwar",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Article Title",
+        "suggestedValue": "Burhi Gandak River: Bandwar's Lifeline"
+      },
+      "type": "Article",
+      "userName": "Anonymous Visitor",
+      "timestamp": "2026-11-01T11:42:32.216Z",
+      "telegramMessageId": 50,
+      "chatId": "8848904239"
     }
   ],
   "approved": []
