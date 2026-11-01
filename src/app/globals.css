@@ -26,9 +26,8 @@
     --selection-bg: #166534;
     --selection-text: #FFFFFF;
 
-    /* 👇 Naye Font Variables (Kyunki next/font hata diya hai) 👇 */
-    --font-inter: 'Inter', sans-serif;
-    --font-playfair: 'Playfair Display', Georgia, serif;
+    --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-playfair: 'Playfair Display', Georgia, Cambria, serif;
   }
 
   /* 🌙 Dark Mode (Luxurious Obsidian) */
@@ -52,18 +51,24 @@
     --selection-text: #0C0A09;
   }
 
-  /* Senior Accessibility: Base font slightly larger */
+  /* 🖥️ TV & Large Screen Typography Scaling */
   html {
     scroll-behavior: smooth;
-    font-size: 17px; 
-    scroll-padding-top: 6rem; /* Sticky header offset */
+    font-size: 17px; /* Base for Mobile/Desktop */
+    scroll-padding-top: 6rem; 
+  }
+
+  /* Scale up base font for TVs so users don't have to zoom */
+  @media (min-width: 1920px) {
+    html { font-size: 19px; }
+  }
+  @media (min-width: 2560px) {
+    html { font-size: 22px; }
   }
 
   /* Motion sickness fix */
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
+    html { scroll-behavior: auto; }
   }
 
   body {
@@ -81,74 +86,89 @@
     color: var(--selection-text);
   }
 
-  /* Accessibility Focus Ring (Keyboard Navigation) */
+  /* Accessibility: Clear Focus Ring for Keyboard & TV Remotes */
   *:focus-visible {
-    outline: 2px solid var(--brand-primary);
-    outline-offset: 2px;
+    outline: 3px solid var(--brand-primary);
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
+  /* Global Image Handling */
   img {
     display: block;
     max-width: 100%;
     height: auto;
+    border-radius: 6px;
+  }
+  
+  /* Add subtle border to images in dark mode to separate them from background */
+  .dark img {
+    border: 1px solid var(--border-main);
   }
 
+  /* Paragraph Readability */
   p {
-    line-height: 1.7; 
+    line-height: 1.75; 
     margin-bottom: 1.5rem; 
-    font-size: 1.05rem; 
+    font-size: clamp(1rem, 0.95rem + 0.4vw, 1.125rem); /* Fluid text */
   }
 
+  /* Encyclopedic Rule: Limit line width for reading comfort */
   article p, .prose p {
     max-width: 75ch;
   }
 
+  /* Links */
   a {
     color: var(--brand-primary);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
   }
-  
-  a:hover { text-decoration: underline; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
   a:visited { color: var(--brand-visited); }
 
+  /* Headings: Heritage Serif & Fluid Sizing */
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance; 
     color: var(--text-main);
     font-family: var(--font-playfair), Georgia, serif;
     font-weight: 600;
     letter-spacing: -0.02em;
-    scroll-margin-top: 100px; 
+    scroll-margin-top: 120px; 
   }
 
-  h1 { font-size: clamp(2rem, 5vw, 2.5rem); margin-bottom: 1rem; line-height: 1.2; }
-
+  h1 { font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem); margin-bottom: 1rem; line-height: 1.2; }
   h2 {
-    font-size: clamp(1.5rem, 4vw, 1.75rem);
+    font-size: clamp(1.5rem, 1.3rem + 1.5vw, 2.5rem);
     margin-top: 3rem; 
     margin-bottom: 1.25rem; 
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-main); 
   }
+  h3 { font-size: clamp(1.25rem, 1.15rem + 1vw, 1.75rem); margin-top: 2rem; margin-bottom: 0.75rem; }
 
-  h3 { font-size: clamp(1.25rem, 3vw, 1.35rem); margin-top: 2rem; margin-bottom: 0.75rem; }
+  /* 📱 Mobile Responsive Tables */
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-main);
+    border-radius: 6px;
+  }
 
   table {
     width: 100%;
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
     border-collapse: collapse;
     font-size: 0.95rem;
     background-color: var(--bg-card);
-    border: 1px solid var(--border-main);
-    border-radius: 6px;
-    overflow: hidden;
+    text-align: left;
   }
 
   th, td {
     padding: 0.85rem 1rem; 
     border-bottom: 1px solid var(--border-main);
-    text-align: left;
     vertical-align: top;
     line-height: 1.5;
   }
@@ -157,24 +177,35 @@
     background-color: var(--bg-muted);
     font-weight: 600;
     color: var(--text-main);
-    width: 35%; 
+    width: 35%; /* Good for Infoboxes */
+    white-space: nowrap;
+  }
+  
+  tr:last-child td, tr:last-child th {
+    border-bottom: none;
   }
 
+  /* Lists */
   ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.7; }
   li { margin-bottom: 0.5rem; }
   
+  /* 🎨 Forms & Inputs */
   input, select, textarea {
-    @apply w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:border-brand focus:ring-1 focus:ring-brand outline-none transition-colors;
+    @apply w-full px-4 py-2.5 border border-divider rounded-md bg-surface text-ink focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all;
   }
   
   button {
-    @apply cursor-pointer transition-colors;
+    @apply cursor-pointer transition-colors duration-200;
   }
 }
 
 @layer components {
-  .container-custom {
-    @apply max-w-7xl mx-auto px-4 md:px-6; 
+  /* If you need any complex combination, add here. 
+     Otherwise, use standard Tailwind classes in components. */
+  .prose-tv {
+    font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.75rem);
+    max-width: 85ch; /* Wider for TV but still constrained */
+    line-height: 1.6;
   }
 }
 
@@ -182,41 +213,43 @@
    2. LEAFLET MAP OVERRIDES (Premium Look)
    ========================================= */
 .leaflet-popup-content-wrapper {
-  border-radius: 6px !important; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important; 
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
   border: 1px solid var(--border-main) !important;
   background-color: var(--bg-card) !important;
   color: var(--text-main) !important;
   padding: 0 !important; 
 }
-.leaflet-popup-content { margin: 14px 18px !important; font-family: var(--font-inter), sans-serif; }
+.leaflet-popup-content { margin: 16px 20px !important; font-family: var(--font-inter), sans-serif; }
 .leaflet-popup-tip {
   background-color: var(--bg-card) !important;
   border: 1px solid var(--border-main) !important;
   box-shadow: none !important;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: var(--bg-main); }
-::-webkit-scrollbar-thumb {
-  background: var(--border-main);
-  border-radius: 5px; 
-  border: 2px solid var(--bg-main); 
+/* Scrollbar (Desktop Only) */
+@media (pointer: fine) {
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg-main); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-main);
+    border-radius: 5px; 
+    border: 2px solid var(--bg-main); 
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
 /* Leaflet Controls */
 .leaflet-control-layers {
   border-radius: 6px !important;
   border: 1px solid var(--border-main) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
   background: var(--bg-card) !important;
   color: var(--text-main) !important;
   font-family: var(--font-inter), sans-serif !important;
   font-size: 14px !important;
 }
-.leaflet-control-layers-toggle { width: 36px !important; height: 36px !important; background-size: 20px 20px !important; }
+.leaflet-control-layers-toggle { width: 40px !important; height: 40px !important; background-size: 24px 24px !important; }
 
 /* =========================================
    3. PRINT STYLES (Perfect PDF Layout)
@@ -232,24 +265,15 @@
     print-color-adjust: exact !important;
     background-color: #ffffff !important;
     color: #000000 !important;
+    font-size: 11pt !important;
   }
 
   /* Hide all site UI elements, but KEEP the article's internal header */
-  .no-print, 
-  .site-header, 
-  .site-footer, 
-  nav, 
-  aside, 
-  button, 
-  .leaflet-container,
-  input {
+  .no-print, .site-header, .site-footer, nav, aside, button, .leaflet-container, input {
     display: none !important;
   }
 
-  /* Show Print-Only elements (Like the custom PDF header we added) */
-  .print-only {
-    display: block !important;
-  }
+  .print-only { display: block !important; }
 
   article {
     display: block !important;
@@ -274,9 +298,9 @@
   }
 
   /* Typography for Print */
-  h1 { font-size: 28pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 10px; }
-  h2 { font-size: 18pt !important; color: #000000 !important; margin-top: 25px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
-  h3 { font-size: 16pt !important; color: #000000 !important; }
+  h1 { font-size: 24pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 10px; }
+  h2 { font-size: 16pt !important; color: #000000 !important; margin-top: 20px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
+  h3 { font-size: 14pt !important; color: #000000 !important; }
   p { font-size: 12pt !important; color: #000000 !important; line-height: 1.6 !important; margin-bottom: 15px; }
   
   a { color: #000000 !important; text-decoration: underline !important; }
