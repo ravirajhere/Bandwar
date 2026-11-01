@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793542088613",
       "type": "Image Update Suggestion",
@@ -12,8 +13,8 @@
       "targetField": "",
       "oldValue": "",
       "newValue": "",
-      "sourceReason": "Official Govt. Record"
+      "sourceReason": "Official Govt. Record",
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
