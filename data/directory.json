@@ -5,6 +5,10 @@
     { "id": "government", "title": "District Administration", "icon": "🏛️" },
     { "id": "women-child", "title": "Women & Child", "icon": "👩‍👧" },
     { "id": "utilities", "title": "Utilities & Services", "icon": "⚡" },
+    { "id": "agriculture", "title": "Agriculture & Animal Husbandry", "icon": "🌾" },
+    { "id": "water-sanitation", "title": "Water & Sanitation", "icon": "💧" },
+    { "id": "postal-banking", "title": "Postal & Banking Services", "icon": "📮" },
+    { "id": "legal-aid", "title": "Legal Aid & Grievance", "icon": "⚖️" },
     { "id": "shops", "title": "Shops & Markets", "icon": "🛒" },
     { "id": "transport", "title": "Transport", "icon": "🚌" }
   ],
@@ -50,6 +54,76 @@
       "isEmergency": true
     },
     {
+      "id": "gas-leakage-helpline",
+      "name": "Gas Leakage Emergency Helpline",
+      "categoryId": "emergency",
+      "description": "Toll-free helpline to report LPG gas leakage or cylinder emergencies. Immediate assistance for fire and explosion risks.",
+      "phone": "1906",
+      "address": "All India",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "flood-control-helpline-begusarai",
+      "name": "Flood Control Helpline, Begusarai",
+      "categoryId": "emergency",
+      "description": "State Emergency Operation Centre helpline for flood-related emergencies, rescue, and relief coordination in Begusarai district.",
+      "phone": "1070",
+      "address": "District Wide Service, Begusarai",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "fire-station-begusarai-direct",
+      "name": "Fire Station, Begusarai (Direct Line)",
+      "categoryId": "emergency",
+      "description": "Direct contact number for Begusarai Fire Station for fire accidents, rescue operations, and emergency fire services.",
+      "phone": "06243-223133",
+      "address": "Fire Station, Begusarai",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "health-sub-centre-bandwar",
+      "name": "Health Sub-Centre, Bandwar",
+      "categoryId": "health",
+      "description": "Government health sub-centre providing basic medical care, maternal health services, and vaccinations.",
+      "phone": "102",
+      "address": "Main Road, Bandwar",
+      "timing": "9 AM - 4 PM (Emergency 24x7)",
+      "isEmergency": true
+    },
+    {
+      "id": "sadar-hospital-begusarai",
+      "name": "Sadar Hospital, Begusarai",
+      "categoryId": "health",
+      "description": "District government hospital providing emergency care, OPD, maternity services, and referrals. Main referral hospital for Bandwar and nearby villages.",
+      "phone": "06243-222804",
+      "address": "Main Road, Sarvodaya Nagar, Begusarai",
+      "timing": "24x7 (Emergency)",
+      "isEmergency": true
+    },
+    {
+      "id": "blood-bank-begusarai",
+      "name": "Rotary Blood Bank, Begusarai",
+      "categoryId": "health",
+      "description": "Blood bank for emergency blood units, blood group testing, and blood donation services in Begusarai district.",
+      "phone": "06243-210354",
+      "address": "Kali Asthan, Begusarai",
+      "timing": "24x7 (Emergency)",
+      "isEmergency": true
+    },
+    {
+      "id": "hiv-aids-helpline",
+      "name": "HIV/AIDS Helpline",
+      "categoryId": "health",
+      "description": "National toll-free helpline for HIV/AIDS awareness, testing, treatment guidance, and counseling.",
+      "phone": "1097",
+      "address": "National",
+      "timing": "24x7",
+      "isEmergency": false
+    },
+    {
       "id": "sp-begusarai",
       "name": "SP Office, Begusarai",
       "categoryId": "government",
@@ -90,6 +164,46 @@
       "isEmergency": false
     },
     {
+      "id": "bdo-begusarai",
+      "name": "Block Development Officer (BDO), Begusarai",
+      "categoryId": "government",
+      "description": "Block-level officer for rural development schemes, MGNREGA, housing, and panchayat-related grievances. Bandwar falls under Begusarai block.",
+      "phone": "9031071378",
+      "address": "Block Office, Begusarai",
+      "timing": "10 AM - 4 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "co-begusarai",
+      "name": "Circle Officer (CO), Begusarai",
+      "categoryId": "government",
+      "description": "Circle-level officer for land records, mutation, revenue matters, and local administrative grievances.",
+      "phone": "9031671633",
+      "address": "Circle Office, Begusarai",
+      "timing": "10 AM - 4 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "election-helpline-1950",
+      "name": "Election Helpline (Voter Services)",
+      "categoryId": "government",
+      "description": "Toll-free number for voter registration, election complaints, and Model Code of Conduct violations.",
+      "phone": "1950",
+      "address": "Bihar State",
+      "timing": "24x7 (During Election Period)",
+      "isEmergency": false
+    },
+    {
+      "id": "bihar-public-grievance",
+      "name": "Bihar Public Grievance Helpline",
+      "categoryId": "government",
+      "description": "State-level grievance redressal helpline for complaints related to government schemes and public services.",
+      "phone": "1800-345-6284",
+      "address": "Bihar State",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
       "id": "child-helpline",
       "name": "Child Helpline",
       "categoryId": "women-child",
@@ -118,16 +232,6 @@
       "address": "Collectorate Campus, Above DM Office, Begusarai",
       "timing": "10 AM - 5 PM",
       "isEmergency": false
-    },
-    {
-      "id": "health-sub-centre-bandwar",
-      "name": "Health Sub-Centre, Bandwar",
-      "categoryId": "health",
-      "description": "Government health sub-centre providing basic medical care, maternal health services, and vaccinations.",
-      "phone": "102",
-      "address": "Main Road, Bandwar",
-      "timing": "9 AM - 4 PM (Emergency 24x7)",
-      "isEmergency": true
     },
     {
       "id": "electricity-complaint",
@@ -167,6 +271,126 @@
       "phone": "7718955555",
       "address": "District Wide Service, Begusarai",
       "timing": "9 AM - 6 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "ration-card-helpline",
+      "name": "Ration Card & PDS Helpline",
+      "categoryId": "utilities",
+      "description": "Toll-free helpline for ration card status, e-KYC, PDS dealer complaints, and food security scheme queries.",
+      "phone": "1800-3456-194",
+      "address": "Bihar State",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "food-consumer-protection",
+      "name": "Food & Consumer Protection Helpline",
+      "categoryId": "utilities",
+      "description": "Report ration dealer irregularities, overpricing, or food quality issues in the Public Distribution System.",
+      "phone": "1967",
+      "address": "Bihar State",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "kisan-call-centre",
+      "name": "Kisan Call Centre",
+      "categoryId": "agriculture",
+      "description": "National toll-free helpline for farmers to get expert advice on crops, fertilizers, pests, and government agriculture schemes in Hindi and local languages.",
+      "phone": "1800-180-1551",
+      "address": "All India",
+      "timing": "6 AM - 10 PM",
+      "isEmergency": false
+    },
+    {
+      "id": "bihar-agriculture-helpline",
+      "name": "Bihar Agriculture Helpline",
+      "categoryId": "agriculture",
+      "description": "State agriculture department helpline for fertilizer stock, fair price complaints, and crop-related grievances in Bihar.",
+      "phone": "0612-2233555",
+      "address": "Bihar State",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "animal-husbandry-helpline",
+      "name": "Animal Husbandry & Veterinary Helpline",
+      "categoryId": "agriculture",
+      "description": "Toll-free helpline for livestock treatment, mobile veterinary ambulance, and animal disease assistance. Free veterinary services for farmers.",
+      "phone": "1962",
+      "address": "Bihar State",
+      "timing": "24x7",
+      "isEmergency": true
+    },
+    {
+      "id": "sugam-call-centre",
+      "name": "Sugam Call Centre (Agriculture)",
+      "categoryId": "agriculture",
+      "description": "Bihar government call centre for agriculture machinery, subsidies, and farmer welfare scheme assistance.",
+      "phone": "1800-3454-110",
+      "address": "Bihar State",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "jal-jeevan-mission",
+      "name": "Jal Jeevan Mission Helpline",
+      "categoryId": "water-sanitation",
+      "description": "Toll-free helpline for tap water connection issues, drinking water supply complaints, and Jal Jeevan Mission scheme queries.",
+      "phone": "1916",
+      "address": "All India",
+      "timing": "24x7",
+      "isEmergency": false
+    },
+    {
+      "id": "phed-bihar-water",
+      "name": "PHED Bihar Water Supply Helpline",
+      "categoryId": "water-sanitation",
+      "description": "Public Health Engineering Department helpline for water supply, pipeline leakage, and sanitation-related complaints in Bihar.",
+      "phone": "1800-123-1121",
+      "address": "Bihar State",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "begusarai-head-post-office",
+      "name": "Begusarai Head Post Office",
+      "categoryId": "postal-banking",
+      "description": "Main head post office for Begusarai district. Services include speed post, registered post, money orders, savings accounts, and India Post banking.",
+      "phone": "06243-212872",
+      "address": "Begusarai Head Post Office, Begusarai",
+      "timing": "9 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "bandwar-post-office",
+      "name": "Bandwar Branch Post Office",
+      "categoryId": "postal-banking",
+      "description": "Local branch post office serving Bandwar village (PIN 851131). Services include mail delivery, savings schemes, and postal banking. For urgent queries, contact Begusarai Head Post Office.",
+      "phone": "06243-212872",
+      "address": "Bandwar, Begusarai, PIN - 851131",
+      "timing": "9 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "nalsa-legal-aid",
+      "name": "NALSA Free Legal Aid Helpline",
+      "categoryId": "legal-aid",
+      "description": "National Legal Services Authority toll-free helpline for free legal advice and assistance to marginalized citizens, women, children, and SC/ST communities.",
+      "phone": "15100",
+      "address": "All India",
+      "timing": "10 AM - 5 PM (Mon-Sat)",
+      "isEmergency": false
+    },
+    {
+      "id": "dlsa-begusarai",
+      "name": "District Legal Services Authority (DLSA), Begusarai",
+      "categoryId": "legal-aid",
+      "description": "District-level legal aid office for free legal representation, lok adalat, and legal awareness. Located at Civil Court Campus, Begusarai.",
+      "phone": "7070092404",
+      "address": "Civil Court Campus, Begusarai, PIN - 851101",
+      "timing": "10 AM - 4 PM (Mon-Sat)",
       "isEmergency": false
     },
     {
@@ -217,6 +441,26 @@
       "phone": "8409677218",
       "address": "Punarbas, Bandwar",
       "timing": "6 AM - 9 PM",
+      "isEmergency": false
+    },
+    {
+      "id": "railway-enquiry",
+      "name": "Indian Railways Enquiry",
+      "categoryId": "transport",
+      "description": "National railway enquiry number for train schedules, PNR status, seat availability, and fare information.",
+      "phone": "139",
+      "address": "All India",
+      "timing": "24x7",
+      "isEmergency": false
+    },
+    {
+      "id": "bihar-state-transport-bus-enquiry",
+      "name": "Bihar State Transport Bus Enquiry",
+      "categoryId": "transport",
+      "description": "Enquiry number for Bihar State Road Transport Corporation bus timings, routes, and booking information.",
+      "phone": "9471006732",
+      "address": "Bihar State",
+      "timing": "6 AM - 10 PM",
       "isEmergency": false
     }
   ]
