@@ -1,5 +1,4 @@
 export const CONTRIBUTOR_STORAGE_KEY = "bandwar_contributor";
-export const ADMIN_USERNAME = "@BandwarAdmin"; // 🚀 Admin Account
 
 export interface Contributor {
   id: string;
@@ -9,7 +8,7 @@ export interface Contributor {
   bio?: string;          // Profile page ke liye
   photo?: string;        // Profile page ke liye
   joinedAt: string;
-  hasChangedUsername?: boolean; // Ek baar change karne ke liye
+  hasChangedUsername?: boolean; 
 }
 
 export function suggestUsername(displayName: string): string {
@@ -21,9 +20,4 @@ export function suggestUsername(displayName: string): string {
 
   const firstName = slug.split("-")[0] || "user";
   return `@${firstName}`;
-}
-
-// Check if the user is the admin
-export function isAdmin(username: string): boolean {
-  return username.toLowerCase() === ADMIN_USERNAME.toLowerCase();
 }
