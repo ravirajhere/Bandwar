@@ -74,6 +74,21 @@
       "timestamp": "2026-11-01T11:41:21.419Z",
       "telegramMessageId": 48,
       "chatId": "8848904239"
+    },
+    {
+      "id": "edit_1793533294766",
+      "filePath": "data/articles/landmarks.json",
+      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Paragraph: The Prasad and Thekua",
+        "suggestedValue": "The prasad prepared for Chhath is elaborate and strictly vegetarian. It includes thekua (a wheat-and-jaggery biscuit), kheer, fruits (especially sugarcane & banana), and coconut. The prasad is prepared on wood fire in a clean, ritualised manner, and is offered to the sun on bamboo soops (trays). The preparation of thekua is a family activity — women typically gather in the days before the festival to make the biscuits in large batches, and the thekua from different households is exchanged as a gesture of goodwill."
+      },
+      "type": "Article",
+      "userName": "Anonymous Visitor",
+      "timestamp": "2026-11-01T11:41:35.237Z",
+      "telegramMessageId": 49,
+      "chatId": "8848904239"
     }
   ],
   "approved": []
