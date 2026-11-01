@@ -31,7 +31,6 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
     const textToRead = `${title}. ${contentText}`;
     const utterance = new SpeechSynthesisUtterance(textToRead);
     
-    // Hindi Voice Select karne ka logic
     const hindiVoice = voices.find(v => v.lang === "hi-IN" || v.lang === "hi" || v.lang.startsWith("hi"));
     
     if (hindiVoice) {
@@ -47,7 +46,7 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
       }
     }
     
-    utterance.rate = 0.9; // Seniors ke liye speed slow
+    utterance.rate = 0.9; 
     utterance.pitch = 1;
 
     utterance.onend = () => setIsSpeaking(false);
@@ -64,13 +63,12 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
     };
   }, []);
 
-  // 3. Share Logic (Native Share API with WhatsApp fallback)
+  // 3. Share Logic
   const handleShare = async () => {
     if (typeof window !== "undefined") {
       const url = window.location.href;
       const text = `Check out this article about ${title} on the Bandwar Portal: `;
 
-      // 🚀 2026 Standard: Native Share Sheet (Works on Mobile)
       if (navigator.share) {
         try {
           await navigator.share({
@@ -78,38 +76,38 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
             text: text,
             url: url,
           });
-          return; // Native share successful
+          return; 
         } catch (error) {
           console.log("Error sharing:", error);
         }
       }
 
-      // Fallback to WhatsApp (Desktop or unsupported browsers)
       window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, "_blank");
     }
   };
 
-  // Print
+  // 4. Print
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="no-print bg-card border border-border rounded-xl shadow-sm flex flex-wrap items-center gap-2 sm:gap-3 p-2 sm:p-3">
+    <div className="no-print bg-surface border border-divider rounded-lg shadow-sm grid grid-cols-3 sm:flex sm:items-center gap-2 p-1.5 sm:p-2 w-full sm:w-auto">
       
       {/* 🔊 Listen Button (Primary Action) */}
       <button 
         onClick={handleListen}
-        title={isSpeaking ? "Stop reading" : "Listen to this article in Hindi"}
+        title={isSpeaking ? "Stop reading" : "Listen to this article"}
         aria-label={isSpeaking ? "Stop reading" : "Listen to this article"}
-        className={`flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm sm:text-base font-semibold transition-all duration-300 border ${
+        className={`flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-md text-sm sm:text-base font-semibold transition-all duration-300 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
           isSpeaking 
-            ? "bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400 animate-pulse" 
-            : "bg-brand/10 border-brand/20 text-brand hover:bg-brand hover:text-white"
+            ? "bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400" 
+            : "bg-canvas border-divider text-ink hover:bg-accent hover:text-white hover:border-accent"
         }`}
       >
-        {isSpeaking ? <Square size={18} fill="currentColor" /> : <Volume2 size={20} />}
-        {isSpeaking ? "Stop Reading" : "Listen (हिंदी)"}
+        {isSpeaking ? <Square size={18} fill="currentColor" className="3xl:w-6 3xl:h-6" /> : <Volume2 size={20} className="3xl:w-6 3xl:h-6" />}
+        <span className="truncate">{isSpeaking ? "Stop" : "Listen"}</span>
+        <span className="hidden xl:inline text-xs opacity-60 font-normal ml-1">(हिंदी)</span>
       </button>
 
       {/* 🖨️ Print Button */}
@@ -117,9 +115,10 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
         onClick={handlePrint}
         title="Print this article"
         aria-label="Print this article"
-        className="flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 bg-muted-background border border-border rounded-lg text-sm sm:text-base font-medium text-foreground/80 hover:bg-border hover:text-foreground transition-colors"
+        className="flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-canvas border border-divider rounded-md text-sm sm:text-base font-medium text-ink/80 hover:bg-surface hover:text-ink hover:border-ink/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
-        <Printer size={18} /> Print
+        <Printer size={18} className="3xl:w-6 3xl:h-6" /> 
+        <span className="hidden sm:inline">Print</span>
       </button>
 
       {/* 📤 Share Button */}
@@ -127,9 +126,10 @@ export function ArticleToolbar({ title, contentText }: { title: string; contentT
         onClick={handleShare}
         title="Share this article"
         aria-label="Share this article"
-        className="flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 px-4 py-2.5 bg-muted-background border border-border rounded-lg text-sm sm:text-base font-medium text-foreground/80 hover:bg-border hover:text-foreground transition-colors"
+        className="flex items-center justify-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-canvas border border-divider rounded-md text-sm sm:text-base font-medium text-ink/80 hover:bg-surface hover:text-ink hover:border-ink/30 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
-        <Share2 size={18} /> Share
+        <Share2 size={18} className="3xl:w-6 3xl:h-6" /> 
+        <span className="hidden sm:inline">Share</span>
       </button>
 
     </div>
