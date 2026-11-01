@@ -15,6 +15,7 @@ interface LightboxProps {
 
 export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   // State for Touch/Swipe
@@ -35,21 +36,44 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
     setCurrentIndex((prev) => (prev === 0 ? photos.length - 1 : prev - 1));
   }, [photos.length]);
 
-  // 2. Background Scroll Lock
+  // 2. Background Scroll Lock & Auto-focus
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    // Timeout ensures the modal is rendered before focusing
     setTimeout(() => closeButtonRef.current?.focus(), 100);
+    
     return () => {
       document.body.style.overflow = "unset";
     };
   }, []);
 
-  // 3. Keyboard Navigation (Left, Right, Escape)
+  // 3. Keyboard Navigation & Focus Trap (Accessibility)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") handleNext();
       if (e.key === "ArrowLeft") handlePrev();
+      
+      // 🚀 FOCUS TRAP LOGIC
+      if (e.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else { // Tab
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -81,34 +105,32 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
 
   const currentPhoto = photos[currentIndex];
   
-  // Safe Image Path Logic
   const imageSrc = currentPhoto.src.startsWith("http") || currentPhoto.src.startsWith("/") 
     ? currentPhoto.src 
     : `/${currentPhoto.src}`;
 
   return (
     <div 
-      className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-300"
+      ref={modalRef}
+      className="fixed inset-0 z-[100] bg-ink/95 backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-300"
       role="dialog"
       aria-modal="true"
       aria-label="Image Viewer"
     >
       {/* 🟢 HEADER (Counter & Close) */}
-      <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex justify-between items-center z-50 bg-gradient-to-b from-black/80 to-transparent">
+      <div className="absolute top-0 left-0 right-0 p-4 md:p-6 flex justify-between items-center z-[110] bg-gradient-to-b from-ink/90 to-transparent">
         
-        {/* 👇 Counter (Sirf tab dikhega jab 1 se zyada photos hongi) 👇 */}
         {photos.length > 1 ? (
-          <div className="text-white/80 font-medium text-sm md:text-base bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10">
-            {currentIndex + 1} / {photos.length}
+          <div className="text-white/90 font-medium text-sm md:text-base bg-white/10 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10 tabular-nums tracking-wide">
+            {currentIndex + 1} <span className="text-white/40 mx-1">/</span> {photos.length}
           </div>
         ) : (
-          <div></div> // Empty div to keep flex-between layout intact
+          <div></div> 
         )}
 
-        {/* Close Button */}
         <button 
           ref={closeButtonRef}
-          className="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 p-2.5 md:p-3 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white"
+          className="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 p-3 md:p-3.5 rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
           onClick={onClose}
           aria-label="Close Lightbox"
         >
@@ -118,42 +140,41 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
 
       {/* 🖼️ MAIN IMAGE CONTAINER */}
       <div 
-        className="relative w-full h-full flex items-center justify-center p-4 md:p-12"
-        onClick={onClose} // Clicking background closes
+        className="relative w-full h-full flex items-center justify-center p-4 md:p-12 3xl:p-20"
+        onClick={onClose} 
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        {/* Image wrapper to stop click propagation */}
         <div 
-          className="relative w-full h-full max-w-7xl max-h-[85vh] flex items-center justify-center"
+          className="relative w-full h-full max-w-7xl 3xl:max-w-[2000px] max-h-[85vh] 3xl:max-h-[90vh] flex items-center justify-center"
           onClick={(e) => e.stopPropagation()}
         >
           <Image
-            key={currentPhoto.id} // Key forces re-render on change
+            key={currentPhoto.id} 
             src={imageSrc}
             alt={currentPhoto.caption}
             fill
             className="object-contain drop-shadow-2xl animate-in zoom-in-95 duration-300" 
             sizes="100vw"
-            quality={95}
+            quality={90}
             priority
           />
         </div>
 
-        {/* Desktop Navigation Arrows (Sirf tab dikhenge jab 1 se zyada photos hongi) */}
+        {/* Desktop Navigation Arrows */}
         {photos.length > 1 && (
           <>
             <button 
               onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-              className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 p-4 rounded-full backdrop-blur-md border border-white/10 transition-all z-50"
+              className="hidden md:flex absolute left-4 xl:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-ink/50 hover:bg-ink/80 p-3.5 xl:p-4 rounded-full backdrop-blur-md border border-white/10 transition-all z-[105] focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
               aria-label="Previous image"
             >
               <ChevronLeft size={32} />
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); handleNext(); }}
-              className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-black/50 hover:bg-black/80 p-4 rounded-full backdrop-blur-md border border-white/10 transition-all z-50"
+              className="hidden md:flex absolute right-4 xl:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-ink/50 hover:bg-ink/80 p-3.5 xl:p-4 rounded-full backdrop-blur-md border border-white/10 transition-all z-[105] focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
               aria-label="Next image"
             >
               <ChevronRight size={32} />
@@ -163,26 +184,26 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
       </div>
 
       {/* 📝 BOTTOM CAPTION */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 flex justify-center z-40 bg-gradient-to-t from-black/90 to-transparent pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 flex justify-center z-[105] bg-gradient-to-t from-ink/95 via-ink/60 to-transparent pointer-events-none">
         <div 
-          className="text-center max-w-3xl pointer-events-auto bg-white/10 backdrop-blur-xl border border-white/20 p-4 md:p-5 rounded-2xl shadow-2xl transform transition-all animate-in slide-in-from-bottom-4 duration-300"
+          className="text-center max-w-4xl 3xl:max-w-5xl pointer-events-auto bg-ink/60 backdrop-blur-xl border border-white/20 px-6 py-4 md:px-8 md:py-5 rounded-lg shadow-2xl transform transition-all animate-in slide-in-from-bottom-4 duration-300"
           onClick={(e) => e.stopPropagation()}
         >
           {(currentPhoto.year || currentPhoto.category) && (
-            <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="flex items-center justify-center gap-3 mb-2.5">
               {currentPhoto.year && (
-                <span className="bg-brand text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                <span className="bg-accent text-white text-[11px] md:text-xs font-bold px-3 py-1 rounded-md uppercase tracking-wider shadow-sm">
                   {currentPhoto.year}
                 </span>
               )}
               {currentPhoto.category && (
-                <span className="text-white/60 text-xs font-semibold uppercase tracking-wider">
+                <span className="text-white/60 text-xs md:text-sm font-semibold uppercase tracking-wider">
                   {currentPhoto.category}
                 </span>
               )}
             </div>
           )}
-          <p className="text-white text-base md:text-lg leading-snug font-medium">
+          <p className="text-white text-base md:text-lg 3xl:text-xl leading-relaxed font-medium">
             {currentPhoto.caption}
           </p>
         </div>
