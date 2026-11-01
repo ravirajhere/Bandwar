@@ -28,23 +28,32 @@ Built with a **Strict Heritage UI** and a **Zero-Database Architecture**, this p
 
 ### 🎨 The "Warm Archive" Identity (UI/UX)
 - **Strict Heritage Design:** A completely custom design system inspired by The New York Times and Anthropic. Features a "Warm Aged Paper" background (`#FBF8F3`), "Mithila Terracotta" accents (`#7C2D12`), and editorial typography.
-- **Premium Typography:** Uses **Fraunces** (a modern serif) for headings and **Inter** for body text, with JetBrains Mono for technical data. Includes editorial Drop Caps.
+- **Premium Typography:** Uses **Fraunces** (a modern serif) for headings and **Inter** for body text, with JetBrains Mono for technical data.
+- **Read-First Philosophy:** The website is strictly in "Reading Mode" by default. Editing is an intentional action enabled via an "Edit Mode" toggle on articles.
 - **Senior-Friendly & Accessible:** Large touch targets, high contrast ratios, and keyboard-navigable interfaces with global `focus-visible` rings.
 - **Dark/Light Mode:** "Obsidian" dark mode that saves preference via `localStorage` without page flashing.
 - **Dynamic Scaling:** CSS scaling optimized for everything from a 320px mobile screen to 4K TVs.
 
+### 👤 Contributor Profiles & Auth System
+A lightweight, database-free authentication system designed for high trust.
+- **Identity-First Editing:** No one can edit without a profile. A simple popup asks for Name, Username (`@username`), and optional email.
+- **Profile Pages:** Every contributor gets a public page (`/contributors/@username`) featuring their bio and profile picture.
+- **Direct Image Upload:** Profile photos are compressed directly in the browser (Canvas API) before being uploaded to GitHub.
+- **Cross-Device Login:** No passwords. Users can log in on any device by simply entering their existing `@username`.
+
 ### 🛡️ Advanced Moderation System (Telegram + Dashboard)
 This is the core of the portal's automation. It uses GitHub as a database and Telegram as a real-time notification system.
-- **Wikipedia-Style Inline Editing:** Visitors click the pencil (✏️) icon next to any text or Infobox data to suggest a correction.
-- **Telegram Inline Buttons:** When a user submits an edit, the Bot sends a message with **[✅ Stage] [❌ Reject]** buttons.
-- **Two-Way Sync (Dashboard + Telegram):** If you approve an edit on the Telegram Bot, the custom `/admin/dashboard` updates automatically. If you approve it on the Dashboard, the Telegram message updates to show "Staged via Dashboard."
+- **Wikipedia-Style Inline Editing:** Visitors can edit Titles, Paragraphs, and Infobox data directly on the page.
+- **Pending Image Review:** When a hero image or profile photo is uploaded, it goes to a `public/images/pending/` folder. The editor can preview it on the Dashboard before approving.
+- **Exact Path Overwrite:** When approved, the new image overwrites the old image at its exact previous path (e.g., `public/images/religion/ram-mandir.jpg`), ensuring no broken links.
+- **Dynamic Custom Categories:** If a visitor submits a new Article or Directory entry, they can create a *Custom Category* (e.g., "Sports"). Upon publishing, the system automatically creates the new `.json` file and registers the category.
 - **Batch Publishing (Zero Build Waste):** Approving an edit only "Stages" it. The actual JSON files are only updated when you hit **"🚀 Publish Live"** on the Dashboard. This groups 10+ edits into **one single GitHub commit**, saving Vercel build minutes.
-- **Auto Image Compression:** When a visitor uploads a photo, it is compressed **on their device** (via Canvas API) before being sent to Telegram/GitHub, saving bandwidth.
+- **Auto-Delete on Reject:** If an editor rejects a pending image, it is automatically deleted from the GitHub repository to keep it clean.
 
 ### 🗺️ Core Pages & Features
 - **Home Dashboard:** Grand editorial hero section, Quick Access buttons (Emergency, People, Archive), and an interactive Satellite Map.
-- **Interactive Village Map:** Uses React Leaflet with Esri satellite tiles. Features marker clustering and a custom location-fixing tool (GPS + Drag).
-- **Directory:** Searchable index of doctors, shops, and emergency contacts with inline editing.
+- **Interactive Village Map:** Uses React Leaflet with Esri satellite tiles. Features marker clustering and a custom location-fixing tool.
+- **Directory:** Searchable index of doctors, shops, and emergency contacts.
 - **Gallery:** A strict, high-density Masonry grid (Wikimedia Commons style) with a distraction-free Lightbox.
 - **Article Archive:** 3-column layout (Sticky TOC, Content, Sticky Infobox) with auto-generated Backlinks ("Mentioned In") and FAQ Accordions.
 - **Text-to-Speech (TTS):** "Listen to Article" feature supporting Hindi/Indian English.
@@ -74,50 +83,54 @@ bandwar-portal/
 │   ├── media.json              # Gallery photos, Timeline, Map landmarks
 │   ├── people.json             # Notable personalities directory
 │   ├── vision.json             # Vision 2035 Manifesto data
+│   ├── contributors.json       # Registered user profiles (Auto-managed)
 │   ├── queue.json              # PENDING & STAGED community edits (Auto-managed)
 │   └── articles/               # All articles split by category
 │       ├── culture.json
 │       ├── education.json
-│       ├── landmarks.json
 │       └── ... (other categories)
 │
-├── public/                     # 📸 STATIC ASSETS
+├── public/                     
 │   └── images/                 # All photos organized by category
+│       └── pending/            # Temp folder for user uploads awaiting review
 │
 ├── scripts/                    
 │   └── validate.ts             # Zod validation engine (Runs before build)
 │
 ├── src/                        
 │   ├── app/                    # Next.js App Router
-│   │   ├── admin/              # Moderation Dashboard (Protected by cookie)
-│   │   │   ├── dashboard/      # Main review UI
+│   │   ├── admin/              # Moderation Dashboard (Protected)
+│   │   │   ├── dashboard/      # Main review UI (Text & Image diffs)
 │   │   │   └── page.tsx        # Admin Login
 │   │   ├── api/                
-│   │   │   ├── admin/          # APIs for fetching queue and publishing batches
-│   │   │   ├── telegram-submit/# Receives forms, saves to queue, alerts Telegram
-│   │   │   └── telegram-webhook/# Handles Telegram button clicks (Syncs with queue)
+│   │   │   ├── admin/          # APIs for fetching queue, publishing, rejecting
+│   │   │   ├── contributor/    # APIs for registration, lookup, profile updates
+│   │   │   └── telegram-submit/# Receives forms, saves to queue, alerts Telegram
 │   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
+│   │   ├── contributors/       # Public Contributor Profiles
 │   │   ├── directory/          # Village Directory Page
 │   │   ├── gallery/            # Photo Gallery Page
-│   │   ├── people/             # People Directory & Profiles
 │   │   ├── section/            # Archive category listing
 │   │   ├── globals.css         # Custom CSS tokens, fonts, print styles
-│   │   ├── layout.tsx          # Main Layout (Header, Footer, JSON-LD SEO)
-│   │   └── page.tsx            # Homepage
+│   │   └── layout.tsx          # Main Layout (Header, Footer, JSON-LD SEO)
 │   │
 │   ├── components/             
-│   │   ├── article/            # ArticleToolbar, FaqAccordion, Infobox, MobileTOC
-│   │   ├── contribute/         # ContributeForm
-│   │   ├── directory/          # DirectoryClient, EditContactModal
+│   │   ├── article/            # ArticleToolbar, Infobox, MobileTOC
+│   │   ├── contributor/        # ProfileClientWrapper, EditProfileModal
+│   │   ├── editor/             # EditableText, EditableParagraph, EditModeToggle
 │   │   ├── layout/             # Header, Footer, SearchModal
-│   │   ├── place/              # LandmarkMap, GalleryGrid, Lightbox
-│   │   ├── shared/             # AddContentModal, UniversalEditModal, Toast
-│   │   └── ui/                 # Button, Input primitives (if any)
+│   │   ├── shared/             # AddContentModal, ImageUpdateButton, Toast
+│   │   └── ui/                 # Button, Input primitives
+│   │
+│   ├── hooks/                  # Custom React Hooks
+│   │   ├── useContributorGate.tsx # Handles auth & profile creation gate
+│   │   └── useInlineEdit.ts    # Handles state for inline editing
 │   │
 │   └── lib/                    
-│       ├── data.ts             # Reads JSON, Filters missing images, Sorts articles
+│       ├── data.ts             # Reads JSON, Filters missing images
+│       ├── contributor.ts      # Username generation, types
 │       ├── search-data.ts      # Aggregates data for Global Search
-│       └── schema.ts           # Zod schemas (Strict typing for all JSON)
+│       └── schema.ts           # Zod schemas
 │
 ├── tailwind.config.ts          # Identity tokens (Warm Archive theme)
 ├── vercel.json                 # Ignores Vercel builds for queue.json updates
@@ -147,11 +160,15 @@ bandwar-portal/
 
 Thanks to the Moderation Dashboard, the Editor's life is incredibly easy. The system acts as a mini-CMS.
 
-1. **Receive Submission:** A user submits an edit on the website. It automatically saves to data/queue.json (Pending) and sends a Telegram alert with an image preview (if applicable).
-2. **Review in Dashboard:** Go to /admin/dashboard (Default Password: bandwar_admin_2026). You will see all Pending edits with a strict Red/Green diff view.
-3. **Stage It:** Click "Stage for Publish" (or click ✅ on Telegram). The edit moves to the "Staged" tab. (Vercel will NOT rebuild during this step).
-4. **Handle Images:** If an image was submitted, download it from Telegram, rename it to match the instructions, and manually upload it to public/images/ on GitHub.
-5. **Batch Publish:** Once you have 5-10 staged edits, click the green "🚀 Publish X Updates Live" button. The Dashboard will use the GitHub API to update all target JSON files in a single commit. Vercel will trigger exactly one build and deploy the changes.
+1. **Receive Submission:** A user submits an edit or new content. It automatically saves to data/queue.json (Pending) and sends a Telegram alert with an image preview.
+2. **Review in Dashboard:** Go to /admin/dashboard (Password: bandwar_admin_2026). You will see all Pending edits with a strict Red/Green diff view.
+3. **Review Images:** If an image was submitted, it is saved to public/images/pending/. You can click it to view full size.
+4. **Stage or Reject:** Click "Stage for Publish" (or click ✅ on Telegram). If you reject an image, it is automatically deleted from GitHub to keep the repo clean.
+5. **Batch Publish:** Once you have 5-10 staged edits, click the green "🚀 Publish X Updates Live" button. 
+   - The Dashboard uses the GitHub API to update all target JSON files in a single commit.
+   - Pending images are moved to their final exact paths (overwriting old ones).
+   - New custom categories are automatically registered in categories.json.
+   - Vercel triggers exactly one build and deploys the changes.
 
 ---
 
@@ -169,7 +186,7 @@ npm run validate
 
 ## 🏆 Golden Rules for Maintenance
 
-1. **queue.json is Auto-managed:** Do not manually edit data/queue.json. It is managed by the API routes. If it gets corrupted, reset it to: { "pending": [], "approved": [] }.
+1. **queue.json & contributors.json are Auto-managed:** Do not manually edit these files unless resetting a corrupted state. They are managed entirely by the API routes.
 2. **Security:** Never commit your .env file. All tokens must live in Vercel's Environment Variables. Never expose your GitHub PAT (GITHUB_TOKEN) to the client-side code.
 3. **Vercel Builds:** The vercel.json file contains an ignoreCommand. It tells Vercel to ignore builds if only queue.json is changed. This saves your free tier limits.
 4. **Image Paths:** In JSON, use paths like images/home/hero.jpg (no leading slash).
