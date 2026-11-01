@@ -4,13 +4,16 @@
       "id": "shivala-temple-bandwar",
       "title": "Shivala: The Historic Shiva Temple of Bandwar",
       "subtitle": "The village's ancient Shiva temple, standing at the heart of Bandwar for generations",
-      "categories": ["religion", "landmarks"],
+      "categories": [
+        "religion",
+        "landmarks"
+      ],
       "summary": "Shivala is the village's Shiva temple, standing in the centre of Bandwar, Begusarai, Bihar. It is one of the village's eight temples and has served as a place of worship for generations. Built entirely by village residents, without any government support, it stands in a grove of trees near the [[historic-well-chaupal-bandwar|historic well]] that anchors the village centre.",
       "hero": "images/religion/shivala-temple-bandwar.jpg",
       "photos": [
-        { 
-          "src": "images/religion/shivala-temple-bandwar.jpg", 
-          "caption": "Shivala — the historic Shiva temple in the centre of Bandwar." 
+        {
+          "src": "images/religion/shivala-temple-bandwar.jpg",
+          "caption": "Shivala — the historic Shiva temple in the centre of Bandwar."
         }
       ],
       "infobox": {
@@ -25,41 +28,89 @@
       },
       "lastUpdated": "2026-02-15",
       "content": [
-        { "heading": "History", "text": "The exact year of Shivala's construction is not documented, but village elders believe it has stood for at least three generations — predating India's independence in 1947. It was built by the residents of Bandwar themselves, without any government grant or outside patronage. The temple's construction is remembered in the village as a collective effort: families contributed what they could — some gave labour, some gave materials, and some gave grain to feed the workers. For a village whose origins are tied to the [[bandh-embankment-bandwar|embankment]] along the [[burhi-gandak-river-bandwar|Burhi Gandak]], the temple represents a different kind of construction — one built not against the river, but for the community." },
-        { "heading": "Architecture", "text": "The temple features a traditional nagara-style shikhara — a towering spire typical of North Indian temple architecture. The exterior is painted white, with a simple brown door that faces east. Inside, the sanctum houses a Shivling — the aniconic representation of Shiva — which is bathed in water and adorned with bel leaves by devotees. The temple's shikhara, though modest in height, follows the same proportional logic as the grand nagara temples of Khajuraho and Bhubaneswar. The whitewash is renewed periodically by the village community, most often before Maha Shivaratri." },
-        { "heading": "Festivals", "text": "Maha Shivaratri is the primary festival celebrated here, when villagers gather for all-night prayers. The temple remains open through the night, and devotees take turns keeping vigil — singing bhajans, offering water and bel leaves to the Shivling, and observing fasts. During Sawan (the monsoon month, typically July–August), devotees offer water and bel leaves to the Shivling every day. Like the [[chhath-puja-bandwar-bandh-burhi-gandak|Chhath Puja]] celebrations at the [[bandh-embankment-bandwar|bandh]], the Sawan observances at Shivala are notable for their lack of priestly mediation — villagers pray directly, without an intermediary." },
-        { "heading": "Present Day", "text": "The temple continues to be maintained by the village community. It stands in a grove of trees, and is a common sight for anyone walking through the centre of Bandwar. It sits near the [[historic-well-chaupal-bandwar|historic well]] — locally known as the chaupal — which for generations has served as the village's gathering place. Together, the well and the temple form the spiritual and social heart of Bandwar, and the lane that connects them passes the [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]] with its statue of Begusarai's first communist MLA." }
+        {
+          "heading": "History",
+          "text": "The exact year of Shivala's construction is not documented, but village elders believe it has stood for at least three generations — predating India's independence in 1947. It was built by the residents of Bandwar themselves, without any government grant or outside patronage. The temple's construction is remembered in the village as a collective effort: families contributed what they could — some gave labour, some gave materials, and some gave grain to feed the workers. For a village whose origins are tied to the [[bandh-embankment-bandwar|embankment]] along the [[burhi-gandak-river-bandwar|Burhi Gandak]], the temple represents a different kind of construction — one built not against the river, but for the community."
+        },
+        {
+          "heading": "Architecture",
+          "text": "The temple features a traditional nagara-style shikhara — a towering spire typical of North Indian temple architecture. The exterior is painted white, with a simple brown door that faces east. Inside, the sanctum houses a Shivling — the aniconic representation of Shiva — which is bathed in water and adorned with bel leaves by devotees. The temple's shikhara, though modest in height, follows the same proportional logic as the grand nagara temples of Khajuraho and Bhubaneswar. The whitewash is renewed periodically by the village community, most often before Maha Shivaratri."
+        },
+        {
+          "heading": "Festivals",
+          "text": "Maha Shivaratri is the primary festival celebrated here, when villagers gather for all-night prayers. The temple remains open through the night, and devotees take turns keeping vigil — singing bhajans, offering water and bel leaves to the Shivling, and observing fasts. During Sawan (the monsoon month, typically July–August), devotees offer water and bel leaves to the Shivling every day. Like the [[chhath-puja-bandwar-bandh-burhi-gandak|Chhath Puja]] celebrations at the [[bandh-embankment-bandwar|bandh]], the Sawan observances at Shivala are notable for their lack of priestly mediation — villagers pray directly, without an intermediary."
+        },
+        {
+          "heading": "Present Day",
+          "text": "The temple continues to be maintained by the village community. It stands in a grove of trees, and is a common sight for anyone walking through the centre of Bandwar. It sits near the [[historic-well-chaupal-bandwar|historic well]] — locally known as the chaupal — which for generations has served as the village's gathering place. Together, the well and the temple form the spiritual and social heart of Bandwar, and the lane that connects them passes the [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]] with its statue of Begusarai's first communist MLA."
+        }
       ],
       "faqs": [
-        { "q": "Where is Shivala located in Bandwar?", "a": "Shivala is in the centre of Bandwar village, Begusarai, Bihar — a short walk from the historic well (chaupal) and the Chandrashekhar Chowk. It is one of eight temples clustered in and around the village centre." },
-        { "q": "When was Shivala built?", "a": "The exact year is not documented, but village elders believe the temple has stood for at least three generations, predating India's independence in 1947. It was built entirely by the residents of Bandwar, without any government support." },
-        { "q": "What festivals are celebrated at Shivala?", "a": "Maha Shivaratri is the principal festival, celebrated with an all-night vigil. During Sawan (July–August), devotees offer water and bel leaves to the Shivling every day. Other observances include Pradosham and Kartik Purnima." },
-        { "q": "Who manages Shivala?", "a": "The temple is maintained by the village community of Bandwar. There is no fixed priest or trust — villagers take responsibility collectively, renewing the whitewash and organising festivals through community contribution." },
-        { "q": "What is the architecture of Shivala?", "a": "Shivala is built in the nagara style, with a traditional shikhara (curvilinear spire) rising above a square sanctum. The exterior is whitewashed, with a brown door facing east." }
+        {
+          "q": "Where is Shivala located in Bandwar?",
+          "a": "Shivala is in the centre of Bandwar village, Begusarai, Bihar — a short walk from the historic well (chaupal) and the Chandrashekhar Chowk. It is one of eight temples clustered in and around the village centre."
+        },
+        {
+          "q": "When was Shivala built?",
+          "a": "The exact year is not documented, but village elders believe the temple has stood for at least three generations, predating India's independence in 1947. It was built entirely by the residents of Bandwar, without any government support."
+        },
+        {
+          "q": "What festivals are celebrated at Shivala?",
+          "a": "Maha Shivaratri is the principal festival, celebrated with an all-night vigil. During Sawan (July–August), devotees offer water and bel leaves to the Shivling every day. Other observances include Pradosham and Kartik Purnima."
+        },
+        {
+          "q": "Who manages Shivala?",
+          "a": "The temple is maintained by the village community of Bandwar. There is no fixed priest or trust — villagers take responsibility collectively, renewing the whitewash and organising festivals through community contribution."
+        },
+        {
+          "q": "What is the architecture of Shivala?",
+          "a": "Shivala is built in the nagara style, with a traditional shikhara (curvilinear spire) rising above a square sanctum. The exterior is whitewashed, with a brown door facing east."
+        }
       ],
-      "related": ["ram-mandir-thakurbari-bandwar", "bada-krishna-mandir-bandwar", "sankat-mochan-hanuman-mandir-bandwar", "baba-bhole-durgasthan-hanuman-mandir-bandwar", "maharishi-gautam-durga-mandir-bandwar", "historic-well-chaupal-bandwar"],
-      "location": { "lat": 25.5012, "lng": 86.1610 },
-      "tags": ["shivala temple bandwar", "shiva temple begusarai", "maha shivaratri bandwar", "nagara style temple bihar", "ancient shiva mandir", "bandwar village temples"]
+      "related": [
+        "ram-mandir-thakurbari-bandwar",
+        "bada-krishna-mandir-bandwar",
+        "sankat-mochan-hanuman-mandir-bandwar",
+        "baba-bhole-durgasthan-hanuman-mandir-bandwar",
+        "maharishi-gautam-durga-mandir-bandwar",
+        "historic-well-chaupal-bandwar"
+      ],
+      "location": {
+        "lat": 25.5012,
+        "lng": 86.161
+      },
+      "tags": [
+        "shivala temple bandwar",
+        "shiva temple begusarai",
+        "maha shivaratri bandwar",
+        "nagara style temple bihar",
+        "ancient shiva mandir",
+        "bandwar village temples"
+      ]
     },
     {
       "id": "ram-mandir-thakurbari-bandwar",
       "title": "Ram Mandir Thakurbari: The Twin-Shikhara Temple of Bandwar",
       "subtitle": "The village's principal Ram temple, distinguished by its twin spires",
-      "categories": ["religion", "landmarks", "culture"],
+      "categories": [
+        "religion",
+        "landmarks",
+        "culture"
+      ],
       "summary": "Bandwar's Ram temple, distinguished by its twin shikharas, is one of the most recognisable structures in the village. It is the site of the annual [[ram-katha-thakurbari-bandwar-2021|Ram Katha]] — the recitation of the Ramcharitmanas — and is especially striking against the evening sky at sunset.",
-      "hero": "images/religion/ram-mandir-thakurbari-bandwar.jpg",
+      "hero": "/images/articles/ram-mandir-thakurbari-bandwar.jpg",
       "photos": [
-        { 
-          "src": "images/religion/ram-mandir-thakurbari-bandwar.jpg", 
-          "caption": "Ram Mandir Thakurbari, the main Ram temple in Bandwar." 
+        {
+          "src": "images/religion/ram-mandir-thakurbari-bandwar.jpg",
+          "caption": "Ram Mandir Thakurbari, the main Ram temple in Bandwar."
         },
-        { 
-          "src": "images/religion/ram-mandir-thakurbari-sunset-bandwar.jpg", 
-          "caption": "The temple at sunset, its twin shikharas silhouetted against the sky." 
+        {
+          "src": "images/religion/ram-mandir-thakurbari-sunset-bandwar.jpg",
+          "caption": "The temple at sunset, its twin shikharas silhouetted against the sky."
         },
-        { 
-          "src": "images/culture/bandwar-ram-katha-thakurbari-pandal-2021.jpg", 
-          "caption": "Ram Katha at the temple courtyard, 2021." 
+        {
+          "src": "images/culture/bandwar-ram-katha-thakurbari-pandal-2021.jpg",
+          "caption": "Ram Katha at the temple courtyard, 2021."
         }
       ],
       "infobox": {
@@ -74,36 +125,80 @@
       },
       "lastUpdated": "2026-03-26",
       "content": [
-        { "heading": "Overview", "text": "The Ram Mandir Thakurbari is one of the most distinctive temples in Bandwar, easily recognised by its twin shikharas — the two towers rising above the shrine. The temple sits among trees, and at sunset its silhouette against the sky is one of the village's most photographed views. It is the village's principal Ram temple, and is referred to locally as simply 'Thakurbari' — the house of the deity. Together with [[shivala-temple-bandwar|Shivala]] and the two Krishna Mandirs, it forms the spiritual core of Bandwar's centre." },
-        { "heading": "Architecture", "text": "The temple is built in the nagara style, with two spires of slightly different heights — the taller one marks the main shrine, and the smaller one an adjoining shrine. An orange dhwaja (flag) is flown from the taller spire. The twin-shikhara arrangement is unusual in village temples, and gives Ram Mandir Thakurbari its distinctive visual identity — visible from a distance as the village's tallest structure. The main shrine houses the Ram idol, while the adjoining shrine is used for smaller observances." },
-        { "heading": "Ram Katha", "text": "Once a year, the temple hosts a [[ram-katha-thakurbari-bandwar-2021|Ram Katha]] — a multi-day recitation of the Ramcharitmanas by a trained kathavachak (narrator). Villagers gather under a decorated pandal in the temple courtyard to listen. The most recent public record of this is from 2021, when the entire village participated. Preparations take several days: a large pandal is erected over the courtyard, decorated with flowers and lighting, and villagers contribute materials, food, and seating arrangements. The festival concludes with a hawan (fire ritual) and distribution of prasad." },
-        { "heading": "Festivals", "text": "Ram Navami — the birth of Rama, in March or April — is the principal festival. On this day, the temple is decorated with flowers and lights, and a special puja is held at noon — the traditional hour of Rama's birth. The temple also observes Vijayadashami (Dussehra) and Diwali. Like the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]] held at the village ground, the Ram Navami celebrations at Thakurbari draw the whole village together." }
+        {
+          "heading": "Overview",
+          "text": "The Ram Mandir Thakurbari is one of the most distinctive temples in Bandwar, easily recognised by its twin shikharas — the two towers rising above the shrine. The temple sits among trees, and at sunset its silhouette against the sky is one of the village's most photographed views. It is the village's principal Ram temple, and is referred to locally as simply 'Thakurbari' — the house of the deity. Together with [[shivala-temple-bandwar|Shivala]] and the two Krishna Mandirs, it forms the spiritual core of Bandwar's centre."
+        },
+        {
+          "heading": "Architecture",
+          "text": "The temple is built in the nagara style, with two spires of slightly different heights — the taller one marks the main shrine, and the smaller one an adjoining shrine. An orange dhwaja (flag) is flown from the taller spire. The twin-shikhara arrangement is unusual in village temples, and gives Ram Mandir Thakurbari its distinctive visual identity — visible from a distance as the village's tallest structure. The main shrine houses the Ram idol, while the adjoining shrine is used for smaller observances."
+        },
+        {
+          "heading": "Ram Katha",
+          "text": "Once a year, the temple hosts a [[ram-katha-thakurbari-bandwar-2021|Ram Katha]] — a multi-day recitation of the Ramcharitmanas by a trained kathavachak (narrator). Villagers gather under a decorated pandal in the temple courtyard to listen. The most recent public record of this is from 2021, when the entire village participated. Preparations take several days: a large pandal is erected over the courtyard, decorated with flowers and lighting, and villagers contribute materials, food, and seating arrangements. The festival concludes with a hawan (fire ritual) and distribution of prasad."
+        },
+        {
+          "heading": "Festivals",
+          "text": "Ram Navami — the birth of Rama, in March or April — is the principal festival. On this day, the temple is decorated with flowers and lights, and a special puja is held at noon — the traditional hour of Rama's birth. The temple also observes Vijayadashami (Dussehra) and Diwali. Like the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]] held at the village ground, the Ram Navami celebrations at Thakurbari draw the whole village together."
+        }
       ],
       "faqs": [
-        { "q": "Why does Ram Mandir Thakurbari have two shikharas?", "a": "The taller shikhara marks the main shrine, dedicated to Rama, and the smaller one marks an adjoining shrine used for smaller observances. The twin-spire arrangement is unusual in village temples and gives Ram Mandir Thakurbari its distinctive silhouette." },
-        { "q": "What is Ram Katha at Thakurbari?", "a": "Ram Katha is a multi-day public recitation of the Ramcharitmanas by a trained narrator (kathavachak). It is held annually at Ram Mandir Thakurbari, with the whole village gathering under a decorated pandal to listen." },
-        { "q": "What is the main festival at Ram Mandir Thakurbari?", "a": "Ram Navami — the birth of Rama, celebrated in March or April — is the principal festival, with a special puja at noon. The temple also observes Vijayadashami (Dussehra) and Diwali." },
-        { "q": "Where is Ram Mandir Thakurbari located?", "a": "It is in the centre of Bandwar village, Begusarai, Bihar — among trees, near Shivala and the two Krishna Mandirs. Its twin shikharas are visible from the bandh on the western edge of the village." }
+        {
+          "q": "Why does Ram Mandir Thakurbari have two shikharas?",
+          "a": "The taller shikhara marks the main shrine, dedicated to Rama, and the smaller one marks an adjoining shrine used for smaller observances. The twin-spire arrangement is unusual in village temples and gives Ram Mandir Thakurbari its distinctive silhouette."
+        },
+        {
+          "q": "What is Ram Katha at Thakurbari?",
+          "a": "Ram Katha is a multi-day public recitation of the Ramcharitmanas by a trained narrator (kathavachak). It is held annually at Ram Mandir Thakurbari, with the whole village gathering under a decorated pandal to listen."
+        },
+        {
+          "q": "What is the main festival at Ram Mandir Thakurbari?",
+          "a": "Ram Navami — the birth of Rama, celebrated in March or April — is the principal festival, with a special puja at noon. The temple also observes Vijayadashami (Dussehra) and Diwali."
+        },
+        {
+          "q": "Where is Ram Mandir Thakurbari located?",
+          "a": "It is in the centre of Bandwar village, Begusarai, Bihar — among trees, near Shivala and the two Krishna Mandirs. Its twin shikharas are visible from the bandh on the western edge of the village."
+        }
       ],
-      "related": ["bada-krishna-mandir-bandwar", "chhota-krishna-mandir-bandwar", "sankat-mochan-hanuman-mandir-bandwar", "shivala-temple-bandwar", "ram-katha-thakurbari-bandwar-2021", "chhath-puja-bandwar-bandh-burhi-gandak"],
-      "location": { "lat": 25.5010, "lng": 86.1606 },
-      "tags": ["ram mandir thakurbari bandwar", "ram temple begusarai", "ram katha bandwar", "ram navami bihar", "twin shikhara temple", "bandwar temples"]
+      "related": [
+        "bada-krishna-mandir-bandwar",
+        "chhota-krishna-mandir-bandwar",
+        "sankat-mochan-hanuman-mandir-bandwar",
+        "shivala-temple-bandwar",
+        "ram-katha-thakurbari-bandwar-2021",
+        "chhath-puja-bandwar-bandh-burhi-gandak"
+      ],
+      "location": {
+        "lat": 25.501,
+        "lng": 86.1606
+      },
+      "tags": [
+        "ram mandir thakurbari bandwar",
+        "ram temple begusarai",
+        "ram katha bandwar",
+        "ram navami bihar",
+        "twin shikhara temple",
+        "bandwar temples"
+      ]
     },
     {
       "id": "bada-krishna-mandir-bandwar",
       "title": "Bada Krishna Mandir: The Larger Krishna Temple of Bandwar",
       "subtitle": "Housing a Radha-Krishna idol and linked to the historic Janmashtami Mela",
-      "categories": ["religion", "landmarks"],
+      "categories": [
+        "religion",
+        "landmarks"
+      ],
       "summary": "The larger of Bandwar's two Krishna temples, Bada Krishna Mandir houses a Radha-Krishna idol and is a whitewashed building with an arched entrance and a handpump in its courtyard. It is closely associated with the village's [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]], the 200-year-old fair held annually on Krishna's birth.",
       "hero": "images/religion/bada-krishna-mandir-bandwar.jpg",
       "photos": [
-        { 
-          "src": "images/religion/bada-krishna-mandir-bandwar.jpg", 
-          "caption": "Bada Krishna Mandir — the temple's exterior and courtyard." 
+        {
+          "src": "images/religion/bada-krishna-mandir-bandwar.jpg",
+          "caption": "Bada Krishna Mandir — the temple's exterior and courtyard."
         },
-        { 
-          "src": "images/religion/bada-krishna-mandir-idol-bandwar.jpg", 
-          "caption": "The Radha-Krishna idol inside the shrine." 
+        {
+          "src": "images/religion/bada-krishna-mandir-idol-bandwar.jpg",
+          "caption": "The Radha-Krishna idol inside the shrine."
         }
       ],
       "infobox": {
@@ -118,36 +213,79 @@
       },
       "lastUpdated": "2026-09-04",
       "content": [
-        { "heading": "Overview", "text": "The Bada Krishna Mandir is the larger of the two Krishna temples in Bandwar. It stands in a quiet courtyard, a whitewashed building with a maroon border and a wide arched entrance that opens into a pillared hall. The temple's courtyard contains a handpump — one of the village's older water sources — which is still used by nearby households. The temple is one of the eight temples clustered in the village centre, alongside [[shivala-temple-bandwar|Shivala]], [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]], and the [[chhota-krishna-mandir-bandwar|Chhota Krishna Mandir]]." },
-        { "heading": "The Deity", "text": "The temple houses a Radha-Krishna idol, with Krishna depicted in blue, holding his flute, wearing a peacock crown and yellow robes, and adorned with an intricate golden prabhavali. Radha stands to his left in a green sari. The idol is decorated with fresh flowers on festival days, and with seasonal ornaments through the year." },
-        { "heading": "Festivals", "text": "The temple's most important celebrations are Janmashtami — the birth of Krishna — which is the same occasion as the village's [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]], and Radha Ashtami. On Janmashtami, the temple remains open through the night, and a special abhishek (ritual bath) is performed on the idol at midnight — the hour of Krishna's birth. Radha Ashtami, celebrated a fortnight later, is dedicated to Radha." },
-        { "heading": "Present Day", "text": "The temple is looked after by the village community. It has no fixed priest, and villagers take turns maintaining the shrine and offering prayers. The courtyard's handpump, though now supplemented by piped water from the [[jal-jeevan-mission-water-tower-bandwar|Jal Jeevan Mission tower]], remains in use — particularly during the summer months. The temple's proximity to the [[historic-well-chaupal-bandwar|historic well]] makes the two sites part of the same walk through the village centre." }
+        {
+          "heading": "Overview",
+          "text": "The Bada Krishna Mandir is the larger of the two Krishna temples in Bandwar. It stands in a quiet courtyard, a whitewashed building with a maroon border and a wide arched entrance that opens into a pillared hall. The temple's courtyard contains a handpump — one of the village's older water sources — which is still used by nearby households. The temple is one of the eight temples clustered in the village centre, alongside [[shivala-temple-bandwar|Shivala]], [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]], and the [[chhota-krishna-mandir-bandwar|Chhota Krishna Mandir]]."
+        },
+        {
+          "heading": "The Deity",
+          "text": "The temple houses a Radha-Krishna idol, with Krishna depicted in blue, holding his flute, wearing a peacock crown and yellow robes, and adorned with an intricate golden prabhavali. Radha stands to his left in a green sari. The idol is decorated with fresh flowers on festival days, and with seasonal ornaments through the year."
+        },
+        {
+          "heading": "Festivals",
+          "text": "The temple's most important celebrations are Janmashtami — the birth of Krishna — which is the same occasion as the village's [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]], and Radha Ashtami. On Janmashtami, the temple remains open through the night, and a special abhishek (ritual bath) is performed on the idol at midnight — the hour of Krishna's birth. Radha Ashtami, celebrated a fortnight later, is dedicated to Radha."
+        },
+        {
+          "heading": "Present Day",
+          "text": "The temple is looked after by the village community. It has no fixed priest, and villagers take turns maintaining the shrine and offering prayers. The courtyard's handpump, though now supplemented by piped water from the [[jal-jeevan-mission-water-tower-bandwar|Jal Jeevan Mission tower]], remains in use — particularly during the summer months. The temple's proximity to the [[historic-well-chaupal-bandwar|historic well]] makes the two sites part of the same walk through the village centre."
+        }
       ],
       "faqs": [
-        { "q": "What is the difference between Bada and Chhota Krishna Mandir?", "a": "Bada Krishna Mandir is the larger of Bandwar's two Krishna temples, with a whitewashed exterior and an arched entrance. Chhota Krishna Mandir, a short distance away, is smaller and is distinguished by its colourful scalloped arches and marble steps." },
-        { "q": "What idol is in Bada Krishna Mandir?", "a": "The temple houses a Radha-Krishna idol — Krishna in blue, holding a flute, wearing a peacock crown and yellow robes, with a golden prabhavali behind him, and Radha to his left in a green sari." },
-        { "q": "What festivals are celebrated at Bada Krishna Mandir?", "a": "Janmashtami — the birth of Krishna — is the principal festival, celebrated with an all-night vigil and a midnight abhishek on the idol. Radha Ashtami, celebrated a fortnight later, is dedicated to Radha." },
-        { "q": "Is there a handpump at Bada Krishna Mandir?", "a": "Yes — the temple courtyard contains a handpump, one of the village's older water sources, which is still used by nearby households, particularly during summer months." }
+        {
+          "q": "What is the difference between Bada and Chhota Krishna Mandir?",
+          "a": "Bada Krishna Mandir is the larger of Bandwar's two Krishna temples, with a whitewashed exterior and an arched entrance. Chhota Krishna Mandir, a short distance away, is smaller and is distinguished by its colourful scalloped arches and marble steps."
+        },
+        {
+          "q": "What idol is in Bada Krishna Mandir?",
+          "a": "The temple houses a Radha-Krishna idol — Krishna in blue, holding a flute, wearing a peacock crown and yellow robes, with a golden prabhavali behind him, and Radha to his left in a green sari."
+        },
+        {
+          "q": "What festivals are celebrated at Bada Krishna Mandir?",
+          "a": "Janmashtami — the birth of Krishna — is the principal festival, celebrated with an all-night vigil and a midnight abhishek on the idol. Radha Ashtami, celebrated a fortnight later, is dedicated to Radha."
+        },
+        {
+          "q": "Is there a handpump at Bada Krishna Mandir?",
+          "a": "Yes — the temple courtyard contains a handpump, one of the village's older water sources, which is still used by nearby households, particularly during summer months."
+        }
       ],
-      "related": ["chhota-krishna-mandir-bandwar", "ram-mandir-thakurbari-bandwar", "shivala-temple-bandwar", "janmashtami-mela-bandwar-bihar", "baba-bhole-durgasthan-hanuman-mandir-bandwar", "historic-well-chaupal-bandwar"],
-      "location": { "lat": 25.5005, "lng": 86.1614 },
-      "tags": ["bada krishna mandir bandwar", "radha krishna temple begusarai", "janmashtami temple bihar", "radha ashtami bandwar", "bandwar village temples"]
+      "related": [
+        "chhota-krishna-mandir-bandwar",
+        "ram-mandir-thakurbari-bandwar",
+        "shivala-temple-bandwar",
+        "janmashtami-mela-bandwar-bihar",
+        "baba-bhole-durgasthan-hanuman-mandir-bandwar",
+        "historic-well-chaupal-bandwar"
+      ],
+      "location": {
+        "lat": 25.5005,
+        "lng": 86.1614
+      },
+      "tags": [
+        "bada krishna mandir bandwar",
+        "radha krishna temple begusarai",
+        "janmashtami temple bihar",
+        "radha ashtami bandwar",
+        "bandwar village temples"
+      ]
     },
     {
       "id": "chhota-krishna-mandir-bandwar",
       "title": "Chhota Krishna Mandir: The Ornate Krishna Temple of Bandwar",
       "subtitle": "Distinguished by its colourful scalloped arches and marble steps",
-      "categories": ["religion", "landmarks"],
+      "categories": [
+        "religion",
+        "landmarks"
+      ],
       "summary": "The smaller of Bandwar's two Krishna temples, Chhota Krishna Mandir is distinguished by its colourful scalloped arches, marble steps, and green and red side walls. It is reached by a flight of marble steps, and stands a short distance from the [[bada-krishna-mandir-bandwar|Bada Krishna Mandir]].",
       "hero": "images/religion/chhota-krishna-mandir-bandwar.jpg",
       "photos": [
-        { 
-          "src": "images/religion/chhota-krishna-mandir-bandwar.jpg", 
-          "caption": "Chhota Krishna Mandir — the temple's decorated scalloped arches." 
+        {
+          "src": "images/religion/chhota-krishna-mandir-bandwar.jpg",
+          "caption": "Chhota Krishna Mandir — the temple's decorated scalloped arches."
         },
-        { 
-          "src": "images/religion/chhota-krishna-mandir-idol-bandwar.jpg", 
-          "caption": "The Radha-Krishna idol inside the shrine." 
+        {
+          "src": "images/religion/chhota-krishna-mandir-idol-bandwar.jpg",
+          "caption": "The Radha-Krishna idol inside the shrine."
         }
       ],
       "infobox": {
@@ -161,36 +299,79 @@
       },
       "lastUpdated": "2026-09-05",
       "content": [
-        { "heading": "Overview", "text": "The Chhota Krishna Mandir stands a short distance from its larger counterpart, in the centre of the village. It is reached by a flight of marble steps and is distinguished by its decorated scalloped arches — outlined in yellow, pink, and blue — and its green and red side walls. Of all Bandwar's temples, Chhota Krishna Mandir has the most ornamental frontage — its entrance porch is a riot of colour, quite different from the whitewashed austerity of [[shivala-temple-bandwar|Shivala]] or the [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]]." },
-        { "heading": "Architecture", "text": "The temple is built in a traditional North Indian style, with a shallow entrance porch supported by white pillars and topped by a decorated ceiling. Inside, the doorway is framed with painted wooden panels. The scalloped arches — a motif also seen in Rajput and Maratha temple architecture — give the temple an unusual visual richness for a village of Bandwar's size. The green and red side walls, contrasting with the marble steps, make the temple visible from a distance." },
-        { "heading": "The Deity", "text": "The temple houses a Radha-Krishna idol, shown with Krishna seated on the coils of Shesh Naag — the serpent of Vishnu — with Radha beside him, and an intricate golden prabhavali behind them. The Shesh Naag motif is unusual in village temples, and recalls the iconography of larger Vaishnavite shrines in the region." },
-        { "heading": "Festivals", "text": "The temple is decorated and opened for extended darshan on Janmashtami, Radha Ashtami, and during Kartik Purnima. On Janmashtami, the temple participates in the wider celebrations of the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]] — the 200-year-old fair held at the village ground — and villagers visit both the temple and the fair through the day." }
+        {
+          "heading": "Overview",
+          "text": "The Chhota Krishna Mandir stands a short distance from its larger counterpart, in the centre of the village. It is reached by a flight of marble steps and is distinguished by its decorated scalloped arches — outlined in yellow, pink, and blue — and its green and red side walls. Of all Bandwar's temples, Chhota Krishna Mandir has the most ornamental frontage — its entrance porch is a riot of colour, quite different from the whitewashed austerity of [[shivala-temple-bandwar|Shivala]] or the [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]]."
+        },
+        {
+          "heading": "Architecture",
+          "text": "The temple is built in a traditional North Indian style, with a shallow entrance porch supported by white pillars and topped by a decorated ceiling. Inside, the doorway is framed with painted wooden panels. The scalloped arches — a motif also seen in Rajput and Maratha temple architecture — give the temple an unusual visual richness for a village of Bandwar's size. The green and red side walls, contrasting with the marble steps, make the temple visible from a distance."
+        },
+        {
+          "heading": "The Deity",
+          "text": "The temple houses a Radha-Krishna idol, shown with Krishna seated on the coils of Shesh Naag — the serpent of Vishnu — with Radha beside him, and an intricate golden prabhavali behind them. The Shesh Naag motif is unusual in village temples, and recalls the iconography of larger Vaishnavite shrines in the region."
+        },
+        {
+          "heading": "Festivals",
+          "text": "The temple is decorated and opened for extended darshan on Janmashtami, Radha Ashtami, and during Kartik Purnima. On Janmashtami, the temple participates in the wider celebrations of the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]] — the 200-year-old fair held at the village ground — and villagers visit both the temple and the fair through the day."
+        }
       ],
       "faqs": [
-        { "q": "Why is Chhota Krishna Mandir called 'chhota'?", "a": "It is the smaller of Bandwar's two Krishna temples. The 'bada' (larger) and 'chhota' (smaller) distinction has been in use in the village for generations, and helps distinguish the two when speaking about them." },
-        { "q": "What is distinctive about Chhota Krishna Mandir's architecture?", "a": "The temple is known for its colourful scalloped arches — outlined in yellow, pink, and blue — along with marble steps and green and red side walls. Of all Bandwar's temples, it has the most ornamental frontage." },
-        { "q": "What is the idol at Chhota Krishna Mandir?", "a": "The temple houses a Radha-Krishna idol, with Krishna seated on the coils of Shesh Naag (the serpent of Vishnu), Radha beside him, and a golden prabhavali behind them." },
-        { "q": "Where is Chhota Krishna Mandir located?", "a": "It stands in the centre of Bandwar village, Begusarai, Bihar, a short distance from the Bada Krishna Mandir, and is reached by a flight of marble steps." }
+        {
+          "q": "Why is Chhota Krishna Mandir called 'chhota'?",
+          "a": "It is the smaller of Bandwar's two Krishna temples. The 'bada' (larger) and 'chhota' (smaller) distinction has been in use in the village for generations, and helps distinguish the two when speaking about them."
+        },
+        {
+          "q": "What is distinctive about Chhota Krishna Mandir's architecture?",
+          "a": "The temple is known for its colourful scalloped arches — outlined in yellow, pink, and blue — along with marble steps and green and red side walls. Of all Bandwar's temples, it has the most ornamental frontage."
+        },
+        {
+          "q": "What is the idol at Chhota Krishna Mandir?",
+          "a": "The temple houses a Radha-Krishna idol, with Krishna seated on the coils of Shesh Naag (the serpent of Vishnu), Radha beside him, and a golden prabhavali behind them."
+        },
+        {
+          "q": "Where is Chhota Krishna Mandir located?",
+          "a": "It stands in the centre of Bandwar village, Begusarai, Bihar, a short distance from the Bada Krishna Mandir, and is reached by a flight of marble steps."
+        }
       ],
-      "related": ["bada-krishna-mandir-bandwar", "ram-mandir-thakurbari-bandwar", "shivala-temple-bandwar", "janmashtami-mela-bandwar-bihar", "sankat-mochan-hanuman-mandir-bandwar", "baba-bhole-durgasthan-hanuman-mandir-bandwar"],
-      "location": { "lat": 25.5009, "lng": 86.1615 },
-      "tags": ["chhota krishna mandir bandwar", "krishna temple begusarai", "scalloped arches temple", "janmashtami bandwar", "bandwar village temples"]
+      "related": [
+        "bada-krishna-mandir-bandwar",
+        "ram-mandir-thakurbari-bandwar",
+        "shivala-temple-bandwar",
+        "janmashtami-mela-bandwar-bihar",
+        "sankat-mochan-hanuman-mandir-bandwar",
+        "baba-bhole-durgasthan-hanuman-mandir-bandwar"
+      ],
+      "location": {
+        "lat": 25.5009,
+        "lng": 86.1615
+      },
+      "tags": [
+        "chhota krishna mandir bandwar",
+        "krishna temple begusarai",
+        "scalloped arches temple",
+        "janmashtami bandwar",
+        "bandwar village temples"
+      ]
     },
     {
       "id": "maharishi-gautam-durga-mandir-bandwar",
       "title": "Maharishi Gautam Aadi Shakti Durga Mandir, Bandwar",
       "subtitle": "The village's Chaiti Durga temple, known for its orange exterior",
-      "categories": ["religion", "landmarks"],
+      "categories": [
+        "religion",
+        "landmarks"
+      ],
       "summary": "A Hindu temple in Bandwar dedicated to Durga, with a distinctive orange exterior and green pillars. The temple houses a Chaiti Durga idol and is the site of the village's Chaitra Navratri celebrations. It is one of the eight temples clustered in the village centre, and is among the most visited.",
       "hero": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
       "photos": [
-        { 
-          "src": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg", 
-          "caption": "Maharishi Gautam Aadi Shakti Durga Mandir decorated for the festival." 
+        {
+          "src": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
+          "caption": "Maharishi Gautam Aadi Shakti Durga Mandir decorated for the festival."
         },
-        { 
-          "src": "images/religion/maharishi-gautam-durga-mandir-idol-bandwar.jpg", 
-          "caption": "Chaiti Durga idol inside the temple." 
+        {
+          "src": "images/religion/maharishi-gautam-durga-mandir-idol-bandwar.jpg",
+          "caption": "Chaiti Durga idol inside the temple."
         }
       ],
       "infobox": {
@@ -205,33 +386,79 @@
       },
       "lastUpdated": "2026-03-22",
       "content": [
-        { "heading": "Overview", "text": "The Maharishi Gautam Aadi Shakti Durga Mandir is one of the village's most visited temples. It stands in the centre of Bandwar, painted in a distinctive orange with bright green pillars, and is easily recognisable from the lane that passes it. It is the only temple in Bandwar dedicated to Durga, and is the site of the village's Chaitra Navratri celebrations — making it, along with [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]] and the two Krishna Mandirs, one of the anchors of the village's religious calendar." },
-        { "heading": "The Deity", "text": "The temple is dedicated to Durga, in her aspect as Chaiti Durga — the form worshipped during Chaitra Navratri, which falls in March or April. The idol inside depicts the ten-armed Durga seated on a lion, engaged in combat with Mahishasura, the buffalo demon. She is flanked by her family — Lakshmi, Saraswati, Ganesh, and Kartikeya. The Chaiti aspect is distinguished from the more widely-known Shardi (autumn) Durga Puja celebrated in Bengal and across North India — Chaiti Durga is worshipped in spring, and is especially popular in Bihar and eastern Uttar Pradesh." },
-        { "heading": "Festivals", "text": "Chaitra Navratri is the most important festival at this temple, when the village observes nine nights of prayer. During the festival, the temple is decorated with lights, and the doors are kept open for darshan through the day and into the night. Each of the nine nights is associated with a different form of Durga — Shailaputri, Brahmacharini, Chandraghanta, Kushmanda, Skandamata, Katyayani, Kalaratri, Mahagauri, and Siddhidatri. The festival concludes on Ram Navami, which is also celebrated at [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]]." },
-        { "heading": "Architecture", "text": "The temple has a simple, functional design — a rectangular hall with an arched entryway, iron grilles across the windows, and a small shrine at the centre. Above the doorway, the temple's name is painted in Hindi. The orange-and-green colour scheme makes the temple stand out from the whitewashed exteriors of [[shivala-temple-bandwar|Shivala]] and [[bada-krishna-mandir-bandwar|Bada Krishna Mandir]], and it has become one of the most photographed structures in the village centre." },
-        { "heading": "Present Day", "text": "The temple continues to be maintained by villagers. A woman from the village is often seen sitting outside the temple in the mornings, and the temple remains a common stopping point for anyone walking through the centre of Bandwar. Its proximity to [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]] and the [[historic-well-chaupal-bandwar|historic well]] makes it part of the same walk through the village's religious and social core." }
+        {
+          "heading": "Overview",
+          "text": "The Maharishi Gautam Aadi Shakti Durga Mandir is one of the village's most visited temples. It stands in the centre of Bandwar, painted in a distinctive orange with bright green pillars, and is easily recognisable from the lane that passes it. It is the only temple in Bandwar dedicated to Durga, and is the site of the village's Chaitra Navratri celebrations — making it, along with [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]] and the two Krishna Mandirs, one of the anchors of the village's religious calendar."
+        },
+        {
+          "heading": "The Deity",
+          "text": "The temple is dedicated to Durga, in her aspect as Chaiti Durga — the form worshipped during Chaitra Navratri, which falls in March or April. The idol inside depicts the ten-armed Durga seated on a lion, engaged in combat with Mahishasura, the buffalo demon. She is flanked by her family — Lakshmi, Saraswati, Ganesh, and Kartikeya. The Chaiti aspect is distinguished from the more widely-known Shardi (autumn) Durga Puja celebrated in Bengal and across North India — Chaiti Durga is worshipped in spring, and is especially popular in Bihar and eastern Uttar Pradesh."
+        },
+        {
+          "heading": "Festivals",
+          "text": "Chaitra Navratri is the most important festival at this temple, when the village observes nine nights of prayer. During the festival, the temple is decorated with lights, and the doors are kept open for darshan through the day and into the night. Each of the nine nights is associated with a different form of Durga — Shailaputri, Brahmacharini, Chandraghanta, Kushmanda, Skandamata, Katyayani, Kalaratri, Mahagauri, and Siddhidatri. The festival concludes on Ram Navami, which is also celebrated at [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]]."
+        },
+        {
+          "heading": "Architecture",
+          "text": "The temple has a simple, functional design — a rectangular hall with an arched entryway, iron grilles across the windows, and a small shrine at the centre. Above the doorway, the temple's name is painted in Hindi. The orange-and-green colour scheme makes the temple stand out from the whitewashed exteriors of [[shivala-temple-bandwar|Shivala]] and [[bada-krishna-mandir-bandwar|Bada Krishna Mandir]], and it has become one of the most photographed structures in the village centre."
+        },
+        {
+          "heading": "Present Day",
+          "text": "The temple continues to be maintained by villagers. A woman from the village is often seen sitting outside the temple in the mornings, and the temple remains a common stopping point for anyone walking through the centre of Bandwar. Its proximity to [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]] and the [[historic-well-chaupal-bandwar|historic well]] makes it part of the same walk through the village's religious and social core."
+        }
       ],
       "faqs": [
-        { "q": "What is Chaiti Durga?", "a": "Chaiti Durga is the form of the goddess Durga worshipped during Chaitra Navratri, which falls in March or April — as distinct from the Shardi (autumn) Durga Puja celebrated in Bengal and across North India. Chaiti Durga is especially popular in Bihar and eastern Uttar Pradesh." },
-        { "q": "What does the Durga idol at this temple depict?", "a": "The idol depicts the ten-armed Durga seated on a lion, engaged in combat with Mahishasura, the buffalo demon. She is flanked by her family — Lakshmi, Saraswati, Ganesh, and Kartikeya." },
-        { "q": "When is Chaitra Navratri celebrated at this temple?", "a": "Chaitra Navratri is celebrated over nine nights in March or April, culminating on Ram Navami. During the festival, the temple is decorated with lights, and the doors are kept open for darshan day and night." },
-        { "q": "Why is the temple painted orange and green?", "a": "The orange exterior with green pillars gives the temple its distinctive appearance, and helps distinguish it from the whitewashed exteriors of Shivala and Bada Krishna Mandir. The colour scheme has become one of the most recognisable features of the village centre." }
+        {
+          "q": "What is Chaiti Durga?",
+          "a": "Chaiti Durga is the form of the goddess Durga worshipped during Chaitra Navratri, which falls in March or April — as distinct from the Shardi (autumn) Durga Puja celebrated in Bengal and across North India. Chaiti Durga is especially popular in Bihar and eastern Uttar Pradesh."
+        },
+        {
+          "q": "What does the Durga idol at this temple depict?",
+          "a": "The idol depicts the ten-armed Durga seated on a lion, engaged in combat with Mahishasura, the buffalo demon. She is flanked by her family — Lakshmi, Saraswati, Ganesh, and Kartikeya."
+        },
+        {
+          "q": "When is Chaitra Navratri celebrated at this temple?",
+          "a": "Chaitra Navratri is celebrated over nine nights in March or April, culminating on Ram Navami. During the festival, the temple is decorated with lights, and the doors are kept open for darshan day and night."
+        },
+        {
+          "q": "Why is the temple painted orange and green?",
+          "a": "The orange exterior with green pillars gives the temple its distinctive appearance, and helps distinguish it from the whitewashed exteriors of Shivala and Bada Krishna Mandir. The colour scheme has become one of the most recognisable features of the village centre."
+        }
       ],
-      "related": ["ram-mandir-thakurbari-bandwar", "bada-krishna-mandir-bandwar", "shivala-temple-bandwar", "baba-bhole-durgasthan-hanuman-mandir-bandwar", "sankat-mochan-hanuman-mandir-bandwar", "chandrashekhar-chowk-bandwar"],
-      "location": { "lat": 25.5006, "lng": 86.1602 },
-      "tags": ["durga mandir bandwar", "chaiti durga puja bihar", "navratri temple begusarai", "aadi shakti temple", "bandwar village temples"]
+      "related": [
+        "ram-mandir-thakurbari-bandwar",
+        "bada-krishna-mandir-bandwar",
+        "shivala-temple-bandwar",
+        "baba-bhole-durgasthan-hanuman-mandir-bandwar",
+        "sankat-mochan-hanuman-mandir-bandwar",
+        "chandrashekhar-chowk-bandwar"
+      ],
+      "location": {
+        "lat": 25.5006,
+        "lng": 86.1602
+      },
+      "tags": [
+        "durga mandir bandwar",
+        "chaiti durga puja bihar",
+        "navratri temple begusarai",
+        "aadi shakti temple",
+        "bandwar village temples"
+      ]
     },
     {
       "id": "sankat-mochan-hanuman-mandir-bandwar",
       "title": "Sankat Mochan Hanuman Mandir: The Hanuman Temple of Bandwar",
       "subtitle": "A small but highly visited temple dedicated to Lord Hanuman",
-      "categories": ["religion", "landmarks"],
+      "categories": [
+        "religion",
+        "landmarks"
+      ],
       "summary": "A temple dedicated to Hanuman ji, known for its bright red idol holding a gada (mace). The temple is small but well-maintained, with a brass bell hung at the entrance. It is one of the eight temples clustered in the centre of Bandwar, and among the most visited.",
       "hero": "images/religion/sankat-mochan-hanuman-mandir-bandwar.jpg",
       "photos": [
-        { 
-          "src": "images/religion/sankat-mochan-hanuman-mandir-bandwar.jpg", 
-          "caption": "The idol of Hanuman ji inside the Sankat Mochan Mandir in Bandwar." 
+        {
+          "src": "images/religion/sankat-mochan-hanuman-mandir-bandwar.jpg",
+          "caption": "The idol of Hanuman ji inside the Sankat Mochan Mandir in Bandwar."
         }
       ],
       "infobox": {
@@ -245,32 +472,75 @@
       },
       "lastUpdated": "2026-04-01",
       "content": [
-        { "heading": "Overview", "text": "The Sankat Mochan Hanuman Mandir is one of the smallest temples in Bandwar, but also among the most visited. It is dedicated to Hanuman ji — the devotee of Rama, the remover of obstacles, and the deity most commonly invoked by villagers for strength and protection. The name 'Sankat Mochan' means 'the remover of troubles', and it is by this name that Hanuman is most often invoked in times of difficulty. The temple sits near [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]] — fittingly, given Hanuman's role as Rama's devotee." },
-        { "heading": "The Deity", "text": "The idol of Hanuman inside the temple is painted a bright vermilion red — the traditional colour for Hanuman icons in North India — and holds the gada (mace). He is shown with a golden prabhavali behind him, and is adorned with flowers and sindoor. A brass bell hangs from the ceiling, rung by worshippers as they enter. The vermilion colour is renewed periodically — a ritual in itself, done by devotees as an offering." },
-        { "heading": "Festivals", "text": "Hanuman Jayanti — the birth of Hanuman — is the temple's most important festival, celebrated on the full moon of the Chaitra month (March or April). Hanuman is also especially worshipped on Tuesdays and Saturdays, when the temple sees increased footfall. On these days, devotees offer sindoor, chameli oil, and boondi laddus to the idol — traditional offerings for Hanuman. The temple's Tuesday and Saturday crowds are a familiar sight in the village centre." },
-        { "heading": "Present Day", "text": "The temple is looked after by a local pujari and receives visitors throughout the week. An elderly priest is often seen at the temple in the mornings. Despite its small size, the temple has an outsized presence in the daily religious life of Bandwar — it is one of the first stops for many villagers on their morning rounds." }
+        {
+          "heading": "Overview",
+          "text": "The Sankat Mochan Hanuman Mandir is one of the smallest temples in Bandwar, but also among the most visited. It is dedicated to Hanuman ji — the devotee of Rama, the remover of obstacles, and the deity most commonly invoked by villagers for strength and protection. The name 'Sankat Mochan' means 'the remover of troubles', and it is by this name that Hanuman is most often invoked in times of difficulty. The temple sits near [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]] — fittingly, given Hanuman's role as Rama's devotee."
+        },
+        {
+          "heading": "The Deity",
+          "text": "The idol of Hanuman inside the temple is painted a bright vermilion red — the traditional colour for Hanuman icons in North India — and holds the gada (mace). He is shown with a golden prabhavali behind him, and is adorned with flowers and sindoor. A brass bell hangs from the ceiling, rung by worshippers as they enter. The vermilion colour is renewed periodically — a ritual in itself, done by devotees as an offering."
+        },
+        {
+          "heading": "Festivals",
+          "text": "Hanuman Jayanti — the birth of Hanuman — is the temple's most important festival, celebrated on the full moon of the Chaitra month (March or April). Hanuman is also especially worshipped on Tuesdays and Saturdays, when the temple sees increased footfall. On these days, devotees offer sindoor, chameli oil, and boondi laddus to the idol — traditional offerings for Hanuman. The temple's Tuesday and Saturday crowds are a familiar sight in the village centre."
+        },
+        {
+          "heading": "Present Day",
+          "text": "The temple is looked after by a local pujari and receives visitors throughout the week. An elderly priest is often seen at the temple in the mornings. Despite its small size, the temple has an outsized presence in the daily religious life of Bandwar — it is one of the first stops for many villagers on their morning rounds."
+        }
       ],
       "faqs": [
-        { "q": "Why is Hanuman painted red in this temple?", "a": "The vermilion red is the traditional colour for Hanuman icons in North India, symbolising strength and devotion. At Sankat Mochan Hanuman Mandir, the colour is renewed periodically by devotees as an offering." },
-        { "q": "What offerings are made to Hanuman at this temple?", "a": "Devotees offer sindoor, chameli oil, and boondi laddus to the idol — traditional offerings for Hanuman. These are especially common on Tuesdays and Saturdays, the days most associated with Hanuman worship." },
-        { "q": "When is Hanuman Jayanti celebrated?", "a": "Hanuman Jayanti — the birth of Hanuman — falls on the full moon of the Chaitra month, in March or April. It is the temple's most important festival, drawing worshippers from across the village." },
-        { "q": "What does 'Sankat Mochan' mean?", "a": "'Sankat Mochan' means 'the remover of troubles' or 'the reliever of distress'. It is one of Hanuman's most common epithets, and reflects his role as the deity invoked in times of difficulty." }
+        {
+          "q": "Why is Hanuman painted red in this temple?",
+          "a": "The vermilion red is the traditional colour for Hanuman icons in North India, symbolising strength and devotion. At Sankat Mochan Hanuman Mandir, the colour is renewed periodically by devotees as an offering."
+        },
+        {
+          "q": "What offerings are made to Hanuman at this temple?",
+          "a": "Devotees offer sindoor, chameli oil, and boondi laddus to the idol — traditional offerings for Hanuman. These are especially common on Tuesdays and Saturdays, the days most associated with Hanuman worship."
+        },
+        {
+          "q": "When is Hanuman Jayanti celebrated?",
+          "a": "Hanuman Jayanti — the birth of Hanuman — falls on the full moon of the Chaitra month, in March or April. It is the temple's most important festival, drawing worshippers from across the village."
+        },
+        {
+          "q": "What does 'Sankat Mochan' mean?",
+          "a": "'Sankat Mochan' means 'the remover of troubles' or 'the reliever of distress'. It is one of Hanuman's most common epithets, and reflects his role as the deity invoked in times of difficulty."
+        }
       ],
-      "related": ["ram-mandir-thakurbari-bandwar", "baba-bhole-durgasthan-hanuman-mandir-bandwar", "shivala-temple-bandwar", "maharishi-gautam-durga-mandir-bandwar", "bada-krishna-mandir-bandwar", "chhota-krishna-mandir-bandwar"],
-      "location": { "lat": 25.5013, "lng": 86.1608 },
-      "tags": ["hanuman mandir bandwar", "sankat mochan temple bihar", "hanuman jayanti begusarai", "red hanuman idol", "bandwar village temples"]
+      "related": [
+        "ram-mandir-thakurbari-bandwar",
+        "baba-bhole-durgasthan-hanuman-mandir-bandwar",
+        "shivala-temple-bandwar",
+        "maharishi-gautam-durga-mandir-bandwar",
+        "bada-krishna-mandir-bandwar",
+        "chhota-krishna-mandir-bandwar"
+      ],
+      "location": {
+        "lat": 25.5013,
+        "lng": 86.1608
+      },
+      "tags": [
+        "hanuman mandir bandwar",
+        "sankat mochan temple bihar",
+        "hanuman jayanti begusarai",
+        "red hanuman idol",
+        "bandwar village temples"
+      ]
     },
     {
       "id": "baba-bhole-durgasthan-hanuman-mandir-bandwar",
       "title": "Baba Bhole Durgasthan Hanuman Mandir: Multi-Deity Temple of Bandwar",
       "subtitle": "A unique temple dedicated to Shiva, Durga, and Hanuman together",
-      "categories": ["religion", "landmarks"],
+      "categories": [
+        "religion",
+        "landmarks"
+      ],
       "summary": "A temple in the centre of Bandwar dedicated to three deities — Baba Bhole (Shiva), Durga, and Hanuman. It is distinguished by its blue-grey shikhara, maroon walls, and an iron gate inscribed with 'Om Namah Shivaya'. It is one of the eight temples clustered in the village centre.",
       "hero": "images/religion/baba-bhole-durgasthan-hanuman-mandir-bandwar.jpg",
       "photos": [
-        { 
-          "src": "images/religion/baba-bhole-durgasthan-hanuman-mandir-bandwar.jpg", 
-          "caption": "Baba Bhole Durgasthan Hanuman Mandir — the temple's maroon walls and blue-grey shikhara." 
+        {
+          "src": "images/religion/baba-bhole-durgasthan-hanuman-mandir-bandwar.jpg",
+          "caption": "Baba Bhole Durgasthan Hanuman Mandir — the temple's maroon walls and blue-grey shikhara."
         }
       ],
       "infobox": {
@@ -284,21 +554,64 @@
       },
       "lastUpdated": "2026-02-16",
       "content": [
-        { "heading": "Overview", "text": "The Baba Bhole Durgasthan Hanuman Mandir stands in the middle of Bandwar, and is one of the few temples in the village dedicated to more than one deity. Its name — Baba Bhole, Durgasthan, and Hanuman — reflects its triple dedication to Shiva, Durga, and Hanuman. It is, in effect, three temples in one — a fact reflected in the village's habit of referring to it by all three names in a single breath. The temple sits between the two Krishna Mandirs and the Hanuman Mandir, and completes the dense cluster of shrines that make up the village's religious centre." },
-        { "heading": "Architecture", "text": "The temple is built with a blue-grey shikhara above a maroon-walled sanctum. An arched doorway, framed with an intricate golden screen, opens into the shrine. The entrance gate is made of iron, and carries the inscription 'Om Namah Shivaya' alongside images of Hindu deities. The combination of colours — blue-grey, maroon, and gold — gives the temple a distinctive appearance among Bandwar's mostly whitewashed shrines, and it is often cited by visitors as one of the most striking small temples in the village." },
-        { "heading": "The Deities", "text": "Inside the sanctum, idols of the three deities are arranged together. The temple's name suggests that Baba Bhole — Shiva — occupies the central position, with Durga and Hanuman to either side. This triple enshrinement is unusual for a village temple of this size, and reflects the collective nature of the shrine's construction: different families in the village contributed to the installation of each idol, and the temple was conceived from the outset as a shared sacred space." },
-        { "heading": "Festivals", "text": "The temple observes three festivals — Maha Shivaratri for Shiva, Chaitra Navratri for Durga, and Hanuman Jayanti for Hanuman. On these days, the temple is decorated and receives a large number of worshippers. It is one of the few temples in Bandwar to observe all three of the village's major religious festivals, and its calendar therefore overlaps with those of [[shivala-temple-bandwar|Shivala]], [[maharishi-gautam-durga-mandir-bandwar|Maharishi Gautam Durga Mandir]], and [[sankat-mochan-hanuman-mandir-bandwar|Hanuman Mandir]]." },
-        { "heading": "Present Day", "text": "The temple is looked after by the village community and remains in active use throughout the year. It sits near the [[historic-well-chaupal-bandwar|historic well]] and [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]], and is a common stop on the informal circuit of shrines that villagers make on festival days. In the evenings, the temple's blue-grey shikhara is visible from the lane that runs past it, and the sound of bells from its doorway often carries into the surrounding lanes." }
+        {
+          "heading": "Overview",
+          "text": "The Baba Bhole Durgasthan Hanuman Mandir stands in the middle of Bandwar, and is one of the few temples in the village dedicated to more than one deity. Its name — Baba Bhole, Durgasthan, and Hanuman — reflects its triple dedication to Shiva, Durga, and Hanuman. It is, in effect, three temples in one — a fact reflected in the village's habit of referring to it by all three names in a single breath. The temple sits between the two Krishna Mandirs and the Hanuman Mandir, and completes the dense cluster of shrines that make up the village's religious centre."
+        },
+        {
+          "heading": "Architecture",
+          "text": "The temple is built with a blue-grey shikhara above a maroon-walled sanctum. An arched doorway, framed with an intricate golden screen, opens into the shrine. The entrance gate is made of iron, and carries the inscription 'Om Namah Shivaya' alongside images of Hindu deities. The combination of colours — blue-grey, maroon, and gold — gives the temple a distinctive appearance among Bandwar's mostly whitewashed shrines, and it is often cited by visitors as one of the most striking small temples in the village."
+        },
+        {
+          "heading": "The Deities",
+          "text": "Inside the sanctum, idols of the three deities are arranged together. The temple's name suggests that Baba Bhole — Shiva — occupies the central position, with Durga and Hanuman to either side. This triple enshrinement is unusual for a village temple of this size, and reflects the collective nature of the shrine's construction: different families in the village contributed to the installation of each idol, and the temple was conceived from the outset as a shared sacred space."
+        },
+        {
+          "heading": "Festivals",
+          "text": "The temple observes three festivals — Maha Shivaratri for Shiva, Chaitra Navratri for Durga, and Hanuman Jayanti for Hanuman. On these days, the temple is decorated and receives a large number of worshippers. It is one of the few temples in Bandwar to observe all three of the village's major religious festivals, and its calendar therefore overlaps with those of [[shivala-temple-bandwar|Shivala]], [[maharishi-gautam-durga-mandir-bandwar|Maharishi Gautam Durga Mandir]], and [[sankat-mochan-hanuman-mandir-bandwar|Hanuman Mandir]]."
+        },
+        {
+          "heading": "Present Day",
+          "text": "The temple is looked after by the village community and remains in active use throughout the year. It sits near the [[historic-well-chaupal-bandwar|historic well]] and [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]], and is a common stop on the informal circuit of shrines that villagers make on festival days. In the evenings, the temple's blue-grey shikhara is visible from the lane that runs past it, and the sound of bells from its doorway often carries into the surrounding lanes."
+        }
       ],
       "faqs": [
-        { "q": "Which deities are worshipped at Baba Bhole Durgasthan Hanuman Mandir?", "a": "The temple is dedicated to three deities — Baba Bhole (Shiva), Durga, and Hanuman — and is one of the few multi-deity temples in Bandwar. The three idols are arranged together in the sanctum." },
-        { "q": "Why does the temple have three names?", "a": "The name 'Baba Bhole Durgasthan Hanuman Mandir' reflects the temple's triple dedication. 'Baba Bhole' refers to Shiva, 'Durgasthan' to Durga, and 'Hanuman' to Hanuman ji. The village refers to the temple by all three names together." },
-        { "q": "What festivals are celebrated at this temple?", "a": "Three major festivals — Maha Shivaratri for Shiva, Chaitra Navratri for Durga, and Hanuman Jayanti for Hanuman. On these days, the temple is decorated and receives a large number of worshippers." },
-        { "q": "What is inscribed on the temple's gate?", "a": "The iron entrance gate carries the inscription 'Om Namah Shivaya' — the five-syllable mantra dedicated to Shiva — alongside images of Hindu deities. The gate is one of the temple's distinctive features." }
+        {
+          "q": "Which deities are worshipped at Baba Bhole Durgasthan Hanuman Mandir?",
+          "a": "The temple is dedicated to three deities — Baba Bhole (Shiva), Durga, and Hanuman — and is one of the few multi-deity temples in Bandwar. The three idols are arranged together in the sanctum."
+        },
+        {
+          "q": "Why does the temple have three names?",
+          "a": "The name 'Baba Bhole Durgasthan Hanuman Mandir' reflects the temple's triple dedication. 'Baba Bhole' refers to Shiva, 'Durgasthan' to Durga, and 'Hanuman' to Hanuman ji. The village refers to the temple by all three names together."
+        },
+        {
+          "q": "What festivals are celebrated at this temple?",
+          "a": "Three major festivals — Maha Shivaratri for Shiva, Chaitra Navratri for Durga, and Hanuman Jayanti for Hanuman. On these days, the temple is decorated and receives a large number of worshippers."
+        },
+        {
+          "q": "What is inscribed on the temple's gate?",
+          "a": "The iron entrance gate carries the inscription 'Om Namah Shivaya' — the five-syllable mantra dedicated to Shiva — alongside images of Hindu deities. The gate is one of the temple's distinctive features."
+        }
       ],
-      "related": ["shivala-temple-bandwar", "sankat-mochan-hanuman-mandir-bandwar", "maharishi-gautam-durga-mandir-bandwar", "ram-mandir-thakurbari-bandwar", "bada-krishna-mandir-bandwar", "historic-well-chaupal-bandwar"],
-      "location": { "lat": 25.5007, "lng": 86.1605 },
-      "tags": ["baba bhole mandir bandwar", "durgasthan hanuman mandir", "multi deity temple bihar", "om namah shivaya temple", "bandwar village temples"]
+      "related": [
+        "shivala-temple-bandwar",
+        "sankat-mochan-hanuman-mandir-bandwar",
+        "maharishi-gautam-durga-mandir-bandwar",
+        "ram-mandir-thakurbari-bandwar",
+        "bada-krishna-mandir-bandwar",
+        "historic-well-chaupal-bandwar"
+      ],
+      "location": {
+        "lat": 25.5007,
+        "lng": 86.1605
+      },
+      "tags": [
+        "baba bhole mandir bandwar",
+        "durgasthan hanuman mandir",
+        "multi deity temple bihar",
+        "om namah shivaya temple",
+        "bandwar village temples"
+      ]
     }
   ]
 }
