@@ -22,18 +22,11 @@ export function EditableText({
   as: Component = "p",
 }: EditableTextProps) {
   const {
-    status,
-    value,
-    draft,
-    setDraft,
-    startEditing,
-    cancelEditing,
-    saveEdit,
+    status, value, draft, setDraft, startEditing, cancelEditing, saveEdit, registrationModal
   } = useInlineEdit(initialValue, contextId, contextType, fieldName);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-resize textarea & focus
   useEffect(() => {
     if ((status === "editing" || status === "saving") && inputRef.current) {
       inputRef.current.focus();
@@ -43,7 +36,6 @@ export function EditableText({
     }
   }, [status, draft]);
 
-  // Handle keyboard shortcuts
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -53,7 +45,6 @@ export function EditableText({
     }
   };
 
-  // 👇 FIX: Check for both "editing" and "saving"
   if (status === "editing" || status === "saving") {
     return (
       <div className="relative group w-full">
@@ -70,7 +61,6 @@ export function EditableText({
           className={`w-full bg-surface border-2 border-accent rounded-sm px-2 py-1 outline-none resize-none overflow-hidden font-sans text-ink disabled:opacity-70 ${className}`}
         />
         
-        {/* Floating Toolbar */}
         <div className="absolute -bottom-10 left-0 flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md z-50 animate-in fade-in zoom-in duration-150">
           <button 
             onClick={() => saveEdit()} 
@@ -90,7 +80,6 @@ export function EditableText({
           </button>
         </div>
         
-        {/* Helper Text */}
         <div className="absolute top-full left-0 mt-1 text-[10px] text-ink-muted">
           Enter to save • Esc to cancel
         </div>
@@ -99,33 +88,34 @@ export function EditableText({
   }
 
   return (
-    <div className="relative group inline-block w-full">
-      <Component
-        onClick={startEditing}
-        className={`cursor-text hover:bg-accent/5 hover:outline-dashed hover:outline-1 hover:outline-accent/30 rounded-sm transition-all pr-8 ${className} ${
-          status === "pending" ? "opacity-60" : ""
-        }`}
-        title={`Click to edit ${fieldName}`}
-      >
-        {value || "—"}
-      </Component>
+    <>
+      <div className="relative group inline-block w-full">
+        <Component
+          onClick={startEditing}
+          className={`cursor-text hover:bg-accent/5 hover:outline-dashed hover:outline-1 hover:outline-accent/30 rounded-sm transition-all pr-8 ${className} ${
+            status === "pending" ? "opacity-60" : ""
+          }`}
+          title={`Click to edit ${fieldName}`}
+        >
+          {value || "—"}
+        </Component>
 
-      {/* Pencil Icon (Appears on Hover) */}
-      <button
-        onClick={startEditing}
-        className="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all"
-        aria-label={`Edit ${fieldName}`}
-      >
-        <Pencil size={16} />
-      </button>
+        <button
+          onClick={startEditing}
+          className="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all"
+          aria-label={`Edit ${fieldName}`}
+        >
+          <Pencil size={16} />
+        </button>
 
-      {/* Pending Indicator */}
-      {status === "pending" && (
-        <span className="absolute -right-2 top-1/2 -translate-y-1/2 flex h-3 w-3">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
-        </span>
-      )}
-    </div>
+        {status === "pending" && (
+          <span className="absolute -right-2 top-1/2 -translate-y-1/2 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+          </span>
+        )}
+      </div>
+      {registrationModal}
+    </>
   );
 }
