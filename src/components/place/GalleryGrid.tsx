@@ -20,14 +20,14 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
   return (
     <div>
       {/* 🏷️ Filter Tabs (Sticky on Scroll) */}
-      <div className="sticky top-20 z-30 bg-background/90 backdrop-blur-md py-4 mb-6">
-        <div className="flex overflow-x-auto gap-2 scrollbar-hide">
+      <div className="sticky top-16 md:top-20 3xl:top-24 z-30 bg-canvas/90 backdrop-blur-md py-4 mb-6 md:mb-8 3xl:mb-12 transition-all duration-300">
+        <div className="flex overflow-x-auto gap-2 md:gap-3 scrollbar-hide pb-1">
           <button
             onClick={() => { setActiveTab("all"); setSelectedIndex(null); }}
-            className={`whitespace-nowrap px-5 py-2.5 rounded-full text-[15px] font-medium transition-all duration-200 border ${
+            className={`whitespace-nowrap px-5 py-2.5 3xl:px-6 3xl:py-3 rounded-full text-sm md:text-[15px] 3xl:text-base font-medium transition-all duration-200 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
               activeTab === "all" 
-                ? "bg-brand text-white border-brand shadow-sm" 
-                : "bg-card text-foreground/70 border-border hover:bg-muted-background hover:text-foreground"
+                ? "bg-accent text-white border-accent shadow-sm" 
+                : "bg-surface text-ink/70 border-divider hover:bg-canvas hover:text-ink hover:border-ink/20"
             }`}
           >
             All Photos
@@ -36,13 +36,13 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
             <button
               key={cat.id}
               onClick={() => { setActiveTab(cat.id); setSelectedIndex(null); }}
-              className={`whitespace-nowrap px-5 py-2.5 rounded-full text-[15px] font-medium transition-all duration-200 border flex items-center gap-2 ${
+              className={`whitespace-nowrap px-5 py-2.5 3xl:px-6 3xl:py-3 rounded-full text-sm md:text-[15px] 3xl:text-base font-medium transition-all duration-200 border flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                 activeTab === cat.id 
-                  ? "bg-brand text-white border-brand shadow-sm" 
-                  : "bg-card text-foreground/70 border-border hover:bg-muted-background hover:text-foreground"
+                  ? "bg-accent text-white border-accent shadow-sm" 
+                  : "bg-surface text-ink/70 border-divider hover:bg-canvas hover:text-ink hover:border-ink/20"
               }`}
             >
-              <span aria-hidden="true" className="text-lg">{cat.icon}</span>
+              <span aria-hidden="true" className="text-lg opacity-80">{cat.icon}</span>
               {cat.title}
             </button>
           ))}
@@ -51,40 +51,42 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
 
       {/* 🖼️ Google Photos Style Masonry Grid */}
       {filteredPhotos.length > 0 ? (
-        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 md:gap-6 space-y-4 md:space-y-6">
+        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 3xl:columns-5 gap-4 md:gap-6 3xl:gap-8 space-y-4 md:space-y-6 3xl:space-y-8">
           {filteredPhotos.map((photo, index) => (
             <button 
               key={photo.id} 
-              className="group relative w-full break-inside-avoid bg-card rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-elevated transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand block text-left"
+              className="group relative w-full break-inside-avoid bg-surface rounded-lg overflow-hidden border border-divider shadow-sm hover:shadow-md transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50 focus-visible:ring-inset block text-left"
               onClick={() => setSelectedIndex(index)}
               aria-label={`View photo: ${photo.caption}`}
             >
               {/* Image Container (Intrinsic aspect ratio maintained) */}
-              <div className="relative w-full overflow-hidden bg-muted-background">
+              <div className="relative w-full overflow-hidden bg-canvas">
                 <Image
                   src={photo.src.startsWith("/") ? photo.src : `/${photo.src}`}
                   alt={photo.caption}
                   width={800}
                   height={600}
-                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1536px) 25vw, 20vw"
                 />
               </div>
 
               {/* Hover Overlay & Icon */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-4">
-                <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-md p-2 rounded-full text-white">
-                  <Maximize2 size={16} />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex flex-col justify-end p-4 3xl:p-6">
+                
+                {/* Expand Icon */}
+                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md p-2 rounded-full text-white transform -translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                  <Maximize2 size={18} className="3xl:w-6 3xl:h-6" />
                 </div>
                 
-                {/* Caption (Only visible on hover) */}
-                <div className="translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                {/* Caption Info */}
+                <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                   {photo.year && (
-                    <span className="text-[11px] font-bold text-brand bg-brand/20 px-2 py-0.5 rounded-md uppercase tracking-wider mb-1 inline-block">
+                    <span className="text-[11px] 3xl:text-xs font-bold text-white bg-ink/60 backdrop-blur-md px-2.5 py-1 rounded-md uppercase tracking-wider mb-2 inline-block border border-white/10">
                       {photo.year}
                     </span>
                   )}
-                  <p className="text-white text-sm font-medium leading-snug line-clamp-2">
+                  <p className="text-white text-sm 3xl:text-base font-medium leading-snug line-clamp-2">
                     {photo.caption}
                   </p>
                 </div>
@@ -94,14 +96,14 @@ export function GalleryGrid({ photos, categories }: { photos: Photo[], categorie
         </div>
       ) : (
         /* 📭 Empty State */
-        <div className="flex flex-col items-center justify-center py-24 bg-card border border-dashed border-border rounded-2xl">
-          <ImageIcon size={56} className="text-muted opacity-20 mb-4" />
-          <h3 className="text-xl font-serif font-semibold text-foreground mb-2">No photos here yet</h3>
-          <p className="text-muted">We haven't added photos to this category.</p>
+        <div className="flex flex-col items-center justify-center py-24 3xl:py-32 bg-surface border border-dashed border-divider rounded-lg">
+          <ImageIcon size={56} className="text-ink/20 mb-4 3xl:w-16 3xl:h-16" />
+          <h3 className="text-xl 3xl:text-2xl font-serif font-semibold text-ink mb-2">No photos in this category</h3>
+          <p className="text-ink/60 3xl:text-lg">We haven't added any photos here yet.</p>
         </div>
       )}
 
-      {/* 👇 LIGHTBOX COMPONENT (Updated to pass the whole array and current index) 👇 */}
+      {/* 👇 LIGHTBOX COMPONENT */}
       {selectedIndex !== null && (
         <Lightbox 
           photos={filteredPhotos} 
