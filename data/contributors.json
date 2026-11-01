@@ -9,6 +9,16 @@
       "photo": "",
       "joinedAt": "2026-11-01",
       "hasChangedUsername": false
+    },
+    {
+      "id": "SurajAnand",
+      "username": "@SurajAnand",
+      "displayName": "Raj",
+      "email": "",
+      "bio": "",
+      "photo": "",
+      "joinedAt": "2026-11-01",
+      "hasChangedUsername": false
     }
   ]
 }
