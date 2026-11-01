@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 async function uploadPendingImage(file: File, editId: string): Promise<string | null> {
+  // ... (same as before)
   const githubToken = process.env.GITHUB_TOKEN;
   const repoOwner = process.env.GITHUB_REPO_OWNER;
   const repoName = process.env.GITHUB_REPO_NAME;
@@ -9,7 +10,6 @@ async function uploadPendingImage(file: File, editId: string): Promise<string | 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
     const base64Image = buffer.toString("base64");
-    
     const fileName = `${editId}.jpg`;
     const imagePath = `public/images/pending/${fileName}`;
     const imageUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${imagePath}`;
@@ -17,20 +17,15 @@ async function uploadPendingImage(file: File, editId: string): Promise<string | 
     const res = await fetch(imageUrl, {
       method: "PUT",
       headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
-      body: JSON.stringify({
-        message: `Pending Image: ${editId}`,
-        content: base64Image,
-      }),
+      body: JSON.stringify({ message: `Pending Image: ${editId}`, content: base64Image }),
     });
-
     if (res.ok) return `/images/pending/${fileName}`;
     return null;
-  } catch (error) {
-    return null;
-  }
+  } catch { return null; }
 }
 
 async function saveToQueue(item: any) {
+  // ... (same as before)
   const githubToken = process.env.GITHUB_TOKEN;
   const repoOwner = process.env.GITHUB_REPO_OWNER;
   const repoName = process.env.GITHUB_REPO_NAME;
@@ -38,22 +33,17 @@ async function saveToQueue(item: any) {
 
   try {
     const getFileUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
-    const fileRes = await fetch(getFileUrl, {
-      headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" }
-    });
+    const fileRes = await fetch(getFileUrl, { headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" } });
     
     let fileData = null;
     let queueContent: { pending: any[], approved: any[] } = { pending: [], approved: [] };
-    
     if (fileRes.ok) {
       fileData = await fileRes.json();
       queueContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
       if (!queueContent.pending) queueContent.pending = [];
       if (!queueContent.approved) queueContent.approved = [];
     }
-
     queueContent.pending.push(item);
-
     await fetch(getFileUrl, {
       method: "PUT",
       headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
@@ -63,9 +53,7 @@ async function saveToQueue(item: any) {
         ...(fileData && { sha: fileData.sha })
       })
     });
-  } catch (error) {
-    console.error("Queue save failed", error);
-  }
+  } catch (error) { console.error(error); }
 }
 
 export async function POST(req: Request) {
@@ -80,15 +68,20 @@ export async function POST(req: Request) {
     const userName = formData.get("submitterName") as string || "Anonymous Visitor";
     const userUsername = formData.get("submitterUsername") as string || "";
     const displayUser = userUsername ? `${userName} (${userUsername})` : userName;
+    const customCategory = formData.get("customCategory") as string || ""; // 🚀 Naya Category
 
     const editId = `edit_${Date.now()}`;
     let pendingImageUrl = null;
 
-    if (imageFile && imageFile.size > 0) {
-      pendingImageUrl = await uploadPendingImage(imageFile, editId);
-    }
+    if (imageFile && imageFile.size > 0) pendingImageUrl = await uploadPendingImage(imageFile, editId);
 
-    // 🚀 SAVE TO QUEUE (currentImagePath added)
+    const jsonObj: any = {};
+    formData.forEach((value, key) => {
+      if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
+        jsonObj[key] = value;
+      }
+    });
+
     await saveToQueue({
       id: editId,
       type,
@@ -98,15 +91,13 @@ export async function POST(req: Request) {
       timestamp: new Date().toISOString(),
       pendingImageUrl,
       targetType: formData.get("targetType") || "article",
-      currentImagePath: formData.get("currentImagePath") || "", // 🚀 Yahi sabse zaroori hai
-      targetField: formData.get("field") || "",
-      oldValue: formData.get("currentValue") || "",
-      newValue: formData.get("suggestedValue") || "",
-      sourceReason: formData.get("source_reason") || ""
+      customCategory, // 🚀 Save this
+      jsonObj, // Data for add
+      intent: "add"
     });
 
-    // Telegram Notification
     let message = `<b>🔔 New ${type.toUpperCase()}</b>\n\n`;
+    if (customCategory) message += `🏷️ <b>New Category:</b> ${customCategory}\n`;
     message += `👤 <b>By:</b> ${displayUser}\n`;
     message += `🎯 <b>Target:</b> <code>${contextId}</code>\n`;
     message += `👇 <b>Review on Dashboard:</b>\nhttps://bandwar.vercel.app/admin/dashboard`;
