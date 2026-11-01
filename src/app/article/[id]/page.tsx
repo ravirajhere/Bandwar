@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { getAllArticles, getArticleById, getMasterData, getCategoriesData } from "@/lib/data"; 
-import { WikiText } from "@/components/article/WikiText";
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
@@ -8,7 +7,7 @@ import { ReadingProgress } from "@/components/article/ReadingProgress";
 import { MobileTOC } from "@/components/article/MobileTOC"; 
 import { ArticleHeroImage } from "@/components/article/ArticleHeroImage"; 
 import { EditableText } from "@/components/editor/EditableText"; 
-import { EditableParagraph } from "@/components/editor/EditableParagraph"; // 🚀 Naya Paragraph Editor
+import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; 
 
@@ -185,7 +184,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         {/* MIDDLE COLUMN (Main Content) */}
         <div className="min-w-0 article-body-wrapper">
           
-          {/* Breadcrumb (Strict & Compact) */}
+          {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-[13px] text-ink-muted mb-6 no-print flex-wrap">
             <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Home</Link>
             <ChevronRight size={12} className="text-divider shrink-0" />
@@ -197,7 +196,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </nav>
 
           <header className="mb-8 border-b border-divider pb-6">
-            {/* 🚀 Article Title (In-Place Editing) */}
+            {/* Article Title */}
             <div className="mb-3">
               <EditableText
                 initialValue={article.title}
@@ -209,7 +208,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               />
             </div>
             
-            {/* 🚀 Subtitle (In-Place Editing) */}
+            {/* Subtitle */}
             <div className="mb-5">
               <EditableText
                 initialValue={article.subtitle}
@@ -221,7 +220,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               />
             </div>
 
-            {/* Metadata & Toolbar (Strict Flat layout) */}
+            {/* Metadata & Toolbar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
               <div className="flex items-center gap-3 text-[13px]">
                 {article.lastEditedBy ? (
@@ -260,7 +259,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* 🚀 Lead Paragraph (Summary) - Inline Editing */}
+          {/* Lead Paragraph (Summary) */}
           <div className="mb-10">
             <EditableParagraph
               initialValue={article.summary}
@@ -279,7 +278,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             )}
 
-            {/* 🚀 Main Content Blocks - Inline Editing */}
+            {/* Main Content Blocks */}
             <div className="space-y-8 3xl:space-y-12">
               {article.content.map((block: { heading: string, text: string }, index: number) => (
                 <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-24">
@@ -294,7 +293,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                     contextType="Article"
                     fieldName={`Paragraph: ${block.heading}`}
                     className="text-ink/90 text-base md:text-[17px] 3xl:text-[1.15rem] leading-[1.8] prose prose-lg dark:prose-invert max-w-[75ch]"
-                    renderer={(text) => <WikiText text={text} validIds={validArticleIds} />}
+                    validIds={validArticleIds}
                   />
                 </section>
               ))}
@@ -308,7 +307,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             )}
           </div>
 
-          {/* Categories (Strict List) */}
+          {/* Categories */}
           <div className="mt-12 3xl:mt-16 pt-6 border-t border-divider no-print">
             <h3 className="text-xs 3xl:text-sm font-bold text-ink-muted uppercase tracking-wider mb-3">
               Categories
@@ -329,7 +328,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-          {/* Related Articles (Grid) */}
+          {/* Related Articles */}
           {relatedArticles.length > 0 && (
             <div className="mt-12 3xl:mt-16 pt-8 border-t border-divider no-print">
               <h3 className="font-serif text-xl 3xl:text-2xl font-bold text-ink mb-4">Read Next</h3>
@@ -350,7 +349,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* Backlinks (Mentions In) */}
+          {/* Backlinks */}
           {backlinks.length > 0 && (
             <div className="mt-12 3xl:mt-16 pt-6 border-t border-divider no-print">
               <h3 className="font-bold text-xs 3xl:text-sm text-ink-muted uppercase tracking-wider mb-3 flex items-center gap-1.5">
