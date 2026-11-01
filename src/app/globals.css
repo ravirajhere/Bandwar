@@ -2,330 +2,115 @@
 @tailwind components;
 @tailwind utilities;
 
-/* =========================================
-   1. THEME DESIGN TOKENS & BASE STYLES
-   ========================================= */
 @layer base {
   :root {
-    /* 🎨 NEW IDENTITY TOKENS */
-    --bg-canvas: #FAFAF9;           
-    --bg-surface: #FFFFFF;           
-    --text-ink: #1C1917;         
-    --text-ink-muted: #78716C;        
-    --brand-accent: #166534;     
-    --brand-accent-hover: #14532D;
-    --brand-accent-visited: #4C1D95;     
-    --border-divider: #E7E5E4;       
-
-    /* 🔄 LEGACY MAPPINGS */
-    --bg-main: var(--bg-canvas);
-    --bg-card: var(--bg-surface);
-    --bg-card-hover: #F5F5F4;
-    --bg-muted: #F5F5F4;          
-    --text-main: var(--text-ink);         
-    --text-muted: var(--text-ink-muted);        
-    --brand-primary: var(--brand-accent);     
-    --brand-hover: var(--brand-accent-hover);
-    --brand-visited: var(--brand-accent-visited);     
-    --border-main: var(--border-divider);       
-    --border-subtle: #F5F5F4;     
+    /* Strict Light Mode (Wikipedia Inspired) */
+    --bg-canvas: #FFFFFF;           
+    --bg-surface: #F8F9FA;           
+    --text-ink: #202122;         
+    --text-ink-muted: #54595E;        
+    --text-inverted: #FFFFFF;
     
-    --selection-bg: #166534;
-    --selection-text: #FFFFFF;
-
-    --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-playfair: 'Playfair Display', Georgia, Cambria, serif;
+    --brand-accent: #3366CC;     /* Standard Link Blue */
+    --brand-accent-hover: #2A4B8D;
+    --brand-accent-subtle: #EAF3FF;
+    
+    --border-divider: #A2A9B1;    /* Strict grey border */
+    
+    --font-inter: 'Inter', system-ui, sans-serif;
   }
 
-  /* 🌙 Dark Mode (Luxurious Obsidian) */
+  /* Strict Dark Mode */
   .dark {
-    --bg-canvas: #0C0A09;           
-    --bg-surface: #1C1917;           
-    --text-ink: #FAFAF9;         
-    --text-ink-muted: #A8A29E;        
-    --brand-accent: #4ADE80;     
-    --brand-accent-hover: #22C55E;
-    --brand-accent-visited: #C084FC;
-    --border-divider: #292524;       
-
-    /* 🔄 LEGACY DARK MODE MAPPINGS */
-    --bg-main: var(--bg-canvas);
-    --bg-card: var(--bg-surface);
-    --bg-card-hover: #292524;
-    --bg-muted: #1C1917;
-    --text-main: var(--text-ink);         
-    --text-muted: var(--text-ink-muted);        
-    --brand-primary: var(--brand-accent);     
-    --brand-hover: var(--brand-accent-hover);
-    --brand-visited: var(--brand-accent-visited);     
-    --border-main: var(--border-divider);       
-    --border-subtle: #1C1917;     
+    --bg-canvas: #101418;           
+    --bg-surface: #181D23;           
+    --text-ink: #EAECF0;         
+    --text-ink-muted: #9BA3AF;        
+    --text-inverted: #101418;
     
-    --selection-bg: #4ADE80;
-    --selection-text: #0C0A09;
+    --brand-accent: #6699FF;     
+    --brand-accent-hover: #88AAFF;
+    --brand-accent-subtle: #1A2638;
+    
+    --border-divider: #3B434D;       
   }
 
-  /* 🖥️ TV & Large Screen Typography Scaling */
   html {
     scroll-behavior: smooth;
-    font-size: 17px; /* Base for Mobile/Desktop */
-    scroll-padding-top: 6rem; 
+    font-size: 16px; 
+    scroll-padding-top: 5rem; 
   }
 
   @media (min-width: 1920px) {
-    html { font-size: 19px; }
-  }
-  @media (min-width: 2560px) {
-    html { font-size: 22px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
+    html { font-size: 18px; } /* Scales up on TV */
   }
 
   body {
     background-color: var(--bg-canvas);
     color: var(--text-ink);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-inter), sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: var(--font-inter), Arial, sans-serif;
     text-rendering: optimizeLegibility;
   }
 
-  ::selection {
-    background-color: var(--selection-bg);
-    color: var(--selection-text);
-  }
-
-  /* Accessibility: Clear Focus Ring */
-  *:focus-visible {
-    outline: 3px solid var(--brand-accent);
-    outline-offset: 4px;
-    border-radius: 2px;
-  }
-
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
-  }
-  
-  .dark img {
-    border: 1px solid var(--border-divider);
-  }
-
-  p {
-    line-height: 1.75; 
-    margin-bottom: 1.5rem; 
-    font-size: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
-  }
-
-  article p, .prose p {
-    max-width: 75ch;
-  }
-
+  /* Encyclopedic Links (Standard Blue) */
   a {
     color: var(--brand-accent);
     text-decoration: none;
-    transition: color 0.2s ease, text-decoration 0.2s ease;
   }
-  a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  a:visited { color: var(--brand-accent-visited); }
+  a:hover { text-decoration: underline; text-underline-offset: 2px; }
 
+  /* Strict Headings (Serif, border-bottom like Wikipedia) */
   h1, h2, h3, h4, h5, h6 {
-    text-wrap: balance; 
+    font-family: Georgia, Cambria, "Times New Roman", serif;
     color: var(--text-ink);
-    font-family: var(--font-playfair), Georgia, serif;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    scroll-margin-top: 120px; 
+    font-weight: normal; /* Wikipedia headings are not overly bold */
   }
 
-  h1 { font-size: clamp(2rem, 1.5rem + 2vw, 3.5rem); margin-bottom: 1rem; line-height: 1.2; }
-  h2 {
-    font-size: clamp(1.5rem, 1.3rem + 1.5vw, 2.5rem);
-    margin-top: 3rem; 
-    margin-bottom: 1.25rem; 
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-divider); 
-  }
-  h3 { font-size: clamp(1.25rem, 1.15rem + 1vw, 1.75rem); margin-top: 2rem; margin-bottom: 0.75rem; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border-divider); }
+  h2 { font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border-divider); }
+  h3 { font-size: 1.2rem; margin-top: 1rem; margin-bottom: 0.5rem; font-weight: bold; font-family: var(--font-inter); }
 
-  /* 📱 Mobile Responsive Tables */
-  .table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid var(--border-divider);
-    border-radius: 6px;
+  p {
+    line-height: 1.6; 
+    margin-bottom: 1rem; 
+    font-size: 1rem;
   }
 
+  /* Data Tables (Strict Borders) */
   table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
-    background-color: var(--bg-surface);
+    font-size: 0.875rem;
+    border: 1px solid var(--border-divider);
+  }
+  th, td {
+    border: 1px solid var(--border-divider);
+    padding: 0.5rem 0.75rem;
     text-align: left;
   }
-
-  th, td {
-    padding: 0.85rem 1rem; 
-    border-bottom: 1px solid var(--border-divider);
-    vertical-align: top;
-    line-height: 1.5;
-  }
-
-  th {
-    background-color: var(--bg-muted);
-    font-weight: 600;
-    color: var(--text-ink);
-    width: 35%; 
-    white-space: nowrap;
-  }
+  th { background-color: var(--bg-surface); font-weight: bold; }
   
-  tr:last-child td, tr:last-child th {
-    border-bottom: none;
-  }
+  /* Lists */
+  ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.25rem; line-height: 1.6; }
 
-  ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.7; }
-  li { margin-bottom: 0.5rem; }
-  
-  /* 🎨 Forms & Inputs (Plain CSS to avoid build error) */
+  /* Inputs (Strict) */
   input, select, textarea {
-    width: 100%;
-    padding: 0.625rem 1rem;
     border: 1px solid var(--border-divider);
-    border-radius: 6px;
-    background-color: var(--bg-surface);
-    color: var(--text-ink);
-    outline: none;
-    transition: all 0.2s ease;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--brand-accent);
-    box-shadow: 0 0 0 3px rgba(22, 101, 52, 0.15);
-  }
-  
-  button {
-    cursor: pointer;
-    transition: all 0.2s ease;
+    border-radius: 2px;
+    background-color: var(--bg-canvas);
+    padding: 0.5rem;
   }
 }
 
-@layer components {
-  .prose-tv {
-    font-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.75rem);
-    max-width: 85ch; 
-    line-height: 1.6;
-  }
+/* Strict Prose Setup for Articles */
+.prose {
+  max-width: 75ch;
+  color: var(--text-ink);
+  font-size: 1rem;
+  line-height: 1.6;
 }
-
-/* =========================================
-   2. LEAFLET MAP OVERRIDES (Premium Look)
-   ========================================= */
-.leaflet-popup-content-wrapper {
-  border-radius: 8px !important; 
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-  border: 1px solid var(--border-divider) !important;
-  background-color: var(--bg-surface) !important;
-  color: var(--text-ink) !important;
-  padding: 0 !important; 
-}
-.leaflet-popup-content { margin: 16px 20px !important; font-family: var(--font-inter), sans-serif; }
-.leaflet-popup-tip {
-  background-color: var(--bg-surface) !important;
-  border: 1px solid var(--border-divider) !important;
-  box-shadow: none !important;
-}
-
-/* Scrollbar (Desktop Only) */
-@media (pointer: fine) {
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: var(--bg-canvas); }
-  ::-webkit-scrollbar-thumb {
-    background: var(--border-divider);
-    border-radius: 5px; 
-    border: 2px solid var(--bg-canvas); 
-  }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-ink-muted); }
-}
-
-/* Leaflet Controls */
-.leaflet-control-layers {
-  border-radius: 6px !important;
-  border: 1px solid var(--border-divider) !important;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
-  background: var(--bg-surface) !important;
-  color: var(--text-ink) !important;
-  font-family: var(--font-inter), sans-serif !important;
-  font-size: 14px !important;
-}
-.leaflet-control-layers-toggle { width: 40px !important; height: 40px !important; background-size: 24px 24px !important; }
-
-/* =========================================
-   3. PRINT STYLES (Perfect PDF Layout)
-   ========================================= */
-@media print {
-  @page { 
-    margin: 15mm; 
-    size: A4;
-  }
-  
-  body {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    background-color: #ffffff !important;
-    color: #000000 !important;
-    font-size: 11pt !important;
-  }
-
-  .no-print, .site-header, .site-footer, nav, aside, button, .leaflet-container, input {
-    display: none !important;
-  }
-
-  .print-only { display: block !important; }
-
-  article {
-    display: block !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .article-body-wrapper {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    position: static !important;
-  }
-
-  .print-infobox {
-    display: block !important;
-    margin-bottom: 25px !important;
-    page-break-inside: avoid;
-    border: 1px solid #ddd !important;
-  }
-
-  h1 { font-size: 24pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 10px; }
-  h2 { font-size: 16pt !important; color: #000000 !important; margin-top: 20px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
-  h3 { font-size: 14pt !important; color: #000000 !important; }
-  p { font-size: 12pt !important; color: #000000 !important; line-height: 1.6 !important; margin-bottom: 15px; }
-  
-  a { color: #000000 !important; text-decoration: underline !important; }
-
-  img { 
-    max-width: 100% !important; 
-    height: auto !important; 
-    page-break-inside: avoid; 
-    margin-bottom: 20px;
-  }
-
-  details { display: block !important; page-break-inside: avoid; margin-bottom: 15px; }
-  summary { font-weight: bold; font-size: 13pt; }
-  details > div { display: block !important; padding-left: 20px; }
-}
+.prose a { color: var(--brand-accent); text-decoration: none; }
+.prose a:hover { text-decoration: underline; }
+.prose p { margin-bottom: 1rem; }
