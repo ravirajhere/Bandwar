@@ -1,3 +1,17 @@
 {
-  "pending": []
+  "pending": [
+    {
+      "id": "edit_1793521043395",
+      "filePath": "data/people.json",
+      "contextId": "girija-singh-bandwar",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Role",
+        "suggestedValue": "Community Leader"
+      },
+      "type": "Person",
+      "userName": "Sudesh",
+      "timestamp": "2026-11-01T08:17:23.281Z"
+    }
+  ]
 }
