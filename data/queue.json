@@ -15,22 +15,6 @@
       "timestamp": "2026-11-01T12:35:17.624Z",
       "telegramMessageId": 52,
       "chatId": "8848904239"
-    },
-    {
-      "id": "edit_1793539160688",
-      "filePath": "data/articles/landmarks.json",
-      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
-      "intent": "edit",
-      "jsonObj": {
-        "field": "Infobox: Type",
-        "suggestedValue": "Hindu Festival"
-      },
-      "type": "Article Infobox",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-01T13:19:21.228Z",
-      "telegramMessageId": 53,
-      "chatId": "8848904239"
     }
   ],
   "approved": [
@@ -48,6 +32,23 @@
       "userUsername": "@Ravirajhere",
       "timestamp": "2026-11-01T13:22:00.915Z",
       "telegramMessageId": 54,
+      "chatId": "8848904239",
+      "approvedVia": "Dashboard"
+    },
+    {
+      "id": "edit_1793539160688",
+      "filePath": "data/articles/landmarks.json",
+      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Infobox: Type",
+        "suggestedValue": "Hindu Festival"
+      },
+      "type": "Article Infobox",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-01T13:19:21.228Z",
+      "telegramMessageId": 53,
       "chatId": "8848904239",
       "approvedVia": "Dashboard"
     }
