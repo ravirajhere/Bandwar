@@ -1,21 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1793533093837",
-      "filePath": "data/articles/landmarks.json",
-      "contextId": "shaheed-ramchandra-dwar-bandwar",
-      "intent": "edit",
-      "jsonObj": {
-        "field": "Article Title",
-        "suggestedValue": "Shaheed Ramchandra Dwar (Martyrs Gate), Bandwar"
-      },
-      "type": "Article",
-      "userName": "Anonymous Visitor",
-      "timestamp": "2026-11-01T11:38:14.342Z",
-      "telegramMessageId": 45,
-      "chatId": "8848904239"
-    },
-    {
       "id": "edit_1793533238211",
       "filePath": "data/articles/landmarks.json",
       "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
