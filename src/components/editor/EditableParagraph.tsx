@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { Pencil, Check, X, Loader2, Link as LinkIcon, Eye, Edit3 } from "lucide-react";
 import { useInlineEdit } from "@/hooks/useInlineEdit";
-import { WikiText } from "@/components/article/WikiText"; // 🚀 Import add kiya
+import { WikiText } from "@/components/article/WikiText";
 
 interface EditableParagraphProps {
   initialValue: string;
@@ -11,7 +11,7 @@ interface EditableParagraphProps {
   contextType: string;
   fieldName: string;
   className?: string;
-  validIds?: string[]; // 🚀 renderer hata kar validIds add kiya
+  validIds?: string[];
 }
 
 export function EditableParagraph({
@@ -20,7 +20,7 @@ export function EditableParagraph({
   contextType,
   fieldName,
   className = "",
-  validIds, // 🚀 Prop receive kiya
+  validIds,
 }: EditableParagraphProps) {
   const {
     status,
@@ -66,7 +66,6 @@ export function EditableParagraph({
     }
   };
 
-  // 🚀 Helper to render content safely
   const renderContent = (text: string) => {
     if (validIds) {
       return <WikiText text={text} validIds={validIds} />;
@@ -77,7 +76,6 @@ export function EditableParagraph({
   if (status === "editing" || status === "saving") {
     return (
       <div className="w-full border-l-2 border-l-accent pl-3 -ml-3">
-        {/* Editor Toolbar */}
         <div className="flex items-center justify-between mb-2 bg-surface border border-divider rounded-sm px-2 py-1">
           <div className="flex items-center gap-1">
             <button
@@ -106,7 +104,6 @@ export function EditableParagraph({
           </button>
         </div>
 
-        {/* Editor Body */}
         {showPreview ? (
           <div className={`bg-canvas border border-divider rounded-sm px-4 py-3 min-h-[100px] ${className}`}>
             {draft.trim() ? renderContent(draft) : (
@@ -128,7 +125,6 @@ export function EditableParagraph({
           />
         )}
 
-        {/* Save/Cancel toolbar */}
         <div className="flex items-center justify-between mt-2">
           <p className="text-[11px] text-ink-muted">
             <kbd className="bg-canvas border border-divider px-1 py-0.5 rounded-sm text-[10px]">⌘/Ctrl + Enter</kbd> to save • <kbd className="bg-canvas border border-divider px-1 py-0.5 rounded-sm text-[10px]">Esc</kbd> to cancel
