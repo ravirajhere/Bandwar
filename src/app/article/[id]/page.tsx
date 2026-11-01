@@ -8,6 +8,7 @@ import { ReadingProgress } from "@/components/article/ReadingProgress";
 import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
 import { MobileTOC } from "@/components/article/MobileTOC"; 
 import { ArticleHeroImage } from "@/components/article/ArticleHeroImage"; 
+import { EditableText } from "@/components/editor/EditableText"; // 🚀 Naya Inline Editor
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; 
 
@@ -196,24 +197,28 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </nav>
 
           <header className="mb-8 border-b border-divider pb-6">
-            {/* Article Title */}
-            <div className="flex items-start gap-2 group mb-3">
-              <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink leading-[1.1] font-bold tracking-tight">
-                {article.title}
-              </h1>
-              <div className="mt-2 no-print opacity-0 group-hover:opacity-100 transition-opacity">
-                <UniversalEditModal fieldName="Article Title" currentValue={article.title} contextId={article.id} contextType="Article" variant="icon" />
-              </div>
+            {/* 🚀 Article Title (In-Place Editing) */}
+            <div className="mb-3">
+              <EditableText
+                initialValue={article.title}
+                contextId={article.id}
+                contextType="Article"
+                fieldName="Article Title"
+                as="h1"
+                className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink leading-[1.1] font-bold tracking-tight"
+              />
             </div>
             
-            {/* Subtitle */}
-            <div className="flex items-start gap-2 mb-5 group">
-              <p className="text-lg md:text-xl text-ink-muted leading-relaxed font-normal m-0">
-                {article.subtitle}
-              </p>
-              <div className="mt-1 no-print opacity-0 group-hover:opacity-100 transition-opacity">
-                <UniversalEditModal fieldName="Article Subtitle" currentValue={article.subtitle} contextId={article.id} contextType="Article" variant="icon" />
-              </div>
+            {/* 🚀 Subtitle (In-Place Editing) */}
+            <div className="mb-5">
+              <EditableText
+                initialValue={article.subtitle}
+                contextId={article.id}
+                contextType="Article"
+                fieldName="Article Subtitle"
+                as="p"
+                className="text-lg md:text-xl text-ink-muted leading-relaxed font-normal m-0"
+              />
             </div>
 
             {/* Metadata & Toolbar (Strict Flat layout) */}
