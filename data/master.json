@@ -1,6 +1,7 @@
 {
-  "version": "5.1.0",
-  "lastUpdated": "2026-10-30",
+  "version": "6.0.0",
+  "lastUpdated": "2026-11-01",
+  "schemaVersion": "master-v6",
 
   "site": {
     "name": "Bandwar",
@@ -12,7 +13,11 @@
     "language": "en-IN",
     "locale": "en_IN",
     "dir": "ltr",
-    "established": "2024"
+    "established": "2024",
+    "maintainedBy": "Bandwar Village Community",
+    "contentLicense": "CC BY-NC-SA 4.0",
+    "codeLicense": "MIT",
+    "sourceCode": null
   },
 
   "village": {
@@ -26,13 +31,38 @@
     "coordinates": { "lat": 25.5009, "lng": 86.1606 },
     "elevation": "45 m (148 ft)",
     "population": 12943,
+    "households": 2684,
+    "sexRatio": "911 females per 1000 males",
+    "literacyRate": "62.4%",
     "area": "840 hectares",
-    "censusCode": 238112
+    "censusCode": 238112,
+    "gramPanchayat": "Bandwar",
+    "block": "Begusarai",
+    "subdivision": "Begusarai Sadar",
+    "lokSabha": "Begusarai",
+    "vidhanSabha": "Begusarai",
+    "policeStation": "Neema Chandpura",
+    "postOffice": "Bandwar (PIN 851131)",
+    "nearestTown": "Begusarai (12 km)",
+    "nearestRailway": "Begusarai (14 km)",
+    "nearestAirport": "Patna (130 km)",
+    "river": "Burhi Gandak",
+    "highway": "SH 55",
+    "language": ["Hindi", "Maithili", "Urdu", "English"],
+    "festivals": ["Chhath Puja", "Janmashtami Mela", "Ram Katha", "Sama Chakeva", "Durga Puja"],
+    "mainCrops": ["Paddy", "Wheat", "Maize", "Gram"],
+    "popularName": "Land of Freedom Fighters"
   },
 
   "emergencyContacts": [
-    { "label": "Ambulance", "number": "102", "type": "ambulance" },
-    { "label": "Police", "number": "112", "type": "police" }
+    { "label": "National Emergency (Police/Fire/Ambulance)", "number": "112", "type": "unified", "available": "24x7" },
+    { "label": "Ambulance", "number": "102", "type": "ambulance", "available": "24x7" },
+    { "label": "Fire Brigade", "number": "101", "type": "fire", "available": "24x7" },
+    { "label": "Women Helpline", "number": "181", "type": "women", "available": "24x7" },
+    { "label": "Child Helpline", "number": "1098", "type": "child", "available": "24x7" },
+    { "label": "Cyber Crime", "number": "1930", "type": "cyber", "available": "24x7" },
+    { "label": "Electricity Complaint (NBPDCL)", "number": "1912", "type": "utility", "available": "24x7" },
+    { "label": "Flood Control", "number": "1070", "type": "disaster", "available": "24x7" }
   ],
 
   "brand": {
@@ -42,12 +72,19 @@
       "surface": "#f8f9fa",
       "accent": "#0645ad",
       "warn": "#a64b2a",
+      "success": "#1f7a3d",
       "white": "#ffffff"
     },
     "fonts": {
       "display": "Merriweather",
       "body": "Inter",
       "mono": "IBM Plex Mono"
+    },
+    "logo": {
+      "primary": "/images/brand/bandwar-logo.svg",
+      "mark": "/images/brand/bandwar-mark.svg",
+      "favicon": "/favicon.ico",
+      "appleTouchIcon": "/images/brand/apple-touch-icon.png"
     }
   },
 
@@ -67,7 +104,9 @@
       { "label": "Temples", "href": "/section/religion" },
       { "label": "Schools", "href": "/section/education" },
       { "label": "Culture", "href": "/section/culture" },
-      { "label": "Infrastructure", "href": "/section/infrastructure" }
+      { "label": "Infrastructure", "href": "/section/infrastructure" },
+      { "label": "History", "href": "/section/history" },
+      { "label": "Landmarks", "href": "/section/landmarks" }
     ],
     "explore": [
       { "label": "Directory", "href": "/directory" },
@@ -77,20 +116,42 @@
       { "label": "How to Reach", "href": "/reach" },
       { "label": "Contribute", "href": "/contribute" }
     ],
+    "legal": [
+      { "label": "Privacy", "href": "/privacy" },
+      { "label": "Terms", "href": "/terms" },
+      { "label": "License", "href": "/about#license" },
+      { "label": "Contribute", "href": "/contribute" }
+    ],
     "copyright": "© {year} Bandwar Village Portal",
-    "credit": "Made with ❤️ & Curiosity"
+    "credit": "Kept by the village, for the record"
   },
 
   "seo": {
     "titlePattern": "{title} — {site} Portal",
-    "titlePatternHome": "{siteName}",
+    "titlePatternHome": "{siteName} — Village Portal, Begusarai (Bihar)",
     "defaultDescription": "Find emergency contacts, local services, and the rich history of Bandwar village, Begusarai (Bihar).",
+    "keywords": ["Bandwar village", "Bandwar Begusarai", "Bandwar Bihar", "Mithila village", "Burhi Gandak", "Bihar village portal"],
     "ogImage": "/images/home/burhi-gandak-river-dawn-bandwar.jpg",
     "ogImageWidth": 1200,
     "ogImageHeight": 630,
+    "ogType": "website",
     "twitterHandle": null,
+    "twitterCard": "summary_large_image",
+    "canonicalBase": "https://bandwar.vercel.app",
+    "robots": {
+      "index": true,
+      "follow": true,
+      "maxImagePreview": "large",
+      "maxSnippet": -1
+    },
     "verification": {
-      "google": "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs"
+      "google": null,
+      "bing": null
+    },
+    "structuredData": {
+      "enabled": true,
+      "types": ["Place", "Village", "Organization", "WebSite"],
+      "sameAs": []
     }
   },
 
@@ -125,24 +186,54 @@
   },
 
   "contact": {
-    "email": "ravirajbandwar@gmail.com",
+    "email": null,
     "address": "Bandwar, Begusarai, Bihar — 851131",
-    "coordinates": { "lat": 25.5009, "lng": 86.1606 }
+    "coordinates": { "lat": 25.5009, "lng": 86.1606 },
+    "preferredChannel": "telegram",
+    "formEndpoint": null,
+    "responseTime": "Typically within 48 hours",
+    "languages": ["Hindi", "English", "Maithili"]
   },
 
   "social": {
-    "github": "https://github.com/ravirajhere/Bandwar",
-    "youtube": "",
-    "instagram": "",
-    "twitter": ""
+    "github": null,
+    "youtube": null,
+    "instagram": null,
+    "facebook": null,
+    "twitter": null,
+    "whatsapp": null,
+    "telegram": null
+  },
+
+  "bot": {
+    "enabled": true,
+    "platform": "Telegram",
+    "handle": null,
+    "purpose": "Community contribution, corrections, and directory submissions",
+    "commands": [
+      { "command": "/start", "description": "Start interacting with the portal bot" },
+      { "command": "/contribute", "description": "Submit a contribution or correction" },
+      { "command": "/directory", "description": "Add or update a directory listing" },
+      { "command": "/photo", "description": "Submit a photo for the gallery" },
+      { "command": "/help", "description": "Show help and available commands" }
+    ],
+    "moderationFlow": {
+      "autoReply": true,
+      "humanReview": true,
+      "publishAfterApproval": true,
+      "trackedFields": ["submitterName", "submittedAt", "channel", "status"]
+    },
+    "privacyNote": "Submissions are reviewed by the editorial team before publishing. Personal contact information of submitters is never made public."
   },
 
   "features": {
     "darkMode": true,
     "search": true,
     "pwa": true,
+    "offlineMode": true,
     "analytics": false,
     "hindiVersion": false,
+    "maithiliVersion": false,
     "map": true,
     "gallery": true,
     "timeline": true,
@@ -151,18 +242,68 @@
     "imageOptimization": true,
     "webpConversion": true,
     "avifConversion": true,
-    "responsiveImages": true
+    "responsiveImages": true,
+    "telegramBot": true,
+    "contributionForm": true,
+    "printFriendly": true,
+    "shareButtons": true
   },
 
   "analytics": {
     "ga4Id": null,
-    "plausibleDomain": null
+    "plausibleDomain": null,
+    "umami": null,
+    "respectDoNotTrack": true,
+    "cookieConsent": false
   },
 
   "license": {
     "code": "MIT",
     "content": "© Bandwar Village Community",
-    "url": "/about#license"
+    "contentLicense": "CC BY-NC-SA 4.0",
+    "url": "/about#license",
+    "attribution": "Content may be reused with attribution to Bandwar Village Portal. Commercial use requires permission."
+  },
+
+  "legal": {
+    "privacyPolicy": "/privacy",
+    "termsOfUse": "/terms",
+    "dataProtection": {
+      "compliantWith": ["India DPDP Act 2023"],
+      "dataCollected": ["Anonymous usage statistics (opt-in)", "Voluntary contributions via Telegram bot"],
+      "dataNotCollected": ["Personal identification without consent", "Location tracking", "Third-party advertising profiles"],
+      "dataRetention": "Contribution metadata retained for editorial audit; contact details of submitters are never published.",
+      "contactForPrivacy": "Via Telegram bot (/start)"
+    },
+    "disclaimer": "This is a community-maintained portal. While we strive for accuracy, information is provided as-is. For official matters, please contact the relevant government office directly.",
+    "copyrightNotice": "All photographs and content are the property of their respective contributors. Reproduction without permission is prohibited.",
+    "contentPolicy": "Non-political, non-commercial, community-verified."
+  },
+
+  "accessibility": {
+    "wcagLevel": "AA",
+    "features": [
+      "Keyboard navigation",
+      "Screen reader support",
+      "High contrast mode",
+      "Resizable text (up to 200%)",
+      "Focus indicators",
+      "Alt text for all images",
+      "Skip-to-content link",
+      "Reduced-motion preference respected"
+    ],
+    "languageAttribute": "en-IN",
+    "feedback": "Report accessibility issues via the Telegram bot"
+  },
+
+  "i18n": {
+    "defaultLanguage": "en-IN",
+    "supportedLanguages": [
+      { "code": "en-IN", "name": "English", "status": "active" },
+      { "code": "hi-IN", "name": "हिन्दी", "status": "planned" },
+      { "code": "mai-IN", "name": "मैथिली", "status": "planned" }
+    ],
+    "translationNote": "Maithili is the local language of the Mithila region and a translation is planned for future release."
   },
 
   "organization": {
@@ -170,7 +311,51 @@
     "type": "NGO",
     "foundingDate": "2024",
     "founders": ["Bandwar Village Community"],
-    "areaServed": "Bandwar, Begusarai, Bihar, India"
+    "areaServed": "Bandwar, Begusarai, Bihar, India",
+    "mission": "To create a permanent, community-built digital record of Bandwar village — its people, history, and daily life.",
+    "governance": "Volunteer-driven editorial team; no paid staff; no commercial interest.",
+    "contact": "Via Telegram bot (/start)"
+  },
+
+  "admin": {
+    "editorialTeam": "Bandwar Village Community",
+    "reviewProcess": "All contributions are reviewed for accuracy and consent before publishing.",
+    "contributionGuidelines": "/contribute",
+    "reportCorrection": "/contribute",
+    "auditTrail": "Every published change is logged with timestamp and channel.",
+    "moderationPolicy": "No personal attacks, no political endorsements, no commercial promotions."
+  },
+
+  "connectivity": {
+    "road": {
+      "highway": "SH 55 (State Highway 55)",
+      "distanceFromDistrictHQ": "12 km from Begusarai town",
+      "nearestBusStand": "Bandwar Bus Stop (SH 55)"
+    },
+    "rail": {
+      "nearestStation": "Begusarai Railway Station",
+      "distance": "14 km",
+      "majorStations": ["Barauni Junction (25 km)", "Patna Junction (130 km)"]
+    },
+    "air": {
+      "nearestAirport": "Patna (PAT) — Jay Prakash Narayan International Airport",
+      "distance": "130 km"
+    },
+    "digital": {
+      "internet": "PM-WANI public WiFi at Gram Panchayat",
+      "mobileNetwork": "4G coverage available (Jio, Airtel, Vi, BSNL)"
+    }
+  },
+
+  "climate": {
+    "type": "Humid subtropical (Cwa)",
+    "seasons": [
+      { "name": "Summer", "months": "March – June", "avgTemp": "28–40°C" },
+      { "name": "Monsoon", "months": "July – October", "avgTemp": "26–34°C", "rainfall": "Approx. 1,000 mm" },
+      { "name": "Winter", "months": "November – February", "avgTemp": "8–24°C" }
+    ],
+    "floodRisk": "High during monsoon (Burhi Gandak floodplain)",
+    "bestVisitTime": "October to March"
   },
 
   "home": {
@@ -209,7 +394,13 @@
     "cta": {
       "label": "Contribute to the Portal",
       "href": "/contribute"
-    }
+    },
+    "quickLinks": [
+      { "label": "Emergency Contacts", "href": "/directory#emergency", "icon": "🚨" },
+      { "label": "How to Reach", "href": "/reach", "icon": "🚆" },
+      { "label": "Village Map", "href": "/#map", "icon": "📍" },
+      { "label": "Photo Gallery", "href": "/gallery", "icon": "🖼️" }
+    ]
   },
 
   "about": {
@@ -243,7 +434,7 @@
       {
         "icon": "🌐",
         "title": "Free & open",
-        "description": "The portal is free to use, and the code is open source. Anyone can adapt it for their own village."
+        "description": "The portal is free to use, and the content is openly licensed for non-commercial reuse with attribution."
       }
     ],
     "sources": [
@@ -282,7 +473,7 @@
       },
       {
         "type": "Primary Research",
-        "name": "Personal Interviews",
+        "name": "Resident Interviews",
         "detail": "Village elders, 2024–2026"
       }
     ],
@@ -292,10 +483,46 @@
     },
     "committee": [
       {
-        "role": "Editor",
-        "name": "RAVI RAJ",
-        "link": "https://github.com/ravirajhere"
+        "role": "Editorial Team",
+        "name": "Bandwar Village Community",
+        "link": null
       }
-    ]
+    ],
+    "contact": "Contributions, corrections, and queries are accepted via the portal's Telegram bot.",
+    "license": "Content on this portal is licensed under CC BY-NC-SA 4.0. The underlying code is MIT-licensed."
+  },
+
+  "sitemap": {
+    "includePages": [
+      "/",
+      "/directory",
+      "/section",
+      "/section/religion",
+      "/section/education",
+      "/section/culture",
+      "/section/infrastructure",
+      "/section/history",
+      "/section/landmarks",
+      "/people",
+      "/gallery",
+      "/reach",
+      "/vision",
+      "/about",
+      "/contribute",
+      "/privacy",
+      "/terms"
+    ],
+    "includeArticles": true,
+    "includeLandmarks": true,
+    "includeGallery": true,
+    "changeFrequency": "weekly",
+    "priority": {
+      "home": 1.0,
+      "directory": 0.9,
+      "articles": 0.8,
+      "gallery": 0.7,
+      "about": 0.6,
+      "legal": 0.3
+    }
   }
 }
