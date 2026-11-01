@@ -10,24 +10,23 @@ export async function POST(req: Request) {
     const data = await req.json();
 
     if (data.callback_query) {
-      const callbackQuery = data.callback_query;
-      const chatId = callbackQuery.message.chat.id;
-      const messageId = callbackQuery.message.message_id;
-      const callbackData = callbackQuery.data; 
-      const originalText = callbackQuery.message.text || callbackQuery.message.caption || "";
+      const { message, data: callbackData } = data.callback_query;
+      const chatId = message.chat.id;
+      const messageId = message.message_id;
+      const originalText = message.text || message.caption || "";
 
       const [action, contextId] = callbackData.split(":");
 
       if (action === "approve") {
-        // 1. Message se file path aur JSON data nikalo
+        // 1. Extract File Path and Base64 JSON
         const filePathMatch = originalText.match(/Target File:<\/b> <code>(.*?)<\/code>/);
-        const jsonBase64Match = originalText.match(/JSON PAYLOAD \(Base64\):<\/b>\n<code>(.*?)<\/code>/);
+        const jsonBase64Match = originalText.match(/PAYLOAD:<\/b>\n<code>(.*?)<\/code>/);
 
         if (filePathMatch && jsonBase64Match) {
           const filePath = filePathMatch[1];
-          const jsonObj = JSON.parse(Buffer.from(jsonBase64Match[1], 'base64').toString('utf-8'));
+          const payload = JSON.parse(Buffer.from(jsonBase64Match[1], 'base64').toString('utf-8'));
 
-          // 2. GitHub API se current file fetch karo
+          // 2. Fetch current file from GitHub
           const getFileUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
           const fileRes = await fetch(getFileUrl, {
             headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" }
@@ -35,26 +34,63 @@ export async function POST(req: Request) {
           
           if (fileRes.ok) {
             const fileData = await fileRes.json();
-            const currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
-            
-            // 3. Update Logic (Ye example hai, aap ise apne hisaab se modify kar sakte hain)
-            let updatedContent = JSON.stringify({ ...currentContent, ...jsonObj }, null, 2);
+            let currentContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
+            let updatedContent = currentContent;
 
-            // 4. Push back to GitHub
+            // 3. 🚀 THE MAGIC UPDATE LOGIC 🚀
+            const { intent, jsonObj } = payload;
+
+            if (filePath.includes("people.json")) {
+              if (intent === "edit") {
+                // Find person in array and update field
+                updatedContent.people = updatedContent.people.map((p: any) => {
+                  if (p.id === contextId) {
+                    p[jsonObj.field.toLowerCase()] = jsonObj.suggestedValue; 
+                    p.lastEditedBy = "Verified Editor";
+                  }
+                  return p;
+                });
+              } else if (intent === "add") {
+                // Add new person
+                const newId = jsonObj["Full Name"]?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") + "-bandwar";
+                updatedContent.people.push({
+                  id: newId,
+                  name: jsonObj["Full Name"],
+                  role: jsonObj["Role"],
+                  bio: jsonObj["Biography"],
+                  dob: jsonObj["Date of Birth"],
+                  deathDate: jsonObj["Date of Death"]
+                });
+              }
+            } 
+            else if (filePath.includes("directory.json")) {
+               if (intent === "edit") {
+                updatedContent.items = updatedContent.items.map((item: any) => {
+                  if (item.id === contextId) {
+                    item.phone = jsonObj.suggestedValue; // Assuming phone update
+                    item.lastEditedBy = "Verified Editor";
+                  }
+                  return item;
+                });
+              }
+            }
+            // Add more file types here (media.json, articles, etc.)
+
+            // 4. Commit back to GitHub
             const putFileUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
             await fetch(putFileUrl, {
               method: "PUT",
               headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
               body: JSON.stringify({
-                message: `Auto-Approved: Update ${contextId} via Telegram Bot`,
-                content: Buffer.from(updatedContent).toString('base64'),
+                message: `Auto-Approved: Update ${contextId} via Telegram`,
+                content: Buffer.from(JSON.stringify(updatedContent, null, 2)).toString('base64'),
                 sha: fileData.sha
               })
             });
           }
         }
 
-        // 5. Telegram ko batado ki ho gaya
+        // Update Telegram Message
         await fetch(`https://api.telegram.org/bot${botToken}/editMessageReplyMarkup`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -80,7 +116,7 @@ export async function POST(req: Request) {
       await fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ callback_query_id: callbackQuery.id, text: `Action: ${action}` })
+        body: JSON.stringify({ callback_query_id: data.callback_query.id })
       });
     }
 
