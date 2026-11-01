@@ -1,4 +1,20 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1793543980198",
+      "type": "Image Update Suggestion",
+      "contextId": "chhota-krishna-mandir-bandwar",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-01T14:39:41.342Z",
+      "pendingImageUrl": "/images/pending/edit_1793543980198.jpg",
+      "targetType": "article",
+      "currentImagePath": "images/religion/chhota-krishna-mandir-bandwar.jpg",
+      "targetField": "",
+      "oldValue": "",
+      "newValue": "",
+      "sourceReason": "Official Govt. Record"
+    }
+  ],
   "approved": []
 }
