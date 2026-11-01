@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { RegisterProfileModal } from "@/components/shared/RegisterProfileModal";
-import { Contributor, CONTRIBUTOR_STORAGE_KEY, isAdmin } from "@/lib/contributor";
+import { Contributor, CONTRIBUTOR_STORAGE_KEY } from "@/lib/contributor";
 
 export function useContributorGate() {
   const [contributor, setContributor] = useState<Contributor | null>(null);
@@ -23,19 +23,13 @@ export function useContributorGate() {
     formData: FormData,
     callback: (data: FormData) => Promise<void>
   ) => {
-    // 1. Agar user already registered hai (ya Admin hai)
+    // 1. Agar user logged in hai (ya profile bana chuka hai)
     if (contributor) {
       formData.set("submitterName", contributor.displayName);
       formData.set("submitterUsername", contributor.username);
-      
-      // Admin ko alag se mark kar dein agar zaroorat ho
-      if (isAdmin(contributor.username)) {
-        formData.set("isAdmin", "true");
-      }
-      
       await callback(formData);
     } 
-    // 2. Agar pehli baar edit kar raha hai (koi free edit nahi)
+    // 2. Agar logged in nahi hai
     else {
       setPendingSubmit({ data: formData, cb: callback });
       setShowRegistration(true);
@@ -61,6 +55,11 @@ export function useContributorGate() {
     setPendingSubmit(null);
   };
 
+  // 🚀 EditModeToggle se login trigger karne ke liye
+  const requestLogin = useCallback(() => {
+    setShowRegistration(true);
+  }, []);
+
   const registrationModal = showRegistration ? (
     <RegisterProfileModal
       onComplete={handleRegistrationComplete}
@@ -68,5 +67,5 @@ export function useContributorGate() {
     />
   ) : null;
 
-  return { contributor, submitWithGate, registrationModal };
+  return { contributor, submitWithGate, requestLogin, registrationModal };
 }
