@@ -26,10 +26,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No account found with this username." }, { status: 404 });
     }
 
-    return NextResponse.json({
-      success: true,
-      contributor: { ...contributor, passwordHash: undefined },
-    });
+    return NextResponse.json({ success: true, contributor });
   } catch {
     return NextResponse.json({ error: "Lookup failed." }, { status: 500 });
   }
