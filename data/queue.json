@@ -1,20 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1793540643643",
-      "type": "Article Infobox",
-      "contextId": "sbi-bank-bandwar",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-01T13:44:03.643Z",
-      "pendingImageUrl": null,
-      "targetType": "article",
-      "targetField": "Infobox: Services",
-      "oldValue": "Savings, KCC Loans, NEFT/RTGS/UPI, Lockers, Govt. DBTs",
-      "newValue": "Savings, KCC Loans, NEFT/RTGS",
-      "sourceReason": ""
-    },
-    {
       "id": "edit_1793541050684",
       "type": "Image Update Suggestion",
       "contextId": "shahid-rajesh-memorial-cricket-tournament-bandwar",
