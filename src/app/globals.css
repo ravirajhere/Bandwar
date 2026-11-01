@@ -2,265 +2,259 @@
 @tailwind components;
 @tailwind utilities;
 
-/* =========================================
-   1. THEME DESIGN TOKENS (Strict Foundation)
-   ========================================= */
 @layer base {
   :root {
-    /* ☀️ Strict Light Mode (Wikipedia Inspired) */
-    --bg-canvas: #FFFFFF;           
-    --bg-surface: #F8F9FA;           
-    --text-ink: #202122;         
-    --text-ink-muted: #54595E;        
-    --text-inverted: #FFFFFF;
+    /* 🏛️ BANDWAR IDENTITY: Warm Aged Paper */
+    --bg-canvas: #FBF8F3;           
+    --bg-surface: #FFFFFF;           
+    --bg-paper: #F5EFE6;            /* For depth layers */
     
-    --brand-accent: #3366CC;     /* Standard Link Blue */
-    --brand-accent-hover: #2A4B8D;
-    --brand-accent-subtle: #EAF3FF;
+    /* 🖤 Warm Charcoal Ink */
+    --text-ink: #1C1815;         
+    --text-ink-muted: #57504A;        
+    --text-ink-subtle: #8A8078;
+    --text-inverted: #FBF8F3;
     
-    --border-divider: #A2A9B1;    /* Strict grey border */
+    /* 🎨 Mithila Terracotta (Signature) */
+    --brand-accent: #7C2D12;     
+    --brand-accent-hover: #92400E;
+    --brand-accent-subtle: #FEF3C7;
+    --brand-accent-muted: #D97706;
+    
+    /* 🌾 Warm Dividers */
+    --border-divider: #E8E0D5;
+    --border-subtle: #F0EAE0;
+    --border-strong: #D4C9BA;
+    
+    /* ✨ Editorial Gold */
+    --brand-gold: #B45309;
 
-    /* Semantic Colors (For Forms, Alerts, Toasts) */
-    --status-success: #166534;
+    /* Semantic */
+    --status-success: #15803D;
     --status-warning: #CA8A04;
-    --status-error: #DC2626;
-    --status-info: #2563EB;
-    
-    --font-inter: 'Inter', system-ui, Arial, sans-serif;
+    --status-error: #B91C1C;
+    --status-info: #1E40AF;
   }
 
-  /* 🌙 Strict Dark Mode */
   .dark {
-    --bg-canvas: #101418;           
-    --bg-surface: #181D23;           
-    --text-ink: #EAECF0;         
-    --text-ink-muted: #9BA3AF;        
-    --text-inverted: #101418;
+    /* 🌙 Deep Warm Black */
+    --bg-canvas: #0F0D0B;           
+    --bg-surface: #1A1613;           
+    --bg-paper: #141110;            
     
-    --brand-accent: #6699FF;     
-    --brand-accent-hover: #88AAFF;
-    --brand-accent-subtle: #1A2638;
+    --text-ink: #F5F1EA;         
+    --text-ink-muted: #A8A29E;        
+    --text-ink-subtle: #78716C;
+    --text-inverted: #0F0D0B;
     
-    --border-divider: #3B434D;       
+    /* 🔥 Warm Gold Accent (glows on dark) */
+    --brand-accent: #F59E0B;     
+    --brand-accent-hover: #FBBF24;
+    --brand-accent-subtle: #422006;
+    --brand-accent-muted: #D97706;
+    
+    --border-divider: #2A2521;       
+    --border-subtle: #1F1B18;
+    --border-strong: #3A322D;
+    
+    --brand-gold: #F59E0B;
 
-    /* Semantic Colors (Dark Mode) */
     --status-success: #4ADE80;
     --status-warning: #FACC15;
     --status-error: #F87171;
     --status-info: #60A5FA;
   }
 
-  /* 📱 Mobile to 4K TV Scaling */
   html {
     scroll-behavior: smooth;
     font-size: 16px; 
-    scroll-padding-top: 5rem; /* Sticky header offset */
+    scroll-padding-top: 6rem; 
   }
 
-  @media (min-width: 1920px) {
-    html { font-size: 18px; } /* TV scaling */
-  }
-  @media (min-width: 2560px) {
-    html { font-size: 20px; } /* 4K scaling */
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-  }
+  @media (min-width: 1920px) { html { font-size: 18px; } }
+  @media (min-width: 2560px) { html { font-size: 20px; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
   body {
     background-color: var(--bg-canvas);
+    background-image: var(--paper-texture, none);
     color: var(--text-ink);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-inter), Arial, sans-serif;
+    font-family: var(--font-inter), system-ui, sans-serif;
     text-rendering: optimizeLegibility;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   }
 
-  /* Text Selection */
   ::selection {
     background-color: var(--brand-accent);
     color: var(--text-inverted);
   }
 
-  /* ♿ Accessibility: Global Focus Ring */
   *:focus-visible {
     outline: 2px solid var(--brand-accent);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  /* 🔗 Encyclopedic Links */
+  /* 🔗 Editorial Links with Animated Underline */
   a {
     color: var(--brand-accent);
     text-decoration: none;
-    transition: color 0.15s ease;
+    background-image: linear-gradient(var(--brand-accent), var(--brand-accent));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.2s ease;
+    padding-bottom: 1px;
   }
   a:hover { 
-    text-decoration: underline; 
-    text-underline-offset: 3px; 
+    background-size: 100% 1px;
   }
 
-  /* 📝 Strict Headings (Serif, border-bottom like Wikipedia) */
+  /* 📖 Fraunces Headings (Editorial Impact) */
   h1, h2, h3, h4, h5, h6 {
-    font-family: Georgia, Cambria, "Times New Roman", serif;
+    font-family: var(--font-fraunces), Georgia, serif;
     color: var(--text-ink);
-    font-weight: normal; 
+    font-weight: 600;
+    letter-spacing: -0.025em;
     text-wrap: balance;
+    font-feature-settings: 'ss01' 1, 'ss02' 1;
   }
 
-  h1 { font-size: 2rem; margin-bottom: 1rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border-divider); line-height: 1.2; }
-  h2 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 0.75rem; padding-bottom: 0.25rem; border-bottom: 1px solid var(--border-divider); line-height: 1.3; }
-  h3 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-weight: bold; font-family: var(--font-inter); }
-  h4 { font-size: 1.125rem; margin-top: 1rem; margin-bottom: 0.5rem; font-weight: bold; font-family: var(--font-inter); }
+  h1 { 
+    font-size: 2.5rem; 
+    line-height: 1.1; 
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  h2 { 
+    font-size: 1.75rem; 
+    line-height: 1.25;
+    margin-top: 2.5rem; 
+    margin-bottom: 1rem; 
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-divider);
+  }
+  h3 { 
+    font-size: 1.375rem; 
+    line-height: 1.35;
+    margin-top: 1.75rem; 
+    margin-bottom: 0.5rem; 
+  }
 
   p {
-    line-height: 1.7; 
+    line-height: 1.75; 
     margin-bottom: 1.25rem; 
-    font-size: 1rem;
+    font-size: 1.0625rem;
+    font-feature-settings: 'liga' 1, 'kern' 1;
   }
 
-  /* 🖼️ Image Handling */
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    border-radius: 2px;
+  img { 
+    display: block; 
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 3px; 
   }
-  /* Subtle border for images in dark mode */
-  .dark img {
-    border: 1px solid var(--border-divider);
+  .dark img { 
+    border: 1px solid var(--border-divider); 
   }
 
-  /* 📊 Data Tables (Mobile Scrollable) */
-  .table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border-divider);
-    border-radius: 2px;
+  /* 📊 Data Tables (Editorial Museum Style) */
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    font-size: 0.9375rem; 
+    font-family: var(--font-jetbrains), monospace;
   }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
-    text-align: left;
-  }
-  th, td {
-    border-bottom: 1px solid var(--border-divider);
-    padding: 0.75rem 1rem;
+  th, td { 
+    border-bottom: 1px solid var(--border-divider); 
+    padding: 0.75rem 1rem; 
+    text-align: left; 
     vertical-align: top;
   }
   th { 
-    background-color: var(--bg-surface); 
-    font-weight: bold; 
-    white-space: nowrap;
+    background-color: var(--bg-paper); 
+    font-weight: 600; 
+    color: var(--text-ink);
+    font-family: var(--font-inter), sans-serif;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
-  tr:last-child td { border-bottom: none; }
-  
-  /* 📋 Lists */
-  ul, ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
-  ul { list-style-type: disc; }
-  ol { list-style-type: decimal; }
-  li { margin-bottom: 0.35rem; line-height: 1.6; }
 
-  /* 📝 Forms & Inputs (Plain CSS to avoid build errors) */
+  /* 💾 Mono for Data */
+  .mono {
+    font-family: var(--font-jetbrains), ui-monospace, monospace;
+    font-size: 0.875em;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  /* 📝 Forms */
   input, select, textarea {
     width: 100%;
     border: 1px solid var(--border-divider);
-    border-radius: 2px;
-    background-color: var(--bg-canvas);
+    border-radius: 3px;
+    background-color: var(--bg-surface);
     color: var(--text-ink);
-    padding: 0.5rem 0.75rem;
-    font-family: var(--font-inter), Arial, sans-serif;
-    font-size: 0.875rem;
+    padding: 0.625rem 0.75rem;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 0.9375rem;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-
   input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--brand-accent);
-    box-shadow: 0 0 0 1px var(--brand-accent); /* Strict focus ring */
+    box-shadow: 0 0 0 3px var(--brand-accent-subtle);
   }
 
-  button {
-    cursor: pointer;
-    transition: all 0.15s ease;
+  /* 🎯 Section Marker (Signature Element) */
+  .section-marker {
+    position: relative;
+    padding-left: 1rem;
+  }
+  .section-marker::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    width: 3px;
+    background-color: var(--brand-accent);
+    border-radius: 2px;
+  }
+
+  /* 📖 Drop Cap (Editorial Signature) */
+  .drop-cap::first-letter {
+    font-family: var(--font-fraunces), Georgia, serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    float: left;
+    line-height: 0.85;
+    margin-right: 0.5rem;
+    margin-top: 0.25rem;
+    color: var(--brand-accent);
   }
 }
 
-/* =========================================
-   2. PROSE / ARTICLE READING SETUP
-   ========================================= */
-/* For articles where we don't use the Tailwind typography plugin */
-.prose {
-  max-width: 75ch; /* Optimal line length */
-  color: var(--text-ink);
-  font-size: 1rem;
-  line-height: 1.8;
-}
-.prose a { 
-  color: var(--brand-accent); 
-  text-decoration: none; 
-}
-.prose a:hover { 
-  text-decoration: underline; 
-  text-underline-offset: 3px;
-}
-.prose p { margin-bottom: 1.25rem; }
-
-/* Custom Scrollbar (Desktop Only) */
+/* Custom Scrollbar */
 @media (pointer: fine) {
-  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--bg-canvas); }
   ::-webkit-scrollbar-thumb {
-    background: var(--border-divider);
-    border-radius: 6px; 
-    border: 3px solid var(--bg-canvas); 
+    background: var(--border-strong);
+    border-radius: 10px; 
+    border: 2px solid var(--bg-canvas); 
   }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-ink-muted); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-ink-subtle); }
 }
 
-/* =========================================
-   3. PRINT STYLES (Perfect PDF Layout)
-   ========================================= */
+/* Print */
 @media print {
   @page { margin: 15mm; size: A4; }
-  
-  body {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-    font-size: 11pt !important;
-  }
-
-  /* Hide all site UI elements */
-  .no-print, header, footer, nav, aside, button, .leaflet-container, input {
-    display: none !important;
-  }
-
-  article {
-    display: block !important;
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* Typography for Print */
-  h1 { font-size: 24pt !important; color: #000000 !important; line-height: 1.2; margin-bottom: 10px; border-bottom: none !important; }
-  h2 { font-size: 16pt !important; color: #000000 !important; margin-top: 20px; border-bottom: 1px solid #ccc !important; padding-bottom: 5px; }
-  h3 { font-size: 14pt !important; color: #000000 !important; }
-  p { font-size: 12pt !important; color: #000000 !important; line-height: 1.6 !important; margin-bottom: 15px; }
-  
+  body { background: #FFFFFF !important; color: #000000 !important; font-size: 11pt !important; }
+  .no-print, header, footer, nav, aside, button { display: none !important; }
+  h1 { font-size: 24pt !important; color: #000000 !important; }
+  h2 { font-size: 16pt !important; color: #000000 !important; border-bottom: 1px solid #ccc !important; }
   a { color: #000000 !important; text-decoration: underline !important; }
-  img { max-width: 100% !important; height: auto !important; page-break-inside: avoid; margin-bottom: 20px; }
-
-  /* Force Infobox/FAQs to show cleanly */
-  .print-infobox { display: block !important; margin-bottom: 25px !important; border: 1px solid #ddd !important; }
-  details { display: block !important; page-break-inside: avoid; margin-bottom: 15px; }
-  summary { font-weight: bold; font-size: 13pt; }
-  details > div { display: block !important; padding-left: 20px; }
 }
