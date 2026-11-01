@@ -14,18 +14,22 @@ async function saveToQueue(item: any) {
     });
     
     let fileData = null;
-    let queueContent = { pending: [] };
+    
+    // 👇 FIX: TypeScript ko bataya ki pending ek array hai jisme kuch bhi aa sakta hai
+    let queueContent: { pending: any[] } = { pending: [] };
     
     if (fileRes.ok) {
       fileData = await fileRes.json();
       queueContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
+      // Safety check: Agar file mein pending nahi hai to naya array banao
+      if (!queueContent.pending) queueContent.pending = [];
     }
 
     // Add new item with unique ID
     const newItem = { id: `edit_${Date.now()}`, ...item };
     queueContent.pending.push(newItem);
 
-    // Commit back
+    // Commit back to GitHub
     await fetch(getFileUrl, {
       method: "PUT",
       headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
@@ -94,11 +98,11 @@ export async function POST(req: Request) {
 
     message += `👤 <b>Suggested By:</b> ${userName}\n`;
 
-    // 🚀 1. Save to Queue
+    // 1. Save to Queue (Dashboard ke liye)
     const payloadForQueue = { filePath, contextId, intent, jsonObj, type, userName, timestamp: new Date().toISOString() };
     const editId = await saveToQueue(payloadForQueue);
 
-    // 🚀 2. Send to Telegram (Buttons will point to Dashboard now)
+    // 2. Send to Telegram
     const webhookData = { intent, filePath, contextId, jsonObj };
     const jsonBase64 = Buffer.from(JSON.stringify(webhookData)).toString('base64');
     message += `\n<b>📋 PAYLOAD:</b>\n<code>${jsonBase64}</code>`;
@@ -110,15 +114,29 @@ export async function POST(req: Request) {
       ]]
     };
 
-    // ... (Telegram Send Logic as before, using sendPhoto or sendMessage with replyMarkup)
-    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML", reply_markup: replyMarkup }),
-    });
+    if (imageFile && imageFile.size > 0) {
+      const photoFormData = new FormData();
+      photoFormData.append("chat_id", chatId!);
+      photoFormData.append("caption", message.substring(0, 1020)); 
+      photoFormData.append("parse_mode", "HTML");
+      photoFormData.append("reply_markup", JSON.stringify(replyMarkup));
+      photoFormData.append("photo", imageFile, imageFile.name);
+
+      await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+        method: "POST",
+        body: photoFormData,
+      });
+    } else {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML", reply_markup: replyMarkup }),
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Server error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
