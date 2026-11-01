@@ -14,6 +14,11 @@ export default function GalleryPage() {
   const media = getMediaData();
   const photoCount = media.gallery.photos.length;
 
+  // 🚀 Dynamic categories for the upload form (excluding "All")
+  const uploadCategories = media.gallery.categories
+    .filter((c) => c.id !== "all")
+    .map((c) => ({ id: c.id, title: c.title }));
+
   return (
     <div className="bg-canvas min-h-screen py-8 md:py-12 3xl:py-16">
       
@@ -44,11 +49,12 @@ export default function GalleryPage() {
             </p>
           </div>
           
-          {/* Action Button (Utility Style) */}
+          {/* 🚀 Action Button (Dynamic Categories passed) */}
           <div className="shrink-0 pt-1">
             <AddContentModal 
               type="image" 
               customButtonText="Upload Photograph" 
+              categories={uploadCategories}
             />
           </div>
         </div>
