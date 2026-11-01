@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { Pencil, Check, X, Loader2, Clock } from "lucide-react";
+import { Pencil, Check, X, Loader2 } from "lucide-react";
 import { useInlineEdit } from "@/hooks/useInlineEdit";
 
 interface EditableTextProps {
@@ -9,7 +9,7 @@ interface EditableTextProps {
   contextId: string;
   contextType: string;
   fieldName: string;
-  className?: string; // For heading size (e.g., text-4xl)
+  className?: string; 
   as?: "h1" | "h2" | "p" | "span";
 }
 
@@ -35,7 +35,7 @@ export function EditableText({
 
   // Auto-resize textarea & focus
   useEffect(() => {
-    if (status === "editing" && inputRef.current) {
+    if ((status === "editing" || status === "saving") && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.setSelectionRange(draft.length, draft.length);
       inputRef.current.style.height = "inherit";
@@ -47,34 +47,45 @@ export function EditableText({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      saveEdit();
-    } else if (e.key === "Escape") {
+      if (status !== "saving") saveEdit();
+    } else if (e.key === "Escape" && status !== "saving") {
       cancelEditing();
     }
   };
 
-  if (status === "editing") {
+  // 👇 FIX: Check for both "editing" and "saving"
+  if (status === "editing" || status === "saving") {
     return (
       <div className="relative group w-full">
         <textarea
           ref={inputRef}
           value={draft}
+          disabled={status === "saving"}
           onChange={(e) => {
             setDraft(e.target.value);
             e.target.style.height = "inherit";
             e.target.style.height = `${e.target.scrollHeight}px`;
           }}
           onKeyDown={handleKeyDown}
-          className={`w-full bg-surface border-2 border-accent rounded-sm px-2 py-1 outline-none resize-none overflow-hidden font-sans text-ink ${className}`}
+          className={`w-full bg-surface border-2 border-accent rounded-sm px-2 py-1 outline-none resize-none overflow-hidden font-sans text-ink disabled:opacity-70 ${className}`}
         />
         
         {/* Floating Toolbar */}
         <div className="absolute -bottom-10 left-0 flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md z-50 animate-in fade-in zoom-in duration-150">
-          <button onClick={() => saveEdit()} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm transition-colors">
-            {status === "saving" ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
+          <button 
+            onClick={() => saveEdit()} 
+            disabled={status === "saving"}
+            className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm transition-colors disabled:opacity-50"
+          >
+            {status === "saving" ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} 
+            {status === "saving" ? "Saving..." : "Save"}
           </button>
           <div className="w-px h-4 bg-white/20"></div>
-          <button onClick={cancelEditing} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm transition-colors text-red-300 hover:text-red-200">
+          <button 
+            onClick={cancelEditing} 
+            disabled={status === "saving"}
+            className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm transition-colors text-red-300 hover:text-red-200 disabled:opacity-50"
+          >
             <X size={12} /> Cancel
           </button>
         </div>
