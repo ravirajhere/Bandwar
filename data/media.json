@@ -598,6 +598,72 @@
       "description": "The flood-prone river that flows along the western edge of Bandwar.",
       "article": "burhi-gandak-river-bandwar",
       "photo": "images/geography/burhi-gandak-river-dawn-bandwar.jpg"
+    },
+    {
+      "id": "madhuri-dhala",
+      "name": "Madhuri Dhala",
+      "type": "landmark",
+      "category": "landmarks",
+      "icon": "🚩",
+      "lat": 25.474606,
+      "lng": 86.146511,
+      "description": "A road junction on the southern edge of Bandwar, where a village link road branches off from SH 55 (State Highway 55). It serves as a key turning point for residents and visitors travelling between Bandwar and the surrounding areas.",
+      "photo": null
+    },
+    {
+      "id": "grace-brick-plant",
+      "name": "Grace Brick Plant",
+      "type": "brick-kiln",
+      "category": "infrastructure",
+      "icon": "🧱",
+      "lat": 25.492244,
+      "lng": 86.155066,
+      "description": "A brick manufacturing plant on the outskirts of Bandwar where Grace brand bricks are produced. It is a local industrial unit that supplies construction materials to the village and surrounding areas.",
+      "photo": null
+    },
+    {
+      "id": "hp-gas-gramin-vitrak-bandwar",
+      "name": "HP Gas Gramin Vitrak",
+      "type": "gas-distributor",
+      "category": "infrastructure",
+      "icon": "🔥",
+      "lat": 25.497422,
+      "lng": 86.156510,
+      "description": "An HP Gas (Hindustan Petroleum) rural LPG distributor serving Bandwar and nearby villages. Residents can book LPG cylinder refills, open new gas connections, and avail government LPG subsidy schemes through this distributor.",
+      "photo": null
+    },
+    {
+      "id": "government-bamboo-exporting-plant-bandwar",
+      "name": "Government Bamboo Exporting Plant",
+      "type": "bamboo-facility",
+      "category": "infrastructure",
+      "icon": "🎋",
+      "lat": 25.503671,
+      "lng": 86.157394,
+      "description": "A government-run bamboo facility in Bandwar where bamboo structures are crafted to protect newly planted saplings. The bamboo frames and guards produced here are used to shield young plants from damage, supporting the region's afforestation and plantation drives.",
+      "photo": null
+    },
+    {
+      "id": "government-fertilizer-shop-pm-kisan",
+      "name": "Government Fertilizer Shop (PM-KISAN Urvarak)",
+      "type": "fertilizer-shop",
+      "category": "infrastructure",
+      "icon": "🌾",
+      "lat": 25.507447,
+      "lng": 86.157768,
+      "description": "A licensed fertiliser outlet operating under the PM-KISAN Urvarak scheme. It supplies subsidised urea, DAP, NPK and potash to farmers in Bandwar and the surrounding area at government-controlled prices.",
+      "photo": null
+    },
+    {
+      "id": "shivam-sudha-milk-parlour",
+      "name": "Shivam Sudha Milk Parlour",
+      "type": "dairy-parlour",
+      "category": "infrastructure",
+      "icon": "🥛",
+      "lat": 25.507010,
+      "lng": 86.157736,
+      "description": "A Sudha dairy outlet in Bandwar selling milk, curd, paneer, ghee and sweets. It is the village's local point for packaged dairy products under the Bihar State Milk Co-operative Federation.",
+      "photo": null
     }
   ],
 
