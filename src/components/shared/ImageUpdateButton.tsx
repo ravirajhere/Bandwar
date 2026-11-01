@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Pencil, X, UploadCloud, Loader2, CheckCircle2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Pencil, X, UploadCloud, Loader2, CheckCircle2, Image as ImageIcon } from "lucide-react";
 import { useToast } from "@/components/ui/Toast"; 
 
 interface ImageUpdateButtonProps {
   contextName: string; 
-  contextId: string; // 👈 JSON generate karne ke liye
-  currentImage?: string; // 👈 Purani image ka path (overwrite karne ke liye)
+  contextId: string; 
+  currentImage?: string; 
 }
 
 // 🖼️ Image Compression Function
@@ -63,6 +63,28 @@ export function ImageUpdateButton({ contextName, contextId, currentImage }: Imag
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [fileName, setFileName] = useState("");
+  
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Lock scroll & Handle Escape Key
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen && !isSubmitting) {
+        handleClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, isSubmitting]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,17 +104,14 @@ export function ImageUpdateButton({ contextName, contextId, currentImage }: Imag
       }
     }
 
-    // 👇 Telegram API ke liye zaroori data
+    // API Payload for Telegram
     formData.append("type", "Image Update Suggestion");
     formData.append("contextId", contextId);
     formData.append("Context Name", contextName);
-    
-    // 👇 YEH SABSE ZAROORI HAI: Purani image ka path bhej rahe hain 👇
     formData.append("currentImagePath", currentImage || "Unknown Path");
     
-    // User ka naam (Credit ke liye)
     const submittedName = formData.get("submitter_name") as string;
-    formData.append("submitterName", submittedName || "Anonymous Visitor");
+    formData.append("submitterName", submittedName || "Anonymous Contributor");
 
     try {
       const response = await fetch("/api/telegram-submit", {
@@ -104,120 +123,183 @@ export function ImageUpdateButton({ contextName, contextId, currentImage }: Imag
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Photo sent to Telegram! Editor will review it.", "success");
+        toast("Image submitted successfully.", "success");
+        setTimeout(() => {
+          handleClose();
+        }, 3500);
       } else {
-        toast(data.details || "Failed to send photo.", "error");
+        toast(data.details || "Submission failed. Please try again.", "error");
       }
     } catch (error) {
-      toast("Error submitting image. Please check your connection.", "error");
+      toast("Network error. Please check your connection.", "error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleClose = () => {
-    setIsOpen(false);
-    setTimeout(() => {
-      setIsSuccess(false);
-      setFileName("");
-    }, 300);
+    if (!isSubmitting) {
+      setIsOpen(false);
+      setTimeout(() => {
+        setIsSuccess(false);
+        setFileName("");
+      }, 300);
+    }
   };
 
   return (
     <>
-      {/* 🖊️ The Pencil Button */}
+      {/* 🖊️ Trigger Button */}
       <button
         onClick={(e) => {
           e.preventDefault(); 
           setIsOpen(true);
         }}
-        className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-brand text-white p-2 rounded-full backdrop-blur-md transition-all shadow-lg group-hover:opacity-100 opacity-0 md:opacity-100"
-        title="Suggest a new photo for this"
+        className="absolute top-4 right-4 z-20 bg-ink/60 hover:bg-accent text-white p-2.5 rounded-md backdrop-blur-md transition-all shadow-md group-hover:opacity-100 opacity-0 md:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white no-print"
+        title="Suggest an image update"
         aria-label="Update Image"
       >
-        <Pencil size={18} />
+        <Pencil size={16} />
       </button>
 
-      {/* 🪟 The Modal */}
+      {/* 🪟 Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-border">
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-ink/70 backdrop-blur-sm animate-in fade-in duration-200 no-print"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="image-modal-title"
+        >
+          <div 
+            ref={modalRef}
+            className="bg-surface w-full max-w-lg rounded-lg shadow-2xl overflow-hidden border border-divider flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200"
+          >
             
-            {/* Modal Header */}
-            <div className="flex justify-between items-center p-5 border-b border-border bg-muted-background">
-              <h3 className="font-serif font-semibold text-foreground">Suggest New Photo</h3>
-              <button onClick={handleClose} className="text-muted hover:text-foreground transition-colors p-1 rounded-md">
-                <X size={20} />
+            {/* Header */}
+            <div className="flex justify-between items-start p-5 border-b border-divider bg-canvas/50 shrink-0">
+              <div>
+                <h2 id="image-modal-title" className="font-serif font-bold text-ink text-lg">
+                  Suggest Image Update
+                </h2>
+                <p className="text-sm text-ink/60 mt-1">
+                  For <span className="text-accent font-medium">{contextName}</span>
+                </p>
+              </div>
+              <button 
+                onClick={handleClose} 
+                disabled={isSubmitting}
+                className="text-ink/40 hover:text-ink p-2 bg-surface border border-divider rounded-md transition-colors shadow-sm disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="Close dialog"
+              >
+                <X size={18} />
               </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-5">
+            {/* Body */}
+            <div className="p-5 overflow-y-auto custom-scrollbar flex-grow">
               {isSuccess ? (
-                <div className="text-center py-8">
-                  <CheckCircle2 size={48} className="text-green-500 mx-auto mb-4" />
-                  <h4 className="text-lg font-bold text-foreground mb-2">Photo Sent Successfully!</h4>
-                  <p className="text-sm text-muted mb-6">Thank you. The photo has been sent to the editor's Telegram.</p>
-                  <button onClick={handleClose} className="bg-brand text-white px-6 py-2 rounded-lg font-medium hover:bg-brand-hover">
-                    Close
-                  </button>
+                <div className="text-center py-10">
+                  <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-5">
+                    <CheckCircle2 size={32} className="text-green-600 dark:text-green-500" />
+                  </div>
+                  <h3 className="text-xl font-serif font-bold text-ink mb-2">Image Submitted Successfully</h3>
+                  <p className="text-sm text-ink/70 max-w-sm mx-auto leading-relaxed">
+                    Thank you for your contribution. The editorial team will review this photograph before publishing.
+                  </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <p className="text-sm text-muted mb-4">
-                    Do you have a better or older photo for <strong className="text-foreground">{contextName}</strong>? Upload it below.
+                <form id="image-update-form" onSubmit={handleSubmit} className="space-y-5">
+                  <p className="text-sm text-ink/70 leading-relaxed mb-4">
+                    Do you have a higher quality or historical photograph of this? Upload it below. By submitting, you confirm you have the right to share this image.
                   </p>
 
-                  {/* File Upload Box */}
-                  <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:bg-muted-background transition-colors relative cursor-pointer">
-                    <input 
-                      type="file" 
-                      name="attachment" 
-                      accept="image/*" 
-                      required
-                      onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                    <UploadCloud size={32} className="text-brand mx-auto mb-2" />
-                    <p className="text-sm font-medium text-foreground">
-                      {fileName ? fileName : "Click to select an image"}
-                    </p>
-                    <p className="text-xs text-muted mt-1">JPG, PNG or WebP (Auto-compressed)</p>
-                  </div>
-
-                  {/* Caption/Context */}
+                  {/* File Upload Area */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">Where did you get this photo?</label>
-                    <input 
-                      type="text" 
-                      name="source_reason" 
-                      placeholder="e.g., Old family album, taken in 1990" 
-                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none" 
-                    />
+                    <label className="block text-sm font-semibold text-ink mb-2">
+                      Upload Photograph <span className="text-red-500">*</span>
+                    </label>
+                    <div className="border-2 border-dashed border-divider rounded-lg p-6 text-center hover:bg-canvas transition-colors relative cursor-pointer group">
+                      <input 
+                        type="file" 
+                        name="attachment" 
+                        accept="image/*" 
+                        required
+                        onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                      />
+                      <UploadCloud size={28} className={`mx-auto mb-2 transition-colors ${fileName ? 'text-green-500' : 'text-accent'}`} />
+                      <p className="text-sm font-medium text-ink truncate px-4">
+                        {fileName ? fileName : "Click to select an image"}
+                      </p>
+                      <p className="text-xs text-ink/50 mt-1">JPG, PNG or WebP (Auto-compressed)</p>
+                    </div>
                   </div>
 
-                  {/* Your Name */}
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">Your Name (For Credit)</label>
-                    <input 
-                      type="text" 
-                      name="submitter_name" 
-                      placeholder="e.g., Ramesh Kumar" 
-                      className="w-full px-4 py-2.5 rounded-lg border border-border bg-background focus:ring-2 focus:ring-brand outline-none" 
-                    />
-                  </div>
+                  <div className="pt-2 border-t border-divider space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-ink mb-1.5">
+                        Source of Photograph <span className="text-red-500">*</span>
+                      </label>
+                      <input 
+                        type="text" 
+                        name="source_reason" 
+                        required
+                        placeholder="e.g. Family album, taken in 1990, local archive" 
+                        className="w-full h-11 px-4 rounded-md border border-divider bg-surface text-ink text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
+                      />
+                    </div>
 
-                  {/* Submit Button */}
-                  <button 
-                    type="submit" 
-                    disabled={isSubmitting || !fileName}
-                    className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-3 rounded-xl font-semibold transition-all shadow-sm disabled:opacity-50"
-                  >
-                    {isSubmitting ? <><Loader2 size={18} className="animate-spin" /> Compressing & Sending...</> : "Send Photo to Editor"}
-                  </button>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-ink mb-1.5">
+                          Contributor Name <span className="text-red-500">*</span>
+                        </label>
+                        <input 
+                          type="text" 
+                          name="submitter_name" 
+                          required
+                          placeholder="e.g. Ramesh Kumar" 
+                          className="w-full h-11 px-4 rounded-md border border-divider bg-surface text-ink text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-ink mb-1.5">
+                          Contact No. <span className="text-ink/40 font-normal">(Optional)</span>
+                        </label>
+                        <input 
+                          type="tel" 
+                          name="submitter_contact" 
+                          placeholder="For verification" 
+                          className="w-full h-11 px-4 rounded-md border border-divider bg-surface text-ink text-sm focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </form>
               )}
             </div>
+
+            {/* Footer */}
+            {!isSuccess && (
+              <div className="p-5 border-t border-divider bg-canvas/50 shrink-0 flex justify-end gap-3">
+                <button 
+                  type="button"
+                  onClick={handleClose}
+                  disabled={isSubmitting}
+                  className="px-5 py-2.5 rounded-md border border-divider bg-surface text-ink font-medium hover:bg-canvas transition-colors disabled:opacity-50 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  form="image-update-form"
+                  disabled={isSubmitting || !fileName}
+                  className="px-6 flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white py-2.5 rounded-md font-semibold transition-all shadow-sm disabled:opacity-50 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                >
+                  {isSubmitting ? <><Loader2 size={18} className="animate-spin" /> Processing...</> : "Submit Photograph"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
