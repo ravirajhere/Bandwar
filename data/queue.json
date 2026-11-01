@@ -1,20 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1793540570020",
-      "type": "Directory Contact Update",
-      "contextId": "national-emergency-112",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-01T13:42:50.020Z",
-      "pendingImageUrl": null,
-      "targetType": "article",
-      "targetField": "Phone Number",
-      "oldValue": "112",
-      "newValue": "964842484815",
-      "sourceReason": "Hava"
-    },
-    {
       "id": "edit_1793540643643",
       "type": "Article Infobox",
       "contextId": "sbi-bank-bandwar",
