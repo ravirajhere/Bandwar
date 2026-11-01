@@ -1,19 +1,4 @@
 {
-  "pending": [
-    {
-      "id": "edit_1793541050684",
-      "type": "Image Update Suggestion",
-      "contextId": "shahid-rajesh-memorial-cricket-tournament-bandwar",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-01T13:50:51.611Z",
-      "pendingImageUrl": "/images/pending/edit_1793541050684.jpg",
-      "targetType": "article",
-      "targetField": "",
-      "oldValue": "",
-      "newValue": "",
-      "sourceReason": "Official Govt. Record"
-    }
-  ],
+  "pending": [],
   "approved": []
 }
