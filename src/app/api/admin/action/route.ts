@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const githubToken = process.env.GITHUB_TOKEN;
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const repoOwner = process.env.GITHUB_REPO_OWNER;
   const repoName = process.env.GITHUB_REPO_NAME;
 
@@ -10,38 +11,52 @@ export async function POST(req: Request) {
     const queuePath = "data/queue.json";
 
     const queueUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${queuePath}`;
-    const queueRes = await fetch(queueUrl, {
-      headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" }
-    });
+    const queueRes = await fetch(queueUrl, { headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" } });
     
     const queueData = await queueRes.json();
     let queueContent = JSON.parse(Buffer.from(queueData.content, 'base64').toString('utf-8'));
 
-    // Ensure arrays exist
     if (!queueContent.pending) queueContent.pending = [];
     if (!queueContent.approved) queueContent.approved = [];
 
     const itemIndex = queueContent.pending.findIndex((i: any) => i.id === editId);
-    if (itemIndex === -1) throw new Error("Item not found in pending queue");
+    if (itemIndex === -1) throw new Error("Item not found");
 
     const item = queueContent.pending[itemIndex];
-    queueContent.pending.splice(itemIndex, 1); // Remove from pending
+    queueContent.pending.splice(itemIndex, 1);
 
     if (action === "approve") {
-      queueContent.approved.push({ ...item, approvedAt: new Date().toISOString() });
+      queueContent.approved.push({ ...item, approvedVia: "Dashboard" });
     }
-    // Agar reject hai, toh yahin discard ho gaya
 
-    // Save updated queue (Just moving data, no target files touched)
+    // Update Queue JSON
     await fetch(queueUrl, {
       method: "PUT",
       headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
       body: JSON.stringify({
-        message: `Queue Update: ${action} ${editId}`,
+        message: `Dashboard: ${action} ${editId}`,
         content: Buffer.from(JSON.stringify(queueContent, null, 2)).toString('base64'),
         sha: queueData.sha
       })
     });
+
+    // 🔄 SYNC: Update Telegram Message
+    if (item.telegramMessageId && item.chatId) {
+      await fetch(`https://api.telegram.org/bot${botToken}/editMessageReplyMarkup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: item.chatId,
+          message_id: item.telegramMessageId,
+          reply_markup: { 
+            inline_keyboard: [[{ 
+              text: action === "approve" ? "✅ Staged via Dashboard" : "❌ Rejected via Dashboard", 
+              callback_data: "done" 
+            }]] 
+          }
+        })
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
