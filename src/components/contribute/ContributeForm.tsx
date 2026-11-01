@@ -35,7 +35,6 @@ export function ContributeForm() {
     formData.append("type", "General Feedback / Message");
 
     try {
-      // 📱 Telegram API Route par bhej rahe hain
       const response = await fetch("/api/telegram-submit", {
         method: "POST",
         body: formData,
@@ -44,81 +43,95 @@ export function ContributeForm() {
       
       if (data.success) {
         setIsSuccess(true);
-        toast("Message sent to Telegram!", "success");
+        toast("Message submitted successfully.", "success");
         setTimeout(() => {
           setIsSuccess(false);
-          setMessage(""); // Success ke baad message clear kar dein
-        }, 3000);
+          setMessage(""); 
+        }, 3500);
       } else {
-        toast(data.details || "Something went wrong. Please try again.", "error");
+        toast(data.details || "Submission failed. Please try again.", "error");
       }
     } catch (error) {
-      toast("Error sending message. Check your connection.", "error");
+      toast("Network error. Check your connection.", "error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // 🏛️ Formal Success State
   if (isSuccess) {
     return (
-      <div className="text-center py-16">
-        <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 size={40} />
+      <div className="text-center py-16 px-4">
+        <div className="w-16 h-16 3xl:w-20 3xl:h-20 bg-green-500/10 text-green-600 dark:text-green-500 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm">
+          <CheckCircle2 size={32} className="3xl:w-10 3xl:h-10" />
         </div>
-        <h2 className="font-serif text-2xl font-bold text-foreground mb-2">Dhanyawad!</h2>
-        <p className="text-muted">Your message has been sent to the village editors.</p>
+        <h2 className="font-serif text-2xl 3xl:text-3xl font-bold text-ink mb-2">Message Received</h2>
+        <p className="text-sm md:text-base 3xl:text-lg text-ink/70 max-w-md mx-auto leading-relaxed">
+          Thank you for your feedback. The editorial team has received your message and will review it shortly.
+        </p>
         <button 
           onClick={() => setIsSuccess(false)}
-          className="mt-6 text-brand font-medium hover:underline bg-brand/10 px-6 py-2 rounded-lg"
+          className="mt-8 text-sm md:text-base font-semibold text-accent hover:text-accent-hover bg-accent/10 hover:bg-accent/20 px-6 py-2.5 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
-          Send another message
+          Submit another message
         </button>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 3xl:gap-6">
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">Your Name (Optional)</label>
+          <label className="block text-sm font-semibold text-ink mb-2">
+            Full Name <span className="text-red-500">*</span>
+          </label>
           <input 
             type="text" 
             name="Your Name" 
+            required
             placeholder="e.g. Ramesh Kumar" 
-            className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all" 
+            className="w-full h-11 3xl:h-14 px-4 rounded-md border border-divider bg-surface text-ink text-sm 3xl:text-base focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">Contact (Email/Phone)</label>
+          <label className="block text-sm font-semibold text-ink mb-2">
+            Contact <span className="text-ink/40 font-normal">(Optional)</span>
+          </label>
           <input 
             type="text" 
             name="Contact" 
-            placeholder="So we can reply to you" 
-            className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all" 
+            placeholder="Email or Phone number" 
+            className="w-full h-11 3xl:h-14 px-4 rounded-md border border-divider bg-surface text-ink text-sm 3xl:text-base focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all" 
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">Your Message</label>
+        <label className="block text-sm font-semibold text-ink mb-2">
+          Message or Feedback <span className="text-red-500">*</span>
+        </label>
         <textarea 
           name="Message" 
           required
-          rows={5}
+          rows={6}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Write your feedback, suggestion, or general query here..."
-          className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-brand outline-none transition-all resize-y"
+          placeholder="Provide your detailed feedback, suggestion, or query here..."
+          className="w-full px-4 py-3 rounded-md border border-divider bg-surface text-ink text-sm 3xl:text-base focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all resize-y leading-relaxed"
         ></textarea>
       </div>
 
       <button 
         type="submit" 
         disabled={isSubmitting}
-        className="w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-hover text-white py-4 rounded-xl font-semibold text-lg transition-all shadow-sm disabled:opacity-70"
+        className="w-full flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white h-12 3xl:h-14 rounded-md font-semibold text-sm 3xl:text-base transition-all shadow-sm disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       >
-        {isSubmitting ? <><Loader2 size={20} className="animate-spin" /> Sending...</> : <><Send size={20} /> Send Message</>}
+        {isSubmitting ? (
+          <><Loader2 size={18} className="animate-spin 3xl:w-6 3xl:h-6" /> Submitting...</>
+        ) : (
+          <><Send size={18} className="3xl:w-5 3xl:h-5" /> Submit Message</>
+        )}
       </button>
     </form>
   );
