@@ -23,13 +23,7 @@ export function EditableParagraph({
   validIds,
 }: EditableParagraphProps) {
   const {
-    status,
-    value,
-    draft,
-    setDraft,
-    startEditing,
-    cancelEditing,
-    saveEdit,
+    status, value, draft, setDraft, startEditing, cancelEditing, saveEdit, registrationModal
   } = useInlineEdit(initialValue, contextId, contextType, fieldName);
 
   const [showPreview, setShowPreview] = useState(false);
@@ -153,29 +147,32 @@ export function EditableParagraph({
   }
 
   return (
-    <div className="relative group">
-      <div
-        onClick={startEditing}
-        className={`cursor-text hover:bg-accent/5 hover:outline-dashed hover:outline-1 hover:outline-accent/30 rounded-sm transition-all ${
-          status === "pending" ? "opacity-60" : ""
-        } ${className}`}
-        title={`Click to edit ${fieldName}`}
-      >
-        {renderContent(value)}
+    <>
+      <div className="relative group">
+        <div
+          onClick={startEditing}
+          className={`cursor-text hover:bg-accent/5 hover:outline-dashed hover:outline-1 hover:outline-accent/30 rounded-sm transition-all ${
+            status === "pending" ? "opacity-60" : ""
+          } ${className}`}
+          title={`Click to edit ${fieldName}`}
+        >
+          {renderContent(value)}
+        </div>
+        <button
+          onClick={startEditing}
+          className="absolute -right-8 top-1 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all no-print"
+          aria-label={`Edit ${fieldName}`}
+        >
+          <Pencil size={14} />
+        </button>
+        {status === "pending" && (
+          <span className="absolute -right-2 top-1 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+          </span>
+        )}
       </div>
-      <button
-        onClick={startEditing}
-        className="absolute -right-8 top-1 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all no-print"
-        aria-label={`Edit ${fieldName}`}
-      >
-        <Pencil size={14} />
-      </button>
-      {status === "pending" && (
-        <span className="absolute -right-2 top-1 flex h-3 w-3">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
-        </span>
-      )}
-    </div>
+      {registrationModal}
+    </>
   );
 }
