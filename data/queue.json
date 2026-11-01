@@ -44,6 +44,21 @@
       "timestamp": "2026-11-01T11:40:38.708Z",
       "telegramMessageId": 46,
       "chatId": "8848904239"
+    },
+    {
+      "id": "edit_1793533259040",
+      "filePath": "data/articles/landmarks.json",
+      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Paragraph: Overview",
+        "suggestedValue": "Chhath Puja is the most important festival of Bihar — more significant, in popular practice, than Diwali or Holi. It is dedicated to Surya Dev (the Sun) and Chhathi Maiya (also known as Usha, his sister/wife), and is observed over four days with strict fasting and Vedic ritual. The festival has no priestly intermediary — devotees pray directly to the sun. In Bandwar, the festival is celebrated at the [[bandh|bandh]] along the [[burhi-gandak|Burhi Gandak]], and it is the single largest gathering of the village in the course of the year."
+      },
+      "type": "Article",
+      "userName": "Anonymous Visitor",
+      "timestamp": "2026-11-01T11:40:59.550Z",
+      "telegramMessageId": 47,
+      "chatId": "8848904239"
     }
   ],
   "approved": []
