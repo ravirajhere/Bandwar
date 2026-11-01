@@ -47,7 +47,12 @@ export async function POST(req: Request) {
     const type = formData.get("type") as string;
     const imageFile = formData.get("image") as File | null;
     const contextId = formData.get("contextId") as string || "unknown";
+    
+    // 🚀 NAYA: Contributor details fetch karna
     const userName = formData.get("submitterName") as string || "Anonymous Visitor";
+    const userUsername = formData.get("submitterUsername") as string || "";
+    const displayUser = userUsername ? `${userName} (${userUsername})` : userName;
+
     const field = formData.get("field") as string || ""; 
     const suggestedValue = formData.get("suggestedValue") as string || ""; 
     
@@ -80,12 +85,14 @@ export async function POST(req: Request) {
 
     const editId = `edit_${Date.now()}`;
     
-    // Clean Message
+    // Clean Telegram Message
     let message = `<b>🔔 New ${type.toUpperCase()}</b>\n\n`;
-    message += `👤 <b>By:</b> ${userName}\n`;
+    message += `👤 <b>By:</b> ${displayUser}\n`; // 🚀 Updated
     message += `🎯 <b>Target:</b> <code>${contextId}</code>\n`;
     message += `⚙️ <b>Action:</b> ${intent}\n\n`;
-    message += `👇 <b>Review on Dashboard:</b>\nhttps://bandwar.vercel.app/admin/dashboard`;
+    
+    const dashboardUrl = `https://bandwar.vercel.app/admin/dashboard`;
+    message += `👇 <b>Review on Dashboard:</b>\n${dashboardUrl}`;
 
     const replyMarkup = {
       inline_keyboard: [[
@@ -117,7 +124,19 @@ export async function POST(req: Request) {
     }
 
     // Save to Queue
-    const payloadForQueue = { id: editId, filePath, contextId, intent, jsonObj, type, userName, timestamp: new Date().toISOString(), telegramMessageId, chatId };
+    const payloadForQueue = { 
+      id: editId, 
+      filePath, 
+      contextId, 
+      intent, 
+      jsonObj, 
+      type, 
+      userName, 
+      userUsername, // 🚀 Save username to queue
+      timestamp: new Date().toISOString(), 
+      telegramMessageId, 
+      chatId 
+    };
     await saveToQueue(payloadForQueue);
 
     return NextResponse.json({ success: true });
