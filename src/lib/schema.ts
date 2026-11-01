@@ -56,7 +56,7 @@ export const MasterSchema = z.object({
   ),
   
   contact: z.object({
-    email: z.string().email().nullable(), // 👈 FIX: Null allowed
+    email: z.string().email().nullable(), // 👈 Null allowed
     address: z.string().optional(),
     coordinates: z.object({ lat: z.number(), lng: z.number() }).optional(),
   }).passthrough(),
@@ -85,7 +85,7 @@ export const MasterSchema = z.object({
     committee: z.array(z.object({ 
       role: z.string(), 
       name: z.string(), 
-      link: z.string().nullable().optional() // 👈 FIX: Null allowed
+      link: z.string().nullable().optional() // 👈 Null allowed
     })),
   }).passthrough().optional(),
   
@@ -94,6 +94,7 @@ export const MasterSchema = z.object({
     credit: z.string().optional(),
     sections: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
     explore: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
+    legal: z.array(z.object({ label: z.string(), href: z.string() })).optional(), // 👈 YEH NAYI LINE ADD KI HAI
   }).passthrough().optional(),
 
   home: z.object({
@@ -114,7 +115,7 @@ export const MasterSchema = z.object({
     pullquote: z.object({ text: z.string(), cite: z.string() }),
     stats: z.array(z.object({ label: z.string(), value: z.string() })),
   }).passthrough().optional(),
-}).passthrough(); // 👈 FIX: Allows new sections like 'bot', 'legal', 'i18n' without failing
+}).passthrough(); // 👈 Allows new sections like 'bot', 'legal', 'i18n' without failing
 
 // ==========================================
 // 3. Article Schema (SEO Upgraded)
