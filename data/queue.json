@@ -1,20 +1,4 @@
 {
   "pending": [],
-  "approved": [
-    {
-      "id": "edit_1793542088613",
-      "type": "Image Update Suggestion",
-      "contextId": "ram-mandir-thakurbari-bandwar",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-01T14:08:09.775Z",
-      "pendingImageUrl": "/images/pending/edit_1793542088613.jpg",
-      "targetType": "article",
-      "targetField": "",
-      "oldValue": "",
-      "newValue": "",
-      "sourceReason": "Official Govt. Record",
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
