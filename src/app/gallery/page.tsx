@@ -13,32 +13,40 @@ export default function GalleryPage() {
   const media = getMediaData();
 
   return (
-    <div className="bg-background min-h-screen py-10 md:py-16">
+    <div className="bg-canvas min-h-screen py-10 md:py-16 3xl:py-24">
+      
       {/* 🚀 Immersive Layout: Container ko thoda wide kiya hai taaki photos bade dikhein */}
-      <div className="max-w-[1600px] mx-auto px-4 md:px-6">
+      <div className="container mx-auto max-w-[1600px] px-4 md:px-0">
         
-        {/* 🏛️ Premium Header */}
-        <div className="mb-12 text-center max-w-3xl mx-auto">
-          <div className="w-16 h-16 bg-brand/10 text-brand rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <Camera size={32} />
+        {/* 🏛️ Premium Header (Formal Archive Vibe) */}
+        <div className="mb-12 3xl:mb-20 text-center max-w-4xl mx-auto">
+          
+          {/* Icon Badge */}
+          <div className="w-16 h-16 3xl:w-20 3xl:h-20 bg-surface border border-divider text-accent rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+            <Camera size={32} className="3xl:w-10 3xl:h-10" />
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground mb-4 font-semibold tracking-tight">
+          
+          {/* Title & Decorative Line */}
+          <h1 className="font-serif text-4xl md:text-5xl 3xl:text-6xl text-ink mb-4 font-semibold tracking-tight">
             Village Gallery
           </h1>
-          <div className="w-24 h-1.5 bg-brand mb-6 rounded-full mx-auto"></div>
-          <p className="text-lg text-muted leading-relaxed mb-8 max-w-2xl mx-auto">
-            A visual archive of Bandwar — from historic temples and festivals to everyday life. Immerse yourself in our memories.
+          <div className="w-24 h-1 bg-accent mb-6 rounded-full mx-auto"></div>
+          
+          {/* Description */}
+          <p className="text-base md:text-lg 3xl:text-xl text-ink/70 leading-relaxed mb-8 max-w-2xl 3xl:max-w-3xl mx-auto text-pretty">
+            A visual archive of Bandwar — from historic temples and vibrant festivals to the quiet moments of everyday life. Explore our collective memory.
           </p>
           
+          {/* Action Button */}
           <div className="flex justify-center">
             <AddContentModal 
               type="image" 
-              customButtonText="Upload a Photo to Gallery" 
+              customButtonText="Upload a Photo to Archive" 
             />
           </div>
         </div>
 
-        {/* Gallery Grid (Yahan asli magic hoga) */}
+        {/* Gallery Grid (Main Content) */}
         <GalleryGrid 
           photos={media.gallery.photos} 
           categories={media.gallery.categories} 
