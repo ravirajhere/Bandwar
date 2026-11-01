@@ -121,7 +121,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
 
   return (
-    <article className="bg-canvas min-h-screen py-8 md:py-12 3xl:py-20 relative">
+    <article className="bg-canvas min-h-screen py-6 md:py-10 3xl:py-16 relative font-sans">
       
       <script
         type="application/ld+json"
@@ -149,31 +149,31 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </div>
       </div>
 
-      <div className="container mx-auto px-4 md:px-0 grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_340px] 3xl:grid-cols-[320px_minmax(0,1fr)_400px] gap-8 xl:gap-10 3xl:gap-16">
+      <div className="container mx-auto px-4 md:px-0 grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_320px] 3xl:grid-cols-[300px_minmax(0,1fr)_380px] gap-8 xl:gap-12 3xl:gap-16">
         
-        {/* LEFT COLUMN (Desktop TOC) */}
+        {/* LEFT COLUMN (Desktop TOC - Wikipedia Style) */}
         <aside className="hidden lg:block no-print">
-          <div className="sticky top-28 bg-surface border border-divider rounded-lg shadow-sm p-5 3xl:p-6 text-sm overflow-hidden">
-            <h4 className="font-serif font-semibold text-ink mb-4 pb-3 border-b border-divider text-lg 3xl:text-xl">
+          <div className="sticky top-24 bg-surface border border-divider p-4 3xl:p-5 text-sm">
+            <h4 className="font-bold text-ink mb-3 pb-2 border-b border-divider text-xs uppercase tracking-wider">
               Contents
             </h4>
-            <ul className="space-y-2 3xl:space-y-3">
+            <ul className="space-y-1.5">
               {article.content.map((block: { heading: string }, index: number) => (
                 <li key={index}>
                   <a 
                     href={`#${generateAnchorId(block.heading)}`}
-                    className="group flex items-start gap-2.5 text-ink/70 hover:text-accent transition-colors leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm py-0.5"
+                    className="group flex items-start gap-2 text-ink-muted hover:text-accent transition-colors leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm py-0.5"
                   >
-                    <span className="text-ink/40 group-hover:text-accent/70 mt-0.5 tabular-nums">{index + 1}.</span>
-                    <span className="3xl:text-base">{block.heading}</span>
+                    <span className="text-ink/30 font-mono text-xs mt-0.5">{index + 1}.</span>
+                    <span className="3xl:text-[15px]">{block.heading}</span>
                   </a>
                 </li>
               ))}
               {article.faqs && article.faqs.length > 0 && (
                 <li>
-                  <a href="#faqs" className="group flex items-start gap-2.5 text-ink/70 hover:text-accent transition-colors leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm py-0.5">
-                    <span className="text-ink/40 group-hover:text-accent/70 mt-0.5 tabular-nums">{article.content.length + 1}.</span>
-                    <span className="3xl:text-base">FAQs</span>
+                  <a href="#faqs" className="group flex items-start gap-2 text-ink-muted hover:text-accent transition-colors leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm py-0.5">
+                    <span className="text-ink/30 font-mono text-xs mt-0.5">{article.content.length + 1}.</span>
+                    <span className="3xl:text-[15px]">FAQs</span>
                   </a>
                 </li>
               )}
@@ -184,76 +184,86 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         {/* MIDDLE COLUMN (Main Content) */}
         <div className="min-w-0 article-body-wrapper">
           
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm 3xl:text-base text-ink/60 mb-6 no-print flex-wrap">
+          {/* Breadcrumb (Strict & Compact) */}
+          <nav className="flex items-center gap-2 text-[13px] text-ink-muted mb-6 no-print flex-wrap">
             <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Home</Link>
-            <ChevronRight size={14} className="text-divider shrink-0" />
-            <Link href={`/section`} className="capitalize hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
-              {article.categories[0]}
+            <ChevronRight size={12} className="text-divider shrink-0" />
+            <Link href={`/section/${article.categories[0]}`} className="capitalize hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+              {categoryTitle}
             </Link>
-            <ChevronRight size={14} className="text-divider shrink-0" />
+            <ChevronRight size={12} className="text-divider shrink-0" />
             <span className="text-ink font-medium truncate max-w-[200px] sm:max-w-none">{article.title}</span>
           </nav>
 
-          <header className="mb-8 3xl:mb-12">
+          <header className="mb-8 border-b border-divider pb-6">
             {/* Article Title */}
-            <div className="flex items-start gap-2 md:gap-3 group">
-              <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink mb-3 leading-[1.15] font-semibold tracking-tight">
+            <div className="flex items-start gap-2 group mb-3">
+              <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink leading-[1.1] font-bold tracking-tight">
                 {article.title}
               </h1>
-              <div className="mt-1 md:mt-2 no-print opacity-50 group-hover:opacity-100 transition-opacity">
+              <div className="mt-2 no-print opacity-0 group-hover:opacity-100 transition-opacity">
                 <UniversalEditModal fieldName="Article Title" currentValue={article.title} contextId={article.id} contextType="Article" variant="icon" />
               </div>
             </div>
             
             {/* Subtitle */}
-            <div className="flex items-start gap-2 mb-6 group">
-              <p className="text-lg md:text-xl 3xl:text-2xl text-ink/70 leading-relaxed font-light m-0">
+            <div className="flex items-start gap-2 mb-5 group">
+              <p className="text-lg md:text-xl text-ink-muted leading-relaxed font-normal m-0">
                 {article.subtitle}
               </p>
-              <div className="mt-1 no-print opacity-50 group-hover:opacity-100 transition-opacity">
+              <div className="mt-1 no-print opacity-0 group-hover:opacity-100 transition-opacity">
                 <UniversalEditModal fieldName="Article Subtitle" currentValue={article.subtitle} contextId={article.id} contextType="Article" variant="icon" />
               </div>
             </div>
 
-            {/* Metadata & Toolbar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-y border-divider mb-8 no-print">
-              <div className="flex items-center gap-2">
+            {/* Metadata & Toolbar (Strict Flat layout) */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
+              <div className="flex items-center gap-3 text-[13px]">
                 {article.lastEditedBy ? (
-                  <div className="flex items-center gap-1.5 bg-surface text-accent px-3 py-1.5 rounded-md text-[13px] 3xl:text-sm font-medium border border-divider shadow-sm">
-                    <ShieldCheck size={16} className="3xl:w-5 3xl:h-5" />
-                    <span>Verified by {article.lastEditedBy} on {article.lastUpdated}</span>
+                  <div className="flex items-center gap-1.5 text-ink font-medium">
+                    <ShieldCheck size={16} className="text-accent" />
+                    <span>Verified by {article.lastEditedBy}</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-1.5 text-ink/60 text-[13px] 3xl:text-sm font-medium bg-canvas px-3 py-1.5 rounded-md border border-divider">
-                    <Calendar size={16} className="3xl:w-5 3xl:h-5" />
-                    <span>Last updated on {article.lastUpdated}</span>
+                  <div className="flex items-center gap-1.5 text-ink-muted font-medium">
+                    <Calendar size={16} />
+                    <span>Updated on {article.lastUpdated}</span>
                   </div>
+                )}
+                {article.lastEditedBy && (
+                  <>
+                    <span className="text-divider">|</span>
+                    <span className="text-ink-muted flex items-center gap-1.5">
+                      <Calendar size={14} /> {article.lastUpdated}
+                    </span>
+                  </>
                 )}
               </div>
               <ArticleToolbar title={article.title} contentText={fullContentText} />
             </div>
-            
-            {/* Hero Image */}
-            {article.hero && (
+          </header>
+
+          {/* Hero Image */}
+          {article.hero && (
+            <div className="mb-8">
               <ArticleHeroImage 
                 hero={article.hero}
                 title={article.title}
                 articleId={article.id}
                 altText={article.photos?.[0]?.imageAlt || article.title}
               />
-            )}
-
-            {/* Summary */}
-            <div className="flex items-start gap-2 group mt-6">
-              <p className="text-lg md:text-xl 3xl:text-2xl text-ink/90 leading-relaxed font-medium m-0 border-l-4 border-accent pl-4">
-                {article.summary}
-              </p>
-              <div className="mt-1 no-print opacity-50 group-hover:opacity-100 transition-opacity">
-                <UniversalEditModal fieldName="Article Summary" currentValue={article.summary} contextId={article.id} contextType="Article" variant="icon" />
-              </div>
             </div>
-          </header>
+          )}
+
+          {/* Lead Paragraph (Summary) - Wikipedia & NYT Style */}
+          <div className="flex items-start gap-2 group mb-10">
+            <p className="text-lg md:text-xl 3xl:text-[1.35rem] text-ink leading-relaxed font-medium m-0">
+              {article.summary}
+            </p>
+            <div className="mt-1 no-print opacity-0 group-hover:opacity-100 transition-opacity">
+              <UniversalEditModal fieldName="Article Summary" currentValue={article.summary} contextId={article.id} contextType="Article" variant="icon" />
+            </div>
+          </div>
 
           <div className="flow-root">
             {/* Infobox on Mobile/Tablet */}
@@ -264,17 +274,19 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             )}
 
             {/* Main Content Blocks */}
-            <div className="space-y-10 3xl:space-y-14">
+            <div className="space-y-8 3xl:space-y-12">
               {article.content.map((block: { heading: string, text: string }, index: number) => (
-                <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-28 group/section">
-                  <h2 className="font-serif text-2xl md:text-3xl 3xl:text-4xl text-ink mb-4 pb-2 border-b border-divider font-semibold">
-                    {block.heading}
-                  </h2>
-                  <div className="text-ink/80 text-[17px] md:text-[18px] 3xl:text-[1.25rem] leading-[1.8] prose prose-lg dark:prose-invert max-w-none">
-                    <WikiText text={block.text} validIds={validArticleIds} />
-                    <div className="inline-block mt-2 not-prose no-print opacity-50 hover:opacity-100 transition-opacity">
-                      <UniversalEditModal fieldName={`Paragraph: ${block.heading}`} currentValue={block.text} contextId={article.id} contextType="Article" variant="inline" />
+                <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-24 group/section">
+                  <div className="flex items-center justify-between border-b border-divider pb-2 mb-4">
+                    <h2 className="font-serif text-2xl 3xl:text-3xl text-ink font-bold m-0">
+                      {block.heading}
+                    </h2>
+                    <div className="no-print opacity-0 group-hover/section:opacity-100 transition-opacity">
+                       <UniversalEditModal fieldName={`Paragraph: ${block.heading}`} currentValue={block.text} contextId={article.id} contextType="Article" variant="icon" />
                     </div>
+                  </div>
+                  <div className="text-ink/90 text-base md:text-[17px] 3xl:text-[1.15rem] leading-[1.8] prose prose-lg dark:prose-invert max-w-[75ch]">
+                    <WikiText text={block.text} validIds={validArticleIds} />
                   </div>
                 </section>
               ))}
@@ -282,50 +294,48 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* FAQs */}
-          <div id="faqs" className="scroll-mt-28 mt-16 3xl:mt-24">
+          <div id="faqs" className="scroll-mt-24 mt-12 3xl:mt-16">
             {article.faqs && article.faqs.length > 0 && (
               <FaqAccordion faqs={article.faqs} />
             )}
           </div>
 
-          {/* Categories */}
-          <div className="mt-16 3xl:mt-24 pt-8 border-t border-divider no-print">
-            <h3 className="text-sm 3xl:text-base font-bold text-ink/50 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-accent"></span> Explore Categories
+          {/* Categories (Strict List) */}
+          <div className="mt-12 3xl:mt-16 pt-6 border-t border-divider no-print">
+            <h3 className="text-xs 3xl:text-sm font-bold text-ink-muted uppercase tracking-wider mb-3">
+              Categories
             </h3>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2">
               {article.categories.map((catId) => {
                 const cat = categoriesData.find(c => c.id === catId);
                 return (
                   <Link
                     key={catId}
                     href={`/section/${catId}`}
-                    className="inline-flex items-center gap-2 bg-surface hover:bg-canvas border border-divider px-4 py-2.5 rounded-md text-sm 3xl:text-base font-semibold text-ink transition-all duration-200 shadow-sm hover:shadow hover:border-accent/40 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    className="inline-flex items-center gap-1.5 bg-surface border border-divider px-2.5 py-1 text-xs 3xl:text-sm font-medium text-ink-muted hover:text-accent hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
-                    <span className="text-lg opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform">{cat?.icon || "📁"}</span>
                     <span>{cat?.title || catId}</span>
-                    <ChevronRight size={16} className="text-ink/40 group-hover:text-accent transition-colors ml-1" />
                   </Link>
                 );
               })}
             </div>
           </div>
 
-          {/* Related Articles */}
+          {/* Related Articles (Grid) */}
           {relatedArticles.length > 0 && (
             <div className="mt-12 3xl:mt-16 pt-8 border-t border-divider no-print">
-              <h3 className="font-serif text-2xl 3xl:text-3xl font-semibold text-ink mb-6">Read Next</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 3xl:gap-6">
+              <h3 className="font-serif text-xl 3xl:text-2xl font-bold text-ink mb-4">Read Next</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {relatedArticles.map((rel: any) => (
                   <Link 
                     key={rel.id} 
                     href={`/article/${rel.id}`}
-                    className="bg-surface border border-divider rounded-lg p-5 3xl:p-6 hover:shadow-md hover:border-accent/40 transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    className="bg-surface border border-divider p-4 hover:border-accent transition-colors flex flex-col group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
-                    <h4 className="font-serif text-lg 3xl:text-xl font-semibold text-ink group-hover:text-accent transition-colors mb-2 leading-snug">
+                    <h4 className="font-serif text-base 3xl:text-lg font-bold text-ink group-hover:text-accent transition-colors mb-1 leading-snug">
                       {rel.title}
                     </h4>
-                    <p className="text-ink/60 text-sm 3xl:text-base line-clamp-2">{rel.summary}</p>
+                    <p className="text-ink-muted text-sm line-clamp-2">{rel.summary}</p>
                   </Link>
                 ))}
               </div>
@@ -334,21 +344,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
           {/* Backlinks (Mentions In) */}
           {backlinks.length > 0 && (
-            <div className="mt-12 3xl:mt-16 pt-8 border-t border-divider no-print">
-              <h3 className="font-serif text-xl 3xl:text-2xl font-semibold text-ink mb-4 flex items-center gap-2">
-                <Link2 size={20} className="text-accent" /> Mentioned In
+            <div className="mt-12 3xl:mt-16 pt-6 border-t border-divider no-print">
+              <h3 className="font-bold text-xs 3xl:text-sm text-ink-muted uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <Link2 size={14} /> Mentioned In
               </h3>
-              <p className="text-sm 3xl:text-base text-ink/60 mb-4">
-                This article is referenced in the following pages:
-              </p>
-              <ul className="space-y-2 3xl:space-y-3">
+              <ul className="space-y-1.5 pl-1">
                 {backlinks.map((link) => (
                   <li key={link.id}>
                     <Link 
                       href={`/article/${link.id}`}
-                      className="text-accent hover:text-accent-hover hover:underline text-[15px] 3xl:text-base font-medium flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+                      className="text-accent hover:underline text-sm 3xl:text-base font-medium flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent/40 shrink-0"></span>
+                      <span className="w-1 h-1 bg-ink/20 rounded-full shrink-0"></span>
                       {link.title}
                     </Link>
                   </li>
@@ -358,23 +365,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           )}
 
           {/* Contribute CTA */}
-          <div className="mt-12 3xl:mt-16 bg-canvas border border-divider rounded-lg p-6 sm:p-8 text-center no-print">
-            <h3 className="font-serif text-xl 3xl:text-2xl font-semibold text-ink mb-2">
-              Something else is incorrect?
+          <div className="mt-12 3xl:mt-16 bg-surface border border-divider p-6 text-center no-print">
+            <h3 className="font-serif text-lg font-bold text-ink mb-1">
+              Something is incorrect?
             </h3>
-            <p className="text-ink/70 text-sm md:text-base mb-6">
-              If you have more details or found a mistake not covered by the edit buttons, let us know.
+            <p className="text-ink-muted text-sm mb-4">
+              If you have additional details, let us know.
             </p>
             <Link 
               href={`/contribute?page=${article.id}`} 
-              className="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-md font-medium hover:bg-accent-hover transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-2 bg-canvas border border-divider text-ink px-4 py-2 text-sm font-semibold hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
-              <Edit3 size={18} /> Suggest a General Edit
+              <Edit3 size={14} /> Suggest an Edit
             </Link>
           </div>
 
           {/* Footer Metadata */}
-          <div className="mt-8 pt-6 border-t border-divider text-sm 3xl:text-base text-ink/50 flex flex-col md:flex-row justify-between items-center gap-2">
+          <div className="mt-8 pt-4 border-t border-divider text-xs text-ink-muted flex flex-col md:flex-row justify-between items-center gap-2">
             <span>Last updated: {article.lastUpdated}</span>
             <span>Source: {config.site.name}</span>
           </div>
@@ -382,7 +389,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
         {/* RIGHT COLUMN (Infobox) */}
         <aside className="hidden xl:block no-print">
-          <div className="sticky top-28">
+          <div className="sticky top-24">
             {article.infobox && <Infobox data={article.infobox} title={article.title} articleId={article.id} />}
           </div>
         </aside>
