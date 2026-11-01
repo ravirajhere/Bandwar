@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-// Helper to save to GitHub Queue
 async function saveToQueue(item: any) {
   const githubToken = process.env.GITHUB_TOKEN;
   const repoOwner = process.env.GITHUB_REPO_OWNER;
@@ -14,22 +13,17 @@ async function saveToQueue(item: any) {
     });
     
     let fileData = null;
-    
-    // 👇 FIX: TypeScript ko bataya ki pending ek array hai jisme kuch bhi aa sakta hai
-    let queueContent: { pending: any[] } = { pending: [] };
+    let queueContent: { pending: any[], approved: any[] } = { pending: [], approved: [] };
     
     if (fileRes.ok) {
       fileData = await fileRes.json();
       queueContent = JSON.parse(Buffer.from(fileData.content, 'base64').toString('utf-8'));
-      // Safety check: Agar file mein pending nahi hai to naya array banao
       if (!queueContent.pending) queueContent.pending = [];
+      if (!queueContent.approved) queueContent.approved = [];
     }
 
-    // Add new item with unique ID
-    const newItem = { id: `edit_${Date.now()}`, ...item };
-    queueContent.pending.push(newItem);
+    queueContent.pending.push(item);
 
-    // Commit back to GitHub
     await fetch(getFileUrl, {
       method: "PUT",
       headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
@@ -39,11 +33,8 @@ async function saveToQueue(item: any) {
         ...(fileData && { sha: fileData.sha })
       })
     });
-    
-    return newItem.id;
   } catch (error) {
     console.error("Queue save failed", error);
-    return null;
   }
 }
 
@@ -60,7 +51,6 @@ export async function POST(req: Request) {
     const field = formData.get("field") as string || ""; 
     const suggestedValue = formData.get("suggestedValue") as string || ""; 
     
-    let message = `<b>🔔 New ${type.toUpperCase()}</b>\n<b>━━━━━━━━━━━━━━━━━━</b>\n`;
     let filePath = "data/master.json"; 
     let intent = "edit"; 
     let jsonObj: any = {};
@@ -71,24 +61,16 @@ export async function POST(req: Request) {
     else if (type.includes("Landmark") || type === "Image Update Suggestion") filePath = "data/media.json";
     else if (type.includes("Article")) filePath = "data/articles/landmarks.json";
 
-    message += `<b>Target File:</b> <code>${filePath}</code>\n`;
-
     if (type === "Image Update Suggestion") {
       intent = "image_update";
       jsonObj = { currentImage: formData.get("currentImagePath"), contextName: formData.get("Context Name") };
-      message += `<b>Action:</b> Image Update\n`;
     } 
     else if (field && suggestedValue) {
       intent = "edit";
       jsonObj = { field, suggestedValue };
-      message += `<b>Action:</b> Edit Field\n`;
-      message += `<b>Context ID:</b> <code>${contextId}</code>\n`;
-      message += `<b>Field:</b> ${field}\n`;
-      message += `<b>New Value:</b> ${suggestedValue}\n`;
     } 
     else {
       intent = "add";
-      message += `<b>Action:</b> Add New\n`;
       formData.forEach((value, key) => {
         if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
           jsonObj[key] = value;
@@ -96,47 +78,50 @@ export async function POST(req: Request) {
       });
     }
 
-    message += `👤 <b>Suggested By:</b> ${userName}\n`;
-
-    // 1. Save to Queue (Dashboard ke liye)
-    const payloadForQueue = { filePath, contextId, intent, jsonObj, type, userName, timestamp: new Date().toISOString() };
-    const editId = await saveToQueue(payloadForQueue);
-
-    // 2. Send to Telegram
-    const webhookData = { intent, filePath, contextId, jsonObj };
-    const jsonBase64 = Buffer.from(JSON.stringify(webhookData)).toString('base64');
-    message += `\n<b>📋 PAYLOAD:</b>\n<code>${jsonBase64}</code>`;
+    const editId = `edit_${Date.now()}`;
+    
+    // Clean Message
+    let message = `<b>🔔 New ${type.toUpperCase()}</b>\n\n`;
+    message += `👤 <b>By:</b> ${userName}\n`;
+    message += `🎯 <b>Target:</b> <code>${contextId}</code>\n`;
+    message += `⚙️ <b>Action:</b> ${intent}\n\n`;
+    message += `👇 <b>Review on Dashboard:</b>\nhttps://bandwar.vercel.app/admin/dashboard`;
 
     const replyMarkup = {
       inline_keyboard: [[
-        { text: "✅ Approve", callback_data: `approve:${contextId}` },
-        { text: "❌ Reject", callback_data: `reject:${contextId}` }
+        { text: "✅ Stage for Publish", callback_data: `approve:${editId}` },
+        { text: "❌ Reject", callback_data: `reject:${editId}` }
       ]]
     };
+
+    let telegramMessageId = null;
 
     if (imageFile && imageFile.size > 0) {
       const photoFormData = new FormData();
       photoFormData.append("chat_id", chatId!);
-      photoFormData.append("caption", message.substring(0, 1020)); 
+      photoFormData.append("caption", message); 
       photoFormData.append("parse_mode", "HTML");
       photoFormData.append("reply_markup", JSON.stringify(replyMarkup));
       photoFormData.append("photo", imageFile, imageFile.name);
-
-      await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
-        method: "POST",
-        body: photoFormData,
-      });
+      const res = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, { method: "POST", body: photoFormData });
+      const data = await res.json();
+      if (data.ok) telegramMessageId = data.result.message_id;
     } else {
-      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML", reply_markup: replyMarkup }),
+        body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML", reply_markup: replyMarkup, disable_web_page_preview: true }),
       });
+      const data = await res.json();
+      if (data.ok) telegramMessageId = data.result.message_id;
     }
+
+    // Save to Queue
+    const payloadForQueue = { id: editId, filePath, contextId, intent, jsonObj, type, userName, timestamp: new Date().toISOString(), telegramMessageId, chatId };
+    await saveToQueue(payloadForQueue);
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Server error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
