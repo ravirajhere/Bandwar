@@ -26,7 +26,7 @@ export function useInlineEdit(
     setStatus("idle");
   };
 
-  const saveEdit = async (submitterName: string = "Anonymous") => {
+  const saveEdit = async (submitterName: string = "Anonymous Visitor") => {
     if (draft.trim() === value.trim()) {
       setStatus("idle");
       return;
@@ -49,14 +49,13 @@ export function useInlineEdit(
       const data = await res.json();
 
       if (data.success) {
-        setValue(draft); // Optimistic UI update
+        setValue(draft); 
         setStatus("pending");
         toast("Suggestion sent for review.", "success");
         
-        // Reset pending status after 5 seconds (just visual)
         setTimeout(() => {
-          if (status === "pending") setStatus("idle");
-        }, 5000);
+          setStatus("idle");
+        }, 4000);
       } else {
         setStatus("error");
         toast("Failed to send suggestion.", "error");
