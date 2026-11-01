@@ -3,14 +3,15 @@
 import { useState, useEffect } from "react";
 import { Edit3 } from "lucide-react";
 import { EditProfileModal } from "./EditProfileModal";
-import { isAdmin } from "@/lib/contributor";
+import { CONTRIBUTOR_STORAGE_KEY } from "@/lib/contributor"; // 🚀 isAdmin hata diya
 
 export function ProfileClientWrapper({ contributor }: { contributor: any }) {
   const [isOwner, setIsOwner] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("bandwar_contributor");
+    // Check karein ki logged-in user hi is profile ka owner hai ya nahi
+    const stored = localStorage.getItem(CONTRIBUTOR_STORAGE_KEY);
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
