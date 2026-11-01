@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useEffect, useState, ReactNode } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Pencil, Check, X, Loader2, Link as LinkIcon, Eye, Edit3 } from "lucide-react";
 import { useInlineEdit } from "@/hooks/useInlineEdit";
+import { WikiText } from "@/components/article/WikiText"; // 🚀 Import add kiya
 
 interface EditableParagraphProps {
   initialValue: string;
@@ -10,7 +11,7 @@ interface EditableParagraphProps {
   contextType: string;
   fieldName: string;
   className?: string;
-  renderer?: (text: string) => ReactNode;
+  validIds?: string[]; // 🚀 renderer hata kar validIds add kiya
 }
 
 export function EditableParagraph({
@@ -19,7 +20,7 @@ export function EditableParagraph({
   contextType,
   fieldName,
   className = "",
-  renderer,
+  validIds, // 🚀 Prop receive kiya
 }: EditableParagraphProps) {
   const {
     status,
@@ -65,6 +66,14 @@ export function EditableParagraph({
     }
   };
 
+  // 🚀 Helper to render content safely
+  const renderContent = (text: string) => {
+    if (validIds) {
+      return <WikiText text={text} validIds={validIds} />;
+    }
+    return <p className="m-0">{text}</p>;
+  };
+
   if (status === "editing" || status === "saving") {
     return (
       <div className="w-full border-l-2 border-l-accent pl-3 -ml-3">
@@ -100,7 +109,7 @@ export function EditableParagraph({
         {/* Editor Body */}
         {showPreview ? (
           <div className={`bg-canvas border border-divider rounded-sm px-4 py-3 min-h-[100px] ${className}`}>
-            {draft.trim() ? (renderer ? renderer(draft) : <p className="m-0">{draft}</p>) : (
+            {draft.trim() ? renderContent(draft) : (
               <span className="text-ink-muted italic text-sm">Nothing to preview yet...</span>
             )}
           </div>
@@ -156,7 +165,7 @@ export function EditableParagraph({
         } ${className}`}
         title={`Click to edit ${fieldName}`}
       >
-        {renderer ? renderer(value) : <p className="m-0">{value}</p>}
+        {renderContent(value)}
       </div>
       <button
         onClick={startEditing}
