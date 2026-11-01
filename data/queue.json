@@ -1,1 +1,17 @@
-{ "pending": [] }
+{
+  "pending": [
+    {
+      "id": "edit_1793519828270",
+      "filePath": "data/people.json",
+      "contextId": "sukhdev-singh-bandwar",
+      "intent": "edit",
+      "jsonObj": {
+        "field": "Role",
+        "suggestedValue": "Freedom Fighter & Social Activist"
+      },
+      "type": "Person",
+      "userName": "Sudesh",
+      "timestamp": "2026-11-01T07:57:08.128Z"
+    }
+  ]
+}
