@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { Pencil, Check, X, Loader2 } from "lucide-react";
 import { useInlineEdit } from "@/hooks/useInlineEdit";
+import { useEditMode } from "./EditModeProvider";
 
 interface EditableTextProps {
   initialValue: string;
@@ -14,13 +15,9 @@ interface EditableTextProps {
 }
 
 export function EditableText({
-  initialValue,
-  contextId,
-  contextType,
-  fieldName,
-  className = "",
-  as: Component = "p",
+  initialValue, contextId, contextType, fieldName, className = "", as: Component = "p",
 }: EditableTextProps) {
+  const { isEditMode } = useEditMode();
   const {
     status, value, draft, setDraft, startEditing, cancelEditing, saveEdit, registrationModal
   } = useInlineEdit(initialValue, contextId, contextType, fieldName);
@@ -45,6 +42,11 @@ export function EditableText({
     }
   };
 
+  // 🚀 READING MODE: Agar edit mode off hai, toh sirf clean text render karo
+  if (!isEditMode && status === "idle") {
+    return <Component className={className}>{value || "—"}</Component>;
+  }
+
   if (status === "editing" || status === "saving") {
     return (
       <div className="relative group w-full">
@@ -61,27 +63,15 @@ export function EditableText({
           className={`w-full bg-surface border-2 border-accent rounded-sm px-2 py-1 outline-none resize-none overflow-hidden font-sans text-ink disabled:opacity-70 ${className}`}
         />
         
-        <div className="absolute -bottom-10 left-0 flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md z-50 animate-in fade-in zoom-in duration-150">
-          <button 
-            onClick={() => saveEdit()} 
-            disabled={status === "saving"}
-            className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm transition-colors disabled:opacity-50"
-          >
+        <div className="absolute -bottom-10 left-0 flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md z-50">
+          <button onClick={() => saveEdit()} disabled={status === "saving"} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm disabled:opacity-50">
             {status === "saving" ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} 
             {status === "saving" ? "Saving..." : "Save"}
           </button>
           <div className="w-px h-4 bg-white/20"></div>
-          <button 
-            onClick={cancelEditing} 
-            disabled={status === "saving"}
-            className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm transition-colors text-red-300 hover:text-red-200 disabled:opacity-50"
-          >
+          <button onClick={cancelEditing} disabled={status === "saving"} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm text-red-300 disabled:opacity-50">
             <X size={12} /> Cancel
           </button>
-        </div>
-        
-        <div className="absolute top-full left-0 mt-1 text-[10px] text-ink-muted">
-          Enter to save • Esc to cancel
         </div>
       </div>
     );
@@ -100,11 +90,7 @@ export function EditableText({
           {value || "—"}
         </Component>
 
-        <button
-          onClick={startEditing}
-          className="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all"
-          aria-label={`Edit ${fieldName}`}
-        >
+        <button onClick={startEditing} className="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all">
           <Pencil size={16} />
         </button>
 
