@@ -9,150 +9,138 @@ const config: Config = {
   darkMode: "class",
   theme: {
     screens: {
-      sm: "640px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1280px",
-      "2xl": "1536px",
-      "3xl": "1920px", // TV
-      "4xl": "2560px", // 4K
+      sm: "640px", md: "768px", lg: "1024px", xl: "1280px",
+      "2xl": "1536px", "3xl": "1920px", "4xl": "2560px",
     },
     container: {
       center: true,
-      padding: {
-        DEFAULT: "1rem",
-        md: "2rem",
-        lg: "3rem",
-        "3xl": "6rem",
-        "4xl": "8rem",
-      },
-      screens: {
-        sm: "100%",
-        md: "720px",
-        lg: "960px",
-        xl: "1140px",
-        "2xl": "1280px", 
-        "3xl": "1440px", // Max reading width for TV
-      },
+      padding: { DEFAULT: "1rem", md: "2rem", lg: "3rem", "3xl": "6rem", "4xl": "8rem" },
+      screens: { sm: "100%", md: "720px", lg: "960px", xl: "1140px", "2xl": "1280px", "3xl": "1440px" },
     },
     extend: {
       colors: {
+        // 🏛️ BANDWAR IDENTITY: Warm Archive Palette
         canvas: "var(--bg-canvas)",
         surface: "var(--bg-surface)",
+        paper: "var(--bg-paper)", // New: for depth layers
         ink: {
           DEFAULT: "var(--text-ink)",
           muted: "var(--text-ink-muted)",
+          subtle: "var(--text-ink-subtle)",
           inverted: "var(--text-inverted)",
         },
+        // 🎨 Mithila Terracotta (Signature color)
         accent: {
           DEFAULT: "var(--brand-accent)",
           hover: "var(--brand-accent-hover)",
           subtle: "var(--brand-accent-subtle)",
+          muted: "var(--brand-accent-muted)",
         },
-        divider: "var(--border-divider)",
-        // Semantic Colors for Forms, Alerts, and Toasts
+        // 🌾 Warm dividers
+        divider: {
+          DEFAULT: "var(--border-divider)",
+          subtle: "var(--border-subtle)",
+          strong: "var(--border-strong)",
+        },
+        // Editorial gold for special moments
+        gold: "var(--brand-gold)",
+        
+        // Semantic
         success: "var(--status-success)",
         warning: "var(--status-warning)",
         error: "var(--status-error)",
         info: "var(--status-info)",
       },
       fontFamily: {
-        // Strict Serif for Headings (Encyclopedic Authority)
-        serif: ["Georgia", "Cambria", "Times New Roman", "serif"],
-        // Strict Sans for Body (High readability, Wikipedia/Meta style)
-        sans: ["var(--font-inter)", "Arial", "Helvetica", "sans-serif"],
-        // Mono for Data, Coordinates, and Code
-        mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "monospace"],
+        // 🚀 Fraunces — The signature typeface (Anthropic/Stripe inspired)
+        serif: ["var(--font-fraunces)", "Georgia", "serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        mono: ["var(--font-jetbrains)", "ui-monospace", "monospace"],
       },
       fontSize: {
-        // High density sizes (No fancy fluid typography, just strict scaling)
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'base': ['1rem', { lineHeight: '1.6' }], // Standard reading size
-        'lg': ['1.125rem', { lineHeight: '1.6' }],
-        'xl': ['1.25rem', { lineHeight: '1.4' }],
-        '2xl': ['1.5rem', { lineHeight: '1.3' }],
-        '3xl': ['1.875rem', { lineHeight: '1.2' }],
-        '4xl': ['2.25rem', { lineHeight: '1.1' }],
+        'xs': ['0.75rem', { lineHeight: '1.4' }],
+        'sm': ['0.875rem', { lineHeight: '1.5' }],
+        'base': ['1rem', { lineHeight: '1.7' }],
+        'lg': ['1.125rem', { lineHeight: '1.65' }],
+        'xl': ['1.25rem', { lineHeight: '1.5' }],
+        '2xl': ['1.5rem', { lineHeight: '1.35' }],
+        '3xl': ['1.875rem', { lineHeight: '1.25' }],
+        '4xl': ['2.25rem', { lineHeight: '1.15' }],
         '5xl': ['3rem', { lineHeight: '1.1' }],
+        '6xl': ['3.75rem', { lineHeight: '1.05' }],
       },
       maxWidth: {
-        // Reading constraints (Crucial for Top-Tier Content Sites)
-        'reading': '75ch', // Wikipedia standard for articles
-        'text': '65ch',    // Stricter width for sidebars/cards
+        'reading': '72ch', // Editorial standard
+        'text': '60ch',
+        'display': '90ch',
       },
       borderRadius: {
-        // Strict, almost sharp corners (GOV.UK / GitHub style)
+        // Sharp but refined (Apple/Stripe inspired)
         none: "0",
         sm: "2px",
-        DEFAULT: "4px", 
+        DEFAULT: "3px",
+        md: "4px",
+        lg: "6px",
       },
       boxShadow: {
-        // ZERO soft or heavy shadows. Only structural shadows for Modals.
+        // Warm-tinted shadows (not pure black)
         'none': 'none',
-        'strict': '0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)',
+        'sm': '0 1px 2px 0 rgba(124, 45, 18, 0.04)',
+        'card': '0 1px 3px 0 rgba(124, 45, 18, 0.06), 0 1px 2px -1px rgba(124, 45, 18, 0.04)',
+        'lifted': '0 4px 12px -2px rgba(124, 45, 18, 0.08), 0 2px 4px -2px rgba(124, 45, 18, 0.04)',
+        'editorial': '0 8px 24px -4px rgba(28, 24, 21, 0.12)',
       },
       zIndex: {
-        // Systematic Z-Index Layers (Prevents z-[9999] spaghetti code)
-        'base': '0',
-        'dropdown': '1000',
-        'sticky': '1020',
-        'header': '1030',
-        'overlay': '1040',
-        'modal': '1050',
-        'toast': '1060',
+        'base': '0', 'dropdown': '1000', 'sticky': '1020', 
+        'header': '1030', 'overlay': '1040', 'modal': '1050', 'toast': '1060',
+      },
+      backgroundImage: {
+        // Subtle paper texture (Swiss minimalism meets heritage)
+        'paper-texture': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
       },
       typography: (theme: any) => ({
         DEFAULT: {
           css: {
-            maxWidth: '75ch',
+            maxWidth: '72ch',
             color: 'var(--text-ink)',
-            fontFamily: 'var(--font-inter), Arial, sans-serif',
-            fontSize: '1rem',
-            lineHeight: '1.8',
-            // Strict Links (Wikipedia/Stripe style)
+            fontFamily: 'var(--font-inter), system-ui, sans-serif',
+            fontSize: '1.0625rem',
+            lineHeight: '1.75',
+            '--tw-prose-body': 'var(--text-ink)',
+            '--tw-prose-headings': 'var(--text-ink)',
+            '--tw-prose-links': 'var(--brand-accent)',
+            '--tw-prose-quotes': 'var(--text-ink-muted)',
             a: {
               color: 'var(--brand-accent)',
               textDecoration: 'none',
-              '&:hover': { textDecoration: 'underline', textUnderlineOffset: '2px' },
+              borderBottom: '1px solid transparent',
+              transition: 'border-color 0.15s ease',
+              '&:hover': { borderBottomColor: 'var(--brand-accent)' },
             },
-            // Formal Headings
-            'h1, h2, h3, h4, h5, h6': {
-              fontFamily: 'Georgia, Cambria, serif',
-              fontWeight: 'bold',
-              color: 'var(--text-ink)',
-              scrollMarginTop: '100px', // For TOC anchors
+            'h1, h2, h3, h4': {
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontWeight: '600',
+              letterSpacing: '-0.02em',
             },
-            h1: { fontSize: '2.25rem', lineHeight: '1.1', marginBottom: '1rem' },
-            h2: { fontSize: '1.5rem', lineHeight: '1.3', marginTop: '2.5rem', marginBottom: '0.75rem', paddingBottom: '0.25rem', borderBottom: '1px solid var(--border-divider)' },
+            h1: { fontSize: '2.25rem', marginBottom: '1rem' },
+            h2: { fontSize: '1.5rem', marginTop: '2.5rem', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-divider)' },
             h3: { fontSize: '1.25rem', marginTop: '2rem', marginBottom: '0.5rem' },
-            p: { marginBottom: '1.25rem' },
             blockquote: {
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
               fontStyle: 'italic',
-              borderLeftWidth: '4px',
-              borderLeftColor: 'var(--brand-accent)',
-              paddingLeft: '1rem',
-              color: 'var(--text-ink-muted)',
+              fontSize: '1.25rem',
+              borderLeftWidth: '3px',
+              borderLeftColor: 'var(--brand-gold)',
+              paddingLeft: '1.5rem',
               margin: '2rem 0',
+              color: 'var(--text-ink)',
             },
-            'ul, ol': { paddingLeft: '1.5rem', marginBottom: '1.25rem' },
-            li: { marginBottom: '0.5rem' },
-          },
-        },
-        // Dark Mode Overrides
-        invert: {
-          css: {
-            color: 'var(--text-ink)',
-            'h1, h2, h3, h4, h5, h6': { color: 'var(--text-ink)' },
-            blockquote: { color: 'var(--text-ink-muted)' },
           },
         },
       }),
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/typography')],
 };
 
 export default config;
