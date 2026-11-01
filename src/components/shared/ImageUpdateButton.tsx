@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Pencil, X, UploadCloud, Loader2, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { useContributorGate } from "@/hooks/useContributorGate";
 
+// 🚀 Image Compression
 const compressImage = async (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -42,7 +43,7 @@ export function ImageUpdateButton({
   contextName, 
   contextId, 
   currentImage,
-  targetType = "article" // 🚀 Naya prop: "article" ya "person"
+  targetType = "article" 
 }: { 
   contextName: string; 
   contextId: string; 
@@ -79,7 +80,7 @@ export function ImageUpdateButton({
     formData.append("contextId", contextId);
     formData.append("Context Name", contextName);
     formData.append("currentImagePath", currentImage || "Unknown");
-    formData.append("targetType", targetType); // 🚀 Backend ko batao kahan save karna hai
+    formData.append("targetType", targetType);
 
     await submitWithGate(formData, async (data) => {
       try {
