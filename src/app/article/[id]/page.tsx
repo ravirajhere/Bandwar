@@ -5,10 +5,10 @@ import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
-import { UniversalEditModal } from "@/components/shared/UniversalEditModal";
 import { MobileTOC } from "@/components/article/MobileTOC"; 
 import { ArticleHeroImage } from "@/components/article/ArticleHeroImage"; 
-import { EditableText } from "@/components/editor/EditableText"; // 🚀 Naya Inline Editor
+import { EditableText } from "@/components/editor/EditableText"; 
+import { EditableParagraph } from "@/components/editor/EditableParagraph"; // 🚀 Naya Paragraph Editor
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; 
 
@@ -260,14 +260,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* Lead Paragraph (Summary) - Wikipedia & NYT Style */}
-          <div className="flex items-start gap-2 group mb-10">
-            <p className="text-lg md:text-xl 3xl:text-[1.35rem] text-ink leading-relaxed font-medium m-0">
-              {article.summary}
-            </p>
-            <div className="mt-1 no-print opacity-0 group-hover:opacity-100 transition-opacity">
-              <UniversalEditModal fieldName="Article Summary" currentValue={article.summary} contextId={article.id} contextType="Article" variant="icon" />
-            </div>
+          {/* 🚀 Lead Paragraph (Summary) - Inline Editing */}
+          <div className="mb-10">
+            <EditableParagraph
+              initialValue={article.summary}
+              contextId={article.id}
+              contextType="Article"
+              fieldName="Article Summary"
+              className="text-lg md:text-xl 3xl:text-[1.35rem] text-ink leading-relaxed font-medium"
+            />
           </div>
 
           <div className="flow-root">
@@ -278,21 +279,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             )}
 
-            {/* Main Content Blocks */}
+            {/* 🚀 Main Content Blocks - Inline Editing */}
             <div className="space-y-8 3xl:space-y-12">
               {article.content.map((block: { heading: string, text: string }, index: number) => (
-                <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-24 group/section">
-                  <div className="flex items-center justify-between border-b border-divider pb-2 mb-4">
+                <section key={index} id={generateAnchorId(block.heading)} className="scroll-mt-24">
+                  <div className="border-b border-divider pb-2 mb-4">
                     <h2 className="font-serif text-2xl 3xl:text-3xl text-ink font-bold m-0">
                       {block.heading}
                     </h2>
-                    <div className="no-print opacity-0 group-hover/section:opacity-100 transition-opacity">
-                       <UniversalEditModal fieldName={`Paragraph: ${block.heading}`} currentValue={block.text} contextId={article.id} contextType="Article" variant="icon" />
-                    </div>
                   </div>
-                  <div className="text-ink/90 text-base md:text-[17px] 3xl:text-[1.15rem] leading-[1.8] prose prose-lg dark:prose-invert max-w-[75ch]">
-                    <WikiText text={block.text} validIds={validArticleIds} />
-                  </div>
+                  <EditableParagraph
+                    initialValue={block.text}
+                    contextId={article.id}
+                    contextType="Article"
+                    fieldName={`Paragraph: ${block.heading}`}
+                    className="text-ink/90 text-base md:text-[17px] 3xl:text-[1.15rem] leading-[1.8] prose prose-lg dark:prose-invert max-w-[75ch]"
+                    renderer={(text) => <WikiText text={text} validIds={validArticleIds} />}
+                  />
                 </section>
               ))}
             </div>
