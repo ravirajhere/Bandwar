@@ -10,9 +10,10 @@
     {
       "id": "navin-kumar-navin-bandwar",
       "name": "Navin Kumar Navin",
-      "role": "Politician & Social Worker",
+      "role": "Politician & Teacher",
       "locality": "Bandwar",
-      "bio": "A prominent political figure from Bandwar, actively involved in local governance and community development in the Begusarai district."
+      "bio": "A prominent political figure from Bandwar, actively involved in local governance and community development in the Begusarai district.",
+      "lastEditedBy": "Verified Editor (Telegram)"
     },
     {
       "id": "girija-singh-bandwar",
@@ -34,11 +35,22 @@
       "servedYears": "40+",
       "photo": "/images/people/mahant-surendra-das-bandwar.jpg",
       "photoAlt": "Mahant Surendra Das of Bandwar Thakurbari",
-      "titles": ["Mahant", "Chief Priest", "Baal Sant"],
+      "titles": [
+        "Mahant",
+        "Chief Priest",
+        "Baal Sant"
+      ],
       "notableFor": "Served Bandwar Thakurbari for over 40 years and preserved the 200+ year old Krishna Janmashtami Mela",
       "journey": "Born in 1965 in Khamhar, he left home at the tender age of 13 to become an ascetic (baal sant) and went to Ayodhya. In 1985, he arrived in Bandwar with his guru (a panda from Ayodhya) to receive bhiksha. Captivated by the temple and the village, he chose to stay and devoted over 40 years of his life to the service of the deity at Bandwar Thakurbari.",
       "bio": "The revered Mahant of the historic Bandwar Thakurbari in Begusarai. A baal sant who left home at 13 and reached Bandwar in 1985 with his Ayodhya-based guru, he served the temple and its deity for over four decades. Under his stewardship, the Thakurbari's 200+ year old Krishna Janmashtami Mela continued to flourish. He passed away on 29 October 2026, leaving behind a legacy of devotion, simplicity, and cultural preservation.",
-      "tags": ["mahant", "thakurbari", "religious", "janmashtami", "baal-sant", "ayodhya"]
+      "tags": [
+        "mahant",
+        "thakurbari",
+        "religious",
+        "janmashtami",
+        "baal-sant",
+        "ayodhya"
+      ]
     }
   ]
 }
