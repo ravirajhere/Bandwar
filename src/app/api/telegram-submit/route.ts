@@ -20,10 +20,17 @@ export async function POST(req: Request) {
       lastUpdated: new Date().toISOString().split('T')[0],
       lastEditedBy: userName
     };
+    
+    // 🚀 NAYA: File Path determine karna
+    let filePath = "data/master.json"; // Default
+    if (type.includes("Directory")) filePath = "data/directory.json";
+    else if (type.includes("Vision")) filePath = "data/vision.json";
+    else if (type.includes("Person")) filePath = "data/people.json";
+    else if (type.includes("Landmark")) filePath = "data/media.json";
+    else if (type.includes("Article")) filePath = "data/articles/landmarks.json"; // Example
 
-    // ==========================================
-    // 1. IMAGE UPDATE LOGIC
-    // ==========================================
+    message += `<b>Target File:</b> <code>${filePath}</code>\n`;
+
     if (type === "Image Update Suggestion") {
       const contextName = formData.get("Context Name") as string;
       const currentImage = formData.get("currentImagePath") as string || "Unknown Path";
@@ -43,11 +50,7 @@ export async function POST(req: Request) {
         lastEditedBy: userName,
         action: "Image updated (file overwritten)"
       };
-    }
-    // ==========================================
-    // 2. NEW CONTENT / INLINE EDIT LOGIC
-    // ==========================================
-    else {
+    } else {
       formData.forEach((value, key) => {
         if (key !== "type" && key !== "image" && typeof value === "string" && value.trim() !== "") {
           message += `<b>${key}:</b> ${value}\n`;
@@ -57,10 +60,12 @@ export async function POST(req: Request) {
       });
     }
 
-    const jsonSnippet = `\n<b>📋 COPY-PASTE THIS JSON:</b>\n<pre>${JSON.stringify(jsonObj, null, 2)}</pre>`;
+    // JSON data ko Base64 mein encode karke bhejenge taaki webhook easily parse kar sake
+    const jsonBase64 = Buffer.from(JSON.stringify(jsonObj)).toString('base64');
+    const jsonSnippet = `\n<b>📋 JSON PAYLOAD (Base64):</b>\n<code>${jsonBase64}</code>`;
     const finalMessage = message + jsonSnippet;
 
-    // 📱 Inline Keyboard Setup (Moderation Buttons)
+    // Inline Keyboard
     const replyMarkup = {
       inline_keyboard: [
         [
@@ -74,9 +79,9 @@ export async function POST(req: Request) {
     if (imageFile && imageFile.size > 0) {
       const photoFormData = new FormData();
       photoFormData.append("chat_id", chatId);
-      photoFormData.append("caption", finalMessage.substring(0, 1020)); // Telegram caption limit
+      photoFormData.append("caption", finalMessage.substring(0, 1020)); 
       photoFormData.append("parse_mode", "HTML");
-      photoFormData.append("reply_markup", JSON.stringify(replyMarkup)); // Add Buttons to Photo
+      photoFormData.append("reply_markup", JSON.stringify(replyMarkup));
       photoFormData.append("photo", imageFile, imageFile.name);
 
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
@@ -95,7 +100,7 @@ export async function POST(req: Request) {
           chat_id: chatId,
           text: finalMessage,
           parse_mode: "HTML",
-          reply_markup: replyMarkup // Add Buttons to Text
+          reply_markup: replyMarkup 
         }),
       });
 
