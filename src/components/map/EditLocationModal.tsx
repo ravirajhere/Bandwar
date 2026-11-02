@@ -3,14 +3,16 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
-import { MapPinOff, X, Loader2, CheckCircle2, Navigation, MapPin } from "lucide-react";
+import { MapPinOff, X, Loader2, CheckCircle2, MapPin } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { useContributorGate } from "@/hooks/useContributorGate";
 
+// 🚀 FIX: MapTracker function update kiya gaya hai
 function MapTracker({ onCenterChange }: { onCenterChange: (lat: number, lng: number) => void }) {
+  const map = useMap();
   useMapEvents({ 
     moveend() { 
-      const c = this.getCenter(); 
+      const c = map.getCenter(); 
       onCenterChange(c.lat, c.lng); 
     } 
   });
