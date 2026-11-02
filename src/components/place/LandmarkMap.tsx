@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, ScaleControl, ZoomControl, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -8,134 +8,169 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import L from "leaflet";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { EditLocationModal } from "./EditLocationModal"; 
-import { AddLandmarkModal } from "./AddLandmarkModal"; 
+import { EditLocationModal } from "./EditLocationModal";
+import { MapLegend } from "./MapLegend";
+import { ArrowUpRight, Navigation } from "lucide-react";
 
-// 🎨 Custom SVG Icon Generator (Muted, Formal Colors)
-const createIcon = (category: string, iconEmoji?: string) => {
-  const colors: Record<string, string> = {
-    religion: "#b45309",        // Amber-700
-    education: "#1d4ed8",       // Blue-700
-    infrastructure: "#15803d",  // Green-700
-    landmarks: "#b91c1c",       // Red-700
-    geography: "#0369a1",       // Sky-700
-  };
-  const color = colors[category] || "#334155"; // Slate-700
+// 🏛️ Formal Category Config (Numbers + Muted Colors, No Emoji)
+const CATEGORY_CONFIG: Record<string, { number: string; color: string; label: string }> = {
+  religion: { number: "1", color: "#7C2D12", label: "Temple / Religious" },
+  education: { number: "2", color: "#1E3A8A", label: "Education" },
+  infrastructure: { number: "3", color: "#166534", label: "Infrastructure" },
+  landmarks: { number: "4", color: "#991B1B", label: "Historical Landmark" },
+  geography: { number: "5", color: "#075985", label: "Natural / Geography" },
+};
 
+// 📍 Formal Square Pin (No Emoji, Category Number)
+const createIcon = (category: string) => {
+  const config = CATEGORY_CONFIG[category] || { number: "•", color: "#334155" };
+  
   return L.divIcon({
     className: "custom-map-pin",
     html: `
       <div style="
-        background-color: ${color}; width: 34px; height: 34px; 
-        border-radius: 50% 50% 50% 0; transform: rotate(-45deg); 
-        border: 3px solid var(--bg-surface); box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        background-color: ${config.color};
+        width: 22px; height: 22px;
+        border: 2px solid var(--bg-surface);
         display: flex; align-items: center; justify-content: center;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 10px;
+        font-weight: 700;
+        color: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.4);
       ">
-        <span style="transform: rotate(45deg); font-size: 15px; line-height: 1;">${iconEmoji || "📍"}</span>
+        ${config.number}
       </div>
     `,
-    iconSize: [34, 34], iconAnchor: [17, 34], popupAnchor: [0, -34],
+    iconSize: [22, 22],
+    iconAnchor: [11, 11],
+    popupAnchor: [0, -14],
   });
 };
 
-// 🎬 Controller for Fly-To Animation
+// 🔍 Coordinate Tracker
+function CoordinateDisplay({ onMove }: { onMove: (lat: number, lng: number) => void }) {
+  useMapEvents({
+    moveend(e) {
+      const center = e.target.getCenter();
+      onMove(center.lat, center.lng);
+    },
+  });
+  return null;
+}
+
+// 🎯 Controller for Panning (No FlyTo animation — instant)
 function MapController({ activeLandmark }: { activeLandmark: any }) {
   const map = useMap();
   useEffect(() => {
     if (activeLandmark) {
-      map.flyTo([activeLandmark.lat, activeLandmark.lng], 17, { duration: 1.5 });
+      map.setView([activeLandmark.lat, activeLandmark.lng], 17, { animate: false });
     }
   }, [activeLandmark, map]);
   return null;
 }
 
-export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: any[], activeLandmark: any }) {
+interface LandmarkMapProps {
+  landmarks: any[];
+  activeLandmark?: any;
+  showLegend?: boolean;
+  showScale?: boolean;
+}
+
+export default function LandmarkMap({ 
+  landmarks, 
+  activeLandmark, 
+  showLegend = true,
+  showScale = true 
+}: LandmarkMapProps) {
   const [mounted, setMounted] = useState(false);
+  const [centerCoords, setCenterCoords] = useState({ lat: 25.5009, lng: 86.1606 });
 
   useEffect(() => { setMounted(true); }, []);
 
   if (!mounted) return (
-    <div className="h-full min-h-[400px] w-full bg-surface border border-divider flex items-center justify-center text-ink/60">
-      Initializing Satellite Map...
+    <div className="h-full min-h-[400px] w-full bg-surface border border-divider flex items-center justify-center text-ink/60 text-sm">
+      Loading cartographic data...
     </div>
   );
 
   return (
     <div className="h-full w-full overflow-hidden z-0 relative">
       
-      <AddLandmarkModal />
-
       <MapContainer 
         center={[25.5009, 86.1606]} 
         zoom={14} 
         style={{ height: "100%", width: "100%" }}
         scrollWheelZoom={false}
+        zoomControl={false}
         className="z-0"
       >
         <MapController activeLandmark={activeLandmark} />
+        <CoordinateDisplay onMove={(lat, lng) => setCenterCoords({ lat, lng })} />
 
         <TileLayer
-          attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+          attribution='Satellite: Esri | Archive: Bandwar Village'
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
         />
+
+        {showScale && <ScaleControl position="bottomright" imperial={false} />}
+        <ZoomControl position="topright" />
 
         <MarkerClusterGroup chunkedLoading>
           {landmarks.map((place) => (
             <Marker 
-              key={place.id} 
+              key={place.id || place.name} 
               position={[place.lat, place.lng]}
-              icon={createIcon(place.category, place.icon)}
+              icon={createIcon(place.category)}
             >
-              <Popup className="custom-archive-popup">
-                <div className="min-w-[240px] max-w-[280px] 3xl:min-w-[320px] 3xl:max-w-[380px] p-1">
+              <Popup className="custom-archive-popup" maxWidth={300}>
+                <div className="min-w-[260px] p-0">
                   
-                  {/* Popup Header */}
-                  <div className="flex items-start gap-2.5 mb-2.5">
-                    <span className="text-xl 3xl:text-2xl shrink-0 mt-0.5">{place.icon || "📍"}</span>
-                    <div>
-                      <h3 className="font-serif font-bold text-base 3xl:text-lg text-ink leading-tight m-0">
-                        {place.name || place.title}
-                      </h3>
-                      <span className="text-[10px] 3xl:text-xs font-semibold text-accent uppercase tracking-wider mt-0.5 block">
-                        {place.category}
-                      </span>
-                    </div>
+                  {/* Formal Category Label */}
+                  <div className="text-[9px] font-bold text-ink/50 uppercase tracking-[0.15em] mb-1 pb-1 border-b border-divider">
+                    {CATEGORY_CONFIG[place.category]?.label || "Location"}
                   </div>
                   
-                  {/* Popup Description */}
+                  {/* Title */}
+                  <h3 className="font-serif font-bold text-base text-ink leading-tight m-0 mb-1.5 mt-1">
+                    {place.name || place.title}
+                  </h3>
+                  
+                  {/* Coordinates (Formal Data) */}
+                  <div className="text-[9px] font-mono text-ink/40 mb-2 pb-2 border-b border-divider tracking-wide">
+                    {place.lat.toFixed(5)}°N · {place.lng.toFixed(5)}°E
+                  </div>
+                  
                   {place.description && (
-                    <p className="text-[13px] 3xl:text-sm text-ink/80 mb-3 leading-relaxed">
+                    <p className="text-[12px] text-ink/70 mb-3 leading-relaxed">
                       {place.description}
                     </p>
                   )}
                   
-                  {/* Popup Actions */}
-                  <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-divider">
+                  {/* Actions (Formal List, No Buttons Everywhere) */}
+                  <div className="space-y-1.5 pt-1">
                     {place.article && (
                       <Link 
                         href={`/article/${place.article}`} 
-                        className="text-[13px] 3xl:text-sm text-accent font-semibold hover:text-accent-hover hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+                        className="text-[11px] text-accent font-semibold hover:underline flex items-center gap-1"
                       >
-                        Read Full Article →
+                        Read full article <ArrowUpRight size={10} />
                       </Link>
                     )}
                     <a 
                       href={`https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[13px] 3xl:text-sm bg-accent hover:bg-accent-hover text-white font-medium px-3 py-2 rounded-md text-center transition-colors shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      className="text-[11px] text-accent font-semibold hover:underline flex items-center gap-1"
                     >
-                      Get Directions
+                      <Navigation size={10} /> Get directions
                     </a>
-                    
-                    <div className="flex justify-center mt-1">
-                      <EditLocationModal 
-                        landmarkName={place.name || place.title} 
-                        contextId={place.id || place.name || "unknown-landmark"} 
-                        currentLat={place.lat} 
-                        currentLng={place.lng} 
-                      />
-                    </div>
+                    <EditLocationModal 
+                      landmarkName={place.name || place.title} 
+                      contextId={place.id || place.name || "unknown-landmark"} 
+                      currentLat={place.lat} 
+                      currentLng={place.lng} 
+                    />
                   </div>
                 </div>
               </Popup>
@@ -144,26 +179,99 @@ export default function LandmarkMap({ landmarks, activeLandmark }: { landmarks: 
         </MarkerClusterGroup>
       </MapContainer>
 
+      {/* Formal Legend (bottom-left) */}
+      {showLegend && <MapLegend categories={CATEGORY_CONFIG} />}
+
+      {/* Coordinate Readout (bottom-right, above scale bar) */}
+      <div className="absolute bottom-12 right-2 z-[400] bg-surface/95 backdrop-blur-sm border border-divider rounded-sm px-2 py-1 shadow-sm pointer-events-none">
+        <div className="text-[9px] font-mono text-ink/60 leading-tight text-right">
+          <div>{centerCoords.lat.toFixed(5)}°N</div>
+          <div>{centerCoords.lng.toFixed(5)}°E</div>
+        </div>
+      </div>
+
       <style>{`
         .custom-map-pin { background: transparent; border: none; }
         
-        /* Cluster Colors matching new theme */
-        .marker-cluster-small { background-color: rgba(22, 101, 52, 0.6) !important; }
-        .marker-cluster-small div { background-color: #166534 !important; color: white; font-weight: bold; }
+        /* Formal Cluster Colors (Muted Charcoal) */
+        .marker-cluster-small { background-color: rgba(32, 33, 34, 0.5) !important; }
+        .marker-cluster-small div { 
+          background-color: #202122 !important; 
+          color: white; 
+          font-weight: 600; 
+          font-family: Georgia, serif; 
+        }
         
-        .marker-cluster-medium { background-color: rgba(202, 138, 4, 0.6) !important; }
-        .marker-cluster-medium div { background-color: #ca8a04 !important; color: white; font-weight: bold; }
+        .marker-cluster-medium { background-color: rgba(32, 33, 34, 0.6) !important; }
+        .marker-cluster-medium div { 
+          background-color: #202122 !important; 
+          color: white; 
+          font-weight: 600; 
+          font-family: Georgia, serif; 
+        }
         
-        .leaflet-container { z-index: 0; }
+        .leaflet-container { 
+          z-index: 0; 
+          font-family: inherit;
+          background: var(--bg-canvas);
+        }
         
-        /* Popup Close Button Color */
+        /* Formal Popup */
+        .leaflet-popup-content-wrapper {
+          border-radius: 2px !important;
+          border: 1px solid var(--border-divider) !important;
+          background-color: var(--bg-surface) !important;
+          color: var(--text-ink) !important;
+          padding: 0 !important;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+        }
+        .leaflet-popup-content { 
+          margin: 12px 14px !important; 
+          line-height: 1.4 !important;
+        }
+        .leaflet-popup-tip {
+          background-color: var(--bg-surface) !important;
+          border: 1px solid var(--border-divider) !important;
+          box-shadow: none !important;
+        }
         .leaflet-popup-close-button { 
           color: var(--text-ink-muted) !important; 
-          padding: 12px !important; 
-          transition: color 0.2s ease;
+          padding: 8px !important; 
+          font-size: 18px !important;
         }
         .leaflet-popup-close-button:hover {
           color: var(--text-ink) !important;
+        }
+        
+        /* Formal Scale Bar */
+        .leaflet-control-scale {
+          margin-bottom: 8px !important;
+          margin-right: 8px !important;
+        }
+        .leaflet-control-scale-line {
+          background-color: var(--bg-surface) !important;
+          border-color: var(--border-divider) !important;
+          color: var(--text-ink) !important;
+          font-family: 'IBM Plex Mono', monospace !important;
+          font-size: 9px !important;
+          padding: 1px 4px !important;
+          line-height: 1.2 !important;
+        }
+        
+        /* Formal Zoom Controls */
+        .leaflet-control-zoom {
+          border-radius: 2px !important;
+          border: 1px solid var(--border-divider) !important;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+        }
+        .leaflet-control-zoom a {
+          background-color: var(--bg-surface) !important;
+          color: var(--text-ink) !important;
+          border-bottom: 1px solid var(--border-divider) !important;
+          font-family: Georgia, serif !important;
+        }
+        .leaflet-control-zoom a:hover {
+          background-color: var(--bg-canvas) !important;
         }
       `}</style>
     </div>
