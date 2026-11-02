@@ -116,12 +116,13 @@ export async function POST(req: Request) {
 
     // 5. 🚀 DETERMINE TARGET FILE PATH
     let filePath = "data/master.json";
-    if (type.includes("Directory") || targetType === "directory") filePath = "data/directory.json";
-    else if (type.includes("Person") || targetType === "person") filePath = "data/people.json";
-    else if (type.includes("Landmark") || targetType === "landmark") filePath = "data/media.json";
-    else if (type.includes("Article") || targetType === "article") {
-      // For adds, save directly to the requested category. 
-      // For edits, publish route will handle searching across files.
+    if (type.includes("Directory") || targetType === "directory") {
+      filePath = "data/directory.json";
+    } else if (type.includes("Person") || targetType === "person") {
+      filePath = "data/people.json";
+    } else if (type.includes("Map Location") || type.includes("Landmark")) {
+      filePath = "data/media.json";
+    } else if (type.includes("Article") || targetType === "article") {
       if (intent === "add") {
         const cat = formData.get("Category") as string || "general";
         filePath = `data/articles/${cat}.json`;
