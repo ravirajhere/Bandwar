@@ -205,7 +205,8 @@ export const PersonSchema = z.object({
   birthplace: z.string().optional(),
   titles: z.array(z.string()).optional(),
   journey: z.string().optional(),
-  lastEditedBy: z.string().optional(),
+  lastUpdated: DateSchema.optional(), // 🚀 ADDED
+  lastEditedBy: z.string().optional(), // 🚀 ADDED
   tags: z.array(z.string()).optional(),
 }).passthrough();
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
@@ -233,6 +234,8 @@ export const DirectoryItemSchema = z.object({
   address: z.string().optional(),
   timing: z.string().optional(),
   isEmergency: z.boolean().default(false),
+  lastUpdated: DateSchema.optional(), // 🚀 ADDED
+  lastEditedBy: z.string().optional(), // 🚀 ADDED
 }).passthrough();
 
 export const DirectoryDataSchema = z.object({
