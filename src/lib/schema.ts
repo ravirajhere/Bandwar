@@ -56,7 +56,7 @@ export const MasterSchema = z.object({
   ),
   
   contact: z.object({
-    email: z.string().email().nullable(), // 👈 Null allowed
+    email: z.string().email().nullable(),
     address: z.string().optional(),
     coordinates: z.object({ lat: z.number(), lng: z.number() }).optional(),
   }).passthrough(),
@@ -85,7 +85,7 @@ export const MasterSchema = z.object({
     committee: z.array(z.object({ 
       role: z.string(), 
       name: z.string(), 
-      link: z.string().nullable().optional() // 👈 Null allowed
+      link: z.string().nullable().optional()
     })),
   }).passthrough().optional(),
   
@@ -94,7 +94,7 @@ export const MasterSchema = z.object({
     credit: z.string().optional(),
     sections: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
     explore: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
-    legal: z.array(z.object({ label: z.string(), href: z.string() })).optional(), // 👈 YEH NAYI LINE ADD KI HAI
+    legal: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
   }).passthrough().optional(),
 
   home: z.object({
@@ -115,7 +115,7 @@ export const MasterSchema = z.object({
     pullquote: z.object({ text: z.string(), cite: z.string() }),
     stats: z.array(z.object({ label: z.string(), value: z.string() })),
   }).passthrough().optional(),
-}).passthrough(); // 👈 Allows new sections like 'bot', 'legal', 'i18n' without failing
+}).passthrough();
 
 // ==========================================
 // 3. Article Schema (SEO Upgraded)
@@ -190,46 +190,7 @@ export const MediaSchema = z.object({
 });
 
 // ==========================================
-// 5. Vision 2035 Manifesto Schema
-// ==========================================
-export const VisionSchema = z.object({
-  intro: z.string(),
-  priorities: z.array(
-    z.object({
-      id: z.string(), 
-      number: z.string(), 
-      title: z.string(), 
-      ward: z.string(),
-      category: z.string(), 
-      status: z.string(), 
-      targetYear: z.number(),
-      present: z.object({ photo: z.string(), caption: z.string() }),
-      required: z.object({ photo: z.string(), caption: z.string() }),
-      reality: z.string(), 
-      vision: z.string(),
-      how: z.object({ scheme: z.string(), cost: z.string(), authority: z.string(), timeline: z.string() }),
-      community: z.array(z.string()),
-      inside: z.object({
-        intro: z.string(),
-        photos: z.array(z.object({ src: z.string(), caption: z.string() })),
-        checklist: z.array(z.string()),
-      }),
-    }).passthrough()
-  ),
-  achievements: z.array(z.object({
-    title: z.string().optional(),
-    description: z.string().optional(),
-    year: z.string().optional(), 
-  }).passthrough()).default([]),
-  roadmap: z.array(z.object({
-    year: z.string().optional(), 
-    title: z.string().optional(),
-    items: z.array(z.any()).default([]), 
-  }).passthrough()).default([]),
-});
-
-// ==========================================
-// 6. People Schema
+// 5. People Schema
 // ==========================================
 export const PersonSchema = z.object({
   id: IdSchema, 
@@ -250,7 +211,7 @@ export const PersonSchema = z.object({
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 
 // ==========================================
-// 7. Categories Schema
+// 6. Categories Schema
 // ==========================================
 export const CategorySchema = z.object({
   id: IdSchema, 
@@ -261,7 +222,7 @@ export const CategorySchema = z.object({
 export const CategoriesDataSchema = z.object({ categories: z.array(CategorySchema) });
 
 // ==========================================
-// 8. Directory Schema
+// 7. Directory Schema
 // ==========================================
 export const DirectoryItemSchema = z.object({
   id: z.string(),
@@ -285,7 +246,6 @@ export const DirectoryDataSchema = z.object({
 export type MasterConfig = z.infer<typeof MasterSchema>;
 export type Article = z.infer<typeof ArticleSchema>;
 export type Media = z.infer<typeof MediaSchema>;
-export type VisionData = z.infer<typeof VisionSchema>;
 export type Person = z.infer<typeof PersonSchema>;
 export type PeopleData = z.infer<typeof PeopleDataSchema>;
 export type Category = z.infer<typeof CategorySchema>;
