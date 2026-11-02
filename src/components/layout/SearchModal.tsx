@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // 👈 For smooth client-side routing
-import { Search, X, FileText, CornerDownLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Search, X, CornerDownLeft, FileText, User, Phone, MapPin, Loader2 } from "lucide-react";
 import { SearchItem } from "@/lib/search-data";
 
 interface SearchModalProps {
@@ -21,20 +21,23 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  // Filter results
-  const results = query.trim() === "" 
+  // 🚀 Filter and Group Logic
+  const rawResults = query.trim() === "" 
     ? [] 
     : searchIndex.filter(item => 
         item.title.toLowerCase().includes(query.toLowerCase()) || 
         item.description.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 10);
+      ).slice(0, 20); // Limit to 20 results for performance
+
+  // Flattened list for keyboard navigation
+  const results = rawResults;
 
   // Reset selected index when query changes
   useEffect(() => {
     setSelectedIndex(0);
   }, [query]);
 
-  // Focus input, Lock scroll & Handle Tab focus trap
+  // Focus input & Lock scroll
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 50);
@@ -46,7 +49,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
     return () => { document.body.style.overflow = "unset"; };
   }, [isOpen]);
 
-  // Handle Keyboard (Esc, Up/Down, Enter, Tab)
+  // Keyboard Navigation & Focus Trap
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -61,13 +64,11 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
       } else if (e.key === "Enter" && results.length > 0) {
         e.preventDefault();
-        router.push(results[selectedIndex].url); // 👈 Fixed: Using Next.js router
+        router.push(results[selectedIndex].url);
         onClose();
       } else if (e.key === "Tab" && modalRef.current) {
-        // ♿ Accessibility: Focus Trap
-        const focusableElements = modalRef.current.querySelectorAll(
-          'input, button, a[href]'
-        );
+        // Accessibility Focus Trap
+        const focusableElements = modalRef.current.querySelectorAll('input, button, a[href]');
         const firstElement = focusableElements[0] as HTMLElement;
         const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
@@ -101,93 +102,115 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
 
   if (!isOpen) return null;
 
-  // Highlight matched text safely
+  // 🚀 Highlight matched text (strict, formal)
   const highlightText = (text: string, highlight: string) => {
-    if (!highlight.trim()) return text;
+    if (!highlight.trim()) return <span>{text}</span>;
     const regex = new RegExp(`(${highlight})`, "gi");
     const parts = text.split(regex);
     return parts.map((part, i) => 
       regex.test(part) 
-        ? <mark key={i} className="bg-accent/20 text-accent font-semibold px-0.5 rounded-sm">{part}</mark> 
+        ? <mark key={i} className="bg-accent/15 text-accent font-semibold px-0.5">{part}</mark> 
         : <span key={i}>{part}</span>
     );
   };
 
+  // 🚀 Type-based Icon & Label
+  const getTypeInfo = (type: string) => {
+    switch (type.toLowerCase()) {
+      case "article": return { icon: <FileText size={16} />, label: "Article" };
+      case "person": return { icon: <User size={16} />, label: "Person" };
+      case "directory": return { icon: <Phone size={16} />, label: "Directory" };
+      case "landmark": return { icon: <MapPin size={16} />, label: "Landmark" };
+      default: return { icon: <FileText size={16} />, label: "Page" };
+    }
+  };
+
   return (
     <div 
-      className="fixed inset-0 z-[100] bg-ink/60 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 3xl:pt-32 px-4 animate-in fade-in duration-200" 
+      className="fixed inset-0 z-[100] bg-ink/60 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 3xl:pt-32 px-4 animate-in fade-in duration-200 no-print" 
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label="Search articles"
+      aria-label="Search archive"
     >
       <div 
         ref={modalRef}
-        className="bg-surface w-full max-w-2xl 3xl:max-w-4xl border border-divider rounded-xl shadow-2xl flex flex-col max-h-[75vh] overflow-hidden animate-in zoom-in-95 duration-200"
+        className="bg-surface w-full max-w-2xl 3xl:max-w-3xl border border-divider rounded-sm shadow-2xl flex flex-col max-h-[75vh] overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()} 
       >
+        
         {/* Search Input Bar */}
-        <div className="flex items-center border-b border-divider p-4 3xl:p-5 bg-canvas/50">
-          <Search className="text-ink/40 ml-1 mr-3 shrink-0 3xl:w-7 3xl:h-7" size={22} />
+        <div className="flex items-center border-b border-divider p-4 3xl:p-5 bg-canvas shrink-0">
+          <Search className="text-ink/40 ml-1 mr-3 shrink-0 3xl:w-6 3xl:h-6" size={22} />
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search for articles, landmarks, people..."
+            placeholder="Search the archive..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="flex-grow bg-transparent text-ink text-lg 3xl:text-xl outline-none placeholder:text-ink/40"
+            className="flex-grow bg-transparent text-ink font-serif text-lg md:text-xl 3xl:text-2xl outline-none placeholder:text-ink/30 placeholder:font-serif"
             aria-label="Search input"
           />
           <button 
             onClick={onClose} 
-            className="p-1.5 text-ink/50 hover:text-ink hover:bg-divider/50 rounded-md transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="p-2 text-ink/40 hover:text-ink hover:bg-divider/50 rounded-sm transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Close search"
           >
-            <X size={20} className="3xl:w-6 3xl:h-6" />
+            <X size={20} />
           </button>
         </div>
 
         {/* Results Area */}
-        <div className="overflow-y-auto p-2 3xl:p-3 custom-scrollbar">
+        <div className="overflow-y-auto p-2 3xl:p-3 custom-scrollbar bg-surface">
           {query.trim() === "" ? (
-            <div className="flex flex-col items-center justify-center py-16 3xl:py-24 text-ink/50">
-              <Search size={48} className="mb-4 opacity-20 3xl:w-16 3xl:h-16" />
-              <p className="text-sm 3xl:text-base font-medium">Type to search across the archive</p>
-              <p className="text-xs 3xl:text-sm mt-1">Try searching for "School", "Temple", or "History"</p>
+            // Formal Empty State
+            <div className="flex flex-col items-center justify-center py-16 3xl:py-24 text-ink/40">
+              <Search size={40} className="mb-4 opacity-30" />
+              <p className="text-sm font-medium uppercase tracking-wider mb-1">Archive Search</p>
+              <p className="text-xs">Type a keyword to search across articles, people, and directory.</p>
             </div>
           ) : results.length === 0 ? (
-            <div className="text-center py-16 text-ink/60 text-sm 3xl:text-base">
-              No records found for "<strong className="text-ink">{query}</strong>".<br/>
-              <span className="text-xs 3xl:text-sm mt-2 block">Try a different keyword.</span>
+            // No Results State
+            <div className="text-center py-16 text-ink/60">
+              <p className="text-base font-serif mb-1">No records found for "<strong className="text-ink">{query}</strong>"</p>
+              <p className="text-xs uppercase tracking-wider">Try a different keyword.</p>
             </div>
           ) : (
-            <ul className="space-y-1" ref={listRef}>
+            <ul className="space-y-0.5" ref={listRef}>
               {results.map((item, index) => {
                 const isSelected = index === selectedIndex;
+                const typeInfo = getTypeInfo(item.type || "page");
+
                 return (
                   <li key={item.id}>
                     <Link 
                       href={item.url}
                       onClick={onClose}
                       onMouseEnter={() => setSelectedIndex(index)}
-                      className={`flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 3xl:p-5 rounded-lg transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                      className={`flex items-start gap-3 p-3 rounded-sm transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                         isSelected 
-                          ? "bg-canvas border-divider shadow-sm" 
+                          ? "bg-canvas border-divider" 
                           : "border-transparent hover:bg-canvas/50"
                       }`}
                     >
-                      <div className="flex items-center gap-3 3xl:gap-4 mb-1 sm:mb-0 w-full">
-                        <div className={`p-2 3xl:p-3 rounded-md shrink-0 ${isSelected ? "bg-accent/10 text-accent" : "bg-canvas text-ink/40"}`}>
-                          <FileText size={16} className="3xl:w-5 3xl:h-5" />
-                        </div>
-                        <div className="min-w-0 flex-grow">
-                          <span className={`font-medium text-[15px] 3xl:text-lg block truncate ${isSelected ? "text-accent" : "text-ink"}`}>
+                      {/* Type Icon */}
+                      <div className={`mt-0.5 shrink-0 ${isSelected ? "text-accent" : "text-ink/40"}`}>
+                        {typeInfo.icon}
+                      </div>
+
+                      {/* Content */}
+                      <div className="min-w-0 flex-grow">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className={`font-serif font-semibold text-[15px] truncate ${isSelected ? "text-accent" : "text-ink"}`}>
                             {highlightText(item.title, query)}
                           </span>
-                          <p className="text-[13px] 3xl:text-base text-ink/60 line-clamp-1 mt-0.5">
-                            {highlightText(item.description, query)}
-                          </p>
+                          <span className="text-[9px] uppercase tracking-wider font-bold text-ink/40 shrink-0 bg-canvas px-1.5 py-0.5 border border-divider rounded-sm">
+                            {typeInfo.label}
+                          </span>
                         </div>
+                        <p className="text-[13px] text-ink/60 line-clamp-1 leading-snug">
+                          {highlightText(item.description, query)}
+                        </p>
                       </div>
                     </Link>
                   </li>
@@ -198,24 +221,24 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         </div>
 
         {/* Footer (Keyboard Shortcuts Hint) */}
-        <div className="hidden sm:flex items-center justify-between px-4 py-3 3xl:px-6 3xl:py-4 border-t border-divider bg-canvas/50 text-xs 3xl:text-sm text-ink/50">
-          <div className="flex items-center gap-4 3xl:gap-6">
-            <span className="flex items-center gap-1.5">
-              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded text-[10px] 3xl:text-xs font-mono">↑</kbd>
-              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded text-[10px] 3xl:text-xs font-mono">↓</kbd>
-              to navigate
+        <div className="hidden sm:flex items-center justify-between px-4 py-2.5 border-t border-divider bg-canvas/80 text-[11px] text-ink/50 shrink-0">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded-sm font-mono text-[10px]">↑</kbd>
+              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded-sm font-mono text-[10px]">↓</kbd>
+              Navigate
             </span>
-            <span className="flex items-center gap-1.5">
-              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded text-[10px] 3xl:text-xs font-mono">Enter</kbd>
-              to select
+            <span className="flex items-center gap-1">
+              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded-sm font-mono text-[10px]">Enter</kbd>
+              Open
             </span>
-            <span className="flex items-center gap-1.5">
-              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded text-[10px] 3xl:text-xs font-mono">Esc</kbd>
-              to close
+            <span className="flex items-center gap-1">
+              <kbd className="bg-surface border border-divider px-1.5 py-0.5 rounded-sm font-mono text-[10px]">Esc</kbd>
+              Close
             </span>
           </div>
           <span className="flex items-center gap-1 font-medium text-accent">
-            <CornerDownLeft size={12} className="3xl:w-4 3xl:h-4" /> Search Archive
+            <CornerDownLeft size={12} /> Archive Search
           </span>
         </div>
       </div>
