@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
 import { MapPin, Clock, ShieldCheck, ArrowRight, PhoneCall, Users, BookOpen } from "lucide-react";
 import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper";
+import { DevNotice } from "@/components/home/DevNotice"; // 🚀 Naya Import
 
 import iconImage from "@/app/icon.png"; 
 
@@ -23,6 +24,9 @@ export default function Home() {
     <div className="bg-canvas min-h-screen pb-16 md:pb-24">
       <div className="container mx-auto px-4 md:px-0 pt-6 md:pt-10">
         
+        {/* 🚀 NAYA: Development Notice (Dismissible) */}
+        <DevNotice />
+
         {/* =========================================
             1. HERO SECTION (NYT / Britannica Inspired)
             ========================================= */}
