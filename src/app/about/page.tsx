@@ -1,4 +1,4 @@
-import { getMasterData } from "@/lib/data";
+import { getMasterData, getRecentContributors } from "@/lib/data"; // 🚀 Import added
 import Link from "next/link";
 import { 
   BookOpen, 
@@ -7,11 +7,11 @@ import {
   ExternalLink, 
   ShieldCheck, 
   Heart,
-  Quote,
   Scale,
   Lock,
   Code2
 } from "lucide-react";
+import { ContributorGrid } from "@/components/about/ContributorGrid"; // 🚀 Component Import
 
 export const metadata = {
   title: "About | Bandwar Portal",
@@ -21,6 +21,9 @@ export const metadata = {
 export default function AboutPage() {
   const config = getMasterData();
   const about = config.about;
+  
+  // 🚀 Fetch recent contributors (last 6 months)
+  const recentContributors = getRecentContributors(6);
 
   if (!about) {
     return (
@@ -152,7 +155,11 @@ export default function AboutPage() {
               <p className="mt-6 text-sm md:text-base 3xl:text-lg">{about.community.contributors}</p>
             </div>
             
-            <div className="border-t border-divider pt-8">
+            {/* 🚀 NEW: Recent Contributors Grid */}
+            <ContributorGrid contributors={recentContributors} />
+
+            {/* Editorial Committee */}
+            <div className="border-t border-divider pt-8 mt-8">
               <h3 className="text-xs 3xl:text-sm font-bold text-ink/50 uppercase tracking-wider mb-6">
                 Editorial Committee
               </h3>
@@ -189,7 +196,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 📜 LICENSE SECTION (Required by footer link: /about#license) */}
+        {/* 📜 LICENSE SECTION */}
         <section id="license" className="scroll-mt-28">
           <div className="flex items-center gap-4 mb-8 3xl:mb-10">
             <h2 className="font-serif text-2xl md:text-3xl 3xl:text-4xl font-semibold text-ink flex items-center gap-3">
