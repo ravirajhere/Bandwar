@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 import { z } from "zod";
 import { 
-  MasterSchema, ArticleListSchema, MediaSchema, VisionSchema, 
+  MasterSchema, ArticleListSchema, MediaSchema, 
   PeopleDataSchema, CategoriesDataSchema, DirectoryDataSchema, 
-  MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData, DirectoryData 
+  MasterConfig, Article, Media, PeopleData, CategoriesData, DirectoryData 
 } from "./schema";
 import { Contributor } from "./contributor"; 
 
@@ -53,7 +53,9 @@ export function getAllArticles(): Article[] {
   if (articlesCache) return articlesCache;
   const articlesDir = path.join(process.cwd(), "data", "articles");
   
-  if (!fs.existsSync(articlesDir)) throw new Error("❌ Data Error: 'data/articles' directory not found!");
+  if (!fs.existsSync(articlesDir)) {
+    throw new Error("❌ Data Error: 'data/articles' directory not found!");
+  }
   
   const fileNames = fs.readdirSync(articlesDir);
   let allArticles: Article[] = [];
@@ -83,10 +85,9 @@ export function getMediaData(): Media {
   const rawData = readJsonFile("media.json");
   const media = validateData(MediaSchema, rawData, "media.json");
   
-  // ✅ MAGIC: Filter out photos whose image files don't exist in public folder
+  // Filter out photos whose image files don't exist in public folder
   if (media.gallery && media.gallery.photos) {
     media.gallery.photos = media.gallery.photos.filter((photo) => {
-      // Agar path ke aage '/' hai toh hata do
       const cleanSrc = photo.src.startsWith("/") ? photo.src.slice(1) : photo.src;
       const imgPath = path.join(process.cwd(), "public", cleanSrc);
       
@@ -94,16 +95,11 @@ export function getMediaData(): Media {
       if (!exists) {
         console.log(`⚠️ Gallery Image Missing (Hidden): ${photo.src}`);
       }
-      return exists; // Sirf wahi photo rakhega jo folder me sach me hai
+      return exists;
     });
   }
 
   return media;
-}
-
-export function getVisionData(): VisionData {
-  const rawData = readJsonFile("vision.json");
-  return validateData(VisionSchema, rawData, "vision.json");
 }
 
 export function getPeopleData(): PeopleData {
@@ -128,7 +124,6 @@ export function getDirectoryData(): DirectoryData {
 export function getContributors(): Contributor[] {
   const fullPath = path.join(process.cwd(), "data", "contributors.json");
   
-  // Agar file abhi tak nahi bani hai, toh crash mat karo, khali array return karo
   if (!fs.existsSync(fullPath)) {
     return [];
   }
@@ -144,7 +139,6 @@ export function getContributors(): Contributor[] {
 
 export function getContributorByUsername(username: string): Contributor | undefined {
   const contributors = getContributors();
-  // Handle both "@rameshkumar" and "rameshkumar"
   const formattedUsername = username.startsWith("@") ? username : `@${username}`;
   
   return contributors.find(
@@ -152,7 +146,6 @@ export function getContributorByUsername(username: string): Contributor | undefi
   );
 }
 
-// 🚀 NAYA FUNCTION: Pichle X mahine ke contributors (Filter by joinedAt)
 export function getRecentContributors(months: number = 6): Contributor[] {
   const all = getContributors();
   const cutoffDate = new Date();
@@ -161,5 +154,5 @@ export function getRecentContributors(months: number = 6): Contributor[] {
   return all.filter(c => {
     if (!c.joinedAt) return false;
     return new Date(c.joinedAt) >= cutoffDate;
-  }).sort((a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime()); // Newest first
+  }).sort((a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime());
 }
