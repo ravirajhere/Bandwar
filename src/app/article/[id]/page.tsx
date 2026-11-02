@@ -118,8 +118,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const generateAnchorId = (heading: string) => 
     heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-  const fullContentText = `${article.summary}. ` + article.content.map((block: { heading: string, text: string }) => `${block.heading}. ${block.text}`).join(" ");
-
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
 
   return (
@@ -248,7 +246,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                 </div>
                 <div className="flex items-center gap-3">
                   <EditModeToggle />
-                  <ArticleToolbar title={article.title} contentText={fullContentText} />
+                  <ArticleToolbar 
+                    title={article.title} 
+                    summary={article.summary} 
+                    contentBlocks={article.content} 
+                  />
                 </div>
               </div>
             </header>
