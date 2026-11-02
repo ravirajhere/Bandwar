@@ -7,6 +7,7 @@ import { EditableText } from "@/components/editor/EditableText";
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
 import { EditModeToggle } from "@/components/editor/EditModeToggle";
+import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; // 🚀 Naya Import
 
 export async function generateStaticParams() {
   const data = getPeopleData();
@@ -114,8 +115,8 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
             <aside className="lg:col-span-4 order-2 lg:order-1 no-print">
               <div className="lg:sticky lg:top-24 bg-surface border border-divider rounded-sm">
                 
-                {/* Photo Container */}
-                <div className="relative w-full aspect-square bg-canvas border-b border-divider overflow-hidden">
+                {/* 🚀 Photo Container with Update Button */}
+                <div className="relative w-full aspect-square bg-canvas border-b border-divider overflow-hidden group">
                   {person.photo ? (
                     <img
                       src={person.photo}
@@ -127,6 +128,16 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                       <User size={64} className="3xl:w-24 3xl:h-24" />
                     </div>
                   )}
+                  
+                  {/* 🚀 Image Update Button (Sirf Edit Mode mein dikhega) */}
+                  <div className="no-print">
+                    <ImageUpdateButton 
+                      contextName={person.name} 
+                      contextId={person.id} 
+                      currentImage={person.photo} 
+                      targetType="person" 
+                    />
+                  </div>
                 </div>
 
                 {/* Deceased Badge */}
@@ -230,7 +241,6 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                   </h1>
                   
                   <div className="flex items-center gap-2 text-sm text-ink-muted">
-                    {/* 🚀 UPDATED META LOGIC */}
                     {person.lastEditedBy ? (
                       <div className="flex items-center gap-1.5 font-medium">
                         <ShieldCheck size={16} className="text-accent" />
