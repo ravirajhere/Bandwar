@@ -6,7 +6,7 @@ import {
   PeopleDataSchema, CategoriesDataSchema, DirectoryDataSchema, 
   MasterConfig, Article, Media, VisionData, PeopleData, CategoriesData, DirectoryData 
 } from "./schema";
-import { Contributor } from "./contributor"; // 🚀 Naya Import
+import { Contributor } from "./contributor"; 
 
 // ==========================================
 // 1. CORE HELPERS (Optimized & Generic)
@@ -122,7 +122,7 @@ export function getDirectoryData(): DirectoryData {
 }
 
 // ==========================================
-// 4. CONTRIBUTORS DATA (New)
+// 4. CONTRIBUTORS DATA
 // ==========================================
 
 export function getContributors(): Contributor[] {
@@ -150,4 +150,16 @@ export function getContributorByUsername(username: string): Contributor | undefi
   return contributors.find(
     (c) => c.username.toLowerCase() === formattedUsername.toLowerCase()
   );
+}
+
+// 🚀 NAYA FUNCTION: Pichle X mahine ke contributors (Filter by joinedAt)
+export function getRecentContributors(months: number = 6): Contributor[] {
+  const all = getContributors();
+  const cutoffDate = new Date();
+  cutoffDate.setMonth(cutoffDate.getMonth() - months);
+
+  return all.filter(c => {
+    if (!c.joinedAt) return false;
+    return new Date(c.joinedAt) >= cutoffDate;
+  }).sort((a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime()); // Newest first
 }
