@@ -14,6 +14,30 @@
       "oldValue": "",
       "newValue": "",
       "sourceReason": "Official Govt. Record"
+    },
+    {
+      "id": "edit_1793592625885",
+      "type": "Map Location Update",
+      "contextId": "vaani-vilas-library",
+      "userName": "sanidhya",
+      "userUsername": "",
+      "timestamp": "2026-11-02T04:10:25.886Z",
+      "pendingImageUrl": null,
+      "targetType": "article",
+      "customCategory": "",
+      "jsonObj": {
+        "submitter_name": "sanidhya",
+        "source_reason": "local resident",
+        "contextId": "vaani-vilas-library",
+        "Landmark Name": "Vaani Vilas Pustakalaya",
+        "old_lat": "25.510294",
+        "old_lng": "86.16175",
+        "new_lat": "25.510342",
+        "new_lng": "86.162486",
+        "Google Maps Link": "https://www.google.com/maps?q=25.510342,86.162486",
+        "submitterName": "sanidhya"
+      },
+      "intent": "add"
     }
   ],
   "approved": []
