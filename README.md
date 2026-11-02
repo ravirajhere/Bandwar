@@ -36,14 +36,16 @@ Built with a **Strict Heritage UI** and a **Zero-Database Architecture**, this p
 
 ### 👤 Contributor Profiles & Auth System
 A lightweight, database-free authentication system designed for high trust.
-- **Identity-First Editing:** No one can edit without a profile. A simple popup asks for Name, Username (`@username`), and optional email.
-- **Profile Pages:** Every contributor gets a public page (`/contributors/@username`) featuring their bio and profile picture.
+- **Identity-First Editing:** No one can edit without a profile. A simple popup asks for Name, a Private Login ID (username), and optional email.
+- **Privacy First:** A contributor's Username is treated strictly as a private login credential. The public website only displays their **Display Name** and **Profile Photo**.
+- **Profile Pages:** Every contributor gets a public page (`/contributors/[username]`) featuring their bio and profile picture.
 - **Direct Image Upload:** Profile photos are compressed directly in the browser (Canvas API) before being uploaded to GitHub.
-- **Cross-Device Login:** No passwords. Users can log in on any device by simply entering their existing `@username`.
+- **Cross-Device Login:** No passwords. Users can log in on any device by simply entering their existing private Login ID.
 
 ### 🛡️ Advanced Moderation System (Telegram + Dashboard)
 This is the core of the portal's automation. It uses GitHub as a database and Telegram as a real-time notification system.
 - **Wikipedia-Style Inline Editing:** Visitors can edit Titles, Paragraphs, and Infobox data directly on the page.
+- **Auto-Updating Metadata:** When an edit is published, the system automatically updates the `lastUpdated` date and `lastEditedBy` name on the article/profile.
 - **Pending Image Review:** When a hero image or profile photo is uploaded, it goes to a `public/images/pending/` folder. The editor can preview it on the Dashboard before approving.
 - **Exact Path Overwrite:** When approved, the new image overwrites the old image at its exact previous path (e.g., `public/images/religion/ram-mandir.jpg`), ensuring no broken links.
 - **Dynamic Custom Categories:** If a visitor submits a new Article or Directory entry, they can create a *Custom Category* (e.g., "Sports"). Upon publishing, the system automatically creates the new `.json` file and registers the category.
@@ -51,9 +53,11 @@ This is the core of the portal's automation. It uses GitHub as a database and Te
 - **Auto-Delete on Reject:** If an editor rejects a pending image, it is automatically deleted from the GitHub repository to keep it clean.
 
 ### 🗺️ Core Pages & Features
-- **Home Dashboard:** Grand editorial hero section, Quick Access buttons (Emergency, People, Archive), and an interactive Satellite Map.
+- **Home Dashboard:** Grand editorial hero section with a dismissible Development Notice, Quick Access buttons, and an interactive Satellite Map.
+- **About & Community:** Features an "Our Story" section, principles, and a dynamic **Recent Contributors** grid that automatically updates to show active members.
+- **Get Involved (Contribute):** A dedicated page explaining the inline editing tools, with a prominent Call-to-Action for visitors to create their contributor profile.
 - **Interactive Village Map:** Uses React Leaflet with Esri satellite tiles. Features marker clustering and a custom location-fixing tool.
-- **Directory:** Searchable index of doctors, shops, and emergency contacts.
+- **Directory:** Searchable index of doctors, shops, and emergency contacts with last updated timestamps.
 - **Gallery:** A strict, high-density Masonry grid (Wikimedia Commons style) with a distraction-free Lightbox.
 - **Article Archive:** 3-column layout (Sticky TOC, Content, Sticky Infobox) with auto-generated Backlinks ("Mentioned In") and FAQ Accordions.
 - **Text-to-Speech (TTS):** "Listen to Article" feature supporting Hindi/Indian English.
@@ -82,7 +86,8 @@ bandwar-portal/
 │   ├── reach.json              # How to reach the village
 │   ├── media.json              # Gallery photos, Timeline, Map landmarks
 │   ├── people.json             # Notable personalities directory
-│   ├── vision.json             # Vision 2035 Manifesto data
+│   ├── projects.json           # Development projects & achievements data
+│   ├── categories.json         # Article categories
 │   ├── contributors.json       # Registered user profiles (Auto-managed)
 │   ├── queue.json              # PENDING & STAGED community edits (Auto-managed)
 │   └── articles/               # All articles split by category
@@ -91,8 +96,9 @@ bandwar-portal/
 │       └── ... (other categories)
 │
 ├── public/                     
-│   └── images/                 # All photos organized by category
-│       └── pending/            # Temp folder for user uploads awaiting review
+│   ├── images/                 # All photos organized by category
+│   │   └── pending/            # Temp folder for user uploads awaiting review
+│   └── images/contributors/    # Auto-generated profile photos
 │
 ├── scripts/                    
 │   └── validate.ts             # Zod validation engine (Runs before build)
@@ -107,17 +113,22 @@ bandwar-portal/
 │   │   │   ├── contributor/    # APIs for registration, lookup, profile updates
 │   │   │   └── telegram-submit/# Receives forms, saves to queue, alerts Telegram
 │   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
-│   │   ├── contributors/       # Public Contributor Profiles
+│   │   ├── contributors/       # Public Contributor Profiles ([username]/page.tsx)
+│   │   ├── contribute/         # "Get Involved" guide & General Feedback Hub
 │   │   ├── directory/          # Village Directory Page
 │   │   ├── gallery/            # Photo Gallery Page
+│   │   ├── people/             # People Directory & Profiles
 │   │   ├── section/            # Archive category listing
 │   │   ├── globals.css         # Custom CSS tokens, fonts, print styles
 │   │   └── layout.tsx          # Main Layout (Header, Footer, JSON-LD SEO)
 │   │
 │   ├── components/             
+│   │   ├── about/              # ContributorGrid (Recent contributors on About page)
 │   │   ├── article/            # ArticleToolbar, Infobox, MobileTOC
+│   │   ├── contribute/         # JoinCTA, ContributeForm
 │   │   ├── contributor/        # ProfileClientWrapper, EditProfileModal
 │   │   ├── editor/             # EditableText, EditableParagraph, EditModeToggle
+│   │   ├── home/               # DevNotice (Development banner)
 │   │   ├── layout/             # Header, Footer, SearchModal
 │   │   ├── shared/             # AddContentModal, ImageUpdateButton, Toast
 │   │   └── ui/                 # Button, Input primitives
@@ -167,7 +178,8 @@ Thanks to the Moderation Dashboard, the Editor's life is incredibly easy. The sy
 5. **Batch Publish:** Once you have 5-10 staged edits, click the green "🚀 Publish X Updates Live" button. 
    - The Dashboard uses the GitHub API to update all target JSON files in a single commit.
    - Pending images are moved to their final exact paths (overwriting old ones).
-   - New custom categories are automatically registered in categories.json.
+   - New custom categories are automatically registered.
+   - **Metadata (Last Updated & Last Edited By) is automatically updated.**
    - Vercel triggers exactly one build and deploys the changes.
 
 ---
