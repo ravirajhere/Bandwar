@@ -1,9 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getPeopleData, getMasterData } from "@/lib/data"; 
 import { Metadata } from "next";
-import { Edit3, ShieldCheck, Calendar, ChevronRight, User, MapPin } from "lucide-react"; 
+import { ShieldCheck, Calendar, ChevronRight, User, MapPin } from "lucide-react"; 
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
@@ -140,7 +139,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                 {/* Data Container */}
                 <div className="p-5 3xl:p-6">
                   
-                  {/* Name (Inline Editable) */}
+                  {/* Name */}
                   <div className="mb-1">
                     <EditableText
                       initialValue={person.name}
@@ -152,7 +151,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                     />
                   </div>
 
-                  {/* Role (Inline Editable) */}
+                  {/* Role */}
                   <div className="mb-4 pb-4 border-b border-divider">
                     <EditableText
                       initialValue={person.role}
@@ -164,7 +163,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                     />
                   </div>
 
-                  {/* Details List (Strict Rows) */}
+                  {/* Details List */}
                   <dl className="space-y-0 text-sm 3xl:text-base">
                     {(person.dob || person.deathDate) && (
                       <div className="flex flex-col gap-0.5 py-2 border-b border-divider/50 last:border-0 group">
@@ -231,10 +230,11 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                   </h1>
                   
                   <div className="flex items-center gap-2 text-sm text-ink-muted">
+                    {/* 🚀 UPDATED META LOGIC */}
                     {person.lastEditedBy ? (
                       <div className="flex items-center gap-1.5 font-medium">
                         <ShieldCheck size={16} className="text-accent" />
-                        <span>Verified by {person.lastEditedBy}</span>
+                        <span>Updated {person.lastUpdated} by {person.lastEditedBy}</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-1.5 font-medium">
@@ -263,7 +263,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                 />
               </section>
 
-              {/* Journey Section (Formal Blockquote) */}
+              {/* Journey Section */}
               {person.journey && (
                 <section className="mb-10">
                   <div className="flex items-center justify-between border-b border-divider pb-2 mb-4">
