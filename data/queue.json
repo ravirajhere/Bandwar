@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793633914745",
       "type": "Article Infobox",
@@ -18,8 +19,8 @@
       "currentImagePath": "Unknown",
       "jsonObj": {
         "contextId": "chhath-puja-bandwar-bandh-burhi-gandak"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
