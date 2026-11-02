@@ -2,8 +2,12 @@ import fs from "fs";
 import path from "path";
 import { z } from "zod";
 import { 
-  MasterSchema, ArticleListSchema, MediaSchema, 
-  VisionSchema, PeopleDataSchema, CategoriesDataSchema 
+  MasterSchema, 
+  ArticleListSchema, 
+  MediaSchema, 
+  PeopleDataSchema, 
+  CategoriesDataSchema,
+  DirectoryDataSchema 
 } from "../src/lib/schema";
 
 const dataDir = path.join(process.cwd(), "data");
@@ -78,8 +82,8 @@ const validateFile = (fileName: string, schema: z.ZodTypeAny) => {
 validateFile("master.json", MasterSchema);
 validateFile("categories.json", CategoriesDataSchema);
 validateFile("people.json", PeopleDataSchema);
-validateFile("vision.json", VisionSchema);
 validateFile("media.json", MediaSchema);
+validateFile("directory.json", DirectoryDataSchema); // 🚀 Naya Validation Added
 
 // 2. Articles Directory
 const articlesDir = path.join(dataDir, "articles");
