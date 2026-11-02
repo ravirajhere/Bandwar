@@ -279,7 +279,7 @@
         "history"
       ],
       "summary": "The bandh is the embankment built along the Burhi Gandak to protect Bandwar from floods. It is widely believed that the village takes its name from this very structure — 'Bandh' becoming 'Bandwar'. It runs parallel to the [[burhi-gandak-river-bandwar|Burhi Gandak]] along the western edge of the village, and is the single most important piece of infrastructure in Bandwar.",
-      "hero": "images/landmarks/bandh-embankment-burhi-gandak-bandwar.jpg",
+      "hero": "/images/landmarks/bandh-embankment-burhi-gandak-bandwar.jpg?t=1793634644053",
       "photos": [
         {
           "src": "images/landmarks/bandh-embankment-burhi-gandak-bandwar.jpg",
@@ -302,7 +302,7 @@
         "Built": "Generations ago",
         "Reinforced by": "State water resources department"
       },
-      "lastUpdated": "2026-08-10",
+      "lastUpdated": "2026-11-02",
       "content": [
         {
           "heading": "Overview",
@@ -366,7 +366,8 @@
         "bandwar name origin",
         "chhath puja bandh",
         "geography of bandwar"
-      ]
+      ],
+      "lastEditedBy": "Ravi Raj"
     }
   ]
 }
