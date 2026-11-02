@@ -1,4 +1,27 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1793634884061",
+      "type": "Image Update Suggestion",
+      "contextId": "sankat-mochan-hanuman-mandir-bandwar",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-02T15:54:45.350Z",
+      "pendingImageUrl": "/images/pending/edit_1793634884061.jpg",
+      "targetType": "article",
+      "customCategory": "",
+      "intent": "image_update",
+      "filePath": "data/articles/landmarks.json",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/religion/sankat-mochan-hanuman-mandir-bandwar.jpg",
+      "jsonObj": {
+        "source_reason": "Offivcial",
+        "contextId": "sankat-mochan-hanuman-mandir-bandwar",
+        "Context Name": "Article: Sankat Mochan Hanuman Mandir: The Hanuman Temple of Bandwar"
+      }
+    }
+  ],
   "approved": []
 }
