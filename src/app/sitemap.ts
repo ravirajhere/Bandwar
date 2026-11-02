@@ -38,16 +38,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/reach`,
+      url: `${baseUrl}/map`, // 🚀 NAYA: Reach ki jagah Map add kiya
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/vision`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/section`,
@@ -73,20 +67,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // 3. DYNAMIC ARTICLE PAGES (`/article/[id]`)
+  // Ye automatically naye IDs use karega kyunki data.ts naye JSON padh raha hai
   const articles = getAllArticles();
   const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
     url: `${baseUrl}/article/${article.id}`,
-    lastModified: new Date(article.lastUpdated), // Article ki actual last updated date use ki
+    lastModified: new Date(article.lastUpdated), 
     changeFrequency: 'monthly',
-    priority: 0.9, // Articles high priority
+    priority: 0.9, 
   }));
 
   // 4. DYNAMIC PEOPLE PAGES (`/people/[id]`)
   const people = getPeopleData().people;
   const peopleRoutes: MetadataRoute.Sitemap = people.map((person) => ({
     url: `${baseUrl}/people/${person.id}`,
-    lastModified: new Date(), // Agar future me lastUpdated add karein toh wo use karein
-    changeFrequency: 'yearly', // People ki profile jaldi nahi badalti
+    lastModified: new Date(), 
+    changeFrequency: 'yearly', 
     priority: 0.7,
   }));
 
