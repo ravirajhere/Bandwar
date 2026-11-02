@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
 import { MapPin, Clock, ShieldCheck, ArrowRight, PhoneCall, Users, BookOpen } from "lucide-react";
-import LandmarkMapWrapper from "@/components/place/LandmarkMapWrapper";
-import { DevNotice } from "@/components/home/DevNotice"; // 🚀 Naya Import
+import LandmarkMapWrapper from "@/components/map/LandmarkMapWrapper"; // 🚀 Path Updated
+import { DevNotice } from "@/components/home/DevNotice"; 
 
 import iconImage from "@/app/icon.png"; 
 
@@ -106,21 +106,34 @@ export default function Home() {
             3. MAP SECTION (Wikipedia / Meta Inspired)
             ========================================= */}
         <section className="mb-16 md:mb-24">
-          <div className="flex items-center gap-4 mb-6">
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-ink flex items-center gap-2">
-              <MapPin className="text-accent" size={24} /> Explore the Village Map
-            </h2>
-            <div className="h-px bg-divider flex-grow"></div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-4 flex-grow">
+              <h2 className="font-serif text-2xl md:text-3xl font-bold text-ink flex items-center gap-2 shrink-0">
+                <MapPin className="text-accent" size={24} /> Explore the Village Map
+              </h2>
+              <div className="h-px bg-divider flex-grow hidden sm:block"></div>
+            </div>
+            
+            {/* 🚀 Naya: Full Map link */}
+            <Link 
+              href="/map" 
+              className="text-accent text-sm font-semibold hover:underline flex items-center gap-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+            >
+              Open Full Map <ArrowRight size={14} />
+            </Link>
           </div>
           
           <div className="bg-surface border border-divider rounded-sm overflow-hidden h-[400px] md:h-[500px] 3xl:h-[700px] relative z-0">
             <LandmarkMapWrapper 
               landmarks={media.landmarks || []} 
               activeLandmark={null} 
+              showLegend={false}
+              showScale={false}
             />
           </div>
           <p className="text-center text-sm text-ink-muted mt-3">
-            Click on the markers to see the exact location of temples, schools, and landmarks in Bandwar.
+            Click on the markers to see the exact location of temples, schools, and landmarks in Bandwar. 
+            For the full cartographic index, <Link href="/map" className="text-accent hover:underline font-medium">visit the Map page</Link>.
           </p>
         </section>
 
