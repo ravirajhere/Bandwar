@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793632615615",
       "type": "Image Update Suggestion",
@@ -20,8 +21,8 @@
         "source_reason": "Offivcial",
         "contextId": "baba-bhole-durgasthan-hanuman-mandir-bandwar",
         "Context Name": "Article: Baba Bhole Durgasthan Hanuman Mandir: Multi-Deity Temple of Bandwar"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
