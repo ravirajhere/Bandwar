@@ -50,8 +50,6 @@ export function Footer() {
               <li><Link href="/directory" className="hover:text-ink hover:underline underline-offset-4">Directory</Link></li>
               <li><Link href="/gallery" className="hover:text-ink hover:underline underline-offset-4">Gallery</Link></li>
               <li><Link href="/people" className="hover:text-ink hover:underline underline-offset-4">People</Link></li>
-              <li><Link href="/vision" className="hover:text-ink hover:underline underline-offset-4">Vision 2035</Link></li>
-              <li><Link href="/timeline" className="hover:text-ink hover:underline underline-offset-4">Timeline</Link></li>
             </ul>
           </div>
 
@@ -60,7 +58,7 @@ export function Footer() {
             <h4 className="font-bold text-ink mb-4 uppercase tracking-wider text-xs">Information</h4>
             <ul className="space-y-2.5 text-ink-muted">
               <li><Link href="/about" className="hover:text-ink hover:underline underline-offset-4">About Portal</Link></li>
-              <li><Link href="/contribute" className="hover:text-ink hover:underline underline-offset-4 font-medium text-accent">Contribute</Link></li>
+              <li><Link href="/contribute" className="hover:text-ink hover:underline underline-offset-4 font-medium text-accent">Get Involved</Link></li>
               <li><Link href="/privacy" className="hover:text-ink hover:underline underline-offset-4">Privacy Policy</Link></li>
               <li><Link href="/terms" className="hover:text-ink hover:underline underline-offset-4">Terms of Use</Link></li>
               <li><Link href="/admin" className="hover:text-ink hover:underline underline-offset-4 text-ink/50">Editorial Login</Link></li>
