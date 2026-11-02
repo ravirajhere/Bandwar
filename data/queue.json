@@ -1,4 +1,25 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1793633914745",
+      "type": "Article Infobox",
+      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-02T15:38:34.745Z",
+      "pendingImageUrl": null,
+      "targetType": "article",
+      "customCategory": "",
+      "intent": "edit",
+      "filePath": "data/articles/landmarks.json",
+      "field": "Infobox: Main venue",
+      "oldValue": "The bandh, Burhi Gandak",
+      "newValue": "The bandh, Burhi Gandak River",
+      "currentImagePath": "Unknown",
+      "jsonObj": {
+        "contextId": "chhath-puja-bandwar-bandh-burhi-gandak"
+      }
+    }
+  ],
   "approved": []
 }
