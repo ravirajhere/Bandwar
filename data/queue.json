@@ -1,4 +1,27 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1793632615615",
+      "type": "Image Update Suggestion",
+      "contextId": "baba-bhole-durgasthan-hanuman-mandir-bandwar",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-02T15:16:56.666Z",
+      "pendingImageUrl": "/images/pending/edit_1793632615615.jpg",
+      "targetType": "article",
+      "customCategory": "",
+      "intent": "image_update",
+      "filePath": "data/articles/landmarks.json",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/religion/baba-bhole-durgasthan-hanuman-mandir-bandwar.jpg",
+      "jsonObj": {
+        "source_reason": "Offivcial",
+        "contextId": "baba-bhole-durgasthan-hanuman-mandir-bandwar",
+        "Context Name": "Article: Baba Bhole Durgasthan Hanuman Mandir: Multi-Deity Temple of Bandwar"
+      }
+    }
+  ],
   "approved": []
 }
