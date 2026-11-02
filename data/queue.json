@@ -1,27 +1,4 @@
 {
-  "pending": [
-    {
-      "id": "edit_1793620463538",
-      "type": "Directory Submission",
-      "contextId": "new-item",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-02T11:54:23.538Z",
-      "pendingImageUrl": null,
-      "targetType": "directory",
-      "customCategory": "",
-      "jsonObj": {
-        "Name": "STATE BANK OF INDIA",
-        "Category": "postal-banking",
-        "Phone Number": "1800112211",
-        "Address": "Near Shaheed Ram Chandra Dwar, Bandwar",
-        "contextId": "new-item",
-        "targetType": "directory",
-        "submitterName": "Ravi Raj",
-        "submitterUsername": "@Ravirajhere"
-      },
-      "intent": "add"
-    }
-  ],
+  "pending": [],
   "approved": []
 }
