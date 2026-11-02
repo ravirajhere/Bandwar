@@ -1,4 +1,27 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1793634594527",
+      "type": "Image Update Suggestion",
+      "contextId": "bandh-embankment-bandwar",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-02T15:49:55.783Z",
+      "pendingImageUrl": "/images/pending/edit_1793634594527.jpg",
+      "targetType": "article",
+      "customCategory": "",
+      "intent": "image_update",
+      "filePath": "data/articles/landmarks.json",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/landmarks/bandh-embankment-burhi-gandak-bandwar.jpg",
+      "jsonObj": {
+        "source_reason": "Offivcial",
+        "contextId": "bandh-embankment-bandwar",
+        "Context Name": "Article: The Bandh: Bandwar's Historic Flood Protection Embankment"
+      }
+    }
+  ],
   "approved": []
 }
