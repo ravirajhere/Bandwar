@@ -25,8 +25,7 @@ export function Header({ searchIndex = [] }: HeaderProps) {
     { label: "People", href: "/people" },
     { label: "Gallery", href: "/gallery" },
     { label: "Map", href: "/map" },
-
-{ label: "About", href: "/about" },
+    { label: "About", href: "/about" },
   ];
 
   useEffect(() => {
@@ -92,21 +91,28 @@ export function Header({ searchIndex = [] }: HeaderProps) {
               </Link>
             )}
 
+            {/* 🚀 SERIOUS ARCHIVAL SEARCH BUTTON */}
             <button 
               onClick={() => setIsSearchOpen(true)}
-              className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-ink-muted border border-divider bg-surface hover:bg-canvas rounded-sm transition-colors"
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-ink/60 border border-divider bg-surface hover:bg-canvas hover:text-ink rounded-sm transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
-              <Search size={16} />
-              <span className="text-xs pr-4">Search...</span>
-              <kbd className="bg-canvas border border-divider px-1.5 py-0.5 rounded text-[10px] font-mono text-ink-muted">Ctrl K</kbd>
+              <Search size={16} className="group-hover:text-accent transition-colors" />
+              <span className="text-xs font-medium pr-6">Search archive...</span>
+              <kbd className="bg-canvas border border-divider px-1.5 py-0.5 rounded-sm text-[10px] font-mono text-ink/40 group-hover:text-ink/60 transition-colors">Ctrl K</kbd>
             </button>
 
-            <button onClick={() => setIsSearchOpen(true)} className="md:hidden p-2 text-ink-muted hover:text-ink">
+            {/* Mobile Search Icon */}
+            <button 
+              onClick={() => setIsSearchOpen(true)} 
+              className="md:hidden p-2 text-ink-muted hover:text-ink"
+              aria-label="Open Search"
+            >
               <Search size={20} />
             </button>
 
             <ThemeToggle />
 
+            {/* Mobile Menu Toggle */}
             <button 
               className="lg:hidden p-2 text-ink-muted hover:text-ink"
               onClick={() => setIsOpen(!isOpen)}
@@ -119,6 +125,7 @@ export function Header({ searchIndex = [] }: HeaderProps) {
         </div>
       </header>
 
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden fixed inset-x-0 top-16 3xl:top-20 bottom-0 z-40 bg-canvas overflow-y-auto border-t border-divider">
           <div className="flex justify-between items-center px-6 py-4 border-b border-divider bg-surface/50">
@@ -156,6 +163,7 @@ export function Header({ searchIndex = [] }: HeaderProps) {
         </div>
       )}
 
+      {/* Search Modal */}
       {isSearchOpen && (
         <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} searchIndex={searchIndex} />
       )}
