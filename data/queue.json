@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793634594527",
       "type": "Image Update Suggestion",
@@ -20,8 +21,8 @@
         "source_reason": "Offivcial",
         "contextId": "bandh-embankment-bandwar",
         "Context Name": "Article: The Bandh: Bandwar's Historic Flood Protection Embankment"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
