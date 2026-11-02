@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Multi-file Commit
+// 🚀 Helper: Multi-file Commit to GitHub
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -46,6 +46,7 @@ async function commitMultipleFiles(files: { path: string; content: string; encod
   });
 }
 
+// 🚀 Helper: Fetch File from GitHub
 async function fetchGithubFile(path: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -57,6 +58,7 @@ async function fetchGithubFile(path: string) {
   return await res.json();
 }
 
+// 🚀 Helper: Delete File from GitHub
 async function deleteGithubFile(path: string, sha: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -85,10 +87,14 @@ export async function POST() {
     const fileUpdates: Record<string, any[]> = {};
     const newCategories: Record<string, any> = {};
 
+    // ---------------------------------------------------------
+    // 1. PROCESS ALL APPROVED ITEMS
+    // ---------------------------------------------------------
     for (const item of queueContent.approved) {
       
-      // 1. Handle Image Upload
       let newImageUrl = "";
+
+      // Handle Pending Image Upload (Move to final destination)
       if (item.pendingImageUrl) {
         const pendingPath = `public${item.pendingImageUrl}`; 
         const pendingFile = await fetchGithubFile(pendingPath);
@@ -96,7 +102,8 @@ export async function POST() {
         if (pendingFile) {
           const base64Content = pendingFile.content.replace(/\n/g, "");
           let finalPath = "";
-          // Agar purana path hai toh wahi overwrite karo (Exact Path Overwrite)
+          
+          // Exact Path Overwrite Logic
           if (item.currentImagePath && item.currentImagePath !== "Unknown") {
              finalPath = `public/${item.currentImagePath.startsWith("/") ? item.currentImagePath.slice(1) : item.currentImagePath}`;
           } else {
@@ -107,15 +114,16 @@ export async function POST() {
 
           filesToCommit.push({ path: finalPath, content: base64Content, encoding: "base64" });
           await deleteGithubFile(pendingPath, pendingFile.sha);
+          
+          // Cache-busting URL
           newImageUrl = `/${finalPath.replace("public/", "")}?t=${Date.now()}`;
         }
       }
 
-      // 2. Handle NEW CONTENT (intent === "add")
+      // Handle NEW CONTENT (Add)
       if (item.intent === "add") {
         const data = item.jsonObj;
         
-        // ARTICLE
         if (item.targetType === "article") {
           const catId = data.Category || "general";
           if (item.customCategory) {
@@ -132,8 +140,6 @@ export async function POST() {
           if (!fileUpdates[filePath]) fileUpdates[filePath] = [];
           fileUpdates[filePath].push({ type: "add_article", data: newArticle });
         }
-
-        // DIRECTORY
         else if (item.targetType === "directory") {
           const catId = data.Category || "general";
           if (item.customCategory) {
@@ -147,8 +153,6 @@ export async function POST() {
           if (!fileUpdates["data/directory.json"]) fileUpdates["data/directory.json"] = [];
           fileUpdates["data/directory.json"].push({ type: "add_item", data: newItem });
         }
-
-        // GALLERY IMAGE
         else if (item.targetType === "image") {
           const catId = data.Category || "general";
           if (item.customCategory) {
@@ -162,8 +166,6 @@ export async function POST() {
           if (!fileUpdates["data/media.json"]) fileUpdates["data/media.json"] = [];
           fileUpdates["data/media.json"].push({ type: "add_photo", data: newPhoto });
         }
-
-        // PERSON
         else if (item.targetType === "person") {
           const newPerson = {
             id: item.contextId, name: data["Full Name"], role: data["Role"], bio: data["Biography"],
@@ -175,7 +177,7 @@ export async function POST() {
         }
       }
 
-      // 3. Handle TEXT EDITS
+      // Handle TEXT EDITS
       if (item.intent === "edit" && item.field && item.newValue) {
         if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
         fileUpdates[item.filePath].push({ 
@@ -184,8 +186,8 @@ export async function POST() {
         });
       }
       
-      // 4. 🚀 FIX: Handle IMAGE UPDATES (intent === "image_update")
-      if (item.intent === "image_update" && item.pendingImageUrl) {
+      // Handle IMAGE UPDATES (For existing articles/people)
+      if (item.intent === "image_update" || (item.intent === "edit" && item.pendingImageUrl)) {
          if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
          fileUpdates[item.filePath].push({ 
            type: "image_update", contextId: item.contextId, newImage: newImageUrl,
@@ -194,7 +196,9 @@ export async function POST() {
       }
     }
 
-    // 5. Apply All Updates to JSON Files
+    // ---------------------------------------------------------
+    // 2. APPLY UPDATES TO JSON FILES
+    // ---------------------------------------------------------
     for (const [filePath, updates] of Object.entries(fileUpdates)) {
       const fileData = await fetchGithubFile(filePath);
       
@@ -206,113 +210,107 @@ export async function POST() {
       if (filePath.includes("people") && !currentContent.people) currentContent.people = [];
 
       updates.forEach((u) => {
-        // ADD logic
-        if (u.type === "add_article") currentContent.articles.push(u.data);
-        if (u.type === "add_item") currentContent.items.push(u.data);
-        if (u.type === "add_photo") currentContent.gallery.photos.push(u.data);
-        if (u.type === "add_person") currentContent.people.push(u.data);
+        const itemDate = new Date(u.timestamp).getTime();
         
-        // EDIT text logic
-        if (u.type === "text") {
-           const itemDate = new Date(u.timestamp).getTime();
-           
-           if (filePath.includes("articles")) {
-              currentContent.articles = currentContent.articles.map((a: any) => {
-                 if (a.id === u.contextId) {
-                   if (u.field === "Article Title") a.title = u.newValue;
-                   else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
-                   
-                   const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
-                   if (itemDate >= currentDate) {
-                     a.lastUpdated = u.timestamp.split('T')[0];
-                     a.lastEditedBy = u.userName;
-                   }
-                 }
-                 return a;
-              });
-           }
-           if (filePath.includes("people")) {
-              currentContent.people = currentContent.people.map((p: any) => {
-                 if (p.id === u.contextId) {
-                   p[u.field.toLowerCase()] = u.newValue;
-                   const currentDate = new Date(p.lastUpdated || "2000-01-01").getTime();
-                   if (itemDate >= currentDate) {
-                     p.lastUpdated = u.timestamp.split('T')[0];
-                     p.lastEditedBy = u.userName;
-                   }
-                 }
-                 return p;
-              });
-           }
-           if (filePath.includes("directory")) {
-              currentContent.items = currentContent.items.map((i: any) => {
-                 if (i.id === u.contextId) {
-                   if (u.field === "Phone Number") i.phone = u.newValue;
-                   const currentDate = new Date(i.lastUpdated || "2000-01-01").getTime();
-                   if (itemDate >= currentDate) {
-                     i.lastUpdated = u.timestamp.split('T')[0];
-                     i.lastEditedBy = u.userName;
-                   }
-                 }
-                 return i;
-              });
-           }
-           
-           // Media (Landmarks) Logic for Coordinates
-           if (filePath.includes("media.json")) {
-              currentContent.landmarks = currentContent.landmarks.map((l: any) => {
-                 if (l.id === u.contextId) {
-                   if (u.field === "Coordinates") {
-                     const [lat, lng] = u.newValue.split(",").map((s: string) => parseFloat(s.trim()));
-                     if (!isNaN(lat) && !isNaN(lng)) {
-                       l.lat = lat;
-                       l.lng = lng;
-                     }
-                   }
-                 }
-                 return l;
-              });
-           }
+        // --- ARTICLE UPDATES ---
+        if (filePath.includes("articles")) {
+          currentContent.articles = currentContent.articles.map((a: any) => {
+            if (a.id === u.contextId) {
+              
+              // Apply Text Edits
+              if (u.type === "text") {
+                if (u.field === "Article Title") a.title = u.newValue;
+                else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
+                else if (u.field === "Article Summary") a.summary = u.newValue;
+                else if (u.field.startsWith("Paragraph: ")) {
+                  const headingName = u.field.replace("Paragraph: ", "");
+                  a.content = a.content.map((block: any) => {
+                    if (block.heading === headingName) block.text = u.newValue;
+                    return block;
+                  });
+                }
+              }
+              
+              // Apply Image Update
+              if (u.type === "image_update") {
+                a.hero = u.newImage;
+              }
+
+              // Update Metadata
+              const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
+              if (itemDate >= currentDate) {
+                a.lastUpdated = u.timestamp.split('T')[0];
+                a.lastEditedBy = u.userName;
+              }
+            }
+            return a;
+          });
         }
 
-        // 🚀 IMAGE UPDATE logic (Ab ye execute hoga aur date update karega)
-        if (u.type === "image_update") {
-           const itemDate = new Date(u.timestamp).getTime();
-           
-           if (filePath.includes("articles")) {
-              currentContent.articles = currentContent.articles.map((a: any) => {
-                 if (a.id === u.contextId) {
-                   a.hero = u.newImage;
-                   const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
-                   if (itemDate >= currentDate) {
-                     a.lastUpdated = u.timestamp.split('T')[0];
-                     a.lastEditedBy = u.userName;
-                   }
-                 }
-                 return a;
-              });
-           }
-           
-           if (filePath.includes("people")) {
-              currentContent.people = currentContent.people.map((p: any) => {
-                 if (p.id === u.contextId) {
-                   p.photo = u.newImage;
-                   const currentDate = new Date(p.lastUpdated || "2000-01-01").getTime();
-                   if (itemDate >= currentDate) {
-                     p.lastUpdated = u.timestamp.split('T')[0];
-                     p.lastEditedBy = u.userName;
-                   }
-                 }
-                 return p;
-              });
-           }
+        // --- PEOPLE UPDATES ---
+        if (filePath.includes("people")) {
+          currentContent.people = currentContent.people.map((p: any) => {
+            if (p.id === u.contextId) {
+              
+              if (u.type === "text") {
+                p[u.field.toLowerCase()] = u.newValue;
+              }
+              
+              if (u.type === "image_update") {
+                p.photo = u.newImage;
+              }
+
+              const currentDate = new Date(p.lastUpdated || "2000-01-01").getTime();
+              if (itemDate >= currentDate) {
+                p.lastUpdated = u.timestamp.split('T')[0];
+                p.lastEditedBy = u.userName;
+              }
+            }
+            return p;
+          });
+        }
+
+        // --- DIRECTORY UPDATES ---
+        if (filePath.includes("directory")) {
+          currentContent.items = currentContent.items.map((i: any) => {
+            if (i.id === u.contextId) {
+              if (u.type === "text" && u.field === "Phone Number") {
+                i.phone = u.newValue;
+              }
+
+              const currentDate = new Date(i.lastUpdated || "2000-01-01").getTime();
+              if (itemDate >= currentDate) {
+                i.lastUpdated = u.timestamp.split('T')[0];
+                i.lastEditedBy = u.userName;
+              }
+            }
+            return i;
+          });
+        }
+
+        // --- MEDIA (LANDMARKS) UPDATES ---
+        if (filePath.includes("media.json")) {
+          currentContent.landmarks = currentContent.landmarks.map((l: any) => {
+            if (l.id === u.contextId) {
+              if (u.type === "text" && u.field === "Coordinates") {
+                const [lat, lng] = u.newValue.split(",").map((s: string) => parseFloat(s.trim()));
+                if (!isNaN(lat) && !isNaN(lng)) {
+                  l.lat = lat;
+                  l.lng = lng;
+                }
+              }
+            }
+            return l;
+          });
         }
       });
 
       filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
-    // 6. Add New Categories
+    // ---------------------------------------------------------
+    // 3. ADD NEW CATEGORIES (If any)
+    // ---------------------------------------------------------
     for (const [filePath, cats] of Object.entries(newCategories)) {
       const fileData = await fetchGithubFile(filePath);
       let currentContent: any = fileData ? JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")) : {};
@@ -341,7 +339,9 @@ export async function POST() {
       else filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
-    // 7. Clear Queue
+    // ---------------------------------------------------------
+    // 4. CLEAR QUEUE & COMMIT
+    // ---------------------------------------------------------
     queueContent.approved = [];
     const queueIndex = filesToCommit.findIndex(f => f.path === queuePath);
     if (queueIndex !== -1) filesToCommit[queueIndex].content = JSON.stringify(queueContent, null, 2);
