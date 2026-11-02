@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Search, User } from "lucide-react"; // 🚀 User icon add kiya
+import { Menu, X, Search, User } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { SearchModal } from "./SearchModal";
 import { SearchItem } from "@/lib/search-data";
@@ -15,26 +15,25 @@ interface HeaderProps {
 export function Header({ searchIndex = [] }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [contributor, setContributor] = useState<any>(null); // 🚀 State for user
+  const [contributor, setContributor] = useState<any>(null); 
   const pathname = usePathname();
 
-  // Nav links
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Archive", href: "/section" },
     { label: "Directory", href: "/directory" },
     { label: "People", href: "/people" },
     { label: "Gallery", href: "/gallery" },
-    { label: "Vision", href: "/vision" },
     { label: "About", href: "/about" },
   ];
 
   useEffect(() => {
     setIsOpen(false);
-    // 🚀 Check karein ki user logged in hai ya nahi
     const stored = localStorage.getItem("bandwar_contributor");
     if (stored) {
-      try { setContributor(JSON.parse(stored)); } catch {}
+      try { setContributor(JSON.parse(stored)); } catch { setContributor(null); }
+    } else {
+      setContributor(null);
     }
   }, [pathname]);
 
@@ -79,7 +78,7 @@ export function Header({ searchIndex = [] }: HeaderProps) {
 
           <div className="flex items-center gap-2">
             
-            {/* 🚀 PROFILE BUTTON (Agar user logged in hai) */}
+            {/* Profile Button (Desktop) */}
             {contributor && (
               <Link 
                 href={`/contributors/${contributor.username}`}
@@ -87,7 +86,7 @@ export function Header({ searchIndex = [] }: HeaderProps) {
                 title="My Profile"
               >
                 <User size={16} />
-                <span>{contributor.username}</span>
+                <span className="truncate max-w-[120px]">{contributor.displayName}</span>
               </Link>
             )}
 
@@ -109,6 +108,8 @@ export function Header({ searchIndex = [] }: HeaderProps) {
             <button 
               className="lg:hidden p-2 text-ink-muted hover:text-ink"
               onClick={() => setIsOpen(!isOpen)}
+              aria-expanded={isOpen}
+              aria-label="Toggle Menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -116,19 +117,25 @@ export function Header({ searchIndex = [] }: HeaderProps) {
         </div>
       </header>
 
-      {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden fixed inset-x-0 top-16 3xl:top-20 bottom-0 z-40 bg-canvas overflow-y-auto border-t border-divider">
-          <nav className="flex flex-col">
-            {/* Mobile Profile Link */}
+          <div className="flex justify-between items-center px-6 py-4 border-b border-divider bg-surface/50">
+            <span className="text-sm font-bold text-ink-muted uppercase tracking-wider">Menu</span>
+            <button onClick={() => setIsOpen(false)} className="p-1 text-ink-muted hover:text-ink">
+              <X size={20} />
+            </button>
+          </div>
+
+          <nav className="flex flex-col pb-6">
             {contributor && (
               <Link 
                 href={`/contributors/${contributor.username}`}
                 className="px-6 py-4 text-base font-bold border-b border-divider text-accent bg-accent/5 flex items-center gap-2"
               >
-                <User size={18} /> My Profile ({contributor.username})
+                <User size={18} /> My Profile
               </Link>
             )}
+            
             {navLinks.map((item) => {
               const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
               return (
