@@ -24,7 +24,9 @@ export function Header({ searchIndex = [] }: HeaderProps) {
     { label: "Directory", href: "/directory" },
     { label: "People", href: "/people" },
     { label: "Gallery", href: "/gallery" },
-    { label: "About", href: "/about" },
+    { label: "Map", href: "/map" },
+
+{ label: "About", href: "/about" },
   ];
 
   useEffect(() => {
