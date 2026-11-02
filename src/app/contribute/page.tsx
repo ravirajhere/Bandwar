@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import { ContributeForm } from "@/components/contribute/ContributeForm";
+import { JoinCTA } from "@/components/contribute/JoinCTA"; // 🚀 Naya Import
 import { Pencil, MapPin, Phone, PlusCircle, MessageSquare, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Contribute & Feedback | Bandwar Portal",
+  title: "Get Involved | Bandwar Portal",
   description: "Learn how to contribute to the Bandwar portal using our inline editing system, or send a general message to the editors.",
 };
 
@@ -14,12 +15,12 @@ export default function ContributePage() {
       <div className="container mx-auto px-4 md:px-0 max-w-5xl 3xl:max-w-6xl">
         
         {/* 🏛️ Header */}
-        <div className="mb-12 md:mb-16 text-center max-w-2xl 3xl:max-w-3xl mx-auto">
+        <div className="mb-10 md:mb-12 text-center max-w-2xl 3xl:max-w-3xl mx-auto">
           <div className="w-16 h-16 3xl:w-20 3xl:h-20 bg-surface border border-divider text-accent rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
             <BookOpen size={32} className="3xl:w-10 3xl:h-10" />
           </div>
           <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink mb-4 font-semibold tracking-tight">
-            How to Contribute
+            Get Involved
           </h1>
           <div className="w-20 h-1 bg-accent mb-6 rounded-full mx-auto"></div>
           <p className="text-base md:text-lg 3xl:text-xl text-ink/70 leading-relaxed text-pretty">
@@ -27,11 +28,14 @@ export default function ContributePage() {
           </p>
         </div>
 
+        {/* 🚀 NAYA: Join CTA Section */}
+        <JoinCTA />
+
         {/* 📖 The Guide Grid (Formal User Manual) */}
         <div className="mb-16 md:mb-24">
           <div className="flex items-center gap-4 mb-8">
             <h2 className="font-serif text-2xl 3xl:text-3xl font-semibold text-ink">
-              Using the Inline Editing Tools
+              How to use the Inline Editing Tools
             </h2>
             <div className="h-px bg-divider flex-grow rounded-full"></div>
           </div>
