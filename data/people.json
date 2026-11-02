@@ -33,7 +33,7 @@
       "becameAsceticAt": "Age 13",
       "arrivalYear": "1985s",
       "servedYears": "40+",
-      "photo": "/images/people/mahant-surendra-das-bandwar.jpg",
+      "photo": "/images/people/mahant-surendra-das-bandwar.jpg?t=1793635553798",
       "photoAlt": "Mahant Surendra Das of Bandwar Thakurbari",
       "titles": [
         "Mahant",
@@ -50,7 +50,9 @@
         "janmashtami",
         "baal-sant",
         "ayodhya"
-      ]
+      ],
+      "lastUpdated": "2026-11-02",
+      "lastEditedBy": "Ravi Raj"
     }
   ]
 }
