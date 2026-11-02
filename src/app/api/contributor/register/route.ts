@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 
+// 🚀 Reserved usernames jo koi nahi le sakta
+const RESERVED_USERNAMES = ["admin", "administrator", "root", "system", "api", "support", "help", "bandwar"];
+
 export async function POST(req: Request) {
   const githubToken = process.env.GITHUB_TOKEN;
   const repoOwner = process.env.GITHUB_REPO_OWNER;
@@ -9,10 +12,31 @@ export async function POST(req: Request) {
   try {
     const { displayName, email, customUsername } = await req.json();
 
+    // 1. Basic Validation
     if (!displayName || displayName.trim().length < 2) {
-      return NextResponse.json({ error: "Name is too short." }, { status: 400 });
+      return NextResponse.json({ error: "Display name must be at least 2 characters." }, { status: 400 });
     }
 
+    if (!customUsername || customUsername.trim().length < 2) {
+      return NextResponse.json({ error: "Username is required." }, { status: 400 });
+    }
+
+    // 2. Username Format Validation
+    const cleanUsername = customUsername.trim().replace(/^@/, ""); // Remove @ if present
+    if (!/^[a-zA-Z0-9_]+$/.test(cleanUsername)) {
+      return NextResponse.json({ 
+        error: "Username can only contain letters, numbers, and underscores (no spaces)." 
+      }, { status: 400 });
+    }
+
+    // 3. Reserved Names Check
+    if (RESERVED_USERNAMES.includes(cleanUsername.toLowerCase())) {
+      return NextResponse.json({ error: "This username is reserved. Please choose another." }, { status: 400 });
+    }
+
+    const finalUsername = `@${cleanUsername}`;
+
+    // 4. Fetch current contributors from GitHub
     const getFileUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
     const res = await fetch(getFileUrl, {
       headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
@@ -28,20 +52,20 @@ export async function POST(req: Request) {
       if (!content.contributors) content.contributors = [];
     }
 
-    const finalUsername = customUsername.startsWith("@") ? customUsername : `@${customUsername}`;
-    
-    // Check if username already exists
+    // 5. Check if username already exists (case-insensitive)
     const existingIndex = content.contributors.findIndex(
       (c: any) => c.username.toLowerCase() === finalUsername.toLowerCase()
     );
 
     if (existingIndex !== -1) {
-      return NextResponse.json({ error: "Username is already taken. Please choose another." }, { status: 400 });
+      return NextResponse.json({ 
+        error: "Username is already taken. Please choose another." 
+      }, { status: 400 });
     }
 
-    // Create new contributor (No password, simple data)
+    // 6. Create new contributor (No password, simple auth)
     const newContributor = {
-      id: finalUsername.replace("@", ""),
+      id: cleanUsername.toLowerCase(),
       username: finalUsername,
       displayName: displayName.trim(),
       email: email?.trim() || "",
@@ -53,7 +77,8 @@ export async function POST(req: Request) {
 
     content.contributors.push(newContributor);
 
-    await fetch(getFileUrl, {
+    // 7. Commit to GitHub
+    const putRes = await fetch(getFileUrl, {
       method: "PUT",
       headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" },
       body: JSON.stringify({
@@ -63,9 +88,13 @@ export async function POST(req: Request) {
       }),
     });
 
+    if (!putRes.ok) {
+      throw new Error("Failed to save contributor to GitHub.");
+    }
+
     return NextResponse.json({ success: true, contributor: newContributor });
   } catch (error) {
     console.error("Registration failed:", error);
-    return NextResponse.json({ error: "Registration failed." }, { status: 500 });
+    return NextResponse.json({ error: "Registration failed. Please try again." }, { status: 500 });
   }
 }
