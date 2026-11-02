@@ -164,6 +164,13 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                     )}
                   </div>
 
+                  {/* 🚀 UPDATED: Last Updated Date */}
+                  {item.lastUpdated && (
+                    <div className="text-[11px] text-ink-muted mb-3 flex items-center gap-1">
+                      <Clock size={10} /> Updated {item.lastUpdated}
+                    </div>
+                  )}
+
                   {/* Action Area (Phone & Call Now) */}
                   {item.phone && (
                     <div className="mt-auto pt-3 border-t border-divider flex items-center justify-between gap-2">
