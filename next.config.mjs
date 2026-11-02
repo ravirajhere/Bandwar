@@ -2,6 +2,9 @@
 const nextConfig = {
   async redirects() {
     return [
+      // 🚀 NAYA FIX: Bare /article ko Archive par bhej dein
+      { source: '/article', destination: '/section', permanent: true },
+
       // --- HEALTH ---
       { source: '/article/health-infrastructure', destination: '/article/health-infrastructure-bandwar-village', permanent: true },
       { source: '/article/diarrhea-outbreak', destination: '/article/diarrhea-outbreak-bandwar-september-2025', permanent: true },
