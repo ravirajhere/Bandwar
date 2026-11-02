@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Helper: Multi-file Commit
+// 🚀 Multi-file Commit
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -96,6 +96,7 @@ export async function POST() {
         if (pendingFile) {
           const base64Content = pendingFile.content.replace(/\n/g, "");
           let finalPath = "";
+          // Agar purana path hai toh wahi overwrite karo (Exact Path Overwrite)
           if (item.currentImagePath && item.currentImagePath !== "Unknown") {
              finalPath = `public/${item.currentImagePath.startsWith("/") ? item.currentImagePath.slice(1) : item.currentImagePath}`;
           } else {
@@ -174,7 +175,7 @@ export async function POST() {
         }
       }
 
-      // 3. Handle EDITS
+      // 3. Handle TEXT EDITS
       if (item.intent === "edit" && item.field && item.newValue) {
         if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
         fileUpdates[item.filePath].push({ 
@@ -183,8 +184,8 @@ export async function POST() {
         });
       }
       
-      // 4. Handle EDIT IMAGE
-      if (item.intent === "edit" && item.pendingImageUrl) {
+      // 4. 🚀 FIX: Handle IMAGE UPDATES (intent === "image_update")
+      if (item.intent === "image_update" && item.pendingImageUrl) {
          if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
          fileUpdates[item.filePath].push({ 
            type: "image_update", contextId: item.contextId, newImage: newImageUrl,
@@ -201,7 +202,7 @@ export async function POST() {
       if (filePath.includes("articles") && !currentContent.articles) currentContent.articles = [];
       if (filePath.includes("directory") && !currentContent.items) currentContent.items = currentContent.items || [];
       if (filePath.includes("media") && !currentContent.gallery) currentContent.gallery = { categories: [], photos: [] };
-      if (filePath.includes("media") && !currentContent.landmarks) currentContent.landmarks = []; // 🚀 Ensure landmarks array exists
+      if (filePath.includes("media") && !currentContent.landmarks) currentContent.landmarks = [];
       if (filePath.includes("people") && !currentContent.people) currentContent.people = [];
 
       updates.forEach((u) => {
@@ -257,7 +258,7 @@ export async function POST() {
               });
            }
            
-           // 🚀 NAYA: Media (Landmarks) Logic for Coordinates
+           // Media (Landmarks) Logic for Coordinates
            if (filePath.includes("media.json")) {
               currentContent.landmarks = currentContent.landmarks.map((l: any) => {
                  if (l.id === u.contextId) {
@@ -274,19 +275,37 @@ export async function POST() {
            }
         }
 
-        // EDIT image logic
-        if (u.type === "image_update" && filePath.includes("articles")) {
-           currentContent.articles = currentContent.articles.map((a: any) => {
-              if (a.id === u.contextId) {
-                a.hero = u.newImage;
-                const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
-                if (new Date(u.timestamp).getTime() >= currentDate) {
-                  a.lastUpdated = u.timestamp.split('T')[0];
-                  a.lastEditedBy = u.userName;
-                }
-              }
-              return a;
-           });
+        // 🚀 IMAGE UPDATE logic (Ab ye execute hoga aur date update karega)
+        if (u.type === "image_update") {
+           const itemDate = new Date(u.timestamp).getTime();
+           
+           if (filePath.includes("articles")) {
+              currentContent.articles = currentContent.articles.map((a: any) => {
+                 if (a.id === u.contextId) {
+                   a.hero = u.newImage;
+                   const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
+                   if (itemDate >= currentDate) {
+                     a.lastUpdated = u.timestamp.split('T')[0];
+                     a.lastEditedBy = u.userName;
+                   }
+                 }
+                 return a;
+              });
+           }
+           
+           if (filePath.includes("people")) {
+              currentContent.people = currentContent.people.map((p: any) => {
+                 if (p.id === u.contextId) {
+                   p.photo = u.newImage;
+                   const currentDate = new Date(p.lastUpdated || "2000-01-01").getTime();
+                   if (itemDate >= currentDate) {
+                     p.lastUpdated = u.timestamp.split('T')[0];
+                     p.lastEditedBy = u.userName;
+                   }
+                 }
+                 return p;
+              });
+           }
         }
       });
 
