@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Multi-file Commit
+// 🚀 Helper: Multi-file Commit
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -201,6 +201,7 @@ export async function POST() {
       if (filePath.includes("articles") && !currentContent.articles) currentContent.articles = [];
       if (filePath.includes("directory") && !currentContent.items) currentContent.items = currentContent.items || [];
       if (filePath.includes("media") && !currentContent.gallery) currentContent.gallery = { categories: [], photos: [] };
+      if (filePath.includes("media") && !currentContent.landmarks) currentContent.landmarks = []; // 🚀 Ensure landmarks array exists
       if (filePath.includes("people") && !currentContent.people) currentContent.people = [];
 
       updates.forEach((u) => {
@@ -253,6 +254,22 @@ export async function POST() {
                    }
                  }
                  return i;
+              });
+           }
+           
+           // 🚀 NAYA: Media (Landmarks) Logic for Coordinates
+           if (filePath.includes("media.json")) {
+              currentContent.landmarks = currentContent.landmarks.map((l: any) => {
+                 if (l.id === u.contextId) {
+                   if (u.field === "Coordinates") {
+                     const [lat, lng] = u.newValue.split(",").map((s: string) => parseFloat(s.trim()));
+                     if (!isNaN(lat) && !isNaN(lng)) {
+                       l.lat = lat;
+                       l.lng = lng;
+                     }
+                   }
+                 }
+                 return l;
               });
            }
         }
@@ -315,6 +332,7 @@ export async function POST() {
     return NextResponse.json({ success: true });
 
   } catch (error: any) {
+    console.error("Publish Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
