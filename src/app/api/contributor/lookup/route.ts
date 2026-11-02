@@ -8,16 +8,45 @@ export async function POST(req: Request) {
 
   try {
     const { username } = await req.json();
-    const formatted = username.startsWith("@") ? username : `@${username}`;
-    
+
+    // 1. Input Validation
+    if (!username || typeof username !== "string" || username.trim().length < 2) {
+      return NextResponse.json({ error: "Please enter a valid username." }, { status: 400 });
+    }
+
+    const cleanUsername = username.trim().replace(/^@/, "");
+
+    // 2. Format Validation (letters/numbers/underscore only)
+    if (!/^[a-zA-Z0-9_]+$/.test(cleanUsername)) {
+      return NextResponse.json({ error: "Invalid username format." }, { status: 400 });
+    }
+
+    const formatted = `@${cleanUsername}`;
+
+    // 3. Fetch Contributors from GitHub
     const res = await fetch(
       `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`,
-      { headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" }, cache: "no-store" }
+      {
+        headers: {
+          Authorization: `Bearer ${githubToken}`,
+          Accept: "application/vnd.github.v3+json",
+        },
+        cache: "no-store",
+      }
     );
-    if (!res.ok) return NextResponse.json({ error: "Could not fetch data." }, { status: 500 });
+
+    if (!res.ok) {
+      return NextResponse.json({ error: "Could not fetch data." }, { status: 500 });
+    }
 
     const fileData = await res.json();
     const content = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8"));
+
+    if (!content.contributors || !Array.isArray(content.contributors)) {
+      return NextResponse.json({ error: "No contributors found." }, { status: 404 });
+    }
+
+    // 4. Find Contributor (case-insensitive)
     const contributor = content.contributors.find(
       (c: any) => c.username.toLowerCase() === formatted.toLowerCase()
     );
@@ -26,8 +55,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No account found with this username." }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, contributor });
-  } catch {
-    return NextResponse.json({ error: "Lookup failed." }, { status: 500 });
+    // 5. 🚀 SAFE RESPONSE: Only return public fields (no email)
+    const safeContributor = {
+      id: contributor.id,
+      username: contributor.username,
+      displayName: contributor.displayName,
+      bio: contributor.bio || "",
+      photo: contributor.photo || "",
+      joinedAt: contributor.joinedAt,
+      hasChangedUsername: contributor.hasChangedUsername || false,
+    };
+
+    return NextResponse.json({ success: true, contributor: safeContributor });
+  } catch (error) {
+    console.error("Lookup failed:", error);
+    return NextResponse.json({ error: "Lookup failed. Please try again." }, { status: 500 });
   }
 }
