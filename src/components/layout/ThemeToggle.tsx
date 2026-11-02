@@ -5,10 +5,11 @@ import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // 1. Page load par theme check karna
   useEffect(() => {
-    // LocalStorage ya system preference check karo
+    setMounted(true);
     const savedTheme = localStorage.getItem("bandwar-theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
@@ -34,14 +35,27 @@ export function ThemeToggle() {
     }
   };
 
+  // Hydration mismatch se bachne ke liye (Server par button nahi dikhega)
+  if (!mounted) {
+    return (
+      <button className="p-2 text-ink-muted border border-divider rounded-sm opacity-50 cursor-wait" disabled>
+        <div className="w-[18px] h-[18px]"></div>
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={toggleTheme}
       title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-      className="p-2 text-wiki-text hover:bg-wiki-bg-alt border border-wiki-border-light transition-colors flex items-center justify-center"
       aria-label="Toggle Dark Mode"
+      className="p-2 text-ink-muted hover:text-ink hover:bg-canvas border border-divider rounded-sm transition-all duration-200 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
-      {isDark ? <Sun size={18} /> : <Moon size={18} />}
+      {isDark ? (
+        <Sun size={18} className="text-accent" />
+      ) : (
+        <Moon size={18} className="text-ink" />
+      )}
     </button>
   );
 }
