@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793667995132",
       "type": "Image Update Suggestion",
@@ -20,8 +21,8 @@
         "source_reason": "Local Resident ",
         "contextId": "maharishi-gautam-durga-mandir-bandwar",
         "Context Name": "Article: Maharishi Gautam Aadi Shakti Durga Mandir, Bandwar"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
