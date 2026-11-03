@@ -98,7 +98,7 @@
         "culture"
       ],
       "summary": "Bandwar's Ram temple, distinguished by its twin shikharas, is one of the most recognisable structures in the village. It is the site of the annual [[ram-katha-thakurbari-bandwar-2021|Ram Katha]] — the recitation of the Ramcharitmanas — and is especially striking against the evening sky at sunset.",
-      "hero": "/images/articles/ram-mandir-thakurbari-bandwar.jpg",
+      "hero": "images/articles/ram-mandir-thakurbari-bandwar.jpg",
       "photos": [
         {
           "src": "images/religion/ram-mandir-thakurbari-bandwar.jpg",
@@ -277,7 +277,7 @@
         "landmarks"
       ],
       "summary": "The smaller of Bandwar's two Krishna temples, Chhota Krishna Mandir is distinguished by its colourful scalloped arches, marble steps, and green and red side walls. It is reached by a flight of marble steps, and stands a short distance from the [[bada-krishna-mandir-bandwar|Bada Krishna Mandir]].",
-      "hero": "/images/religion/chhota-krishna-mandir-bandwar.jpg?t=1793544095792",
+      "hero": "images/religion/chhota-krishna-mandir-bandwar.jpg",
       "photos": [
         {
           "src": "images/religion/chhota-krishna-mandir-bandwar.jpg",
@@ -362,7 +362,7 @@
         "religion",
         "landmarks"
       ],
-      "summary": "A Hindu temple in Bandwar dedicated to Durga, with a distinctive orange exterior and green pillars. The temple houses a Chaiti Durga idol and is the site of the village's Chaitra Navratri celebrations. It is one of the eight temples clustered in the village centre, and is among the most visited.",
+      "summary": "A Hindu temple in Bandwar dedicated to Durga, with a distinctive orange exterior and green pillars. The temple houses a Chaiti Durga idol and is the site of the village's Chaitra Navratri celebrations. It is Bandwar's Chaiti Durga temple, while the village's other Durga temple, [[durga-mandir-bandwar|Shri Adi Durga Sthan]], serves the autumn Navratri.",
       "hero": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
       "photos": [
         {
@@ -388,7 +388,7 @@
       "content": [
         {
           "heading": "Overview",
-          "text": "The Maharishi Gautam Aadi Shakti Durga Mandir is one of the village's most visited temples. It stands in the centre of Bandwar, painted in a distinctive orange with bright green pillars, and is easily recognisable from the lane that passes it. It is the only temple in Bandwar dedicated to Durga, and is the site of the village's Chaitra Navratri celebrations — making it, along with [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]] and the two Krishna Mandirs, one of the anchors of the village's religious calendar."
+          "text": "The Maharishi Gautam Aadi Shakti Durga Mandir is one of the village's most visited temples. It stands in the centre of Bandwar, painted in a distinctive orange with bright green pillars, and is easily recognisable from the lane that passes it. It is Bandwar's Chaiti Durga temple, while the village's other Durga temple, [[durga-mandir-bandwar|Shri Adi Durga Sthan]], serves the autumn Navratri — making it, along with [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]] and the two Krishna Mandirs, one of the anchors of the village's religious calendar."
         },
         {
           "heading": "The Deity",
@@ -426,11 +426,11 @@
         }
       ],
       "related": [
+        "durga-mandir-bandwar",
         "ram-mandir-thakurbari-bandwar",
         "bada-krishna-mandir-bandwar",
         "shivala-temple-bandwar",
         "baba-bhole-durgasthan-hanuman-mandir-bandwar",
-        "sankat-mochan-hanuman-mandir-bandwar",
         "chandrashekhar-chowk-bandwar"
       ],
       "location": {
@@ -610,6 +610,95 @@
         "durgasthan hanuman mandir",
         "multi deity temple bihar",
         "om namah shivaya temple",
+        "bandwar village temples"
+      ]
+    },
+    {
+      "id": "durga-mandir-bandwar",
+      "title": "Shri Adi Durga Sthan (Durga Mandir): The Main Durga Temple of Bandwar",
+      "subtitle": "The village's historic Durga temple, centre of the annual Durga Puja celebrations",
+      "categories": [
+        "religion",
+        "landmarks",
+        "culture"
+      ],
+      "summary": "Shri Adi Durga Sthan, locally known as Durga Mandir, is the village's principal temple dedicated to Goddess Durga. It is distinct from the [[maharishi-gautam-durga-mandir-bandwar|Maharishi Gautam Aadi Shakti Durga Mandir]], which serves the springtime Chaiti Durga Puja. With its pale green exterior and an ornate iron gate, this temple is the centre of Bandwar's Sharadiya (autumn) Navratri and Durga Puja celebrations.",
+      "hero": "images/religion/durga-mandir-bandwar.jpg",
+      "photos": [
+        {
+          "src": "images/religion/durga-mandir-bandwar.jpg",
+          "caption": "The pale green exterior and iron gate of Shri Adi Durga Sthan in Bandwar."
+        }
+      ],
+      "infobox": {
+        "Type": "Hindu temple (Sthan)",
+        "Deity": "Durga (Adi Shakti)",
+        "Also known as": "Shri Adi Durga Sthan, Durga Mandir",
+        "Location": "Village centre",
+        "Exterior": "Pale green, with an ornate iron gate",
+        "Inscription": "Plaque reading 'Shri Adi Durga Sthan' with historical names",
+        "Primary festival": "Sharadiya Navratri and Durga Puja (September–October)",
+        "Managed by": "Village community"
+      },
+      "lastUpdated": "2026-11-03",
+      "content": [
+        {
+          "heading": "Overview",
+          "text": "Shri Adi Durga Sthan, commonly referred to as Durga Mandir, is the temple in Bandwar where the village observes Sharadiya Navratri and the autumn Durga Puja. It is one of the eight temples clustered in the village centre, and serves as the counterpart to the [[maharishi-gautam-durga-mandir-bandwar|Maharishi Gautam Aadi Shakti Durga Mandir]], which is dedicated to Chaiti Durga. While the Chaiti temple serves the springtime Navratri, this temple is the focus of the village's largest annual celebration in autumn, when the entire village gathers here for nine nights of prayer and festivity."
+        },
+        {
+          "heading": "Architecture & Inscription",
+          "text": "The temple has a simple, traditional design. It is painted in a pale sea-green colour, with a prominent iron gate featuring intricate spiral motifs and scrollwork. Above the entrance, a plaque dedicates the shrine to 'Shri Adi Durga Sthan' (श्री आदि दुर्गा स्थान). The inscription also bears historical names associated with the temple's establishment and maintenance, including that of Pandit Gyanandan Shri Narayan Thakur and Gangadhar Prasad. The temple's structure is unassuming but deeply embedded in the village's spiritual landscape, standing in contrast to the whitewashed exteriors of nearby shrines like [[shivala-temple-bandwar|Shivala]]."
+        },
+        {
+          "heading": "Durga Puja",
+          "text": "Sharadiya Navratri is the temple's most important festival. The nine nights are observed with daily prayers, with the largest gatherings occurring on Saptami, Ashtami, and Navami. On these days, the temple is decorated, and villagers gather for pushpanjali (floral offerings) and bhog distribution. The festival culminates in Vijayadashami, which is celebrated with great community spirit. Like the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]], Durga Puja here is organised entirely through community effort—volunteers take responsibility for the decorations, lighting, and prasad, ensuring that the festival remains a shared village tradition without the need for external patronage."
+        },
+        {
+          "heading": "Present Day",
+          "text": "The temple continues to be a focal point of religious life in the village centre. It stands near [[chandrashekhar-chowk-bandwar|Chandrashekhar Chowk]] and the [[historic-well-chaupal-bandwar|historic well]], making the walk between these sites a central part of daily village life. Together with the [[baba-bhole-durgasthan-hanuman-mandir-bandwar|Baba Bhole Durgasthan Hanuman Mandir]] and the Chaiti Durga temple, it forms a dense circuit of shrines that villagers visit in sequence through the year. The iron gate, though weathered by time, remains open to all devotees who come to seek the blessings of Adi Shakti."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Where is Durga Mandir located in Bandwar?",
+          "a": "It is in the centre of Bandwar village, Begusarai, Bihar, near Chandrashekhar Chowk and the historic well (chaupal). It is one of eight temples clustered in and around the village centre."
+        },
+        {
+          "q": "What is the difference between this temple and the Maharishi Gautam Aadi Shakti Durga Mandir?",
+          "a": "Both are dedicated to Durga, but they serve different festivals. The Maharishi Gautam Aadi Shakti Durga Mandir is a Chaiti Durga temple (spring Navratri). Shri Adi Durga Sthan (Durga Mandir) is the centre of the village's Sharadiya (autumn) Durga Puja celebrations."
+        },
+        {
+          "q": "What does the plaque above the temple door say?",
+          "a": "The plaque above the entrance reads 'Shri Adi Durga Sthan' (श्री आदि दुर्गा स्थान). It also contains historical inscriptions, including names of individuals associated with the temple, such as Pandit Gyanandan Shri Narayan Thakur and Gangadhar Prasad."
+        },
+        {
+          "q": "When is Durga Puja celebrated at this temple?",
+          "a": "Sharadiya Navratri falls in September or October. The nine nights are observed with evening prayers, with the largest gatherings on Saptami, Ashtami, and Navami. The festival concludes on Vijayadashami."
+        },
+        {
+          "q": "Who manages the temple?",
+          "a": "The temple is looked after by the village community. There is no fixed trust or external patronage; festivals and daily upkeep are managed collectively by the villagers."
+        }
+      ],
+      "related": [
+        "maharishi-gautam-durga-mandir-bandwar",
+        "baba-bhole-durgasthan-hanuman-mandir-bandwar",
+        "ram-mandir-thakurbari-bandwar",
+        "shivala-temple-bandwar",
+        "historic-well-chaupal-bandwar",
+        "chandrashekhar-chowk-bandwar"
+      ],
+      "location": {
+        "lat": 25.5008,
+        "lng": 86.1611
+      },
+      "tags": [
+        "shri adi durga sthan bandwar",
+        "durga mandir bandwar",
+        "durga puja bandwar",
+        "sharadiya navratri begusarai",
+        "autumn durga puja bihar",
         "bandwar village temples"
       ]
     }
