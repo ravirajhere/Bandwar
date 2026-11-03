@@ -1,26 +1,4 @@
 {
   "pending": [],
-  "approved": [
-    {
-      "id": "edit_1793666328192",
-      "type": "Article",
-      "contextId": "diarrhea-outbreak-bandwar-september-2025",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-03T00:38:48.192Z",
-      "pendingImageUrl": null,
-      "targetType": "article",
-      "customCategory": "",
-      "intent": "edit",
-      "filePath": "data/articles/landmarks.json",
-      "field": "Paragraph: The Root Cause: Water Contamination",
-      "oldValue": "The outbreak was caused by contaminated water. The village's shallow wells and hand-pumps, which had served Bandwar for generations, were the source of the infection. The [[jal-jeevan-tank|Jal Jeevan Mission water tower]] had not yet reached all parts of the village at the time of the outbreak, and the affected wards were among the last to be connected. The outbreak became a powerful argument for accelerating the pipeline network's expansion, and it put the issue of clean water at the centre of the village's political and social agenda.",
-      "newValue": "The outbreak was caused by contaminated water. The village's shallow wells and hand-pumps, which had served Bandwar for generations, were the source of the infection. The [[jal-jeevan-mission-water-tank-bandwar|Jal Jeevan Mission water tower]] had not yet reached all parts of the village at the time of the outbreak, and the affected wards were among the last to be connected. The outbreak became a powerful argument for accelerating the pipeline network's expansion, and it put the issue of clean water at the centre of the village's political and social agenda.",
-      "currentImagePath": "Unknown",
-      "jsonObj": {
-        "contextId": "diarrhea-outbreak-bandwar-september-2025"
-      },
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
