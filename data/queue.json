@@ -19,6 +19,26 @@
       "jsonObj": {
         "contextId": "ram-katha-thakurbari-bandwar-2021"
       }
+    },
+    {
+      "id": "edit_1793668896556",
+      "type": "Article",
+      "contextId": "ram-katha-thakurbari-bandwar-2021",
+      "userName": "Ravi Raj",
+      "userUsername": "@Ravirajhere",
+      "timestamp": "2026-11-03T01:21:36.572Z",
+      "pendingImageUrl": null,
+      "targetType": "article",
+      "customCategory": "",
+      "intent": "edit",
+      "filePath": "data/articles/culture.json",
+      "field": "Paragraph: Overview",
+      "oldValue": "Ram Katha is a multi-day public recitation of the Ramcharitmanas — Tulsidas's 16th-century retelling of the Ramayana in Awadhi — performed by a trained kathavachak (narrator). Once a year, the [[ram-mandir-thakurbari|Ram Mandir Thakurbari]] in Bandwar hosts one such Katha, and the entire village gathers to listen. Ram Katha is not unique to Bandwar — it is a common practice across North India, especially in the Hindi belt — but the Katha at Thakurbari has particular significance for Bandwar, because the temple where it is held is the village's principal Ram temple.",
+      "newValue": "Ram Katha is a multi-day public recitation of the Ramcharitmanas — Tulsidas's 16th-century retelling of the Ramayana in Awadhi — performed by a trained kathavachak (narrator). Once a year, the [[ram-mandir-thakurbari-bandwar|Ram Mandir Thakurbari]] in Bandwar hosts one such Katha, and the entire village gathers to listen. Ram Katha is not unique to Bandwar — it is a common practice across North India, especially in the Hindi belt — but the Katha at Thakurbari has particular significance for Bandwar, because the temple where it is held is the village's principal Ram temple.",
+      "currentImagePath": "Unknown",
+      "jsonObj": {
+        "contextId": "ram-katha-thakurbari-bandwar-2021"
+      }
     }
   ],
   "approved": []
