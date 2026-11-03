@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793698462350",
       "type": "Image Update Suggestion",
@@ -20,8 +21,8 @@
         "source_reason": "Local Resident ",
         "contextId": "durga-mandir-bandwar",
         "Context Name": "Article: Shri Adi Durga Sthan (Durga Mandir): The Main Durga Temple of Bandwar"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
