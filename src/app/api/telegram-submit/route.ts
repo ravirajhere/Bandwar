@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getArticleById } from "@/lib/data"; // 🚀 Import for correct file path
 
 // 🚀 Helper: Image ko GitHub pending folder mein upload karna
 async function uploadPendingImage(file: File, editId: string): Promise<string | null> {
@@ -114,26 +115,37 @@ export async function POST(req: Request) {
       intent = "edit";
     }
 
-    // 5. 🚀 DETERMINE TARGET FILE PATH
+    // 5. 🚀 DETERMINE TARGET FILE PATH (Fixed for Articles)
     let filePath = "data/master.json";
+    
     if (type.includes("Directory") || targetType === "directory") {
       filePath = "data/directory.json";
-    } else if (type.includes("Person") || targetType === "person") {
+    } 
+    else if (type.includes("Person") || targetType === "person") {
       filePath = "data/people.json";
-    } else if (type.includes("Map Location") || type.includes("Landmark")) {
+    } 
+    else if (type.includes("Map Location") || type.includes("Landmark")) {
       filePath = "data/media.json";
-    } else if (type.includes("Article") || targetType === "article") {
+    } 
+    else if (type.includes("Article") || targetType === "article") {
       if (intent === "add") {
         const cat = formData.get("Category") as string || "general";
         filePath = `data/articles/${cat}.json`;
       } else {
-        filePath = "data/articles/landmarks.json"; // fallback
+        // 🚀 FIX: Edit ke time actual article ki file dhundo
+        const existingArticle = getArticleById(contextId);
+        if (existingArticle && existingArticle.categories.length > 0) {
+          filePath = `data/articles/${existingArticle.categories[0]}.json`;
+        } else {
+          filePath = "data/articles/landmarks.json"; // Fallback
+        }
       }
-    } else if (type.includes("Gallery") || targetType === "image") {
+    } 
+    else if (type.includes("Gallery") || targetType === "image") {
       filePath = "data/media.json";
     }
 
-    // 6. Save to Queue (Dashboard ke liye)
+    // 6. Save to Queue
     await saveToQueue({
       id: editId,
       type,
@@ -146,12 +158,10 @@ export async function POST(req: Request) {
       customCategory,
       intent,
       filePath,
-      // Edit specific fields
       field,
       oldValue: currentValue,
       newValue: suggestedValue,
       currentImagePath,
-      // Add specific fields
       jsonObj
     });
 
