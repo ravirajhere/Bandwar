@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793666328192",
       "type": "Article",
@@ -18,8 +19,8 @@
       "currentImagePath": "Unknown",
       "jsonObj": {
         "contextId": "diarrhea-outbreak-bandwar-september-2025"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
