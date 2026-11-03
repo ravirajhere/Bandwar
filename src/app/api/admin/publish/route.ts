@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Helper: Multi-file Commit to GitHub
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -46,7 +45,6 @@ async function commitMultipleFiles(files: { path: string; content: string; encod
   });
 }
 
-// 🚀 Helper: Fetch File from GitHub
 async function fetchGithubFile(path: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -58,7 +56,6 @@ async function fetchGithubFile(path: string) {
   return await res.json();
 }
 
-// 🚀 Helper: Delete File from GitHub
 async function deleteGithubFile(path: string, sha: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -88,10 +85,37 @@ export async function POST() {
     const newCategories: Record<string, any> = {};
 
     // ==========================================
-    // 1. PROCESS ALL APPROVED ITEMS (Images & Data Prep)
+    // 1. PROCESS ALL APPROVED ITEMS
     // ==========================================
     for (const item of queueContent.approved) {
       
+      // 🚀 AUTO-CORRECTION: Verify filePath is correct
+      if (item.targetType === "article" && item.intent !== "add" && item.contextId) {
+        const currentFile = await fetchGithubFile(item.filePath);
+        let foundCorrect = false;
+        
+        if (currentFile) {
+          const cc = JSON.parse(Buffer.from(currentFile.content, "base64").toString("utf-8"));
+          if (cc.articles?.some((a: any) => a.id === item.contextId)) foundCorrect = true;
+        }
+        
+        if (!foundCorrect) {
+          const articleCats = ["culture", "education", "geography", "health", "infrastructure", "landmarks", "religion", "history"];
+          for (const cat of articleCats) {
+            const testPath = `data/articles/${cat}.json`;
+            if (testPath === item.filePath) continue;
+            const fd = await fetchGithubFile(testPath);
+            if (fd) {
+              const cc = JSON.parse(Buffer.from(fd.content, "base64").toString("utf-8"));
+              if (cc.articles?.some((a: any) => a.id === item.contextId)) {
+                item.filePath = testPath;
+                break;
+              }
+            }
+          }
+        }
+      }
+
       let newImageUrl = "";
 
       // Handle Image Upload (Move to final destination)
@@ -103,7 +127,6 @@ export async function POST() {
           const base64Content = pendingFile.content.replace(/\n/g, "");
           let finalPath = "";
           
-          // Exact Path Overwrite Logic
           if (item.currentImagePath && item.currentImagePath !== "Unknown") {
              finalPath = `public/${item.currentImagePath.startsWith("/") ? item.currentImagePath.slice(1) : item.currentImagePath}`;
           } else {
@@ -115,7 +138,6 @@ export async function POST() {
           filesToCommit.push({ path: finalPath, content: base64Content, encoding: "base64" });
           await deleteGithubFile(pendingPath, pendingFile.sha);
           
-          // Cache-busting URL
           newImageUrl = `/${finalPath.replace("public/", "")}?t=${Date.now()}`;
         }
       }
@@ -144,7 +166,6 @@ export async function POST() {
       
       let currentContent: any = fileData ? JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")) : {};
       
-      // Ensure arrays exist
       if (filePath.includes("articles") && !currentContent.articles) currentContent.articles = [];
       if (filePath.includes("directory") && !currentContent.items) currentContent.items = currentContent.items || [];
       if (filePath.includes("media") && !currentContent.gallery) currentContent.gallery = { categories: [], photos: [] };
@@ -154,9 +175,7 @@ export async function POST() {
       for (const u of updates) {
         const itemDate = new Date(u.timestamp).getTime();
 
-        // --------------------------------------------------
         // A. NEW ARTICLE
-        // --------------------------------------------------
         if (u.targetType === "article" && u.intent === "add") {
           const data = u.jsonObj;
           const newArticle = {
@@ -173,9 +192,7 @@ export async function POST() {
           currentContent.articles.push(newArticle);
         }
 
-        // --------------------------------------------------
         // B. NEW PERSON
-        // --------------------------------------------------
         else if (u.targetType === "person" && u.intent === "add") {
           const data = u.jsonObj;
           const newPerson = {
@@ -192,9 +209,7 @@ export async function POST() {
           currentContent.people.push(newPerson);
         }
 
-        // --------------------------------------------------
         // C. NEW DIRECTORY ITEM
-        // --------------------------------------------------
         else if (u.targetType === "directory" && u.intent === "add") {
           const data = u.jsonObj;
           const newItem = {
@@ -210,9 +225,7 @@ export async function POST() {
           currentContent.items.push(newItem);
         }
 
-        // --------------------------------------------------
         // D. NEW GALLERY PHOTO
-        // --------------------------------------------------
         else if (u.targetType === "image" && u.intent === "add") {
           const data = u.jsonObj;
           const newPhoto = {
@@ -225,19 +238,13 @@ export async function POST() {
           currentContent.gallery.photos.push(newPhoto);
         }
 
-        // --------------------------------------------------
-        // E. EXISTING ARTICLE UPDATES (Text & Image)
-        // --------------------------------------------------
+        // E. EXISTING ARTICLE UPDATES
         else if (filePath.includes("articles")) {
           currentContent.articles = currentContent.articles.map((a: any) => {
             if (a.id === u.contextId) {
               
-              // Image Update
-              if (u.intent === "image_update") {
-                a.hero = u.newImageUrl;
-              }
+              if (u.intent === "image_update") a.hero = u.newImageUrl;
               
-              // Text Edits (Explicit Mapping)
               if (u.intent === "edit") {
                 if (u.field === "Article Title") a.title = u.newValue;
                 else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
@@ -255,7 +262,6 @@ export async function POST() {
                 }
               }
 
-              // Update Metadata
               const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
               if (itemDate >= currentDate) {
                 a.lastUpdated = u.timestamp.split('T')[0];
@@ -266,16 +272,12 @@ export async function POST() {
           });
         }
 
-        // --------------------------------------------------
-        // F. EXISTING PERSON UPDATES (Text & Image)
-        // --------------------------------------------------
+        // F. EXISTING PERSON UPDATES
         else if (filePath.includes("people")) {
           currentContent.people = currentContent.people.map((p: any) => {
             if (p.id === u.contextId) {
               
-              if (u.intent === "image_update") {
-                p.photo = u.newImageUrl;
-              }
+              if (u.intent === "image_update") p.photo = u.newImageUrl;
               
               if (u.intent === "edit") {
                 if (u.field === "Full Name") p.name = u.newValue;
@@ -284,10 +286,7 @@ export async function POST() {
                 else if (u.field === "Life Journey") p.journey = u.newValue;
                 else if (u.field === "Birthplace") p.birthplace = u.newValue;
                 else if (u.field === "Locality") p.locality = u.newValue;
-                else if (u.field === "Lifespan (DOB/DOD)") {
-                   // (Agar aap chahein toh yahan date parsing logic daal sakte hain)
-                   p.dob = u.newValue; 
-                }
+                else if (u.field === "Lifespan (DOB/DOD)") p.dob = u.newValue;
               }
 
               const currentDate = new Date(p.lastUpdated || "2000-01-01").getTime();
@@ -300,13 +299,10 @@ export async function POST() {
           });
         }
 
-        // --------------------------------------------------
         // G. EXISTING DIRECTORY UPDATES
-        // --------------------------------------------------
         else if (filePath.includes("directory")) {
           currentContent.items = currentContent.items.map((i: any) => {
             if (i.id === u.contextId) {
-              
               if (u.intent === "edit") {
                 if (u.field === "Phone Number") i.phone = u.newValue;
                 else if (u.field === "Address") i.address = u.newValue;
@@ -323,9 +319,7 @@ export async function POST() {
           });
         }
 
-        // --------------------------------------------------
-        // H. EXISTING LANDMARK UPDATES (Coordinates)
-        // --------------------------------------------------
+        // H. EXISTING LANDMARK UPDATES
         else if (filePath.includes("media.json")) {
           currentContent.landmarks = currentContent.landmarks.map((l: any) => {
             if (l.id === u.contextId) {
