@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// 🚀 Multi-file Commit
+// 🚀 Helper: Multi-file Commit to GitHub
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -46,6 +46,7 @@ async function commitMultipleFiles(files: { path: string; content: string; encod
   });
 }
 
+// 🚀 Helper: Fetch File from GitHub
 async function fetchGithubFile(path: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -57,6 +58,7 @@ async function fetchGithubFile(path: string) {
   return await res.json();
 }
 
+// 🚀 Helper: Delete File from GitHub
 async function deleteGithubFile(path: string, sha: string) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_REPO_OWNER;
@@ -85,9 +87,14 @@ export async function POST() {
     const fileUpdates: Record<string, any[]> = {};
     const newCategories: Record<string, any> = {};
 
+    // ==========================================
+    // 1. PROCESS ALL APPROVED ITEMS (Images & Data Prep)
+    // ==========================================
     for (const item of queueContent.approved) {
       
       let newImageUrl = "";
+
+      // Handle Image Upload (Move to final destination)
       if (item.pendingImageUrl) {
         const pendingPath = `public${item.pendingImageUrl}`; 
         const pendingFile = await fetchGithubFile(pendingPath);
@@ -95,6 +102,8 @@ export async function POST() {
         if (pendingFile) {
           const base64Content = pendingFile.content.replace(/\n/g, "");
           let finalPath = "";
+          
+          // Exact Path Overwrite Logic
           if (item.currentImagePath && item.currentImagePath !== "Unknown") {
              finalPath = `public/${item.currentImagePath.startsWith("/") ? item.currentImagePath.slice(1) : item.currentImagePath}`;
           } else {
@@ -105,72 +114,131 @@ export async function POST() {
 
           filesToCommit.push({ path: finalPath, content: base64Content, encoding: "base64" });
           await deleteGithubFile(pendingPath, pendingFile.sha);
+          
+          // Cache-busting URL
           newImageUrl = `/${finalPath.replace("public/", "")}?t=${Date.now()}`;
         }
       }
 
-      // Handle NEW CONTENT (Add)
-      if (item.intent === "add") {
-        // ... (Add logic same as before)
-        const data = item.jsonObj;
-        if (item.targetType === "article") {
-          const catId = data.Category || "general";
-          if (item.customCategory) {
-            if (!newCategories["data/categories.json"]) newCategories["data/categories.json"] = [];
-            newCategories["data/categories.json"].push({ id: catId, title: item.customCategory, icon: "📁", description: "User contributed category" });
-          }
-          const newArticle = {
-            id: item.contextId, title: data["Article Title"], subtitle: "New contribution",
-            summary: data["Story"].slice(0, 150) + "...", categories: [catId],
-            content: [{ heading: "Overview", text: data["Story"] }],
-            hero: newImageUrl || null, lastUpdated: item.timestamp.split('T')[0], lastEditedBy: item.userName
-          };
-          const filePath = `data/articles/${catId}.json`;
-          if (!fileUpdates[filePath]) fileUpdates[filePath] = [];
-          fileUpdates[filePath].push({ type: "add_article", data: newArticle });
-        }
-        // ... (Directory, Image, Person add logic)
+      // Handle New Categories
+      if (item.customCategory && item.jsonObj?.Category) {
+        const catId = item.jsonObj.Category;
+        let catFile = "data/categories.json";
+        if (item.targetType === "directory") catFile = "data/directory.json";
+        else if (item.targetType === "image") catFile = "data/media.json";
+
+        if (!newCategories[catFile]) newCategories[catFile] = [];
+        newCategories[catFile].push({ id: catId, title: item.customCategory, icon: "📁", description: "User contributed" });
       }
 
-      // Handle TEXT EDITS
-      if (item.intent === "edit" && item.field && item.newValue) {
-        if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
-        fileUpdates[item.filePath].push({ 
-          type: "text", contextId: item.contextId, field: item.field, newValue: item.newValue,
-          userName: item.userName, timestamp: item.timestamp 
-        });
-      }
-      
-      // 🚀 FIXED: Handle IMAGE UPDATES
-      if (item.intent === "image_update" || (item.intent === "edit" && item.pendingImageUrl)) {
-         if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
-         fileUpdates[item.filePath].push({ 
-           type: "image_update", contextId: item.contextId, newImage: newImageUrl,
-           userName: item.userName, timestamp: item.timestamp 
-         });
-      }
+      // Push item to fileUpdates for later processing
+      if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
+      fileUpdates[item.filePath].push({ ...item, newImageUrl });
     }
 
-    // Apply Updates to JSON Files
+    // ==========================================
+    // 2. APPLY UPDATES TO TARGET JSON FILES
+    // ==========================================
     for (const [filePath, updates] of Object.entries(fileUpdates)) {
       const fileData = await fetchGithubFile(filePath);
       
       let currentContent: any = fileData ? JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")) : {};
+      
+      // Ensure arrays exist
       if (filePath.includes("articles") && !currentContent.articles) currentContent.articles = [];
       if (filePath.includes("directory") && !currentContent.items) currentContent.items = currentContent.items || [];
       if (filePath.includes("media") && !currentContent.gallery) currentContent.gallery = { categories: [], photos: [] };
       if (filePath.includes("media") && !currentContent.landmarks) currentContent.landmarks = [];
       if (filePath.includes("people") && !currentContent.people) currentContent.people = [];
 
-      updates.forEach((u) => {
+      for (const u of updates) {
         const itemDate = new Date(u.timestamp).getTime();
-        
-        // --- ARTICLE UPDATES ---
-        if (filePath.includes("articles")) {
+
+        // --------------------------------------------------
+        // A. NEW ARTICLE
+        // --------------------------------------------------
+        if (u.targetType === "article" && u.intent === "add") {
+          const data = u.jsonObj;
+          const newArticle = {
+            id: u.contextId,
+            title: data["Article Title"] || "Untitled",
+            subtitle: "New contribution",
+            summary: data["Story"] ? data["Story"].slice(0, 150) + "..." : "",
+            categories: [data.Category || "general"],
+            content: [{ heading: "Overview", text: data["Story"] || "" }],
+            hero: u.newImageUrl || null,
+            lastUpdated: u.timestamp.split('T')[0],
+            lastEditedBy: u.userName
+          };
+          currentContent.articles.push(newArticle);
+        }
+
+        // --------------------------------------------------
+        // B. NEW PERSON
+        // --------------------------------------------------
+        else if (u.targetType === "person" && u.intent === "add") {
+          const data = u.jsonObj;
+          const newPerson = {
+            id: u.contextId,
+            name: data["Full Name"] || "Unknown",
+            role: data["Role"] || "",
+            bio: data["Biography"] || "",
+            dob: data["Date of Birth"] || "",
+            deathDate: data["Date of Death"] || "",
+            photo: u.newImageUrl || "",
+            lastUpdated: u.timestamp.split('T')[0],
+            lastEditedBy: u.userName
+          };
+          currentContent.people.push(newPerson);
+        }
+
+        // --------------------------------------------------
+        // C. NEW DIRECTORY ITEM
+        // --------------------------------------------------
+        else if (u.targetType === "directory" && u.intent === "add") {
+          const data = u.jsonObj;
+          const newItem = {
+            id: u.contextId,
+            name: data["Name"] || "Unknown",
+            categoryId: data.Category || "general",
+            phone: data["Phone Number"] || "",
+            address: data["Address"] || "",
+            isEmergency: false,
+            lastUpdated: u.timestamp.split('T')[0],
+            lastEditedBy: u.userName
+          };
+          currentContent.items.push(newItem);
+        }
+
+        // --------------------------------------------------
+        // D. NEW GALLERY PHOTO
+        // --------------------------------------------------
+        else if (u.targetType === "image" && u.intent === "add") {
+          const data = u.jsonObj;
+          const newPhoto = {
+            id: u.contextId,
+            src: u.newImageUrl || "/icon.png",
+            caption: data["Photo Title"] || "New Photo",
+            category: data.Category || "general",
+            year: data["Year"] || new Date().getFullYear().toString()
+          };
+          currentContent.gallery.photos.push(newPhoto);
+        }
+
+        // --------------------------------------------------
+        // E. EXISTING ARTICLE UPDATES (Text & Image)
+        // --------------------------------------------------
+        else if (filePath.includes("articles")) {
           currentContent.articles = currentContent.articles.map((a: any) => {
-            if (a.id === u.contextId) { // 🚀 Target specific article by ID
+            if (a.id === u.contextId) {
               
-              if (u.type === "text") {
+              // Image Update
+              if (u.intent === "image_update") {
+                a.hero = u.newImageUrl;
+              }
+              
+              // Text Edits (Explicit Mapping)
+              if (u.intent === "edit") {
                 if (u.field === "Article Title") a.title = u.newValue;
                 else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
                 else if (u.field === "Article Summary") a.summary = u.newValue;
@@ -181,13 +249,13 @@ export async function POST() {
                     return block;
                   });
                 }
-              }
-              
-              if (u.type === "image_update") {
-                a.hero = u.newImage;
+                else if (u.field.startsWith("Infobox: ")) {
+                  const infoKey = u.field.replace("Infobox: ", "");
+                  if (a.infobox) a.infobox[infoKey] = u.newValue;
+                }
               }
 
-              // 🚀 Update Metadata for targeted article
+              // Update Metadata
               const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
               if (itemDate >= currentDate) {
                 a.lastUpdated = u.timestamp.split('T')[0];
@@ -198,12 +266,29 @@ export async function POST() {
           });
         }
 
-        // --- PEOPLE UPDATES ---
-        if (filePath.includes("people")) {
+        // --------------------------------------------------
+        // F. EXISTING PERSON UPDATES (Text & Image)
+        // --------------------------------------------------
+        else if (filePath.includes("people")) {
           currentContent.people = currentContent.people.map((p: any) => {
             if (p.id === u.contextId) {
-              if (u.type === "text") p[u.field.toLowerCase()] = u.newValue;
-              if (u.type === "image_update") p.photo = u.newImage;
+              
+              if (u.intent === "image_update") {
+                p.photo = u.newImageUrl;
+              }
+              
+              if (u.intent === "edit") {
+                if (u.field === "Full Name") p.name = u.newValue;
+                else if (u.field === "Role") p.role = u.newValue;
+                else if (u.field === "Biography") p.bio = u.newValue;
+                else if (u.field === "Life Journey") p.journey = u.newValue;
+                else if (u.field === "Birthplace") p.birthplace = u.newValue;
+                else if (u.field === "Locality") p.locality = u.newValue;
+                else if (u.field === "Lifespan (DOB/DOD)") {
+                   // (Agar aap chahein toh yahan date parsing logic daal sakte hain)
+                   p.dob = u.newValue; 
+                }
+              }
 
               const currentDate = new Date(p.lastUpdated || "2000-01-01").getTime();
               if (itemDate >= currentDate) {
@@ -214,13 +299,86 @@ export async function POST() {
             return p;
           });
         }
-        // ... (Directory aur Landmark update logic bhi same rahega)
-      });
+
+        // --------------------------------------------------
+        // G. EXISTING DIRECTORY UPDATES
+        // --------------------------------------------------
+        else if (filePath.includes("directory")) {
+          currentContent.items = currentContent.items.map((i: any) => {
+            if (i.id === u.contextId) {
+              
+              if (u.intent === "edit") {
+                if (u.field === "Phone Number") i.phone = u.newValue;
+                else if (u.field === "Address") i.address = u.newValue;
+                else if (u.field === "Timing") i.timing = u.newValue;
+              }
+
+              const currentDate = new Date(i.lastUpdated || "2000-01-01").getTime();
+              if (itemDate >= currentDate) {
+                i.lastUpdated = u.timestamp.split('T')[0];
+                i.lastEditedBy = u.userName;
+              }
+            }
+            return i;
+          });
+        }
+
+        // --------------------------------------------------
+        // H. EXISTING LANDMARK UPDATES (Coordinates)
+        // --------------------------------------------------
+        else if (filePath.includes("media.json")) {
+          currentContent.landmarks = currentContent.landmarks.map((l: any) => {
+            if (l.id === u.contextId) {
+              if (u.intent === "edit" && u.field === "Coordinates") {
+                const parts = u.newValue.split(",");
+                if (parts.length === 2) {
+                   l.lat = parseFloat(parts[0].trim());
+                   l.lng = parseFloat(parts[1].trim());
+                }
+              }
+            }
+            return l;
+          });
+        }
+      }
 
       filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
-    // Clear Queue
+    // ==========================================
+    // 3. ADD NEW CATEGORIES
+    // ==========================================
+    for (const [filePath, cats] of Object.entries(newCategories)) {
+      const fileData = await fetchGithubFile(filePath);
+      let currentContent: any = fileData ? JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")) : {};
+      
+      if (filePath.includes("categories.json")) {
+        if (!currentContent.categories) currentContent.categories = [];
+        cats.forEach((cat: any) => {
+          if (!currentContent.categories.find((c: any) => c.id === cat.id)) currentContent.categories.push(cat);
+        });
+      }
+      if (filePath.includes("directory.json")) {
+        if (!currentContent.categories) currentContent.categories = [];
+        cats.forEach((cat: any) => {
+          if (!currentContent.categories.find((c: any) => c.id === cat.id)) currentContent.categories.push(cat);
+        });
+      }
+      if (filePath.includes("media.json")) {
+        if (!currentContent.gallery) currentContent.gallery = {};
+        if (!currentContent.gallery.categories) currentContent.gallery.categories = [];
+        cats.forEach((cat: any) => {
+          if (!currentContent.gallery.categories.find((c: any) => c.id === cat.id)) currentContent.gallery.categories.push(cat);
+        });
+      }
+      const existingIndex = filesToCommit.findIndex(f => f.path === filePath);
+      if (existingIndex !== -1) filesToCommit[existingIndex].content = JSON.stringify(currentContent, null, 2);
+      else filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
+    }
+
+    // ==========================================
+    // 4. CLEAR QUEUE & COMMIT
+    // ==========================================
     queueContent.approved = [];
     const queueIndex = filesToCommit.findIndex(f => f.path === queuePath);
     if (queueIndex !== -1) filesToCommit[queueIndex].content = JSON.stringify(queueContent, null, 2);
