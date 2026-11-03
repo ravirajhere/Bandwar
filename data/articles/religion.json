@@ -623,7 +623,7 @@
         "culture"
       ],
       "summary": "Shri Adi Durga Sthan, locally known as Durga Mandir, is the village's principal temple dedicated to Goddess Durga. It is distinct from the [[maharishi-gautam-durga-mandir-bandwar|Maharishi Gautam Aadi Shakti Durga Mandir]], which serves the springtime Chaiti Durga Puja. With its pale green exterior and an ornate iron gate, this temple is the centre of Bandwar's Sharadiya (autumn) Navratri and Durga Puja celebrations.",
-      "hero": "images/religion/durga-mandir-bandwar.jpg",
+      "hero": "/images/religion/durga-mandir-bandwar.jpg?t=1793709507685",
       "photos": [
         {
           "src": "images/religion/durga-mandir-bandwar.jpg",
@@ -700,7 +700,8 @@
         "sharadiya navratri begusarai",
         "autumn durga puja bihar",
         "bandwar village temples"
-      ]
+      ],
+      "lastEditedBy": "Ravi Raj"
     }
   ]
 }

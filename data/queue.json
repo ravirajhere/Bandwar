@@ -1,28 +1,4 @@
 {
   "pending": [],
-  "approved": [
-    {
-      "id": "edit_1793698462350",
-      "type": "Image Update Suggestion",
-      "contextId": "durga-mandir-bandwar",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-03T09:34:23.347Z",
-      "pendingImageUrl": "/images/pending/edit_1793698462350.jpg",
-      "targetType": "article",
-      "customCategory": "",
-      "intent": "image_update",
-      "filePath": "data/articles/religion.json",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "images/religion/durga-mandir-bandwar.jpg",
-      "jsonObj": {
-        "source_reason": "Local Resident ",
-        "contextId": "durga-mandir-bandwar",
-        "Context Name": "Article: Shri Adi Durga Sthan (Durga Mandir): The Main Durga Temple of Bandwar"
-      },
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
