@@ -1,28 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1793667769930",
-      "type": "General Feedback / Message",
-      "contextId": "unknown",
-      "userName": "Anonymous Visitor",
-      "userUsername": "",
-      "timestamp": "2026-11-03T01:02:49.930Z",
-      "pendingImageUrl": null,
-      "targetType": "article",
-      "customCategory": "",
-      "intent": "add",
-      "filePath": "data/articles/general.json",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "Unknown",
-      "jsonObj": {
-        "Your Name": "Ravi rab",
-        "Contact": "82-272-2:27272",
-        "Message": "Kya haal chal bhai"
-      }
-    },
-    {
       "id": "edit_1793667995132",
       "type": "Image Update Suggestion",
       "contextId": "maharishi-gautam-durga-mandir-bandwar",
