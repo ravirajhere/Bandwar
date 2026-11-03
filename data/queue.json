@@ -1,28 +1,4 @@
 {
   "pending": [],
-  "approved": [
-    {
-      "id": "edit_1793667995132",
-      "type": "Image Update Suggestion",
-      "contextId": "maharishi-gautam-durga-mandir-bandwar",
-      "userName": "Ravi Raj",
-      "userUsername": "@Ravirajhere",
-      "timestamp": "2026-11-03T01:06:36.093Z",
-      "pendingImageUrl": "/images/pending/edit_1793667995132.jpg",
-      "targetType": "article",
-      "customCategory": "",
-      "intent": "image_update",
-      "filePath": "data/articles/landmarks.json",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
-      "jsonObj": {
-        "source_reason": "Local Resident ",
-        "contextId": "maharishi-gautam-durga-mandir-bandwar",
-        "Context Name": "Article: Maharishi Gautam Aadi Shakti Durga Mandir, Bandwar"
-      },
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
