@@ -19,7 +19,9 @@
       "jsonObj": {
         "contextId": "ram-katha-thakurbari-bandwar-2021"
       }
-    },
+    }
+  ],
+  "approved": [
     {
       "id": "edit_1793668896556",
       "type": "Article",
@@ -38,8 +40,8 @@
       "currentImagePath": "Unknown",
       "jsonObj": {
         "contextId": "ram-katha-thakurbari-bandwar-2021"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
