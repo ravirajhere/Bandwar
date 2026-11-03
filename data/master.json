@@ -1,13 +1,13 @@
 {
-  "version": "6.0.0",
-  "lastUpdated": "2026-11-01",
-  "schemaVersion": "master-v6",
+  "version": "7.0.0",
+  "lastUpdated": "2026-11-03",
+  "schemaVersion": "master-v7",
 
   "site": {
-    "name": "Bandwar",
+    "name": "Bandwar Archive",
     "shortName": "Bandwar",
-    "tagline": "The community-built digital portal of Bandwar",
-    "description": "The official digital portal of Bandwar village, Begusarai (Bihar) — find local services, emergency contacts, history, temples, and daily life.",
+    "tagline": "The community-built digital archive of Bandwar",
+    "description": "The official digital archive of Bandwar village, Begusarai (Bihar) — preserving local history, temples, people, and daily life.",
     "url": "https://bandwar.vercel.app",
     "edition": "2026",
     "language": "en-IN",
@@ -67,18 +67,18 @@
 
   "brand": {
     "colors": {
-      "primary": "#202122",
-      "base": "#ffffff",
-      "surface": "#f8f9fa",
-      "accent": "#0645ad",
-      "warn": "#a64b2a",
-      "success": "#1f7a3d",
-      "white": "#ffffff"
+      "primary": "#7C2D12",
+      "base": "#FBF8F3",
+      "surface": "#FFFFFF",
+      "accent": "#7C2D12",
+      "warn": "#A64B2A",
+      "success": "#1F7A3D",
+      "white": "#FFFFFF"
     },
     "fonts": {
-      "display": "Merriweather",
+      "display": "Fraunces",
       "body": "Inter",
-      "mono": "IBM Plex Mono"
+      "mono": "JetBrains Mono"
     },
     "logo": {
       "primary": "/images/brand/bandwar-logo.svg",
@@ -94,8 +94,7 @@
     { "label": "Archive", "href": "/section", "icon": "📚" },
     { "label": "People", "href": "/people", "icon": "👥" },
     { "label": "Gallery", "href": "/gallery", "icon": "🖼️" },
-    { "label": "Reach", "href": "/reach", "icon": "🚆" },
-    { "label": "Vision", "href": "/vision", "icon": "🔮" },
+    { "label": "Map", "href": "/map", "icon": "🗺️" },
     { "label": "About", "href": "/about", "icon": "ℹ️" }
   ],
 
@@ -110,10 +109,8 @@
     ],
     "explore": [
       { "label": "Directory", "href": "/directory" },
-      { "label": "Map", "href": "/#map" },
+      { "label": "Map", "href": "/map" },
       { "label": "Gallery", "href": "/gallery" },
-      { "label": "Timeline", "href": "/time" },
-      { "label": "How to Reach", "href": "/reach" },
       { "label": "Contribute", "href": "/contribute" }
     ],
     "legal": [
@@ -122,16 +119,16 @@
       { "label": "License", "href": "/about#license" },
       { "label": "Contribute", "href": "/contribute" }
     ],
-    "copyright": "© {year} Bandwar Village Portal",
+    "copyright": "© {year} Bandwar Village Archive",
     "credit": "Kept by the village, for the record"
   },
 
   "seo": {
-    "titlePattern": "{title} — {site} Portal",
-    "titlePatternHome": "{siteName} — Village Portal, Begusarai (Bihar)",
-    "defaultDescription": "Find emergency contacts, local services, and the rich history of Bandwar village, Begusarai (Bihar).",
-    "keywords": ["Bandwar village", "Bandwar Begusarai", "Bandwar Bihar", "Mithila village", "Burhi Gandak", "Bihar village portal"],
-    "ogImage": "/images/home/burhi-gandak-river-dawn-bandwar.jpg",
+    "titlePattern": "{title} — {site}",
+    "titlePatternHome": "{siteName} — Village Archive, Begusarai (Bihar)",
+    "defaultDescription": "Explore the history, temples, schools, and daily life of Bandwar village, Begusarai (Bihar). A community-built digital archive.",
+    "keywords": ["Bandwar village", "Bandwar Begusarai", "Bandwar Bihar", "Mithila village", "Burhi Gandak", "Bihar village archive"],
+    "ogImage": "/images/geography/burhi-gandak-river-dawn-bandwar.jpg",
     "ogImageWidth": 1200,
     "ogImageHeight": 630,
     "ogType": "website",
@@ -181,7 +178,7 @@
     "addToImageSitemap": true,
     "license": "https://bandwar.vercel.app/about#license",
     "acquireLicensePage": "https://bandwar.vercel.app/about#license",
-    "creditText": "Bandwar Village Portal",
+    "creditText": "Bandwar Village Archive",
     "creator": "Bandwar Village Community"
   },
 
@@ -211,7 +208,7 @@
     "handle": null,
     "purpose": "Community contribution, corrections, and directory submissions",
     "commands": [
-      { "command": "/start", "description": "Start interacting with the portal bot" },
+      { "command": "/start", "description": "Start interacting with the archive bot" },
       { "command": "/contribute", "description": "Submit a contribution or correction" },
       { "command": "/directory", "description": "Add or update a directory listing" },
       { "command": "/photo", "description": "Submit a photo for the gallery" },
@@ -236,9 +233,9 @@
     "maithiliVersion": false,
     "map": true,
     "gallery": true,
-    "timeline": true,
-    "vision": true,
-    "manifesto": true,
+    "timeline": false,
+    "vision": false,
+    "manifesto": false,
     "imageOptimization": true,
     "webpConversion": true,
     "avifConversion": true,
@@ -262,7 +259,7 @@
     "content": "© Bandwar Village Community",
     "contentLicense": "CC BY-NC-SA 4.0",
     "url": "/about#license",
-    "attribution": "Content may be reused with attribution to Bandwar Village Portal. Commercial use requires permission."
+    "attribution": "Content may be reused with attribution to Bandwar Village Archive. Commercial use requires permission."
   },
 
   "legal": {
@@ -275,7 +272,7 @@
       "dataRetention": "Contribution metadata retained for editorial audit; contact details of submitters are never published.",
       "contactForPrivacy": "Via Telegram bot (/start)"
     },
-    "disclaimer": "This is a community-maintained portal. While we strive for accuracy, information is provided as-is. For official matters, please contact the relevant government office directly.",
+    "disclaimer": "This is a community-maintained archive. While we strive for accuracy, information is provided as-is. For official matters, please contact the relevant government office directly.",
     "copyrightNotice": "All photographs and content are the property of their respective contributors. Reproduction without permission is prohibited.",
     "contentPolicy": "Non-political, non-commercial, community-verified."
   },
@@ -307,7 +304,7 @@
   },
 
   "organization": {
-    "name": "Bandwar Village Portal",
+    "name": "Bandwar Village Archive",
     "type": "NGO",
     "foundingDate": "2024",
     "founders": ["Bandwar Village Community"],
@@ -364,7 +361,7 @@
       "alt": "The Burhi Gandak river at dawn, near Bandwar village, Begusarai",
       "location": "Begusarai District · Bihar · Mithila Region",
       "title": "Bandwar Village",
-      "tagline": "The official digital portal of a village on the banks of the Burhi Gandak — find local services, emergency contacts, history, and daily life."
+      "tagline": "The official digital archive of a village on the banks of the Burhi Gandak — preserving local history, temples, people, and daily life."
     },
     "meta": [
       { "label": "Latitude · Longitude", "value": "25.5009°N · 86.1606°E" },
@@ -383,31 +380,31 @@
       "cite": "Bandwar, September 2025"
     },
     "about": {
-      "eyebrow": "About This Portal",
+      "eyebrow": "About This Archive",
       "title": "A Village in Its Own Words",
       "paragraphs": [
         "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people.",
-        "This portal is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
+        "This archive is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
         "Every article, every photograph, every fact — contributed or verified by residents of Bandwar and their descendants."
       ]
     },
     "cta": {
-      "label": "Contribute to the Portal",
+      "label": "Contribute to the Archive",
       "href": "/contribute"
     },
     "quickLinks": [
       { "label": "Emergency Contacts", "href": "/directory#emergency", "icon": "🚨" },
-      { "label": "How to Reach", "href": "/reach", "icon": "🚆" },
-      { "label": "Village Map", "href": "/#map", "icon": "📍" },
-      { "label": "Photo Gallery", "href": "/gallery", "icon": "🖼️" }
+      { "label": "Explore Map", "href": "/map", "icon": "🗺️" },
+      { "label": "Photo Gallery", "href": "/gallery", "icon": "🖼️" },
+      { "label": "People of Bandwar", "href": "/people", "icon": "👥" }
     ]
   },
 
   "about": {
-    "intro": "The community-built digital portal of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life. Kept by the village, for the record.",
+    "intro": "The community-built digital archive of Bandwar village, Begusarai (Bihar) — its history, temples, schools, culture, and daily life. Kept by the village, for the record.",
     "story": [
       "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people.",
-      "This portal is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
+      "This archive is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
       "Every article, every photograph, every fact — contributed or verified by residents of Bandwar and their descendants."
     ],
     "principles": [
@@ -434,7 +431,7 @@
       {
         "icon": "🌐",
         "title": "Free & open",
-        "description": "The portal is free to use, and the content is openly licensed for non-commercial reuse with attribution."
+        "description": "The archive is free to use, and the content is openly licensed for non-commercial reuse with attribution."
       }
     ],
     "sources": [
@@ -478,8 +475,8 @@
       }
     ],
     "community": {
-      "lead": "The Bandwar Portal is maintained by a committee of residents, former residents, and their descendants. It is a volunteer effort — no one is paid, and nothing is published for profit.",
-      "contributors": "Every photograph, memory, and document shared with the portal is credited by name. Over 40 residents and descendants have contributed since 2024."
+      "lead": "The Bandwar Archive is maintained by a committee of residents, former residents, and their descendants. It is a volunteer effort — no one is paid, and nothing is published for profit.",
+      "contributors": "Every photograph, memory, and document shared with the archive is credited by name. Over 40 residents and descendants have contributed since 2024."
     },
     "committee": [
       {
@@ -488,8 +485,8 @@
         "link": null
       }
     ],
-    "contact": "Contributions, corrections, and queries are accepted via the portal's Telegram bot.",
-    "license": "Content on this portal is licensed under CC BY-NC-SA 4.0. The underlying code is MIT-licensed."
+    "contact": "Contributions, corrections, and queries are accepted via the archive's Telegram bot.",
+    "license": "Content on this archive is licensed under CC BY-NC-SA 4.0. The underlying code is MIT-licensed."
   },
 
   "sitemap": {
@@ -505,8 +502,7 @@
       "/section/landmarks",
       "/people",
       "/gallery",
-      "/reach",
-      "/vision",
+      "/map",
       "/about",
       "/contribute",
       "/privacy",
@@ -521,6 +517,7 @@
       "directory": 0.9,
       "articles": 0.8,
       "gallery": 0.7,
+      "map": 0.8,
       "about": 0.6,
       "legal": 0.3
     }
