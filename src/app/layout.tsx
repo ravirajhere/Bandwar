@@ -1,15 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { getMasterData } from "@/lib/data";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ToastProvider } from "@/components/ui/Toast";
-
-// 🚀 BANDWAR IDENTITY: Signature Typefaces
-const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
-const fraunces = Fraunces({ subsets: ["latin"], display: "swap", variable: "--font-fraunces", axes: ["SOFT", "WONK"] });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-jetbrains", weight: ["400", "500"] });
 
 export const viewport: Viewport = {
   themeColor: [
@@ -124,9 +118,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     ]
   };
 
+  // 🚀 CSS Variables for standard Google Fonts
+  const fontStyles = `
+    :root {
+      --font-inter: 'Inter', sans-serif;
+      --font-fraunces: 'Fraunces', serif;
+      --font-jetbrains: 'JetBrains Mono', monospace;
+    }
+  `;
+
   return (
-    <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}>
+    <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning>
       <head>
+        {/* 🚀 STANDARD FONT LINKS (Bypasses next/font build issues) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
+        
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('bandwar-theme')==='dark'||(!('bandwar-theme'in localStorage)&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}` }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
