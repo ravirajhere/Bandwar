@@ -70,9 +70,22 @@ function MapController({ activeLandmark }: { activeLandmark: any }) {
   return null;
 }
 
+// 🚀 Type Safety for Landmark
+export interface LandmarkType {
+  id?: string;
+  name?: string;
+  title?: string;
+  lat: number;
+  lng: number;
+  category?: string;
+  description?: string;
+  article?: string;
+  [key: string]: any;
+}
+
 interface LandmarkMapProps {
-  landmarks: any[];
-  activeLandmark?: any;
+  landmarks: LandmarkType[];
+  activeLandmark?: LandmarkType | null;
   showLegend?: boolean;
   showScale?: boolean;
 }
@@ -89,7 +102,11 @@ export default function LandmarkMap({
   useEffect(() => { setMounted(true); }, []);
 
   if (!mounted) return (
-    <div className="h-full min-h-[400px] w-full bg-surface border border-divider flex items-center justify-center text-ink/60 text-sm">
+    <div 
+      className="h-full min-h-[400px] w-full bg-surface border border-divider flex items-center justify-center text-ink/60 text-sm"
+      role="status"
+      aria-live="polite"
+    >
       Loading cartographic data...
     </div>
   );
@@ -104,6 +121,7 @@ export default function LandmarkMap({
         scrollWheelZoom={false}
         zoomControl={false}
         className="z-0"
+        aria-label="Interactive Village Map"
       >
         <MapController activeLandmark={activeLandmark} />
         <CoordinateDisplay onMove={(lat, lng) => setCenterCoords({ lat, lng })} />
@@ -117,65 +135,71 @@ export default function LandmarkMap({
         <ZoomControl position="topright" />
 
         <MarkerClusterGroup chunkedLoading>
-          {landmarks.map((place) => (
-            <Marker 
-              key={place.id || place.name} 
-              position={[place.lat, place.lng]}
-              icon={createIcon(place.category)}
-            >
-              <Popup className="custom-archive-popup" maxWidth={300}>
-                <div className="min-w-[260px] p-0">
-                  
-                  {/* Formal Category Label */}
-                  <div className="text-[9px] font-bold text-ink/50 uppercase tracking-[0.15em] mb-1 pb-1 border-b border-divider">
-                    {CATEGORY_CONFIG[place.category]?.label || "Location"}
-                  </div>
-                  
-                  {/* Title */}
-                  <h3 className="font-serif font-bold text-base text-ink leading-tight m-0 mb-1.5 mt-1">
-                    {place.name || place.title}
-                  </h3>
-                  
-                  {/* Coordinates (Formal Data) */}
-                  <div className="text-[9px] font-mono text-ink/40 mb-2 pb-2 border-b border-divider tracking-wide">
-                    {place.lat.toFixed(5)}°N · {place.lng.toFixed(5)}°E
-                  </div>
-                  
-                  {place.description && (
-                    <p className="text-[12px] text-ink/70 mb-3 leading-relaxed">
-                      {place.description}
-                    </p>
-                  )}
-                  
-                  {/* Actions (Formal List, No Buttons Everywhere) */}
-                  <div className="space-y-1.5 pt-1">
-                    {place.article && (
-                      <Link 
-                        href={`/article/${place.article}`} 
-                        className="text-[11px] text-accent font-semibold hover:underline flex items-center gap-1"
-                      >
-                        Read full article <ArrowUpRight size={10} />
-                      </Link>
+          {landmarks.map((place) => {
+            const placeName = place.name || place.title || "Landmark";
+            
+            return (
+              <Marker 
+                key={place.id || placeName} 
+                position={[place.lat, place.lng]}
+                icon={createIcon(place.category || "")}
+              >
+                <Popup className="custom-archive-popup" maxWidth={300}>
+                  <div className="min-w-[260px] p-0">
+                    
+                    {/* Formal Category Label */}
+                    <div className="text-[9px] font-bold text-ink/50 uppercase tracking-[0.15em] mb-1 pb-1 border-b border-divider">
+                      {CATEGORY_CONFIG[place.category || ""]?.label || "Location"}
+                    </div>
+                    
+                    {/* Title */}
+                    <h3 className="font-serif font-bold text-base text-ink leading-tight m-0 mb-1.5 mt-1">
+                      {placeName}
+                    </h3>
+                    
+                    {/* Coordinates (Formal Data) */}
+                    <div className="text-[9px] font-mono text-ink/40 mb-2 pb-2 border-b border-divider tracking-wide">
+                      {place.lat.toFixed(5)}°N · {place.lng.toFixed(5)}°E
+                    </div>
+                    
+                    {place.description && (
+                      <p className="text-[12px] text-ink/70 mb-3 leading-relaxed">
+                        {place.description}
+                      </p>
                     )}
-                    <a 
-                      href={`https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[11px] text-accent font-semibold hover:underline flex items-center gap-1"
-                    >
-                      <Navigation size={10} /> Get directions
-                    </a>
-                    <EditLocationModal 
-                      landmarkName={place.name || place.title} 
-                      contextId={place.id || place.name || "unknown-landmark"} 
-                      currentLat={place.lat} 
-                      currentLng={place.lng} 
-                    />
+                    
+                    {/* Actions (Formal List, No Buttons Everywhere) */}
+                    <div className="space-y-1.5 pt-1">
+                      {place.article && (
+                        <Link 
+                          href={`/article/${place.article}`} 
+                          className="text-[11px] text-accent font-semibold hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+                          aria-label={`Read full article about ${placeName}`}
+                        >
+                          Read full article <ArrowUpRight size={10} aria-hidden="true" />
+                        </Link>
+                      )}
+                      <a 
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] text-accent font-semibold hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+                        aria-label={`Get directions to ${placeName} on Google Maps`}
+                      >
+                        <Navigation size={10} aria-hidden="true" /> Get directions
+                      </a>
+                      <EditLocationModal 
+                        landmarkName={placeName} 
+                        contextId={place.id || placeName} 
+                        currentLat={place.lat} 
+                        currentLng={place.lng} 
+                      />
+                    </div>
                   </div>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
+                </Popup>
+              </Marker>
+            );
+          })}
         </MarkerClusterGroup>
       </MapContainer>
 
@@ -183,7 +207,10 @@ export default function LandmarkMap({
       {showLegend && <MapLegend categories={CATEGORY_CONFIG} />}
 
       {/* Coordinate Readout (bottom-right, above scale bar) */}
-      <div className="absolute bottom-12 right-2 z-[400] bg-surface/95 backdrop-blur-sm border border-divider rounded-sm px-2 py-1 shadow-sm pointer-events-none">
+      <div 
+        className="absolute bottom-12 right-2 z-[400] bg-surface/95 backdrop-blur-sm border border-divider rounded-sm px-2 py-1 shadow-sm pointer-events-none"
+        aria-hidden="true"
+      >
         <div className="text-[9px] font-mono text-ink/60 leading-tight text-right">
           <div>{centerCoords.lat.toFixed(5)}°N</div>
           <div>{centerCoords.lng.toFixed(5)}°E</div>
