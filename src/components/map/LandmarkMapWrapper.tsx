@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { IndexLandmark } from "./MapIndex";
 
 const LandmarkMap = dynamic(() => import("./LandmarkMap"), {
   ssr: false,
@@ -23,18 +24,8 @@ const LandmarkMap = dynamic(() => import("./LandmarkMap"), {
 });
 
 interface LandmarkMapWrapperProps {
-  landmarks: Array<{
-    id?: string;
-    title?: string;
-    name?: string;
-    lat: number;
-    lng: number;
-    icon?: string;
-    description?: string;
-    category?: string;
-    [key: string]: any;
-  }>;
-  activeLandmark: string | null;
+  landmarks: IndexLandmark[];
+  activeLandmark: IndexLandmark | null; // 🚀 FIXED: Changed from string | null to object
   showLegend?: boolean;
   showScale?: boolean;
 }
