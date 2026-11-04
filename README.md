@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏛️ Bandwar Village Portal
+# 🏛️ Bandwar Village Archive
 
 **A community-built, zero-database digital archive for Bandwar village, Begusarai (Bihar).**
 
@@ -29,12 +29,13 @@
 
 ## 🏛️ Philosophy & Architecture
 
-The Bandwar Portal is not just a website; it is a **digital preservation project**. It was built with a "Content-First, Zero-Database" philosophy.
+The Bandwar Archive is not just a website; it is a **digital preservation project**. It was built with a "Content-First, Zero-Database" philosophy.
 
 - **Zero Database:** We use **GitHub as our CMS and Database**. There is no MongoDB, MySQL, or Firebase. Everything is stored in static `.json` files. This means zero hosting costs for a database, 100% data ownership, and infinite scalability.
 - **Read-First, Edit-Second:** Inspired by Wikipedia, the website is in "Reading Mode" by default. Editing is an intentional action (via an Edit Mode toggle) to prevent accidental edits and maintain an authoritative tone.
 - **Solo-Editor, Community-Driven:** The system is designed for a single editor to manage, but powered by community contributions via a Telegram Bot and an Inline Editing system.
 - **Privacy First:** A contributor's Login ID (username) is kept strictly private. The public website only displays their Display Name and Profile Photo.
+- **Security First:** Admin routes are protected by HMAC-signed HTTP-only cookies, ensuring that moderation tools and GitHub API tokens are completely inaccessible to the public.
 
 ---
 
@@ -42,7 +43,7 @@ The Bandwar Portal is not just a website; it is a **digital preservation project
 
 ### 🎨 The "Warm Archive" UI Identity
 - **Aesthetic:** Inspired by The New York Times and Anthropic. Features a "Warm Aged Paper" background (`#FBF8F3`), "Mithila Terracotta" accents (`#7C2D12`), and editorial typography.
-- **Typography:** Uses **Fraunces** (modern serif) for headings, **Inter** for body text, and **JetBrains Mono** for technical map data.
+- **Typography:** Uses **Fraunces** (modern serif) for headings, **Inter** for body text, and **JetBrains Mono** for technical map data. Loaded via standard `<link>` tags to prevent Next.js build-time font fetch failures.
 - **Responsive:** Fluid typography scaling from a 320px mobile screen to a 4K TV.
 - **Dark Mode:** A custom "Obsidian" dark mode that saves preference via `localStorage` without page flashing (FOUC).
 
@@ -57,13 +58,19 @@ The Bandwar Portal is not just a website; it is a **digital preservation project
 - **Section-by-Section:** Reads the Introduction, then pauses slightly before reading each heading and paragraph.
 
 ### 🛡️ The Moderation Engine (Telegram + Dashboard)
+- **Secure Admin Access:** The `/admin` route is protected by server-side middleware. Login uses a secure `ADMIN_PASSWORD` and generates an HTTP-only session cookie.
 - **Inline Editing:** Users click pencil icons to edit Titles, Paragraphs, and Infoboxes directly on the page.
 - **Auto-Image Compression:** Uploaded images are compressed client-side via Canvas API before being sent to GitHub (saving bandwidth).
-- **Pending Review:** New images go to a `public/images/pending/` folder.
 - **Telegram Sync:** Submissions trigger a Telegram Bot alert. The editor can approve/reject directly from the phone or the Dashboard.
 - **Batch Publishing:** Approving an edit only "Stages" it. Hitting "🚀 Publish Live" bundles 10+ edits into **one single GitHub commit**, preventing Vercel build spam.
-- **Auto-Metadata:** When an edit is published, the system auto-updates the `lastUpdated` date and `lastEditedBy` name on the article.
+- **Auto-Metadata:** When an edit is published, the system auto-updates the `dateModified` date, `lastUpdated` date, and `lastEditedBy` username.
 - **Dynamic Categories:** Users can create a "Custom Category" (e.g., Sports). The system auto-generates the new `.json` file and registers it in `categories.json` upon approval.
+
+### 🚀 Advanced SEO & Performance
+- **Strict Canonical & Metadata:** Every page uses dynamic `generateMetadata` with strict canonical tags to prevent duplicate content penalties.
+- **JSON-LD Graphs:** Full `@graph` structured data (Organization, WebSite, Place, Article, BreadcrumbList, ItemList).
+- **Image SEO:** All images include mandatory `imageAlt` tags. Query strings (`?v=hash`) are stripped during Next.js `<Image>` rendering to prevent optimization failures.
+- **Dynamic Sitemap:** The `sitemap.ts` automatically generates XML for all static routes, articles, people, contributors, and images. Fake `new Date()` modified dates are removed in favor of actual `lastUpdated` dates.
 
 ---
 
@@ -73,9 +80,9 @@ The Bandwar Portal is not just a website; it is a **digital preservation project
 - **Styling:** Tailwind CSS (Custom design tokens, @tailwindcss/typography)
 - **Data Validation:** Zod (Strict Type-Safety during build)
 - **Maps:** React Leaflet, React-Leaflet-Cluster
-- **Fonts:** Next.js `next/font/google` (Fraunces, Inter, JetBrains Mono)
 - **Icons:** Lucide React
 - **Automation:** Next.js API Routes (Telegram Bot API, GitHub REST API)
+- **Security:** Web Crypto API (HMAC-SHA256 for session tokens)
 - **Deployment:** Vercel
 
 ---
@@ -83,13 +90,12 @@ The Bandwar Portal is not just a website; it is a **digital preservation project
 ## 📂 File Structure
 
 ```text
-bandwar-portal/
+bandwar-archive/
 ├── data/                       # 👑 CONTENT WORKSPACE (All JSONs)
 │   ├── master.json             # Site Config, Homepage, Footer, SEO
 │   ├── directory.json          # Local services, doctors, shops
-│   ├── media.json              # Gallery photos, Timeline, Map landmarks
+│   ├── media.json              # Gallery photos and Map landmarks
 │   ├── people.json             # Notable personalities directory
-│   ├── projects.json           # Development projects & achievements data
 │   ├── categories.json         # Article categories
 │   ├── contributors.json       # Registered user profiles (Auto-managed)
 │   ├── queue.json              # PENDING & STAGED community edits (Auto-managed)
@@ -104,15 +110,16 @@ bandwar-portal/
 │   └── images/contributors/    # Auto-generated profile photos
 │
 ├── scripts/                    
-│   └── validate.ts             # Zod validation engine (Runs before build)
+│   └── validate.ts             # Zod validation engine & Cross-Reference checker
 │
 ├── src/                        
 │   ├── app/                    # Next.js App Router
 │   │   ├── admin/              # Moderation Dashboard (Protected)
 │   │   │   ├── dashboard/      # Main review UI (Text & Image diffs)
-│   │   │   └── page.tsx        # Admin Login
+│   │   │   ├── page.tsx        # Admin Login (Server Component)
+│   │   │   └── AdminLoginForm.tsx
 │   │   ├── api/                
-│   │   │   ├── admin/          # APIs for fetching queue, publishing, rejecting
+│   │   │   ├── admin/          # APIs for fetching queue, publishing, rejecting (Secured)
 │   │   │   ├── contributor/    # APIs for registration, lookup, profile updates
 │   │   │   └── telegram-submit/# Receives forms, saves to queue, alerts Telegram
 │   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
@@ -123,6 +130,8 @@ bandwar-portal/
 │   │   ├── map/                # Dedicated Map Page (A-Z Index, Legend)
 │   │   ├── people/             # People Directory & Profiles
 │   │   ├── section/            # Archive category listing
+│   │   ├── robots.ts           # Crawler rules (Protects /admin and /api)
+│   │   ├── sitemap.ts          # Dynamic Sitemap (Includes Images)
 │   │   ├── globals.css         # Custom CSS tokens, fonts, print styles
 │   │   └── layout.tsx          # Main Layout (Header, Footer, JSON-LD SEO)
 │   │
@@ -142,13 +151,17 @@ bandwar-portal/
 │   │   ├── useContributorGate.tsx # Handles auth & profile creation gate
 │   │   └── useInlineEdit.ts    # Handles state for inline editing
 │   │
-│   └── lib/                    
-│       ├── data.ts             # Reads JSON, Filters missing images
-│       ├── contributor.ts      # Username generation, types
-│       ├── search-data.ts      # Aggregates data for Global Search
-│       └── schema.ts           # Zod schemas
+│   ├── lib/                    
+│   │   ├── data.ts             # Reads JSON, Filters missing images, Caches data
+│   │   ├── contributor.ts      # Username generation, types
+│   │   ├── search-data.ts      # Aggregates data for Global Search
+│   │   ├── adminAuth.ts        # HMAC session generation & validation
+│   │   └── schema.ts           # Zod schemas
+│   │
+│   └── middleware.ts           # Edge Middleware to protect /admin routes
 │
 ├── .npmrc                      # Forces legacy-peer-deps for Leaflet
+├── next.config.js              # Redirects, Security Headers, Image formats
 ├── tailwind.config.ts          # Identity tokens (Warm Archive theme)
 ├── vercel.json                 # Ignores Vercel builds for queue.json updates
 └── package.json                # Dependencies
@@ -165,16 +178,19 @@ npm install
 *(Note: A `.npmrc` file is included in the root with `legacy-peer-deps=true`. This is required because `react-leaflet-cluster` hasn't officially updated its peer dependencies for React 19 yet.)*
 
 ### 2. Environment Variables
-Create a `.env.local` file in the root directory. You will need a Telegram Bot and a GitHub Personal Access Token (PAT) with `repo` scope.
+Create a `.env.local` file in the root directory. You will need a Telegram Bot, a GitHub Personal Access Token (PAT) with `repo` scope, and secure Admin credentials.
 
 ```env
 TELEGRAM_BOT_TOKEN="your_bot_token_here"
 TELEGRAM_CHAT_ID="your_chat_id_here"
-TELEGRAM_WEBHOOK_SECRET="your_secret_password"
 
 GITHUB_TOKEN="ghp_your_personal_access_token"
 GITHUB_REPO_OWNER="your_github_username"
 GITHUB_REPO_NAME="your_repo_name"
+
+# Admin Security (Generate random 32-character strings for these)
+ADMIN_PASSWORD="your_strong_password_here"
+ADMIN_SESSION_SECRET="your_hmac_session_secret_here"
 ```
 
 ### 3. Start the Development Server
@@ -189,14 +205,14 @@ npm run dev
 Thanks to the Moderation Dashboard, the Editor's life is incredibly easy. The system acts as a mini-CMS.
 
 1. **Receive Submission:** A user submits an edit or new content. It automatically saves to `data/queue.json` (Pending) and sends a Telegram alert with an image preview.
-2. **Review in Dashboard:** Go to `/admin/dashboard` (Default Password: `bandwar_admin_2026`). You will see all Pending edits with a strict Red/Green diff view.
+2. **Review in Dashboard:** Go to `/admin` and enter the `ADMIN_PASSWORD` defined in your environment variables. You will see all Pending edits with a strict Red/Green diff view.
 3. **Review Images:** If an image was submitted, it is saved to `public/images/pending/`. You can click it to view full size.
 4. **Stage or Reject:** Click "Stage for Publish". If you reject an image, it is automatically deleted from GitHub to keep the repo clean.
 5. **Batch Publish:** Once you have 5-10 staged edits, click the green **"🚀 Publish X Updates Live"** button. 
-   - The Dashboard uses the GitHub API to update all target JSON files in a single commit.
+   - The Dashboard uses the GitHub API to update all target JSON files in a single atomic commit.
    - Pending images are moved to their final exact paths (overwriting old ones).
    - New custom categories are automatically registered.
-   - Metadata (`lastUpdated` & `lastEditedBy`) is automatically updated.
+   - Metadata (`dateModified` & `lastEditedBy`) is automatically updated.
    - Vercel triggers exactly **one** build and deploys the changes.
 
 ---
@@ -210,20 +226,25 @@ To run it manually:
 npm run validate
 ```
 
+**The Validation Engine runs in 2 Phases:**
+- **Phase 1 (Schema):** Checks all JSON files against strict Zod schemas (ensures required fields, correct types, and no missing data).
+- **Phase 2 (Cross-Reference):** Scans every `[[wikilink]]` in article content and every ID in the `related` array to ensure the target articles actually exist. This prevents dead links and broken backlink systems.
+
 - ✅ **Green Pass:** Data is perfect.
-- ❌ **Red Fail:** The terminal will show exactly which field is missing (Expected string, received null, etc.). Fix the JSON immediately.
+- ❌ **Red Fail:** The terminal will show exactly which field or link is broken. Fix it immediately.
 
 ---
 
 ## 🏆 Golden Rules for Maintenance
 
 1. **`queue.json` & `contributors.json` are Auto-managed:** Do not manually edit these files unless resetting a corrupted state. They are managed entirely by the API routes.
-2. **Security:** Never commit your `.env` file. All tokens must live in Vercel's Environment Variables. Never expose your GitHub PAT (`GITHUB_TOKEN`) to the client-side code.
+2. **Security:** Never commit your `.env` file. All tokens (GitHub, Telegram, Admin) must live in Vercel's Environment Variables. Never expose your GitHub PAT to the client-side code.
 3. **Vercel Builds:** The `vercel.json` file contains an `ignoreCommand`. It tells Vercel to ignore builds if *only* `queue.json` is changed. This saves your free tier limits.
-4. **Image Paths:** In JSON, use paths like `images/home/hero.jpg` (no leading slash).
+4. **Image Paths:** In JSON, use paths like `images/home/hero.jpg` (no leading slash). The Next.js `<Image>` component requires query strings (`?v=hash`) to be stripped.
 5. **Typography:** Use the `font-serif` class for headings (Fraunces) and default `font-sans` (Inter) for body text to maintain the identity.
+6. **No Fake Dates:** Never use `new Date()` in dynamic sitemaps or schemas. Always use the `lastUpdated` or `dateModified` values from the JSON data.
 
 ---
 <div align="center">
-  <i>Built with ❤️ for Bandwar. Inspired by Wikipedia, The New York Times, and GitHub.</i>
+  <i>Built with ❤️ for Bandwar</i>
 </div>
