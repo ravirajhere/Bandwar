@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Edit3 } from "lucide-react";
 import { EditProfileModal } from "./EditProfileModal";
-import { CONTRIBUTOR_STORAGE_KEY } from "@/lib/contributor"; // 🚀 isAdmin hata diya
+import { CONTRIBUTOR_STORAGE_KEY } from "@/lib/contributor";
 
 export function ProfileClientWrapper({ contributor }: { contributor: any }) {
   const [isOwner, setIsOwner] = useState(false);
@@ -27,10 +27,12 @@ export function ProfileClientWrapper({ contributor }: { contributor: any }) {
   return (
     <>
       <button 
+        type="button"
         onClick={() => setIsEditOpen(true)}
-        className="inline-flex items-center gap-2 bg-canvas border border-divider text-ink px-4 py-2 rounded-sm text-sm font-semibold hover:border-accent transition-colors"
+        className="inline-flex items-center gap-2 bg-canvas border border-divider text-ink px-4 py-2 rounded-sm text-sm font-semibold hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+        aria-label="Edit my contributor profile"
       >
-        <Edit3 size={16} /> Edit My Profile
+        <Edit3 size={16} aria-hidden="true" /> Edit My Profile
       </button>
       
       {isEditOpen && (
