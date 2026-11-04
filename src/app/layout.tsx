@@ -7,25 +7,9 @@ import { Footer } from "@/components/layout/Footer";
 import { ToastProvider } from "@/components/ui/Toast";
 
 // 🚀 BANDWAR IDENTITY: Signature Typefaces
-const inter = Inter({ 
-  subsets: ["latin"], 
-  display: "swap", 
-  variable: "--font-inter" 
-});
-
-const fraunces = Fraunces({ 
-  subsets: ["latin"], 
-  display: "swap", 
-  variable: "--font-fraunces",
-  axes: ["SOFT", "WONK"],
-});
-
-const jetbrainsMono = JetBrains_Mono({ 
-  subsets: ["latin"], 
-  display: "swap", 
-  variable: "--font-jetbrains",
-  weight: ["400", "500"],
-});
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const fraunces = Fraunces({ subsets: ["latin"], display: "swap", variable: "--font-fraunces", axes: ["SOFT", "WONK"] });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-jetbrains", weight: ["400", "500"] });
 
 export const viewport: Viewport = {
   themeColor: [
@@ -38,155 +22,125 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-// 🚀 SENIOR SEO: Complete Metadata Setup
+// 🚀 SENIOR SEO: Complete Metadata Setup (No canonical/og:url here to prevent inheritance bugs)
 export async function generateMetadata(): Promise<Metadata> {
   const config = getMasterData();
   const defaultOgImage = config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg";
   
   return {
     title: { 
-      default: config.seo?.titlePatternHome?.replace("{siteName}", config.site.name) || config.site.name, 
-      template: config.seo?.titlePattern?.replace("{site}", config.site.name) || `%s | ${config.site.name}`
+      default: "Bandwar Village Archive — Begusarai, Bihar", 
+      template: "%s — Bandwar Village Archive"
     },
     description: config.seo?.defaultDescription || config.site.description,
     metadataBase: new URL(config.site.url),
-    alternates: {
-      canonical: "/",
-    },
     robots: {
-      index: true,
-      follow: true,
+      index: true, follow: true,
       googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
+        index: true, follow: true,
+        "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1,
       },
     },
     openGraph: {
-      title: config.site.name,
-      description: config.seo?.defaultDescription || config.site.description,
-      url: config.site.url,
-      siteName: config.site.name,
+      siteName: "Bandwar Village Archive",
       locale: "en_IN",
       type: "website",
-      images: [
-        {
-          url: defaultOgImage,
-          width: config.seo?.ogImageWidth || 1200,
-          height: config.seo?.ogImageHeight || 630,
-          alt: config.site.name,
-        }
-      ],
+      images: [{ url: defaultOgImage, width: 1200, height: 630, alt: "The Burhi Gandak river at dawn in Bandwar village, Begusarai" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: config.site.name,
-      description: config.seo?.defaultDescription || config.site.description,
       images: [defaultOgImage],
     },
     icons: {
-      icon: "/favicon.ico",
-      apple: "/images/brand/apple-touch-icon.png",
+      icon: [{ url: "/favicon.ico", sizes: "any" }],
+      apple: { url: "/images/brand/apple-touch-icon.png", sizes: "180x180" },
+    },
+    verification: {
+      google: config.seo?.verification?.google || undefined,
     }
   };
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const config = getMasterData();
+  const baseUrl = config.site.url;
 
-  // 🚀 SENIOR SEO: Structured Data (JSON-LD) for Google
-  const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "@id": `${config.site.url}/#website`,
-      url: config.site.url,
-      name: config.site.name,
-      description: config.site.description,
-      publisher: { "@id": `${config.site.url}/#organization` }
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": `${config.site.url}/#organization`,
-      name: config.organization?.name || config.site.name,
-      url: config.site.url,
-      logo: `${config.site.url}${config.brand?.logo?.primary || "/icon.png"}`,
-      description: config.organization?.mission || config.site.description,
-      ...(config.organization?.foundingDate && { foundingDate: config.organization.foundingDate }),
-    },
-    ...(config.village ? [{
-      "@context": "https://schema.org",
-      "@type": "Place",
-      "@id": `${config.site.url}/#place`,
-      name: config.village.name,
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: config.village.name,
-        addressRegion: config.village.state,
-        postalCode: config.village.pincode,
-        addressCountry: config.village.country
+  // 🚀 Unified JSON-LD Graph for Site, Org, and Place
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl}/#website`,
+        url: baseUrl,
+        name: "Bandwar Village Archive",
+        description: config.site.description,
+        inLanguage: "en-IN",
+        publisher: { "@id": `${baseUrl}/#organization` },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${baseUrl}/search?q={search_term_string}` },
+          "query-input": "required name=search_term_string",
+        },
       },
-      ...(config.village.coordinates && {
+      {
+        "@type": ["Organization", "NGO"],
+        "@id": `${baseUrl}/#organization`,
+        name: config.organization?.name || "Bandwar Village Archive",
+        url: baseUrl,
+        logo: {
+          "@type": "ImageObject",
+          url: `${baseUrl}/images/brand/bandwar-logo.svg`,
+          width: 512, height: 512,
+        },
+        description: config.organization?.mission || config.site.description,
+        foundingDate: "2024",
+        areaServed: { "@type": "Place", name: "Bandwar, Begusarai, Bihar, India" },
+      },
+      ...(config.village ? [{
+        "@type": "Place",
+        "@id": `${baseUrl}/#place`,
+        name: config.village.name,
+        alternateName: config.village.alias,
+        additionalType: "https://en.wikipedia.org/wiki/Village",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Bandwar",
+          addressRegion: "Bihar",
+          postalCode: config.village.pincode || "851131",
+          addressCountry: "IN", 
+        },
         geo: {
           "@type": "GeoCoordinates",
-          latitude: config.village.coordinates.lat,
-          longitude: config.village.coordinates.lng
-        }
-      })
-    }] : [])
-  ];
+          latitude: config.village.coordinates?.lat || 25.5009,
+          longitude: config.village.coordinates?.lng || 86.1606,
+        },
+        containedInPlace: [
+          { "@type": "AdministrativeArea", name: "Begusarai district" },
+          { "@type": "State", name: "Bihar" },
+          { "@type": "Country", name: "India" },
+        ],
+      }] : [])
+    ]
+  };
 
   return (
-    <html 
-      lang={config.site.language || "en-IN"} 
-      suppressHydrationWarning 
-      className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning className={`${inter.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}>
       <head>
-        {/* Anti-Flicker Dark Mode Script */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                if (localStorage.getItem('bandwar-theme') === 'dark' || (!('bandwar-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                }
-              } catch (e) {}
-            `,
-          }}
-        />
-        
-        {/* 🚀 JSON-LD for SEO */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('bandwar-theme')==='dark'||(!('bandwar-theme'in localStorage)&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}` }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="bg-canvas text-ink font-sans antialiased min-h-screen flex flex-col">
-        
-        {/* Accessibility Skip Link */}
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-modal focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-sm font-medium text-sm shadow-md"
-        >
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-modal focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-sm font-medium text-sm shadow-md">
           Skip to main content
         </a>
-
         <ToastProvider>
           <Header />
-          
           <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
             {children}
           </main>
-          
           <Footer />
         </ToastProvider>
-        
       </body>
     </html>
   );
