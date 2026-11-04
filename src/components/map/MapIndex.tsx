@@ -3,11 +3,13 @@
 import { useState, useMemo } from "react";
 import { Search, MapPin } from "lucide-react";
 
-// 🚀 Type Safety for Landmarks
+// 🚀 FIXED: Added lat and lng to resolve TypeScript mismatch
 export interface IndexLandmark {
   id?: string;
   name?: string;
   title?: string;
+  lat: number;
+  lng: number;
   category?: string;
   [key: string]: any;
 }
