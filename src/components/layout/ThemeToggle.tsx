@@ -38,7 +38,12 @@ export function ThemeToggle() {
   // Hydration mismatch se bachne ke liye (Server par button nahi dikhega)
   if (!mounted) {
     return (
-      <button className="p-2 text-ink-muted border border-divider rounded-sm opacity-50 cursor-wait" disabled>
+      <button 
+        type="button" 
+        className="p-2 text-ink-muted border border-divider rounded-sm opacity-50 cursor-wait" 
+        disabled 
+        aria-hidden="true"
+      >
         <div className="w-[18px] h-[18px]"></div>
       </button>
     );
@@ -46,15 +51,16 @@ export function ThemeToggle() {
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
       title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-      aria-label="Toggle Dark Mode"
+      aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
       className="p-2 text-ink-muted hover:text-ink hover:bg-canvas border border-divider rounded-sm transition-all duration-200 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       {isDark ? (
-        <Sun size={18} className="text-accent" />
+        <Sun size={18} className="text-accent" aria-hidden="true" />
       ) : (
-        <Moon size={18} className="text-ink" />
+        <Moon size={18} className="text-ink" aria-hidden="true" />
       )}
     </button>
   );
