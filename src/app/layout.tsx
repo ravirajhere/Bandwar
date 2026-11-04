@@ -16,7 +16,6 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-// 🚀 SENIOR SEO: Complete Metadata Setup (No canonical/og:url here to prevent inheritance bugs)
 export async function generateMetadata(): Promise<Metadata> {
   const config = getMasterData();
   const defaultOgImage = config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg";
@@ -59,7 +58,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const config = getMasterData();
   const baseUrl = config.site.url;
 
-  // 🚀 Unified JSON-LD Graph for Site, Org, and Place
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -118,7 +116,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     ]
   };
 
-  // 🚀 CSS Variables for standard Google Fonts
   const fontStyles = `
     :root {
       --font-inter: 'Inter', sans-serif;
@@ -130,10 +127,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning>
       <head>
-        {/* 🚀 STANDARD FONT LINKS (Bypasses next/font build issues) */}
+        {/* 🚀 FIX: Google Fonts Non-Blocking Loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" 
+          rel="stylesheet" 
+          media="print" 
+          // @ts-ignore
+          onLoad="this.media='all'" 
+        />
+        <noscript>
+          <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+        </noscript>
         <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
         
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('bandwar-theme')==='dark'||(!('bandwar-theme'in localStorage)&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}` }} />
