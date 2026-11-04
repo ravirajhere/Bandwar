@@ -21,14 +21,20 @@ export function FaqAccordion({ faqs }: FaqProps) {
             key={index} 
             className="group [&_summary::-webkit-details-marker]:hidden"
           >
-            <summary className="flex items-center justify-between cursor-pointer p-5 md:p-6 3xl:p-8 transition-colors hover:bg-canvas focus:outline-none focus-visible:bg-canvas focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-accent">
+            <summary 
+              className="flex items-center justify-between cursor-pointer p-5 md:p-6 3xl:p-8 transition-colors hover:bg-canvas focus:outline-none focus-visible:bg-canvas focus-visible:ring-inset focus-visible:ring-2 focus-visible:ring-accent list-none"
+              aria-label={`Toggle answer for: ${faq.q}`}
+            >
               {/* Question Text */}
               <span className="pr-4 md:pr-6 text-base md:text-lg 3xl:text-xl font-medium text-ink group-open:text-accent transition-colors leading-snug">
                 {faq.q}
               </span>
               
               {/* Icon (Rotates and changes color when open) */}
-              <span className="shrink-0 text-ink/40 group-open:text-accent transition-all duration-300">
+              <span 
+                className="shrink-0 text-ink/40 group-open:text-accent transition-all duration-300"
+                aria-hidden="true"
+              >
                 <ChevronDown 
                   size={22} 
                   strokeWidth={2} 
