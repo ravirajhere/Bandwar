@@ -3,10 +3,19 @@
 import { useState, useMemo } from "react";
 import { Search, MapPin } from "lucide-react";
 
+// 🚀 Type Safety for Landmarks
+export interface IndexLandmark {
+  id?: string;
+  name?: string;
+  title?: string;
+  category?: string;
+  [key: string]: any;
+}
+
 interface MapIndexProps {
-  landmarks: any[];
+  landmarks: IndexLandmark[];
   activeLandmarkId: string | null;
-  onSelect: (landmark: any) => void;
+  onSelect: (landmark: IndexLandmark) => void;
 }
 
 export function MapIndex({ landmarks, activeLandmarkId, onSelect }: MapIndexProps) {
@@ -32,13 +41,18 @@ export function MapIndex({ landmarks, activeLandmarkId, onSelect }: MapIndexProp
       <div className="p-4 border-b border-divider bg-canvas/50 shrink-0">
         <h2 className="font-serif font-bold text-ink text-lg mb-3">Landmark Index</h2>
         <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ink/40" size={14} />
+          <Search 
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ink/40" 
+            size={14} 
+            aria-hidden="true" 
+          />
           <input
             type="text"
             placeholder="Filter locations..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 bg-canvas border border-divider rounded-sm text-xs focus:outline-none focus:border-accent text-ink"
+            aria-label="Filter locations by name"
+            className="w-full pl-8 pr-3 py-1.5 bg-canvas border border-divider rounded-sm text-xs focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 text-ink transition-all"
           />
         </div>
       </div>
@@ -49,26 +63,32 @@ export function MapIndex({ landmarks, activeLandmarkId, onSelect }: MapIndexProp
           <p className="text-center text-xs text-ink-muted py-8">No locations found.</p>
         ) : (
           filteredLandmarks.map((l) => {
-            const name = l.name || l.title;
+            const name = l.name || l.title || "Landmark";
             const isActive = activeLandmarkId === l.id;
 
             return (
               <button
+                type="button"
                 key={l.id || name}
                 onClick={() => onSelect(l)}
-                className={`w-full text-left flex items-start gap-2.5 p-2 rounded-sm transition-colors border-l-2 ${
+                aria-current={isActive ? "true" : "false"}
+                className={`w-full text-left flex items-start gap-2.5 p-2 rounded-sm transition-colors border-l-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                   isActive 
                     ? "bg-accent/5 border-accent text-accent" 
                     : "border-transparent text-ink hover:bg-canvas hover:text-accent"
                 }`}
               >
-                <MapPin size={14} className={`shrink-0 mt-0.5 ${isActive ? "text-accent" : "text-ink/30"}`} />
+                <MapPin 
+                  size={14} 
+                  className={`shrink-0 mt-0.5 ${isActive ? "text-accent" : "text-ink/30"}`} 
+                  aria-hidden="true" 
+                />
                 <div className="min-w-0">
                   <div className={`text-sm font-semibold leading-tight truncate ${isActive ? "text-accent" : ""}`}>
                     {name}
                   </div>
                   <div className="text-[10px] uppercase tracking-wider text-ink/50 mt-0.5">
-                    {l.category}
+                    {l.category || "Location"}
                   </div>
                 </div>
               </button>
