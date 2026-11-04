@@ -11,9 +11,9 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         disallow: [
-          '/admin',  // 🚀 SECURITY: Block admin panel
-          '/api/',   // 🚀 SECURITY: Block APIs
-          '/_next/', // Next.js internal assets
+          '/admin',  // Admin panel block
+          '/api/',   // API routes block
+          // '/_next/' 🚀 HATA DIYA HAI taaki Google CSS/JS load kar sake
         ],
       },
     ],
