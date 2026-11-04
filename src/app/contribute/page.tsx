@@ -1,23 +1,88 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
+import { getMasterData } from "@/lib/data";
 import { ContributeForm } from "@/components/contribute/ContributeForm";
-import { JoinCTA } from "@/components/contribute/JoinCTA"; // 🚀 Naya Import
+import { JoinCTA } from "@/components/contribute/JoinCTA"; 
 import { Pencil, MapPin, Phone, PlusCircle, MessageSquare, BookOpen } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Get Involved | Bandwar Portal",
-  description: "Learn how to contribute to the Bandwar portal using our inline editing system, or send a general message to the editors.",
-};
+// 🚀 SEO FIX: Dynamic Metadata with Canonical & OG tags
+export async function generateMetadata(): Promise<Metadata> {
+  const config = getMasterData();
+  const baseUrl = config.site.url;
+  const ogImage = `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
+  
+  const title = "Get Involved";
+  const description = "Learn how to contribute to the Bandwar Village Archive using our inline editing system, or send a general message to the editors.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/contribute`,
+      languages: {
+        "en-IN": `${baseUrl}/contribute`,
+        "x-default": `${baseUrl}/contribute`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      title: `${title} — Bandwar Village Archive`,
+      description,
+      url: `${baseUrl}/contribute`,
+      siteName: config.site.name,
+      locale: "en_IN",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: "Get Involved - Bandwar Village Archive" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — Bandwar Village Archive`,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 export default function ContributePage() {
+  const config = getMasterData();
+  const baseUrl = config.site.url;
+
+  // 🚀 JSON-LD Schema
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "@id": `${baseUrl}/contribute#webpage`,
+        url: `${baseUrl}/contribute`,
+        name: "Get Involved — Bandwar Village Archive",
+        description: "Learn how to contribute to the archive or contact the editorial team.",
+        isPartOf: { "@id": `${baseUrl}/#website` },
+        inLanguage: "en-IN",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+          { "@type": "ListItem", "position": 2, "name": "Contribute", "item": `${baseUrl}/contribute` }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="bg-canvas min-h-screen py-10 md:py-16 3xl:py-24">
+      {/* 🚀 JSON-LD Injection */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="container mx-auto px-4 md:px-0 max-w-5xl 3xl:max-w-6xl">
         
         {/* 🏛️ Header */}
         <div className="mb-10 md:mb-12 text-center max-w-2xl 3xl:max-w-3xl mx-auto">
           <div className="w-16 h-16 3xl:w-20 3xl:h-20 bg-surface border border-divider text-accent rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <BookOpen size={32} className="3xl:w-10 3xl:h-10" />
+            <BookOpen size={32} className="3xl:w-10 3xl:h-10" aria-hidden="true" />
           </div>
           <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink mb-4 font-semibold tracking-tight">
             Get Involved
@@ -28,7 +93,7 @@ export default function ContributePage() {
           </p>
         </div>
 
-        {/* 🚀 NAYA: Join CTA Section */}
+        {/* 🚀 Join CTA Section */}
         <JoinCTA />
 
         {/* 📖 The Guide Grid (Formal User Manual) */}
@@ -44,12 +109,12 @@ export default function ContributePage() {
             {/* Guide Item 1 */}
             <div className="bg-surface border border-divider p-6 3xl:p-8 rounded-lg shadow-sm flex items-start gap-5">
               <div className="w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider text-accent rounded-lg flex items-center justify-center shrink-0">
-                <Pencil size={22} className="3xl:w-7 3xl:h-7" />
+                <Pencil size={22} className="3xl:w-7 3xl:h-7" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-ink text-lg 3xl:text-xl mb-2">Text Corrections</h3>
                 <p className="text-ink/70 text-sm md:text-base 3xl:text-lg leading-relaxed">
-                  Notice a typo or factual error in an Article or Profile? Simply click the <Pencil size={14} className="inline text-accent mx-1" /> icon next to the text to submit a correction.
+                  Notice a typo or factual error in an Article or Profile? Simply click the <Pencil size={14} className="inline text-accent mx-1" aria-hidden="true" /> icon next to the text to submit a correction.
                 </p>
               </div>
             </div>
@@ -57,12 +122,12 @@ export default function ContributePage() {
             {/* Guide Item 2 */}
             <div className="bg-surface border border-divider p-6 3xl:p-8 rounded-lg shadow-sm flex items-start gap-5">
               <div className="w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider text-accent rounded-lg flex items-center justify-center shrink-0">
-                <Phone size={22} className="3xl:w-7 3xl:h-7" />
+                <Phone size={22} className="3xl:w-7 3xl:h-7" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-ink text-lg 3xl:text-xl mb-2">Directory Updates</h3>
                 <p className="text-ink/70 text-sm md:text-base 3xl:text-lg leading-relaxed">
-                  If a phone number, address, or shop timing has changed, locate it in the Directory and click the <Pencil size={14} className="inline text-accent mx-1" /> icon to update the listing.
+                  If a phone number, address, or shop timing has changed, locate it in the Directory and click the <Pencil size={14} className="inline text-accent mx-1" aria-hidden="true" /> icon to update the listing.
                 </p>
               </div>
             </div>
@@ -70,7 +135,7 @@ export default function ContributePage() {
             {/* Guide Item 3 */}
             <div className="bg-surface border border-divider p-6 3xl:p-8 rounded-lg shadow-sm flex items-start gap-5">
               <div className="w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider text-accent rounded-lg flex items-center justify-center shrink-0">
-                <MapPin size={22} className="3xl:w-7 3xl:h-7" />
+                <MapPin size={22} className="3xl:w-7 3xl:h-7" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-ink text-lg 3xl:text-xl mb-2">Map Locations</h3>
@@ -83,7 +148,7 @@ export default function ContributePage() {
             {/* Guide Item 4 */}
             <div className="bg-surface border border-divider p-6 3xl:p-8 rounded-lg shadow-sm flex items-start gap-5">
               <div className="w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider text-accent rounded-lg flex items-center justify-center shrink-0">
-                <PlusCircle size={22} className="3xl:w-7 3xl:h-7" />
+                <PlusCircle size={22} className="3xl:w-7 3xl:h-7" aria-hidden="true" />
               </div>
               <div>
                 <h3 className="font-serif font-bold text-ink text-lg 3xl:text-xl mb-2">Adding New Content</h3>
@@ -99,7 +164,7 @@ export default function ContributePage() {
         <div className="max-w-3xl 3xl:max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <div className="w-12 h-12 3xl:w-16 3xl:h-16 bg-surface border border-divider text-ink rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-              <MessageSquare size={24} className="3xl:w-8 3xl:h-8 text-accent" />
+              <MessageSquare size={24} className="3xl:w-8 3xl:h-8 text-accent" aria-hidden="true" />
             </div>
             <h2 className="font-serif text-2xl 3xl:text-3xl font-semibold text-ink">Submit General Feedback</h2>
             <p className="text-ink/60 text-sm md:text-base 3xl:text-lg mt-2">
