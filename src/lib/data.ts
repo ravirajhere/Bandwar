@@ -188,6 +188,11 @@ export function getContributors(): Contributor[] {
   return cache.contributors;
 }
 
+// ✅ Alias added for Contributors page static params
+export function getAllContributors(): Contributor[] {
+  return getContributors();
+}
+
 export function getContributorByUsername(username: string): Contributor | undefined {
   const normalized = normalizeUsername(username);
   return getContributors().find(
