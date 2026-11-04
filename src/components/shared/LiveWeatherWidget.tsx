@@ -55,14 +55,14 @@ export function LiveWeatherWidget() {
   const getWeatherIcon = (code: number | null) => {
     const iconClass = "text-ink/60 3xl:w-5 3xl:h-5"; // Default fallback size and color
     
-    if (code === null) return <Cloud size={14} className={iconClass} />;
-    if (code === 0) return <Sun size={14} className="text-amber-500/80 3xl:w-5 3xl:h-5" />; // Clear
-    if (code >= 1 && code <= 3) return <Cloud size={14} className="text-slate-400/80 3xl:w-5 3xl:h-5" />; // Partly cloudy
-    if (code >= 45 && code <= 48) return <CloudFog size={14} className="text-slate-500/80 3xl:w-5 3xl:h-5" />; // Fog
-    if (code >= 51 && code <= 65) return <CloudRain size={14} className="text-blue-500/80 3xl:w-5 3xl:h-5" />; // Rain
-    if (code >= 71 && code <= 77) return <CloudSnow size={14} className="text-blue-300/80 3xl:w-5 3xl:h-5" />; // Snow
-    if (code >= 95) return <CloudLightning size={14} className="text-purple-500/80 3xl:w-5 3xl:h-5" />; // Thunderstorm
-    return <Cloud size={14} className={iconClass} />;
+    if (code === null) return <Cloud size={14} className={iconClass} aria-hidden="true" />;
+    if (code === 0) return <Sun size={14} className="text-amber-500/80 3xl:w-5 3xl:h-5" aria-hidden="true" />; // Clear
+    if (code >= 1 && code <= 3) return <Cloud size={14} className="text-slate-400/80 3xl:w-5 3xl:h-5" aria-hidden="true" />; // Partly cloudy
+    if (code >= 45 && code <= 48) return <CloudFog size={14} className="text-slate-500/80 3xl:w-5 3xl:h-5" aria-hidden="true" />; // Fog
+    if (code >= 51 && code <= 65) return <CloudRain size={14} className="text-blue-500/80 3xl:w-5 3xl:h-5" aria-hidden="true" />; // Rain
+    if (code >= 71 && code <= 77) return <CloudSnow size={14} className="text-blue-300/80 3xl:w-5 3xl:h-5" aria-hidden="true" />; // Snow
+    if (code >= 95) return <CloudLightning size={14} className="text-purple-500/80 3xl:w-5 3xl:h-5" aria-hidden="true" />; // Thunderstorm
+    return <Cloud size={14} className={iconClass} aria-hidden="true" />;
   };
 
   return (
@@ -73,7 +73,7 @@ export function LiveWeatherWidget() {
       
       {/* Time Section */}
       <div className="flex items-center gap-1.5 3xl:gap-2">
-        <Clock size={14} className="text-accent 3xl:w-5 3xl:h-5" />
+        <Clock size={14} className="text-accent 3xl:w-5 3xl:h-5" aria-hidden="true" />
         <span className="tabular-nums tracking-wide">{time} (IST)</span>
       </div>
 
