@@ -85,10 +85,18 @@ export default function Home() {
         <DevNotice />
 
         {/* 1. HERO SECTION */}
-        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider">
+        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider min-h-[400px] md:min-h-[500px] flex items-center justify-center">
           <div className="absolute inset-0 bg-ink/70 z-10"></div>
-          <Image src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`} alt={home.hero.alt} fill className="object-cover" priority sizes="100vw" />
-          <div className="relative z-20 px-6 py-20 md:py-32 lg:py-40 3xl:py-56 flex flex-col items-center text-center">
+          <Image 
+            src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`} 
+            alt={home.hero.alt} 
+            fill 
+            className="object-cover" 
+            priority 
+            unoptimized={true}
+            sizes="100vw" 
+          />
+          <div className="relative z-20 px-6 py-20 md:py-32 lg:py-40 3xl:py-56 flex flex-col items-center text-center w-full">
             <span className="text-white bg-ink/50 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-sm text-sm font-bold tracking-widest uppercase mb-6 flex items-center gap-2">
               <MapPin size={14} aria-hidden="true" /> {home.hero.location}
             </span>
@@ -178,7 +186,6 @@ export default function Home() {
               <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-start">
                 <div className="w-full md:w-1/3 shrink-0 rounded-sm overflow-hidden border border-divider">
                   <div className="relative w-full aspect-[4/3]">
-                    {/* 🚀 FIX: Forced to use icon.png */}
                     <Image src={iconImage} alt={home.about.imageAlt || "About Bandwar Village"} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 </div>
