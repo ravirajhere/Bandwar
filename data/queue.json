@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1793782537960",
       "type": "Image Update Suggestion",
@@ -8,8 +9,8 @@
       "userUsername": "@Bandwarofficial",
       "timestamp": "2026-11-04T08:55:37.961Z",
       "pendingImageUrl": "/images/pending/edit_1793782536846_vxvcvo.jpg",
-      "intent": "add"
+      "intent": "add",
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
