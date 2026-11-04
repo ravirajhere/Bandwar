@@ -20,8 +20,8 @@ export function Footer() {
               A community-driven, non-political digital archive of Bandwar village, Begusarai (Bihar). Preserving history, culture, and daily life for future generations.
             </p>
             <div className="flex items-center gap-4 text-xs font-medium text-ink-muted">
-              <span>© {currentYear} Bandwar Community</span>
-              <span className="w-1 h-1 rounded-full bg-divider"></span>
+              <span>© {currentYear} Bandwar Village Community</span>
+              <span className="w-1 h-1 rounded-full bg-divider" aria-hidden="true"></span>
               <Link href="/about#license" className="hover:text-ink hover:underline underline-offset-4">
                 CC BY-NC-SA 4.0
               </Link>
@@ -40,6 +40,7 @@ export function Footer() {
               <li><Link href="/section/education" className="hover:text-ink hover:underline underline-offset-4">Education</Link></li>
               <li><Link href="/section/culture" className="hover:text-ink hover:underline underline-offset-4">Culture</Link></li>
               <li><Link href="/section/infrastructure" className="hover:text-ink hover:underline underline-offset-4">Infrastructure</Link></li>
+              <li><Link href="/section/landmarks" className="hover:text-ink hover:underline underline-offset-4">Landmarks</Link></li>
             </ul>
           </div>
 
@@ -49,6 +50,7 @@ export function Footer() {
             <ul className="space-y-2.5 text-ink-muted">
               <li><Link href="/directory" className="hover:text-ink hover:underline underline-offset-4">Directory</Link></li>
               <li><Link href="/gallery" className="hover:text-ink hover:underline underline-offset-4">Gallery</Link></li>
+              <li><Link href="/map" className="hover:text-ink hover:underline underline-offset-4">Village Map</Link></li>
               <li><Link href="/people" className="hover:text-ink hover:underline underline-offset-4">People</Link></li>
             </ul>
           </div>
@@ -72,7 +74,7 @@ export function Footer() {
           {/* Left: Weather & Location */}
           <div className="flex items-center gap-4 text-ink-muted text-xs order-2 md:order-1">
             <LiveWeatherWidget />
-            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-divider"></span>
+            <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-divider" aria-hidden="true"></span>
             <span className="hidden sm:inline-block">Bandwar, Bihar, India</span>
           </div>
 
@@ -80,10 +82,11 @@ export function Footer() {
           <div className="order-1 md:order-2">
             <a 
               href="#top" 
+              aria-label="Back to top"
               className="text-xs font-semibold text-ink-muted hover:text-ink flex items-center gap-1.5 transition-colors group"
             >
               Back to Top
-              <span className="group-hover:-translate-y-0.5 transition-transform">↑</span>
+              <span className="group-hover:-translate-y-0.5 transition-transform" aria-hidden="true">↑</span>
             </a>
           </div>
 
