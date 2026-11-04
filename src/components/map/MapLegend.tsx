@@ -4,7 +4,11 @@ interface CategoryConfig {
 
 export function MapLegend({ categories }: { categories: CategoryConfig }) {
   return (
-    <div className="absolute bottom-4 left-4 z-[400] bg-surface/95 backdrop-blur-sm border border-divider rounded-sm shadow-sm p-2.5 min-w-[150px] max-w-[180px] hidden md:block">
+    <div 
+      className="absolute bottom-4 left-4 z-[400] bg-surface/95 backdrop-blur-sm border border-divider rounded-sm shadow-sm p-2.5 min-w-[150px] max-w-[180px] hidden md:block"
+      role="region"
+      aria-label="Map Legend"
+    >
       
       {/* Header */}
       <h4 className="text-[9px] font-bold text-ink/50 uppercase tracking-[0.15em] mb-1.5 pb-1.5 border-b border-divider">
@@ -18,6 +22,7 @@ export function MapLegend({ categories }: { categories: CategoryConfig }) {
             <span 
               className="w-3.5 h-3.5 flex items-center justify-center text-[8px] font-bold text-white shrink-0 font-serif"
               style={{ backgroundColor: config.color }}
+              aria-hidden="true"
             >
               {config.number}
             </span>
