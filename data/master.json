@@ -4,10 +4,10 @@
   "schemaVersion": "master-v7",
 
   "site": {
-    "name": "Bandwar Archive",
+    "name": "Bandwar Village Archive",
     "shortName": "Bandwar",
     "tagline": "The community-built digital archive of Bandwar",
-    "description": "The official digital archive of Bandwar village, Begusarai (Bihar) — preserving local history, temples, people, and daily life.",
+    "description": "The community-built digital archive of Bandwar village, Begusarai (Bihar) — preserving local history, temples, people, and daily life.",
     "url": "https://bandwar.vercel.app",
     "edition": "2026",
     "language": "en-IN",
@@ -124,8 +124,8 @@
   },
 
   "seo": {
-    "titlePattern": "{title} — {site}",
-    "titlePatternHome": "{siteName} — Village Archive, Begusarai (Bihar)",
+    "titlePattern": "{title} — Bandwar Village Archive",
+    "titlePatternHome": "Bandwar Village Archive — Begusarai, Bihar",
     "defaultDescription": "Explore the history, temples, schools, and daily life of Bandwar village, Begusarai (Bihar). A community-built digital archive.",
     "keywords": ["Bandwar village", "Bandwar Begusarai", "Bandwar Bihar", "Mithila village", "Burhi Gandak", "Bihar village archive"],
     "ogImage": "/images/geography/burhi-gandak-river-dawn-bandwar.jpg",
@@ -147,7 +147,7 @@
     },
     "structuredData": {
       "enabled": true,
-      "types": ["Place", "Village", "Organization", "WebSite"],
+      "types": ["Place", "Organization", "WebSite", "BreadcrumbList", "Article"],
       "sameAs": []
     }
   },
@@ -361,7 +361,7 @@
       "alt": "The Burhi Gandak river at dawn, near Bandwar village, Begusarai",
       "location": "Begusarai District · Bihar · Mithila Region",
       "title": "Bandwar Village",
-      "tagline": "The official digital archive of a village on the banks of the Burhi Gandak — preserving local history, temples, people, and daily life."
+      "tagline": "The community-built digital archive of a village on the banks of the Burhi Gandak — preserving local history, temples, people, and daily life."
     },
     "meta": [
       { "label": "Latitude · Longitude", "value": "25.5009°N · 86.1606°E" },
@@ -376,17 +376,21 @@
       { "value": "{{articleCount}}", "label": "Articles" }
     ],
     "pullquote": {
-      "text": "In 1942, this village offered free education, food, and lodging. In 2026, its school has no electricity.",
-      "cite": "Bandwar, September 2025"
+      "text": "In 1942, this village offered free education, food, and lodging. Today, the same spirit of community learning lives on in its historic library and schools.",
+      "cite": "Bandwar, September 2025",
+      "source": {
+        "label": "Resident interviews & school records",
+        "href": "/about#sources"
+      }
     },
     "about": {
       "eyebrow": "About This Archive",
       "title": "A Village in Its Own Words",
       "paragraphs": [
-        "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people.",
-        "This archive is a community-built record of the village. It is not a government project, a political platform, or a commercial venture. It is a record of a village, kept by the village.",
-        "Every article, every photograph, every fact — contributed or verified by residents of Bandwar and their descendants."
-      ]
+        "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people. This archive is a community-built record of the village, kept by the village."
+      ],
+      "image": "/images/home/about-bandwar-village.jpg",
+      "imageAlt": "A view of Bandwar village, Begusarai, Bihar"
     },
     "cta": {
       "label": "Contribute to the Archive",
@@ -514,10 +518,11 @@
     "changeFrequency": "weekly",
     "priority": {
       "home": 1.0,
-      "directory": 0.9,
-      "articles": 0.8,
-      "gallery": 0.7,
+      "articles": 0.9,
       "map": 0.8,
+      "directory": 0.7,
+      "gallery": 0.7,
+      "contribute": 0.5,
       "about": 0.6,
       "legal": 0.3
     }
