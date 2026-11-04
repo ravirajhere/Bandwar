@@ -4,7 +4,12 @@ import { z } from "zod";
 // 1. Core / Shared Schemas
 // ==========================================
 const IdSchema = z.string().regex(/^[a-z0-9-]+$/, "ID must be lowercase alphanumeric with hyphens (e.g., 'snk-high-school')");
-const DateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format");
+
+// Date handles YYYY-MM-DD or ISO 8601 format
+const DateSchema = z.string().regex(
+  /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?(\.\d+)?(Z|[+-]\d{2}:\d{2})?)?$/,
+  "Date must be YYYY-MM-DD or ISO 8601 with timezone"
+);
 
 // ==========================================
 // 2. Master Schema (Strictly Typed)
@@ -110,11 +115,61 @@ export const MasterSchema = z.object({
       eyebrow: z.string(),
       title: z.string(),
       paragraphs: z.array(z.string()),
+      image: z.string().optional(),
+      imageAlt: z.string().optional(),
     }),
     cta: z.object({ label: z.string(), href: z.string() }),
-    pullquote: z.object({ text: z.string(), cite: z.string() }),
+    pullquote: z.object({ 
+      text: z.string(), 
+      cite: z.string(),
+      source: z.object({ label: z.string(), href: z.string() }).optional()
+    }),
     stats: z.array(z.object({ label: z.string(), value: z.string() })),
   }).passthrough().optional(),
+
+  // 🚀 SEO Block (Strict Validation)
+  seo: z.object({
+    titlePattern: z.string(),
+    titlePatternHome: z.string(),
+    defaultDescription: z.string().min(50).max(160), 
+    keywords: z.array(z.string()).optional(),
+    ogImage: z.string(),
+    ogImageWidth: z.number().int().positive().default(1200),
+    ogImageHeight: z.number().int().positive().default(630),
+    ogType: z.enum(["website", "article", "profile"]).default("website"),
+    twitterHandle: z.string().nullable().optional(),
+    twitterCard: z.enum(["summary", "summary_large_image"]).default("summary_large_image"),
+    canonicalBase: z.string().url(),
+    robots: z.object({
+      index: z.boolean().default(true),
+      follow: z.boolean().default(true),
+      maxImagePreview: z.enum(["none", "standard", "large"]).default("large"),
+      maxSnippet: z.number().default(-1),
+    }),
+    verification: z.object({
+      google: z.string().nullable().optional(),
+      bing: z.string().nullable().optional(),
+    }).optional(),
+  }).strict().optional(),
+
+  // 🚀 Sitemap Block
+  sitemap: z.object({
+    includePages: z.array(z.string()).min(1),
+    includeArticles: z.boolean().default(true),
+    includeLandmarks: z.boolean().default(false),
+    includeGallery: z.boolean().default(true),
+    changeFrequency: z.enum(["always", "hourly", "daily", "weekly", "monthly", "yearly", "never"]).default("weekly"),
+    priority: z.object({
+      home: z.number().min(0).max(1),
+      directory: z.number().min(0).max(1),
+      articles: z.number().min(0).max(1),
+      gallery: z.number().min(0).max(1),
+      map: z.number().min(0).max(1),
+      about: z.number().min(0).max(1),
+      legal: z.number().min(0).max(1),
+    }).passthrough(),
+  }).strict().optional(),
+
 }).passthrough();
 
 // ==========================================
@@ -122,27 +177,37 @@ export const MasterSchema = z.object({
 // ==========================================
 export const ArticleSchema = z.object({
   id: IdSchema,
-  title: z.string(),
-  metaTitle: z.string().optional(),
-  metaDescription: z.string().optional(),
-  subtitle: z.string(),
-  categories: z.array(z.string()),
-  summary: z.string(),
+  title: z.string().min(3).max(120),
+  metaTitle: z.string().min(10).max(60).optional(),
+  metaDescription: z.string().min(50).max(160).optional(),
+  subtitle: z.string().min(3).max(200),
+  categories: z.array(IdSchema).min(1, "Article must have at least one category"),
+  summary: z.string().min(80).max(300),
   hero: z.string().optional(),
   photos: z.array(z.object({ 
     src: z.string(), 
-    caption: z.string(),
-    imageAlt: z.string().optional()
+    caption: z.string().min(10),
+    imageAlt: z.string().min(10).max(160), // Enforced for Image SEO
   })).default([]),
   infobox: z.record(z.string()).optional(),
+  datePublished: DateSchema.optional(),
+  dateModified: DateSchema.optional(),
   lastUpdated: DateSchema,
   lastEditedBy: z.string().optional(),
-  content: z.array(z.object({ heading: z.string(), text: z.string() })),
-  faqs: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
-  related: z.array(z.string()).default([]),
-  location: z.object({ lat: z.number(), lng: z.number() }).optional(),
-  tags: z.array(z.string()).default([]),
+  lastEditedByUsername: z.string().optional(),
+  content: z.array(z.object({ 
+    heading: z.string().min(2).max(80), 
+    text: z.string().min(50) 
+  })).min(1),
+  faqs: z.array(z.object({ 
+    q: z.string().min(5).max(200), 
+    a: z.string().min(20).max(2000) 
+  })).default([]),
+  related: z.array(IdSchema).default([]),
+  location: z.object({ lat: z.number().min(-90).max(90), lng: z.number().min(-180).max(180) }).optional(),
+  tags: z.array(z.string().min(2).max(30)).default([]),
 }).passthrough();
+
 export const ArticleListSchema = z.object({ articles: z.array(ArticleSchema) });
 
 // ==========================================
@@ -173,11 +238,14 @@ export const LandmarkSchema = z.object({
   title: z.string().optional(), 
   name: z.string().optional(),  
   icon: z.string().optional(), 
-  lat: z.number(),
-  lng: z.number(),
+  lat: z.number().min(-90).max(90),
+  lng: z.number().min(-180).max(180),
   description: z.string().optional(),
   category: z.string().optional(),
-}).passthrough(); 
+}).passthrough().refine(
+  (data) => data.title || data.name,
+  { message: "Landmark must have either 'title' or 'name'", path: ["title"] }
+);
 
 export const MediaSchema = z.object({
   gallery: z.object({
@@ -205,10 +273,11 @@ export const PersonSchema = z.object({
   birthplace: z.string().optional(),
   titles: z.array(z.string()).optional(),
   journey: z.string().optional(),
-  lastUpdated: DateSchema.optional(), // 🚀 ADDED
-  lastEditedBy: z.string().optional(), // 🚀 ADDED
+  lastUpdated: DateSchema.optional(), 
+  lastEditedBy: z.string().optional(), 
   tags: z.array(z.string()).optional(),
 }).passthrough();
+
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 
 // ==========================================
@@ -220,6 +289,7 @@ export const CategorySchema = z.object({
   icon: z.string(), 
   description: z.string(),
 }).passthrough();
+
 export const CategoriesDataSchema = z.object({ categories: z.array(CategorySchema) });
 
 // ==========================================
@@ -234,14 +304,30 @@ export const DirectoryItemSchema = z.object({
   address: z.string().optional(),
   timing: z.string().optional(),
   isEmergency: z.boolean().default(false),
-  lastUpdated: DateSchema.optional(), // 🚀 ADDED
-  lastEditedBy: z.string().optional(), // 🚀 ADDED
+  lastUpdated: DateSchema.optional(), 
+  lastEditedBy: z.string().optional(),
 }).passthrough();
 
 export const DirectoryDataSchema = z.object({
   categories: z.array(z.object({ id: z.string(), title: z.string(), icon: z.string() })),
   items: z.array(DirectoryItemSchema),
 }).passthrough();
+
+// ==========================================
+// 8. Contributor Schema (E-E-A-T)
+// ==========================================
+export const ContributorSchema = z.object({
+  username: z.string().min(2).max(50),
+  displayName: z.string().min(1).max(100),
+  photo: z.string().optional(),
+  bio: z.string().max(1000).optional(),
+  joinedAt: z.string().optional(),
+  contributions: z.number().optional(),
+}).passthrough();
+
+export const ContributorsDataSchema = z.object({
+  contributors: z.array(ContributorSchema),
+});
 
 // ==========================================
 // TypeScript Types Export
@@ -253,7 +339,6 @@ export type Person = z.infer<typeof PersonSchema>;
 export type PeopleData = z.infer<typeof PeopleDataSchema>;
 export type Category = z.infer<typeof CategorySchema>;
 export type CategoriesData = z.infer<typeof CategoriesDataSchema>;
-
-// Directory Types
 export type DirectoryItem = z.infer<typeof DirectoryItemSchema>;
 export type DirectoryData = z.infer<typeof DirectoryDataSchema>;
+export type Contributor = z.infer<typeof ContributorSchema>;
