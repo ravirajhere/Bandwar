@@ -5,7 +5,6 @@ import { z } from "zod";
 // ==========================================
 const IdSchema = z.string().regex(/^[a-z0-9-]+$/, "ID must be lowercase alphanumeric with hyphens (e.g., 'snk-high-school')");
 
-// Date handles YYYY-MM-DD or ISO 8601 format
 const DateSchema = z.string().regex(
   /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?(\.\d+)?(Z|[+-]\d{2}:\d{2})?)?$/,
   "Date must be YYYY-MM-DD or ISO 8601 with timezone"
@@ -127,7 +126,6 @@ export const MasterSchema = z.object({
     stats: z.array(z.object({ label: z.string(), value: z.string() })),
   }).passthrough().optional(),
 
-  // 🚀 SEO Block (Strict Validation)
   seo: z.object({
     titlePattern: z.string(),
     titlePatternHome: z.string(),
@@ -152,7 +150,6 @@ export const MasterSchema = z.object({
     }).optional(),
   }).strict().optional(),
 
-  // 🚀 Sitemap Block
   sitemap: z.object({
     includePages: z.array(z.string()).min(1),
     includeArticles: z.boolean().default(true),
@@ -187,7 +184,7 @@ export const ArticleSchema = z.object({
   photos: z.array(z.object({ 
     src: z.string(), 
     caption: z.string().min(10),
-    imageAlt: z.string().min(10).max(160), // Enforced for Image SEO
+    imageAlt: z.string().min(10).max(160),
   })).default([]),
   infobox: z.record(z.string()).optional(),
   datePublished: DateSchema.optional(),
@@ -195,6 +192,7 @@ export const ArticleSchema = z.object({
   lastUpdated: DateSchema,
   lastEditedBy: z.string().optional(),
   lastEditedByUsername: z.string().optional(),
+  published: z.boolean().optional(), // 🚀 ADDED for sitemap filtering
   content: z.array(z.object({ 
     heading: z.string().min(2).max(80), 
     text: z.string().min(50) 
@@ -273,8 +271,9 @@ export const PersonSchema = z.object({
   birthplace: z.string().optional(),
   titles: z.array(z.string()).optional(),
   journey: z.string().optional(),
-  lastUpdated: DateSchema.optional(), 
-  lastEditedBy: z.string().optional(), 
+  lastUpdated: DateSchema.optional(),
+  lastEditedBy: z.string().optional(),
+  published: z.boolean().optional(), // 🚀 ADDED for sitemap filtering
   tags: z.array(z.string()).optional(),
 }).passthrough();
 
