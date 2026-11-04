@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isValidSession } from "@/lib/adminAuth";
-import { getArticleById } from "@/lib/data"; // 🚀 IMPORTED to find existing articles
+import { getArticleById } from "@/lib/data";
 
 export const runtime = "nodejs";
 const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
@@ -104,6 +104,8 @@ export async function POST(request: NextRequest) {
   try {
     for (const item of validItems) {
       let newImageUrl = "";
+      
+      // 1. Move Pending Image to Final Destination
       if (item.pendingImageUrl) {
         const pendingPath = `public${item.pendingImageUrl}`;
         const pendingFile = await fetchGithubFile(pendingPath);
@@ -119,53 +121,69 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // 🚀 SMART FIX: Find the actual file for EXISTING articles
+      // 2. 🚀 BULLETPROOF ROUTING: Find the correct target file path
       let targetPath = item.filePath;
-      
-      if (item.intent === "edit" || item.intent === "image_update") {
-        const existingArticle = getArticleById(item.contextId);
-        if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
-          targetPath = `data/articles/${existingArticle.categories[0]}.json`;
-        }
-      }
+      const existingArticle = getArticleById(item.contextId);
 
-      // Fallback if still missing (e.g., new article)
-      if (!targetPath || targetPath === "undefined" || targetPath.includes("general.json")) {
+      if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
+        // If the article exists, ALWAYS route to its actual category file, ignoring what the client sent.
+        targetPath = `data/articles/${existingArticle.categories[0]}.json`;
+      } else if (!targetPath || targetPath === "undefined" || targetPath.includes("general.json")) {
+        // Fallback for new articles if path is bad
         const cat = item.jsonObj?.Category || "education";
         targetPath = `data/articles/${cat}.json`;
       }
 
       if (!fileUpdates[targetPath]) fileUpdates[targetPath] = [];
-      fileUpdates[targetPath].push({ ...item, newImageUrl });
+      fileUpdates[targetPath].push({ ...item, newImageUrl, resolvedPath: targetPath });
     }
 
+    // 3. Apply Updates to JSON files
     for (const [filePath, updates] of Object.entries(fileUpdates)) {
       const entry = await fileCache.get(filePath);
       if (!entry) throw new Error(`Missing file: ${filePath}. Publish aborted.`);
+      
       const currentContent = entry.content;
       if (filePath.includes("articles") && !currentContent.articles) currentContent.articles = [];
       
       for (const u of updates) {
         const editDate = SERVER_NOW.split("T")[0];
-        if (u.targetType === "article" && u.intent === "add") {
+        
+        // 🚀 EXECUTE UPDATE BASED ON INTENT
+        if (u.intent === "add" && u.type !== "Image Update Suggestion") {
+          // Create New Article
           currentContent.articles.push({ 
             id: u.contextId, 
-            title: u.jsonObj["Article Title"] || "Untitled", 
-            subtitle: u.jsonObj["Subtitle"] || "New contribution", 
-            summary: u.jsonObj["Story"]?.slice(0, 150) || "", 
-            categories: [u.jsonObj.Category || "general"], 
-            content: [{ heading: "Overview", text: u.jsonObj["Story"] || "" }], 
+            title: u.jsonObj?.["Article Title"] || "Untitled", 
+            subtitle: u.jsonObj?.["Subtitle"] || "New contribution", 
+            summary: u.jsonObj?.["Story"]?.slice(0, 150) || "", 
+            categories: [u.jsonObj?.Category || "general"], 
+            content: [{ heading: "Overview", text: u.jsonObj?.["Story"] || "" }], 
             hero: u.newImageUrl || null, 
             datePublished: editDate, 
             lastUpdated: editDate, 
             lastEditedBy: u.userName 
           });
-        } else if (filePath.includes("articles")) {
+        } else {
+          // Update Existing Article
           currentContent.articles = currentContent.articles.map((a: any) => {
             if (a.id !== u.contextId) return a;
-            if (u.intent === "image_update") a.hero = u.newImageUrl;
-            // other edit logic...
+            
+            if (u.intent === "image_update" || u.type === "Image Update Suggestion") {
+              if (u.targetType === "person") a.photo = u.newImageUrl;
+              else a.hero = u.newImageUrl;
+            } else if (u.intent === "edit") {
+              if (u.field === "Article Title") a.title = u.newValue;
+              else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
+              else if (u.field === "Article Summary") a.summary = u.newValue;
+              else if (u.field.startsWith("Paragraph: ")) {
+                const headingName = u.field.replace("Paragraph: ", "");
+                a.content = a.content.map((b: any) => b.heading === headingName ? { ...b, text: u.newValue } : b);
+              }
+            }
+            
             a.lastUpdated = editDate;
+            a.lastEditedBy = u.userName;
             return a;
           });
         }
@@ -173,10 +191,12 @@ export async function POST(request: NextRequest) {
       filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
+    // 4. Clear Queue & Delete Pending Images
     queueEntry.content.approved = [];
     filesToCommit.push({ path: queuePath, content: JSON.stringify(queueEntry.content, null, 2) });
     pendingImagesToDelete.forEach(img => filesToCommit.push({ path: img.path, content: "", encoding: "base64", delete: true }));
 
+    // 5. Atomic Commit to GitHub
     await commitMultipleFiles(filesToCommit, `Batch Publish: ${validItems.length} updates`);
     return NextResponse.json({ success: true, published: validItems.length }, { headers: NO_STORE });
   } catch (error: any) {
