@@ -10,8 +10,8 @@
       "summary": "Established in 1942 by Pandit Taradutt Pathak, S.N.K. High School is the oldest educational institution in Bandwar, Begusarai. Originally a free Sanskrit gurukul, it now operates as a government secondary school (Classes 9-10) with UDISE code 10201013302.",
       "hero": "images/education/snk-high-school-bandwar-campus.jpg",
       "photos": [
-        { 
-          "src": "images/education/snk-high-school-bandwar-campus.jpg", 
+        {
+          "src": "images/education/snk-high-school-bandwar-campus.jpg",
           "caption": "The main building of Bhagwandutt S.N.K. High School, Bandwar.",
           "imageAlt": "Front view of the historic S.N.K. High School building in Bandwar, Begusarai"
         }
@@ -28,6 +28,7 @@
         "Teachers": "4",
         "Location": "Bandwar, Begusarai, Bihar"
       },
+      "datePublished": "2026-01-26",
       "lastUpdated": "2026-01-26",
       "content": [
         { "heading": "Origins — The 1942 Gurukul", "text": "In 1942, during the final years of British rule, Pandit Taradutt Pathak established a Sanskrit school in memory of his father Pandit Bhagwan Dutt Pathak. It was a traditional gurukul — students came from across Bihar, and education, food, and lodging were all provided free of cost. This was a period when formal schooling was rare in rural Bihar, and the establishment of a free gurukul in a village like Bandwar was an act of considerable ambition. The school's founding predates Indian independence by five years, and it was among the earliest educational institutions in the region." },
@@ -37,10 +38,10 @@
       ],
       "faqs": [
         { "q": "When was S.N.K. High School established?", "a": "S.N.K. High School was established in 1942 by Pandit Taradutt Pathak, in memory of his father Pandit Bhagwan Dutt Pathak. It is the oldest educational institution in Bandwar village." },
-        { "q": "What does 'S.N.K.' stand for?", "a": "S.N.K. stands for 'Sanskrit Nagri Kanya' — though in its present form the school is co-educational. The name reflects its origins as a Sanskrit gurukul founded in the memory of Pandit Bhagwan Dutt Pathak." },
+        { "q": "What does 'S.N.K.' stand for?", "a": "S.N.K. stands for 'Sanskrit Nagri Kanya'. Though the school is now co-educational, the name reflects its origins as a Sanskrit gurukul founded in memory of Pandit Bhagwan Dutt Pathak." },
         { "q": "What is the UDISE code of S.N.K. High School?", "a": "The school's UDISE code is 10201013302. It operates under the Bihar Department of Education as a government secondary school serving Classes 9 and 10." },
-        { "q": "How many students study at S.N.K. High School today?", "a": "According to the UDISE+ report for 2025-26, the school has 12 students — 2 boys and 10 girls — taught by 4 teachers. The low enrolment reflects the wider challenges of rural secondary education in Bihar." },
-        { "q": "Was S.N.K. High School always a government school?", "a": "No — it began in 1942 as a private Sanskrit gurukul, providing free education, food, and lodging to students from across Bihar. After independence, it was brought under the Department of Education and became a government secondary school." }
+        { "q": "How many students study at S.N.K. High School today?", "a": "According to the UDISE+ report for 2025-26, the school has 12 students — 2 boys and 10 girls — taught by 4 teachers. This reflects the wider challenges of rural secondary education." },
+        { "q": "Was S.N.K. High School always a government school?", "a": "No — it began in 1942 as a private Sanskrit gurukul providing free education, food, and lodging to students from across Bihar. After independence it was brought under the Department of Education." }
       ],
       "related": ["uhs-plus-2-bandwar", "ms-bandwar-middle-school", "vaani-vilas-library-bandwar", "gps-paschimibandwar-school"],
       "location": { "lat": 25.5010, "lng": 86.1605 },
@@ -56,8 +57,8 @@
       "summary": "UHS +2 Bandwar (Upgraded High School +2) is the largest higher secondary school in Bandwar, Begusarai. Established in 1955 (UDISE: 10201008406), it provides education from Class 9 to 12 to 601 students, with a focus on inclusivity.",
       "hero": "images/education/uhs-plus-2-bandwar-school-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/uhs-plus-2-bandwar-school-building.jpg", 
+        {
+          "src": "images/education/uhs-plus-2-bandwar-school-building.jpg",
           "caption": "The main building of UHS +2 Bandwar, the largest school in the village.",
           "imageAlt": "UHS Plus 2 Bandwar school building in Begusarai"
         }
@@ -73,6 +74,7 @@
         "Management": "State Government",
         "Location": "Bandwar, Begusarai, Bihar"
       },
+      "datePublished": "2026-05-25",
       "lastUpdated": "2026-05-25",
       "content": [
         { "heading": "Overview", "text": "UHS +2 Bandwar is the higher secondary school of Bandwar village, established in 1955 as part of Bihar's post-independence expansion of rural education. It holds UDISE code 10201008406 and today offers Classes 9 through 12 with a total enrolment of 601 students — the largest of any school in the village. The school is one of the few government institutions in Bandwar to offer education up to Class 12, and it serves not just Bandwar but also the surrounding panchayats." },
@@ -102,8 +104,8 @@
       "summary": "MS Bandwar (Middle School Bandwar) is the main government middle school in Bandwar, Begusarai. Established in 1955 (UDISE: 10201008401), it serves Classes 1 to 8 with 669 students, making it the most inclusive school in the village.",
       "hero": "images/education/ms-bandwar-middle-school-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/ms-bandwar-middle-school-building.jpg", 
+        {
+          "src": "images/education/ms-bandwar-middle-school-building.jpg",
           "caption": "The main building of MS Bandwar (Rajkiyakrit Madhya Vidyalaya).",
           "imageAlt": "Rajkiyakrit Madhya Vidyalaya Bandwar building in Begusarai"
         }
@@ -119,6 +121,7 @@
         "Management": "State Government",
         "Location": "Bandwar, Begusarai, Bihar"
       },
+      "datePublished": "2026-06-25",
       "lastUpdated": "2026-06-25",
       "content": [
         { "heading": "Overview", "text": "MS Bandwar — Rajkiyakrit Madhya Vidyalaya — is the government middle school of Bandwar village. Established in 1955, it serves Classes 1 through 8 and is one of the largest schools in the village, with 669 students on its rolls in the 2025-26 academic year. It is a 'Primary with Upper Primary' school, meaning it educates students from Class 1 all the way to Class 8." },
@@ -148,8 +151,8 @@
       "summary": "GPS Paschimibandwar (Government Primary School, West Bandwar) is a government primary school in the western part of Bandwar village, Begusarai, Bihar. Established in 1952 with UDISE code 10201008402, it serves Classes 1 through 5 with 150 students.",
       "hero": "images/education/gps-paschimibandwar-school-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/gps-paschimibandwar-school-building.jpg", 
+        {
+          "src": "images/education/gps-paschimibandwar-school-building.jpg",
           "caption": "The main building of GPS Paschimibandwar in West Bandwar.",
           "imageAlt": "Government Primary School Paschimibandwar building"
         }
@@ -164,9 +167,10 @@
         "Teachers": "9",
         "Management": "State Government"
       },
+      "datePublished": "2026-07-10",
       "lastUpdated": "2026-07-10",
       "content": [
-        { "heading": "Overview", "text": "GPS Paschimibandwar is a government primary school in the western part of Bandwar, close to the embankment that runs along the [[burhi-gandak|Burhi Gandak]]. Established in 1952 with UDISE code 10201008402, it is one of the oldest schools in the village. The school's name reflects its location: 'Paschimi' means 'western' in Hindi, and the school serves the families living in the western part of the village." },
+        { "heading": "Overview", "text": "GPS Paschimibandwar is a government primary school in the western part of Bandwar, close to the embankment that runs along the [[burhi-gandak-river-bandwar|Burhi Gandak]]. Established in 1952 with UDISE code 10201008402, it is one of the oldest schools in the village. The school's name reflects its location: 'Paschimi' means 'western' in Hindi, and the school serves the families living in the western part of the village." },
         { "heading": "Enrolment", "text": "As per the UDISE+ report for 2025-26, the school has 150 students — 83 boys and 67 girls. 118 students are from Other Backward Classes, 27 from Scheduled Castes, and 29 from Muslim families. 126 students — 84% — belong to Below Poverty Line households." },
         { "heading": "Infrastructure", "text": "The school operates from 3 pucca building blocks with 7 classrooms — 5 in good condition and 2 in need of major repair. It has a playground, drinking water, electricity, internet, and rainwater harvesting. It does not have a library, and the boundary wall is pucca but broken." },
         { "heading": "Teachers", "text": "The school has 9 teachers — 4 male and 5 female. Only 1 holds a B.Ed. qualification, and 5 teachers are below graduate level. The school received ₹30,000 in grants for 2025-26." },
@@ -192,8 +196,8 @@
       "summary": "GPS Mohanpur Kanya is the girls-only government primary school serving Bandwar panchayat in Begusarai, Bihar. Established in 1956 with UDISE code 10201009102, it serves Classes 1 through 5 exclusively for girls, with an enrolment of 74 students.",
       "hero": "images/education/gps-mohanpur-kanya-school-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/gps-mohanpur-kanya-school-building.jpg", 
+        {
+          "src": "images/education/gps-mohanpur-kanya-school-building.jpg",
           "caption": "The main building of GPS Mohanpur Kanya, the girls-only primary school.",
           "imageAlt": "GPS Mohanpur Kanya girls primary school building"
         }
@@ -208,6 +212,7 @@
         "Teachers": "8",
         "Management": "State Government"
       },
+      "datePublished": "2026-01-24",
       "lastUpdated": "2026-01-24",
       "content": [
         { "heading": "Overview", "text": "GPS Mohanpur Kanya is the girls-only government primary school serving the Bandwar panchayat area. Established in 1956 with UDISE code 10201009102, it provides primary education exclusively to girls from Class 1 to Class 5." },
@@ -236,8 +241,8 @@
       "summary": "GPS Bandwar Musahri is a government primary school in the Musahri tola of Bandwar village, Begusarai, Bihar. Established in 1995 with UDISE code 10201008403, it serves Classes 1 through 5 with an enrolment of 196 students — the majority from Scheduled Caste and Below Poverty Line households.",
       "hero": "images/education/gps-bandwar-musahri-school-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/gps-bandwar-musahri-school-building.jpg", 
+        {
+          "src": "images/education/gps-bandwar-musahri-school-building.jpg",
           "caption": "The main building of GPS Bandwar Musahri in the Musahri tola.",
           "imageAlt": "Government Primary School Bandwar Musahri building in Begusarai"
         }
@@ -252,6 +257,7 @@
         "Teachers": "9",
         "Management": "State Government"
       },
+      "datePublished": "2026-04-14",
       "lastUpdated": "2026-04-14",
       "content": [
         { "heading": "Overview", "text": "GPS Bandwar Musahri is a government primary school in the Musahri tola of Bandwar. Established in 1995 with UDISE code 10201008403, it is the largest primary school in the village, with 196 students on its rolls in the 2025-26 academic year." },
@@ -280,8 +286,8 @@
       "summary": "NPS Kunjartol WD-9 (New Primary School, Kunjartol Ward 9) is a government primary school in the Kunjartol tola of Bandwar village, Begusarai, Bihar. Established in 2007 with UDISE code 10201013301, it serves Classes 1 through 5 with an enrolment of 327 students.",
       "hero": "images/education/nps-kunjartol-wd-9-school-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/nps-kunjartol-wd-9-school-building.jpg", 
+        {
+          "src": "images/education/nps-kunjartol-wd-9-school-building.jpg",
           "caption": "The main building of NPS Kunjartol WD-9 in Bandwar.",
           "imageAlt": "New Primary School Kunjartol Ward 9 building"
         }
@@ -296,6 +302,7 @@
         "Teachers": "14",
         "Management": "State Government"
       },
+      "datePublished": "2026-09-08",
       "lastUpdated": "2026-09-08",
       "content": [
         { "heading": "Overview", "text": "NPS Kunjartol WD-9 is a government primary school in the Kunjartol tola of Bandwar, Ward 9. Established in 2007 with UDISE code 10201013301, it serves Classes 1 through 5 with 327 students — the second-largest primary school in the village." },
@@ -324,8 +331,8 @@
       "summary": "Adharsh Vikash Vidhya Mandir is a private unaided primary school in Bandwar village, Begusarai, Bihar. Established in 2015 with UDISE code 10201008405, it offers Classes 1 through 8 in Hindi medium.",
       "hero": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/adharsh-vikash-vidhya-mandir-building.jpg", 
+        {
+          "src": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
           "caption": "The building of Adharsh Vikash Vidhya Mandir in Bandwar.",
           "imageAlt": "Adharsh Vikash Vidhya Mandir school building Bandwar"
         }
@@ -340,6 +347,7 @@
         "Teachers": "15",
         "Management": "Private Unaided (Recognized)"
       },
+      "datePublished": "2026-08-20",
       "lastUpdated": "2026-08-20",
       "content": [
         { "heading": "Overview", "text": "Adharsh Vikash Vidhya Mandir is a private unaided school in Bandwar, established in 2015 with UDISE code 10201008405. It offers primary education (Classes 1–5) with upper primary classes (6–8), and is one of only two private schools in the village — the other being [[st-paul-school-bandwar|St. Paul School]]." },
@@ -368,8 +376,8 @@
       "summary": "St. Paul School is a private unaided English-medium school in Bandwar village, Begusarai, Bihar. Established in 2015 with UDISE code 10201008404, it offers Classes 1 through 8 in English and Hindi medium. It serves primarily middle-income families, with only 7% of students from Below Poverty Line households.",
       "hero": "images/education/st-paul-school-bandwar-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/st-paul-school-bandwar-building.jpg", 
+        {
+          "src": "images/education/st-paul-school-bandwar-building.jpg",
           "caption": "The main building of St. Paul School, Bandwar.",
           "imageAlt": "St Paul School Bandwar English medium building"
         }
@@ -384,6 +392,7 @@
         "Teachers": "14",
         "Management": "Private Unaided (Recognized)"
       },
+      "datePublished": "2026-10-05",
       "lastUpdated": "2026-10-05",
       "content": [
         { "heading": "Overview", "text": "St. Paul School is a private unaided English-medium school in Bandwar, established in 2015 with UDISE code 10201008404. It offers Classes 1 through 8 and is one of the only two private schools in the village — the other being [[adharsh-vikash-vidhya-mandir|Adharsh Vikash Vidhya Mandir]]." },
@@ -412,19 +421,19 @@
       "summary": "Vaani Vilas Pustakalaya (वाणी विलास पुस्तकालय) is the historic village library of Bandwar, established in 1945. Its new building, funded by MPLAD and Panchayat, was inaugurated in 2025 by MP Rakesh Sinha, offering Wi-Fi, a seed library, and modern reading spaces.",
       "hero": "images/education/vaani-vilas-library-bandwar-building.jpg",
       "photos": [
-        { 
-          "src": "images/education/vaani-vilas-library-bandwar-reading-room.jpg", 
+        {
+          "src": "images/education/vaani-vilas-library-bandwar-reading-room.jpg",
           "caption": "The shared reading table at Vaani Vilas Pustakalaya, with space for students and local readers.",
           "imageAlt": "Reading room with wooden table and chairs at Vaani Vilas Library Bandwar"
         },
-        { 
-          "src": "images/education/vaani-vilas-library-bandwar-inauguration.jpg", 
-          "caption": "Commemorative plaques record the library’s foundation and inauguration.",
+        {
+          "src": "images/education/vaani-vilas-library-bandwar-inauguration.jpg",
+          "caption": "Commemorative plaques record the library's foundation and inauguration.",
           "imageAlt": "Inauguration plaque of Vaani Vilas Pustakalaya Bandwar"
         },
-        { 
-          "src": "images/education/vaani-vilas-library-bandwar-book-cabinets.jpg", 
-          "caption": "Numbered wooden cabinets preserve the library’s book collection.",
+        {
+          "src": "images/education/vaani-vilas-library-bandwar-book-cabinets.jpg",
+          "caption": "Numbered wooden cabinets preserve the library's book collection.",
           "imageAlt": "Wooden cabinets filled with books at Bandwar village library"
         }
       ],
@@ -440,9 +449,10 @@
         "Construction Funding": "₹30 lakh total (₹15L MPLAD + ₹15L Gram Panchayat)",
         "Official Website": "https://vanivilaspushtakalya.netlify.app"
       },
+      "datePublished": "2026-04-23",
       "lastUpdated": "2026-04-23",
       "content": [
-        { "heading": "Overview", "text": "Standing on Bandwar Road near the [[shaheed-dwar|Shaheed Ramchandra Dwar]], the library occupies a single-storey white building with a red iron entrance gate. Inside, numbered wooden cabinets and open bookshelves hold Hindi literature, Bengali works, Islamic texts, and reference material." },
+        { "heading": "Overview", "text": "Standing on Bandwar Road near the [[shaheed-ramchandra-dwar-bandwar|Shaheed Ramchandra Dwar]], the library occupies a single-storey white building with a red iron entrance gate. Inside, numbered wooden cabinets and open bookshelves hold Hindi literature, Bengali works, Islamic texts, and reference material." },
         { "heading": "History and Origin", "text": "The library was established on 5 November 1945. Muktinath Singh donated the land for the library building and, together with Girija Singh, supported the initiative for its development. The current building's approximately ₹30 lakh construction cost was supported by ₹15 lakh from the MPLAD fund associated with Rakesh Sinha and ₹15 lakh from Bandwar Gram Panchayat." },
         { "heading": "Services & Facilities", "text": "The library is more than just a reading room. It offers Book Lending (Hindi, Bengali, Islamic texts), Free Wi-Fi & Workspace for students, Workshops & Classes (from spoken word poetry to digital literacy), Community Events (storytelling evenings, harvest festivals), a Children's Corner, and a unique Seed Library where villagers can borrow seeds, grow gardens, and return seeds at harvest." },
         { "heading": "The Reading Area", "text": "A large wooden table and black metal chairs form the heart of the reading room, seating around a dozen readers. Framed portraits of national leaders, including Mahatma Gandhi and Dr. B. R. Ambedkar, line the walls. The room is especially valued during school examination season." },
@@ -455,7 +465,7 @@
         { "q": "Who inaugurated the current building?", "a": "The current building was inaugurated by Rajya Sabha MP Rakesh Sinha on 5 September 2025 (Teachers' Day)." },
         { "q": "Where is the library located?", "a": "It is located on Bandwar Road, near the Shaheed Ramchandra Dwar. The official website is https://vanivilaspushtakalya.netlify.app." }
       ],
-      "related": ["snk-high-school-bandwar", "ms-bandwar-middle-school", "shaheed-dwar", "historic-well"],
+      "related": ["snk-high-school-bandwar", "ms-bandwar-middle-school", "shaheed-ramchandra-dwar-bandwar", "historic-well-chaupal-bandwar"],
       "location": { "lat": 25.5007, "lng": 86.1618 },
       "tags": ["vaani vilas pustakalaya", "bandwar library", "1945 library bihar", "muktinath singh", "rakesh sinha mplad", "seed library bihar", "village library begusarai"]
     }
