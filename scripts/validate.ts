@@ -20,12 +20,8 @@ let totalFiles = 0;
 let passedFiles = 0;
 let failedFiles = 0;
 let hasErrors = false;
-
-// Cross-reference trackers
-let totalArticles = 0;
 let brokenLinksCount = 0;
 
-// Human-readable Zod Error Formatter
 const formatZodErrors = (error: z.ZodError) => {
   return error.issues.map((issue) => {
     const pathStr = issue.path.length > 0 ? issue.path.join(" → ") : "Root";
@@ -37,15 +33,13 @@ const validateFile = (fileName: string, schema: z.ZodTypeAny) => {
   totalFiles++;
   const filePath = path.join(dataDir, fileName);
   
-  // Check if file exists
   if (!fs.existsSync(filePath)) {
     console.log(`⚠️   SKIP: ${fileName} (File not found)`);
-    totalFiles--; // Skip doesn't count as total
+    totalFiles--;
     return;
   }
   
   try {
-    // Read and Parse JSON (Catches syntax errors)
     const fileContent = fs.readFileSync(filePath, "utf8");
     let rawData;
     try {
@@ -55,13 +49,12 @@ const validateFile = (fileName: string, schema: z.ZodTypeAny) => {
       throw new Error(`Invalid JSON Syntax: ${errMsg}`);
     }
 
-    // Zod Validation
     const parsed = schema.safeParse(rawData);
 
     if (!parsed.success) {
       console.error(`❌ FAIL: ${fileName}`);
       console.error(formatZodErrors(parsed.error));
-      console.log(""); // Empty line for spacing
+      console.log("");
       hasErrors = true;
       failedFiles++;
     } else {
@@ -78,16 +71,14 @@ const validateFile = (fileName: string, schema: z.ZodTypeAny) => {
   }
 };
 
-// ==========================================
-// Execution Pipeline: Phase 1 - Schema Validation
-// ==========================================
+// --- Phase 1: Schema Validation ---
 console.log("--- Phase 1: Schema Validation ---");
-
 validateFile("master.json", MasterSchema);
 validateFile("categories.json", CategoriesDataSchema);
 validateFile("people.json", PeopleDataSchema);
 validateFile("media.json", MediaSchema);
 validateFile("directory.json", DirectoryDataSchema);
+validateFile("contributors.json", z.object({ contributors: z.array(z.any()) })); // Basic check
 
 const articlesDir = path.join(dataDir, "articles");
 const validArticleIds = new Set<string>();
@@ -96,13 +87,10 @@ const allArticles: any[] = [];
 
 if (fs.existsSync(articlesDir)) {
   const files = fs.readdirSync(articlesDir).filter(f => f.endsWith(".json"));
-  
   if (files.length === 0) {
     console.log("⚠️   SKIP: data/articles/ (No JSON files found)");
   } else {
-    files.forEach(file => {
-      validateFile(`articles/${file}`, ArticleListSchema);
-    });
+    files.forEach(file => validateFile(`articles/${file}`, ArticleListSchema));
   }
 } else {
   console.error(`❌ FAIL: 'data/articles/' directory not found!`);
@@ -110,12 +98,9 @@ if (fs.existsSync(articlesDir)) {
   failedFiles++;
 }
 
-// ==========================================
-// Execution Pipeline: Phase 2 - Cross-Reference Validation
-// ==========================================
+// --- Phase 2: Cross-Reference Validation ---
 console.log("\n--- Phase 2: Cross-Reference & Internal Link Validation ---");
 
-// Extract valid category IDs
 try {
   const catPath = path.join(dataDir, "categories.json");
   if (fs.existsSync(catPath)) {
@@ -126,14 +111,10 @@ try {
       });
     }
   }
-} catch (e) {
-  console.warn("⚠️   Could not load categories.json for cross-reference check.");
-}
+} catch (e) {}
 
-// Extract all valid article IDs and full article data
 if (fs.existsSync(articlesDir)) {
   const files = fs.readdirSync(articlesDir).filter(f => f.endsWith(".json"));
-  
   files.forEach(file => {
     try {
       const raw = JSON.parse(fs.readFileSync(path.join(articlesDir, file), "utf8"));
@@ -145,61 +126,41 @@ if (fs.existsSync(articlesDir)) {
           }
         });
       }
-    } catch (e) { 
-      // Syntax errors already caught in Phase 1
-    }
+    } catch (e) {}
   });
 
-  totalArticles = allArticles.length;
-  console.log(`   Found ${validArticleIds.size} unique article IDs.`);
-  console.log(`   Found ${validCategoryIds.size} valid categories.`);
-  console.log("");
-
-  // Regex to capture [[wikilink]] and [[wikilink|display text]]
   const linkRegex = /\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/gi;
 
   allArticles.forEach((art) => {
     const artErrors: string[] = [];
-
-    // 1. Validate Categories
+    
+    // Check Categories
     if (Array.isArray(art.categories)) {
       art.categories.forEach((cat: string) => {
-        if (!validCategoryIds.has(cat)) {
-          artErrors.push(`   ❌ [Category]: "${cat}" does not exist in categories.json`);
-        }
+        if (!validCategoryIds.has(cat)) artErrors.push(`   ❌ [Category]: "${cat}" does not exist in categories.json`);
       });
     }
 
-    // 2. Validate Related IDs
+    // Check Related IDs
     if (Array.isArray(art.related)) {
       art.related.forEach((relId: string) => {
-        if (!validArticleIds.has(relId)) {
-          artErrors.push(`   ❌ [Related]: Article ID "${relId}" does not exist`);
-        }
+        if (!validArticleIds.has(relId)) artErrors.push(`   ❌ [Related]: Article ID "${relId}" does not exist`);
       });
     }
 
-    // 3. Validate Wikilinks in Summary and Content
+    // Check Wikilinks
     const textToCheck: string[] = [];
     if (art.summary) textToCheck.push(art.summary);
-    if (Array.isArray(art.content)) {
-      art.content.forEach((block: any) => {
-        if (block.text) textToCheck.push(block.text);
-      });
-    }
+    if (Array.isArray(art.content)) art.content.forEach((block: any) => { if (block.text) textToCheck.push(block.text); });
     
-    textToCheck.forEach((text, index) => {
-      const location = index === 0 && art.summary === text ? "Summary" : `Content Block`;
+    textToCheck.forEach((text) => {
       let match;
       while ((match = linkRegex.exec(text)) !== null) {
         const targetId = match[1];
-        if (!validArticleIds.has(targetId)) {
-          artErrors.push(`   ❌ [Wikilink in ${location}]: Target ID "${targetId}" does not exist`);
-        }
+        if (!validArticleIds.has(targetId)) artErrors.push(`   ❌ [Wikilink]: Target ID "${targetId}" does not exist`);
       }
     });
 
-    // Report Errors for this article
     if (artErrors.length > 0) {
       console.error(`❌ BROKEN LINKS in ${art._file} (Article: ${art.id}):`);
       artErrors.forEach(err => console.error(err));
@@ -210,27 +171,17 @@ if (fs.existsSync(articlesDir)) {
   });
 }
 
-if (brokenLinksCount === 0 && totalArticles > 0) {
-  console.log("✅ All internal links, related IDs, and categories are valid.");
-} else if (totalArticles === 0) {
-  console.log("⚠️   No articles found to validate.");
-}
-
-// ==========================================
-// Final Report
-// ==========================================
 console.log("--------------------------------------------");
 console.log(`📊 SUMMARY:`);
 console.log(`   Total Files Checked : ${totalFiles}`);
 console.log(`   Passed Files        : ${passedFiles}`);
 console.log(`   Failed Files        : ${failedFiles}`);
-console.log(`   Total Articles      : ${totalArticles}`);
-console.log(`   Broken Links        : ${brokenLinksCount}`);
+console.log(`   Broken Links Found  : ${brokenLinksCount}`);
 console.log("--------------------------------------------\n");
 
 if (hasErrors) {
-  console.error("🚨 VALIDATION FAILED! Please fix the errors above before committing or deploying.");
-  process.exit(1); // Stops the build process
+  console.error("🚨 VALIDATION FAILED! Please fix the errors above before deploying.");
+  process.exit(1);
 } else {
   console.log("🎉 ALL DATA VALIDATED SUCCESSFULLY. Ready for deployment.");
   process.exit(0);
