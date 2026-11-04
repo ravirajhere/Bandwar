@@ -10,10 +10,15 @@ const formatDate = (dateString: string) => {
 };
 
 export function ArticleCard({ article }: { article: Article }) {
-  // Safe image path check
-  const imageSrc = article.hero 
-    ? (article.hero.startsWith("/") ? article.hero : `/${article.hero}`) 
+  // 🚀 SEO FIX: Strip query strings (?v=hash) to prevent Next.js Image crashes
+  const rawHero = article.hero;
+  const cleanHero = rawHero ? rawHero.split('?')[0] : null;
+  const imageSrc = cleanHero 
+    ? (cleanHero.startsWith("/") ? cleanHero : `/${cleanHero}`) 
     : null;
+
+  // 🚀 SEO FIX: Use specific imageAlt if available, else fallback to title
+  const altText = article.photos?.[0]?.imageAlt || article.title;
 
   return (
     <Link 
@@ -25,7 +30,7 @@ export function ArticleCard({ article }: { article: Article }) {
         {imageSrc ? (
           <Image
             src={imageSrc}
-            alt={article.title}
+            alt={altText}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -33,14 +38,14 @@ export function ArticleCard({ article }: { article: Article }) {
         ) : (
           // ✅ Formal Fallback: Agar image nahi hai toh yeh dikhega
           <div className="flex flex-col items-center justify-center text-ink/20">
-            <ImageIcon size={40} className="mb-2 3xl:w-16 3xl:h-16" />
+            <ImageIcon size={40} className="mb-2 3xl:w-16 3xl:h-16" aria-hidden="true" />
             <span className="text-[11px] 3xl:text-xs font-bold uppercase tracking-wider">No Image Available</span>
           </div>
         )}
         
         {/* Category Badge (Dark Glass Effect) */}
         <div className="absolute top-3 left-3 bg-ink/70 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-md text-[10px] 3xl:text-xs font-bold text-white uppercase tracking-wider shadow-sm z-10">
-          {article.categories[0] || "General"}
+          {article.categories[0]?.replace(/-/g, " ") || "General"}
         </div>
       </div>
 
@@ -60,11 +65,13 @@ export function ArticleCard({ article }: { article: Article }) {
         {/* Footer Meta (Date & Read Button) */}
         <div className="mt-auto pt-4 border-t border-divider flex items-center justify-between text-xs 3xl:text-sm text-ink/50 font-medium">
           <div className="flex items-center gap-1.5">
-            <Calendar size={14} className="text-accent/70 3xl:w-4 3xl:h-4" />
-            <time dateTime={article.lastUpdated}>{formatDate(article.lastUpdated)}</time>
+            <Calendar size={14} className="text-accent/70 3xl:w-4 3xl:h-4" aria-hidden="true" />
+            <time dateTime={article.lastUpdated}>
+              {formatDate(article.lastUpdated)}
+            </time>
           </div>
           
-          <span className="text-accent flex items-center gap-1 font-semibold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 3xl:text-base">
+          <span className="text-accent flex items-center gap-1 font-semibold opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 3xl:text-base" aria-hidden="true">
             Read <ArrowRight size={14} className="3xl:w-4 3xl:h-4" />
           </span>
         </div>
