@@ -15,9 +15,13 @@ interface ArticleHeroImageProps {
 export function ArticleHeroImage({ hero, title, articleId, altText }: ArticleHeroImageProps) {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
+  // 🚀 SEO FIX: Strip query strings (e.g., ?v=hash) for Next.js Image optimization
+  const cleanHero = hero.split('?')[0];
+  const imageSrc = cleanHero.startsWith("/") ? cleanHero : `/${cleanHero}`;
+
   const photoData = [{
     id: articleId,
-    src: hero,
+    src: imageSrc,
     caption: title,
     category: "article",
     year: new Date().getFullYear().toString(),
@@ -39,13 +43,13 @@ export function ArticleHeroImage({ hero, title, articleId, altText }: ArticleHer
         <div 
           role="button"
           tabIndex={0}
-          aria-label="Open image in fullscreen"
+          aria-label={`Open image of ${title} in fullscreen`}
           className="absolute inset-0 cursor-zoom-in focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-accent/50"
           onClick={() => setIsLightboxOpen(true)}
           onKeyDown={handleKeyDown}
         >
           <Image
-            src={hero.startsWith("/") ? hero : `/${hero}`}
+            src={imageSrc}
             alt={altText}
             fill
             sizes="(max-width: 1024px) 100vw, 1200px"
