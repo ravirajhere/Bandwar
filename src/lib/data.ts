@@ -16,7 +16,7 @@ const readJsonFile = (filePath: string) => {
   const fullPath = path.join(process.cwd(), "data", filePath);
   try {
     if (!fs.existsSync(fullPath)) {
-      throw new Error(`File not found`);
+      throw new Error(`File not found at data/${filePath}`);
     }
     const fileContent = fs.readFileSync(fullPath, "utf8");
     return JSON.parse(fileContent);
@@ -37,12 +37,13 @@ function validateData<T extends z.ZodTypeAny>(schema: T, data: unknown, fileName
   return parsed.data as z.infer<T>;
 }
 
+// Ensures "@ramesh" and "ramesh" match perfectly
 function normalizeUsername(u: string): string {
   return u.replace(/^@/, "").toLowerCase().trim();
 }
 
 // ==========================================
-// 2. CACHE
+// 2. IN-MEMORY CACHE
 // ==========================================
 const cache = {
   articles: null as Article[] | null,
@@ -54,6 +55,7 @@ const cache = {
   contributors: null as Contributor[] | null,
 };
 
+// Optional: Call this during dev hot-reload if needed
 export function clearCache() {
   (Object.keys(cache) as (keyof typeof cache)[]).forEach((k) => {
     (cache as any)[k] = null;
@@ -61,7 +63,7 @@ export function clearCache() {
 }
 
 // ==========================================
-// 3. DATA FETCHING
+// 3. DATA FETCHING FUNCTIONS
 // ==========================================
 
 export function getMasterData(): MasterConfig {
@@ -90,7 +92,7 @@ export function getAllArticles(): Article[] {
     }
   }
 
-  // ✅ Sort by dateModified || lastUpdated — consistent with sitemap
+  // ✅ Sort by dateModified || lastUpdated (Newest first)
   allArticles.sort((a, b) => {
     const aDate = (a as any).dateModified || a.lastUpdated;
     const bDate = (b as any).dateModified || b.lastUpdated;
@@ -111,7 +113,7 @@ export function getArticlesByCategory(categoryId: string): Article[] {
   );
 }
 
-// ✅ New: centralized date helper
+// ✅ Centralized date helper for consistent SEO output
 export function getArticleDates(article: Article): { published: string; modified: string } {
   return {
     published: (article as any).datePublished || article.lastUpdated,
@@ -125,9 +127,9 @@ export function getMediaData(): Media {
   const rawData = readJsonFile("media.json");
   const media = validateData(MediaSchema, rawData, "media.json");
   
+  // ✅ Fix: Filter out photos but STRIP query strings (e.g. ?v=hash) first
   if (media.gallery && media.gallery.photos) {
     media.gallery.photos = media.gallery.photos.filter((photo) => {
-      // ✅ Strip query string (?v=hash) before file check
       const pathWithoutQuery = photo.src.split("?")[0];
       const cleanSrc = pathWithoutQuery.startsWith("/")
         ? pathWithoutQuery.slice(1)
@@ -168,7 +170,7 @@ export function getDirectoryData(): DirectoryData {
 }
 
 // ==========================================
-// 4. CONTRIBUTORS
+// 4. CONTRIBUTORS DATA (E-E-A-T)
 // ==========================================
 
 export function getContributors(): Contributor[] {
@@ -199,5 +201,5 @@ export function getRecentContributors(months: number = 6): Contributor[] {
 
   return all
     .filter((c) => c.joinedAt && new Date(c.joinedAt) >= cutoffDate)
-    .sort((a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime());
+    .sort((a, b) => new Date(b.joinedAt || 0).getTime() - new Date(a.joinedAt || 0).getTime());
 }
