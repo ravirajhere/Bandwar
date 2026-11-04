@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getArticleById, getContributors } from "@/lib/data"; // 🚀 Imported getArticleById
+import { getArticleById, getContributors } from "@/lib/data";
 
 export const runtime = "nodejs";
 const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
@@ -67,21 +67,28 @@ export async function POST(req: NextRequest) {
       if (imgRes.ok) pendingImageUrl = `/images/pending/${editId}.jpg`;
     }
 
-    const intent = type === "Image Update Suggestion" ? "image_update" : (formData.get("field") ? "edit" : "add");
-    
-    // 🚀 SMART FIX: Find exact filePath based on Article ID
+    // 🚀 DETERMINE INTENT
+    let intent = "add";
+    if (type === "Image Update Suggestion" || (type.includes("Image") && pendingImageUrl && formData.get("currentImagePath") !== "Unknown")) {
+      intent = "image_update";
+    } else if (formData.get("field") && formData.get("suggestedValue")) {
+      intent = "edit";
+    }
+
+    // 🚀 SMART ROUTING: Find the exact target file
     let filePath = "";
     
     if (intent === "image_update" || intent === "edit") {
+      // It's an update to an existing article. Find where it lives.
       const existingArticle = getArticleById(contextId);
       if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
         filePath = `data/articles/${existingArticle.categories[0]}.json`;
+      } else {
+        filePath = "data/articles/landmarks.json"; // Safe fallback
       }
-    }
-
-    if (!filePath) {
-      // Fallback for new articles
-      const cat = String(formData.get("Category") || "education").toLowerCase().replace(/[^a-z0-9-]/g, "-");
+    } else {
+      // It's a brand new addition.
+      const cat = String(formData.get("Category") || "general").toLowerCase().replace(/[^a-z0-9-]/g, "-");
       filePath = `data/articles/${cat}.json`;
     }
 
@@ -107,9 +114,13 @@ export async function POST(req: NextRequest) {
       timestamp: new Date().toISOString(), 
       pendingImageUrl, 
       intent,
-      filePath, // 🚀 Now properly resolved
-      targetType: type.includes("Article") || intent === "image_update" ? "article" : "article",
-      jsonObj: { Category: filePath.split('/').pop()?.replace('.json', '') }
+      filePath, // 🚀 Target locked!
+      targetType: intent === "image_update" ? "article" : (String(formData.get("targetType") || "article")),
+      field: formData.get("field") || "",
+      oldValue: formData.get("currentValue") || "",
+      newValue: formData.get("suggestedValue") || "",
+      currentImagePath: formData.get("currentImagePath") || "Unknown",
+      jsonObj: { Category: filePath.split('/').pop()?.replace('.json', '') || "general" }
     };
     
     queueContent.pending.push(queueItem);
