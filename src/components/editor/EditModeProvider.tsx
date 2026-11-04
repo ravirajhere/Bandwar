@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useMemo, ReactNode } from "react";
 
 interface EditModeContextType {
   isEditMode: boolean;
@@ -14,8 +14,12 @@ const EditModeContext = createContext<EditModeContextType>({
 
 export function EditModeProvider({ children }: { children: ReactNode }) {
   const [isEditMode, setEditMode] = useState(false);
+  
+  // 🚀 PERFORMANCE FIX: Memoize the context value to prevent unnecessary re-renders in child components
+  const value = useMemo(() => ({ isEditMode, setEditMode }), [isEditMode]);
+
   return (
-    <EditModeContext.Provider value={{ isEditMode, setEditMode }}>
+    <EditModeContext.Provider value={value}>
       {children}
     </EditModeContext.Provider>
   );
