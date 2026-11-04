@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, createContext, useContext, ReactNode } from "react";
+import { useState, createContext, useContext, useCallback, useMemo, ReactNode } from "react";
 import { CheckCircle2, AlertCircle, Info, X } from "lucide-react";
 
 type ToastType = "success" | "error" | "info";
@@ -20,8 +20,8 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const toast = (message: string, type: ToastType = "success") => {
-    // ✅ Fixed: substr() is deprecated, using slice() instead
+  // 🚀 PERFORMANCE FIX: useCallback so `toast` doesn't recreate on every render
+  const toast = useCallback((message: string, type: ToastType = "success") => {
     const id = Math.random().toString(36).slice(2, 11);
     setToasts((prev) => [...prev, { id, message, type }]);
 
@@ -29,14 +29,17 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 4000);
-  };
+  }, []);
 
-  const removeToast = (id: string) => {
+  const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
+  }, []);
+
+  // 🚀 PERFORMANCE FIX: Memoize context value to avoid re-rendering all consumers
+  const contextValue = useMemo(() => ({ toast }), [toast]);
 
   return (
-    <ToastContext.Provider value={{ toast }}>
+    <ToastContext.Provider value={contextValue}>
       {children}
       
       {/* 🪟 Toast Container (Accessible & Formal) */}
@@ -58,17 +61,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             `}
           >
             <div className="flex items-start gap-3">
-              {t.type === "success" && <CheckCircle2 size={20} className="text-green-600 dark:text-green-500 shrink-0 mt-0.5 3xl:w-6 3xl:h-6" />}
-              {t.type === "error" && <AlertCircle size={20} className="text-red-600 dark:text-red-500 shrink-0 mt-0.5 3xl:w-6 3xl:h-6" />}
-              {t.type === "info" && <Info size={20} className="text-blue-600 dark:text-blue-500 shrink-0 mt-0.5 3xl:w-6 3xl:h-6" />}
+              {t.type === "success" && <CheckCircle2 size={20} className="text-green-600 dark:text-green-500 shrink-0 mt-0.5 3xl:w-6 3xl:h-6" aria-hidden="true" />}
+              {t.type === "error" && <AlertCircle size={20} className="text-red-600 dark:text-red-500 shrink-0 mt-0.5 3xl:w-6 3xl:h-6" aria-hidden="true" />}
+              {t.type === "info" && <Info size={20} className="text-blue-600 dark:text-blue-500 shrink-0 mt-0.5 3xl:w-6 3xl:h-6" aria-hidden="true" />}
               <p className="text-sm 3xl:text-base font-medium leading-snug">{t.message}</p>
             </div>
             <button 
+              type="button"
               onClick={() => removeToast(t.id)} 
               className="text-ink/40 hover:text-ink transition-colors p-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
               aria-label="Dismiss notification"
             >
-              <X size={16} className="3xl:w-5 3xl:h-5" />
+              <X size={16} className="3xl:w-5 3xl:h-5" aria-hidden="true" />
             </button>
           </div>
         ))}
