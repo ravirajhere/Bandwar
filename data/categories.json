@@ -55,12 +55,6 @@
       "description": "The Burhi Gandak river, flood plains, and the village landscape." 
     },
     { 
-      "id": "people", 
-      "title": "People", 
-      "icon": "👥", 
-      "description": "Notable personalities, freedom fighters, and respected elders." 
-    },
-    { 
       "id": "landmarks", 
       "title": "Landmarks", 
       "icon": "🚩", 
