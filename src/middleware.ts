@@ -1,17 +1,28 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from "next/server";
+import { isValidSession } from "@/lib/adminAuth";
 
-export function middleware(request: NextRequest) {
-  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin/dashboard')
-  const hasSession = request.cookies.has('admin_session')
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  if (isAdminRoute && !hasSession) {
-    return NextResponse.redirect(new URL('/admin', request.url))
+  // 1. Login page itself is public (needs to be accessible to log in)
+  if (pathname === "/admin") {
+    return NextResponse.next();
   }
 
-  return NextResponse.next()
+  // 2. Protect all other /admin/* routes (e.g., /admin/dashboard)
+  if (pathname.startsWith("/admin")) {
+    const session = request.cookies.get("admin_session")?.value;
+
+    if (!(await isValidSession(session))) {
+      const loginUrl = new URL("/admin", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: '/admin/dashboard/:path*',
-}
+  // Apply middleware ONLY to admin paths
+  matcher: ["/admin/:path*"],
+};
