@@ -1,4 +1,5 @@
-import { getMasterData, getRecentContributors } from "@/lib/data"; // 🚀 Import added
+import { Metadata } from "next";
+import { getMasterData, getRecentContributors } from "@/lib/data";
 import Link from "next/link";
 import { 
   BookOpen, 
@@ -11,18 +12,51 @@ import {
   Lock,
   Code2
 } from "lucide-react";
-import { ContributorGrid } from "@/components/about/ContributorGrid"; // 🚀 Component Import
+import { ContributorGrid } from "@/components/about/ContributorGrid";
 
-export const metadata = {
-  title: "About | Bandwar Portal",
-  description: "Learn about the principles, sources, and community behind the Bandwar Village Portal.",
-};
+// 🚀 SEO FIX: Dynamic Metadata with Canonical, OG, and Twitter
+export async function generateMetadata(): Promise<Metadata> {
+  const config = getMasterData();
+  const baseUrl = config.site.url;
+  const defaultOgImage = `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
+  
+  const title = "About the Archive";
+  const description = "Learn about the principles, sources, and community behind the Bandwar Village Archive, Begusarai (Bihar). A community-built digital record.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/about`,
+      languages: {
+        "en-IN": `${baseUrl}/about`,
+        "x-default": `${baseUrl}/about`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      title: `${title} — ${config.site.name}`,
+      description,
+      url: `${baseUrl}/about`,
+      siteName: config.site.name,
+      locale: "en_IN",
+      images: [{ url: defaultOgImage, width: 1200, height: 630, alt: "About the Bandwar Village Archive" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — ${config.site.name}`,
+      description,
+      images: [defaultOgImage],
+    },
+  };
+}
 
 export default function AboutPage() {
   const config = getMasterData();
   const about = config.about;
+  const baseUrl = config.site.url;
   
-  // 🚀 Fetch recent contributors (last 6 months)
+  // Fetch recent contributors (last 6 months)
   const recentContributors = getRecentContributors(6);
 
   if (!about) {
@@ -33,17 +67,48 @@ export default function AboutPage() {
     );
   }
 
+  // 🚀 SEO FIX: AboutPage + BreadcrumbList Schema
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${baseUrl}/about#webpage`,
+        url: `${baseUrl}/about`,
+        name: `About the Archive — ${config.site.name}`,
+        description: about.intro,
+        isPartOf: { "@id": `${baseUrl}/#website` },
+        about: { "@id": `${baseUrl}/#organization` },
+        inLanguage: "en-IN",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+          { "@type": "ListItem", "position": 2, "name": "About", "item": `${baseUrl}/about` }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="bg-canvas min-h-screen pb-20 3xl:pb-32">
       
+      {/* 🚀 JSON-LD for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* 🏛️ HERO SECTION */}
       <section className="bg-surface border-b border-divider pt-20 pb-16 3xl:pt-32 3xl:pb-24 mb-12 3xl:mb-20">
         <div className="container mx-auto px-4 md:px-0 max-w-4xl 3xl:max-w-5xl text-center">
+          {/* 🚀 SEO FIX: Changed 'Official Portal' to 'Community Built' to match E-E-A-T */}
           <span className="inline-flex items-center gap-2 bg-canvas border border-divider text-accent font-bold text-xs 3xl:text-sm uppercase tracking-widest px-4 py-1.5 rounded-md mb-6 shadow-sm">
-            <ShieldCheck size={14} className="3xl:w-4 3xl:h-4" /> Official Portal
+            <ShieldCheck size={14} className="3xl:w-4 3xl:h-4" aria-hidden="true" /> Community Built
           </span>
           <h1 className="font-serif text-4xl md:text-6xl 3xl:text-7xl font-bold text-ink mb-6 tracking-tight">
-            About the Portal
+            About the Archive
           </h1>
           <p className="text-base md:text-xl 3xl:text-2xl text-ink/80 leading-relaxed max-w-3xl mx-auto text-pretty">
             {about.intro}
@@ -57,7 +122,7 @@ export default function AboutPage() {
         <section className="max-w-3xl 3xl:max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-8 3xl:mb-10">
             <h2 className="font-serif text-2xl md:text-3xl 3xl:text-4xl font-semibold text-ink flex items-center gap-3">
-              <BookOpen className="text-accent 3xl:w-8 3xl:h-8" size={28} /> Our Story
+              <BookOpen className="text-accent 3xl:w-8 3xl:h-8" size={28} aria-hidden="true" /> Our Story
             </h2>
             <div className="h-px bg-divider flex-grow rounded-full"></div>
           </div>
@@ -72,7 +137,7 @@ export default function AboutPage() {
         <section>
           <div className="flex items-center gap-4 mb-8 3xl:mb-10">
             <h2 className="font-serif text-2xl md:text-3xl 3xl:text-4xl font-semibold text-ink flex items-center gap-3">
-              <ShieldCheck className="text-accent 3xl:w-8 3xl:h-8" size={28} /> Our Principles
+              <ShieldCheck className="text-accent 3xl:w-8 3xl:h-8" size={28} aria-hidden="true" /> Our Principles
             </h2>
             <div className="h-px bg-divider flex-grow rounded-full"></div>
           </div>
@@ -83,7 +148,7 @@ export default function AboutPage() {
                 key={idx} 
                 className="bg-surface border border-divider p-6 3xl:p-8 rounded-lg shadow-sm hover:shadow-md hover:border-accent/30 transition-all duration-300 flex flex-col"
               >
-                <div className="w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider rounded-lg flex items-center justify-center text-2xl 3xl:text-3xl mb-5">
+                <div className="w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider rounded-lg flex items-center justify-center text-2xl 3xl:text-3xl mb-5" aria-hidden="true">
                   {p.icon}
                 </div>
                 <h3 className="font-serif font-bold text-ink text-lg 3xl:text-xl mb-2">
@@ -101,7 +166,7 @@ export default function AboutPage() {
         <section>
           <div className="flex items-center gap-4 mb-8 3xl:mb-10">
             <h2 className="font-serif text-2xl md:text-3xl 3xl:text-4xl font-semibold text-ink flex items-center gap-3">
-              <FileText className="text-accent 3xl:w-8 3xl:h-8" size={28} /> Sources & References
+              <FileText className="text-accent 3xl:w-8 3xl:h-8" size={28} aria-hidden="true" /> Sources & References
             </h2>
             <div className="h-px bg-divider flex-grow rounded-full"></div>
           </div>
@@ -144,7 +209,7 @@ export default function AboutPage() {
           <div className="relative z-10">
             <div className="flex items-center gap-4 mb-8 3xl:mb-10">
               <h2 className="font-serif text-2xl md:text-3xl 3xl:text-4xl font-semibold text-ink flex items-center gap-3">
-                <Users className="text-accent 3xl:w-8 3xl:h-8" size={28} /> The Community
+                <Users className="text-accent 3xl:w-8 3xl:h-8" size={28} aria-hidden="true" /> The Community
               </h2>
             </div>
 
@@ -155,7 +220,7 @@ export default function AboutPage() {
               <p className="mt-6 text-sm md:text-base 3xl:text-lg">{about.community.contributors}</p>
             </div>
             
-            {/* 🚀 NEW: Recent Contributors Grid */}
+            {/* Recent Contributors Grid */}
             <ContributorGrid contributors={recentContributors} />
 
             {/* Editorial Committee */}
@@ -169,7 +234,7 @@ export default function AboutPage() {
                     key={idx} 
                     className="bg-canvas border border-divider px-5 py-4 rounded-lg flex items-center gap-4 hover:border-accent/40 transition-colors"
                   >
-                    <div className="w-10 h-10 3xl:w-12 3xl:h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center font-bold text-lg 3xl:text-xl">
+                    <div className="w-10 h-10 3xl:w-12 3xl:h-12 bg-accent/10 text-accent rounded-full flex items-center justify-center font-bold text-lg 3xl:text-xl" aria-hidden="true">
                       {member.name.charAt(0)}
                     </div>
                     <div>
@@ -183,7 +248,7 @@ export default function AboutPage() {
                           rel="noreferrer" 
                           className="font-bold text-ink hover:text-accent transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
                         >
-                          {member.name} <ExternalLink size={12} className="3xl:w-4 3xl:h-4" />
+                          {member.name} <ExternalLink size={12} className="3xl:w-4 3xl:h-4" aria-hidden="true" />
                         </a>
                       ) : (
                         <span className="font-bold text-ink">{member.name}</span>
@@ -200,7 +265,7 @@ export default function AboutPage() {
         <section id="license" className="scroll-mt-28">
           <div className="flex items-center gap-4 mb-8 3xl:mb-10">
             <h2 className="font-serif text-2xl md:text-3xl 3xl:text-4xl font-semibold text-ink flex items-center gap-3">
-              <Scale className="text-accent 3xl:w-8 3xl:h-8" size={28} /> Content & Code License
+              <Scale className="text-accent 3xl:w-8 3xl:h-8" size={28} aria-hidden="true" /> Content & Code License
             </h2>
             <div className="h-px bg-divider flex-grow rounded-full"></div>
           </div>
@@ -210,7 +275,7 @@ export default function AboutPage() {
               
               <div className="flex flex-col sm:flex-row gap-5">
                 <div className="shrink-0 w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider rounded-lg flex items-center justify-center">
-                  <Lock size={22} className="text-accent 3xl:w-7 3xl:h-7" />
+                  <Lock size={22} className="text-accent 3xl:w-7 3xl:h-7" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="font-serif font-bold text-ink text-lg 3xl:text-xl mb-2">
@@ -225,14 +290,14 @@ export default function AboutPage() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-accent hover:text-accent-hover text-sm font-medium mt-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
                   >
-                    View License Terms <ExternalLink size={13} />
+                    View License Terms <ExternalLink size={13} aria-hidden="true" />
                   </a>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-5 pt-6 border-t border-divider">
                 <div className="shrink-0 w-12 h-12 3xl:w-14 3xl:h-14 bg-canvas border border-divider rounded-lg flex items-center justify-center">
-                  <Code2 size={22} className="text-accent 3xl:w-7 3xl:h-7" />
+                  <Code2 size={22} className="text-accent 3xl:w-7 3xl:h-7" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="font-serif font-bold text-ink text-lg 3xl:text-xl mb-2">
@@ -257,7 +322,7 @@ export default function AboutPage() {
         {/* 🚀 CTA SECTION */}
         <section className="text-center py-12 3xl:py-20">
           <div className="w-14 h-14 3xl:w-16 3xl:h-16 bg-surface border border-divider rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm">
-            <Heart className="text-red-500 3xl:w-8 3xl:h-8" size={26} />
+            <Heart className="text-red-500 3xl:w-8 3xl:h-8" size={26} aria-hidden="true" />
           </div>
           <h3 className="font-serif text-xl md:text-2xl 3xl:text-3xl font-bold text-ink mb-3">
             Want to contribute to this archive?
