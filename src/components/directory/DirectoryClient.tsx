@@ -55,7 +55,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                     : "border-transparent text-ink-muted hover:text-ink hover:bg-surface"
                 }`}
               >
-                <span className="opacity-70 text-base">{cat.icon}</span> {cat.title}
+                <span className="opacity-70 text-base" aria-hidden="true">{cat.icon}</span> {cat.title}
               </button>
             ))}
           </nav>
@@ -67,12 +67,13 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
         
         {/* 🔍 Search Bar (Strict & Flat) */}
         <div className="relative mb-6 3xl:mb-8">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" size={18} />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40" size={18} aria-hidden="true" />
           <input
             type="text"
             placeholder="Search for doctors, shops, addresses..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search directory"
             className="w-full pl-10 pr-10 py-2.5 3xl:py-3.5 bg-surface border border-divider rounded-sm focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 text-ink text-sm 3xl:text-base transition-all"
           />
           {searchQuery && (
@@ -81,7 +82,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
               className="absolute right-3 top-1/2 -translate-y-1/2 text-ink/40 hover:text-ink p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
               aria-label="Clear search"
             >
-              <X size={16} />
+              <X size={16} aria-hidden="true" />
             </button>
           )}
         </div>
@@ -104,7 +105,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                 activeCategory === cat.id ? "bg-accent text-white border-accent" : "bg-surface text-ink-muted border-divider hover:text-ink"
               }`}
             >
-              <span className="opacity-80">{cat.icon}</span> {cat.title}
+              <span className="opacity-80" aria-hidden="true">{cat.icon}</span> {cat.title}
             </button>
           ))}
         </div>
@@ -113,7 +114,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-3 gap-4 3xl:gap-5">
           {filteredItems.length === 0 ? (
             <div className="col-span-full flex flex-col items-center justify-center py-20 px-4 text-center bg-surface border border-dashed border-divider rounded-sm">
-              <AlertCircle size={40} className="text-ink/20 mb-4" />
+              <AlertCircle size={40} className="text-ink/20 mb-4" aria-hidden="true" />
               <h3 className="text-lg font-bold text-ink mb-1">No records found</h3>
               <p className="text-ink-muted text-sm">
                 We couldn't find any listings matching your query.
@@ -133,7 +134,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                     </h3>
                     {item.isEmergency && (
                       <span className="shrink-0 bg-red-500/10 text-red-600 dark:text-red-400 text-[10px] font-bold px-1.5 py-0.5 rounded-sm uppercase tracking-wider border border-red-500/20 flex items-center gap-1">
-                        <ShieldAlert size={10} className="3xl:w-3 3xl:h-3" />
+                        <ShieldAlert size={10} className="3xl:w-3 3xl:h-3" aria-hidden="true" />
                         Emergency
                       </span>
                     )}
@@ -152,22 +153,23 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                   <div className="flex flex-col gap-1.5 text-[12px] 3xl:text-sm text-ink-muted font-medium mb-3">
                     {item.address && (
                       <span className="flex items-start gap-1.5">
-                        <MapPin size={14} className="text-accent shrink-0 mt-0.5" /> 
+                        <MapPin size={14} className="text-accent shrink-0 mt-0.5" aria-hidden="true" /> 
                         <span className="leading-tight">{item.address}</span>
                       </span>
                     )}
                     {item.timing && (
                       <span className="flex items-start gap-1.5">
-                        <Clock size={14} className="text-accent shrink-0 mt-0.5" /> 
+                        <Clock size={14} className="text-accent shrink-0 mt-0.5" aria-hidden="true" /> 
                         <span className="leading-tight">{item.timing}</span>
                       </span>
                     )}
                   </div>
 
-                  {/* 🚀 UPDATED: Last Updated Date */}
+                  {/* 🚀 SEO FIX: Semantic <time> for Last Updated */}
                   {item.lastUpdated && (
                     <div className="text-[11px] text-ink-muted mb-3 flex items-center gap-1">
-                      <Clock size={10} /> Updated {item.lastUpdated}
+                      <Clock size={10} aria-hidden="true" /> 
+                      <span>Updated <time dateTime={item.lastUpdated}>{item.lastUpdated}</time></span>
                     </div>
                   )}
 
@@ -176,7 +178,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                     <div className="mt-auto pt-3 border-t border-divider flex items-center justify-between gap-2">
                       {/* Phone display + Edit Button */}
                       <div className="flex items-center gap-1 text-[13px] font-semibold text-ink min-w-0">
-                        <Phone size={14} className="text-ink-muted shrink-0" /> 
+                        <Phone size={14} className="text-ink-muted shrink-0" aria-hidden="true" /> 
                         <span className="truncate">{item.phone}</span>
                         <div className="opacity-40 hover:opacity-100 transition-opacity ml-1 shrink-0">
                           <EditContactModal 
@@ -190,6 +192,7 @@ export function DirectoryClient({ items, categories }: DirectoryClientProps) {
                       {/* Call Button */}
                       <a 
                         href={`tel:${item.phone}`}
+                        aria-label={`Call ${item.name} at ${item.phone}`}
                         className="shrink-0 flex items-center justify-center gap-1 bg-accent hover:bg-accent-hover text-white px-3 py-1.5 rounded-sm transition-colors font-semibold text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                       >
                         Call
