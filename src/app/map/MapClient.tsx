@@ -4,7 +4,6 @@ import { useState } from "react";
 import LandmarkMapWrapper from "@/components/map/LandmarkMapWrapper";
 import { MapIndex, IndexLandmark } from "@/components/map/MapIndex";
 
-// 🚀 Type Safety: Unified Landmark interface
 interface MapClientProps {
   landmarks: IndexLandmark[];
 }
