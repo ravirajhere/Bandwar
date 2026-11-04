@@ -54,8 +54,13 @@ export function Header({ searchIndex = [] }: HeaderProps) {
       <header className="sticky top-0 z-50 bg-canvas border-b border-divider h-16 3xl:h-20 transition-colors duration-200">
         <div className="container mx-auto h-full flex items-center justify-between px-4 md:px-0">
           
-          <Link href="/" className="font-serif text-xl 3xl:text-2xl font-bold text-ink tracking-tight hover:opacity-80">
-            Bandwar Archive
+          {/* 🚀 SEO FIX: Standardized Brand Name & ARIA Label */}
+          <Link 
+            href="/" 
+            aria-label="Bandwar Village Archive Home"
+            className="font-serif text-xl 3xl:text-2xl font-bold text-ink tracking-tight hover:opacity-80"
+          >
+            Bandwar Village Archive
           </Link>
 
           <nav className="hidden lg:flex items-center h-full gap-1" aria-label="Main Navigation">
@@ -86,17 +91,17 @@ export function Header({ searchIndex = [] }: HeaderProps) {
                 className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-ink-muted hover:text-accent bg-canvas hover:bg-surface border border-divider rounded-sm transition-colors"
                 title="My Profile"
               >
-                <User size={16} />
+                <User size={16} aria-hidden="true" />
                 <span className="truncate max-w-[120px]">{contributor.displayName}</span>
               </Link>
             )}
 
-            {/* 🚀 SERIOUS ARCHIVAL SEARCH BUTTON */}
+            {/* Search Button */}
             <button 
               onClick={() => setIsSearchOpen(true)}
               className="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-ink/60 border border-divider bg-surface hover:bg-canvas hover:text-ink rounded-sm transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
-              <Search size={16} className="group-hover:text-accent transition-colors" />
+              <Search size={16} className="group-hover:text-accent transition-colors" aria-hidden="true" />
               <span className="text-xs font-medium pr-6">Search archive...</span>
               <kbd className="bg-canvas border border-divider px-1.5 py-0.5 rounded-sm text-[10px] font-mono text-ink/40 group-hover:text-ink/60 transition-colors">Ctrl K</kbd>
             </button>
@@ -107,7 +112,7 @@ export function Header({ searchIndex = [] }: HeaderProps) {
               className="md:hidden p-2 text-ink-muted hover:text-ink"
               aria-label="Open Search"
             >
-              <Search size={20} />
+              <Search size={20} aria-hidden="true" />
             </button>
 
             <ThemeToggle />
@@ -119,7 +124,7 @@ export function Header({ searchIndex = [] }: HeaderProps) {
               aria-expanded={isOpen}
               aria-label="Toggle Menu"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -130,18 +135,18 @@ export function Header({ searchIndex = [] }: HeaderProps) {
         <div className="lg:hidden fixed inset-x-0 top-16 3xl:top-20 bottom-0 z-40 bg-canvas overflow-y-auto border-t border-divider">
           <div className="flex justify-between items-center px-6 py-4 border-b border-divider bg-surface/50">
             <span className="text-sm font-bold text-ink-muted uppercase tracking-wider">Menu</span>
-            <button onClick={() => setIsOpen(false)} className="p-1 text-ink-muted hover:text-ink">
-              <X size={20} />
+            <button onClick={() => setIsOpen(false)} className="p-1 text-ink-muted hover:text-ink" aria-label="Close Menu">
+              <X size={20} aria-hidden="true" />
             </button>
           </div>
 
-          <nav className="flex flex-col pb-6">
+          <nav className="flex flex-col pb-6" aria-label="Mobile Navigation">
             {contributor && (
               <Link 
                 href={`/contributors/${contributor.username}`}
                 className="px-6 py-4 text-base font-bold border-b border-divider text-accent bg-accent/5 flex items-center gap-2"
               >
-                <User size={18} /> My Profile
+                <User size={18} aria-hidden="true" /> My Profile
               </Link>
             )}
             
