@@ -1,184 +1,287 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { createHash } from "crypto";
+import { isValidSession } from "@/lib/adminAuth";
 
-async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64" }[], message: string) {
-  const token = process.env.GITHUB_TOKEN;
+export const runtime = "nodejs";
+
+const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
+const GITHUB_HEADERS = {
+  Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+  Accept: "application/vnd.github.v3+json",
+  "X-GitHub-Api-Version": "2022-11-28",
+};
+
+// ─────────────────────────────────────────────
+// Env validation
+// ─────────────────────────────────────────────
+function checkEnv(): string | null {
+  const required = ["GITHUB_TOKEN", "GITHUB_REPO_OWNER", "GITHUB_REPO_NAME"];
+  const missing = required.filter((k) => !process.env[k]);
+  return missing.length ? `Missing env vars: ${missing.join(", ")}` : null;
+}
+
+// ─────────────────────────────────────────────
+// Validation (prevents path traversal + injection)
+// ─────────────────────────────────────────────
+const VALID_FILE_PATH = /^data\/(articles\/[a-z][a-z0-9-]*|people|directory|media|categories)\.json$/;
+const VALID_ID = /^[a-z0-9-]+$/;
+const VALID_CATEGORY = /^[a-z0-9-]+$/;
+
+function validateItem(item: any): string | null {
+  if (!item || typeof item !== "object") return "item is not an object";
+  if (!item.id || typeof item.id !== "string") return "missing id";
+  if (!item.contextId || !VALID_ID.test(item.contextId)) return `invalid contextId: ${item.contextId}`;
+  if (item.filePath && !VALID_FILE_PATH.test(item.filePath)) return `invalid filePath: ${item.filePath}`;
+  if (item.customCategory && !VALID_CATEGORY.test(item.customCategory)) return `invalid customCategory`;
+  if (item.jsonObj?.Category && !VALID_CATEGORY.test(item.jsonObj.Category)) return `invalid Category`;
+  return null;
+}
+
+// ─────────────────────────────────────────────
+// GitHub helpers with error handling
+// ─────────────────────────────────────────────
+async function ghFetch(url: string, init?: RequestInit) {
+  const res = await fetch(url, { ...init, headers: { ...GITHUB_HEADERS, ...(init?.headers || {}) } });
+  return res;
+}
+
+async function fetchGithubFile(path: string): Promise<any | null> {
+  const owner = process.env.GITHUB_REPO_OWNER;
+  const repo = process.env.GITHUB_REPO_NAME;
+  const res = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, { cache: "no-store" });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`fetchGithubFile(${path}) failed: ${res.status}`);
+  return res.json();
+}
+
+async function commitMultipleFiles(
+  files: { path: string; content: string; encoding?: "utf-8" | "base64"; delete?: boolean }[],
+  message: string
+): Promise<void> {
   const owner = process.env.GITHUB_REPO_OWNER;
   const repo = process.env.GITHUB_REPO_NAME;
   const branch = "main";
 
-  const refRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`, { headers: { Authorization: `Bearer ${token}` } });
+  // 1. Get branch ref
+  const refRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`);
+  if (!refRes.ok) throw new Error(`Failed to fetch branch ref (${refRes.status})`);
   const ref = await refRes.json();
+  if (!ref?.object?.sha) throw new Error("Branch ref missing SHA");
   const commitSha = ref.object.sha;
 
-  const commitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits/${commitSha}`, { headers: { Authorization: `Bearer ${token}` } });
+  // 2. Get commit
+  const commitRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits/${commitSha}`);
+  if (!commitRes.ok) throw new Error(`Failed to fetch commit (${commitRes.status})`);
   const commit = await commitRes.json();
+  if (!commit?.tree?.sha) throw new Error("Commit missing tree SHA");
   const baseTreeSha = commit.tree.sha;
 
-  const tree = await Promise.all(files.map(async (f) => {
-    const blobRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ content: f.content, encoding: f.encoding || "utf-8" })
-    });
-    const blob = await blobRes.json();
-    return { path: f.path, mode: "100644", type: "blob", sha: blob.sha };
-  }));
-
-  const treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ base_tree: baseTreeSha, tree })
-  });
-  const newTree = await treeRes.json();
-
-  const newCommitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ message, tree: newTree.sha, parents: [commitSha] })
-  });
-  const newCommit = await newCommitRes.json();
-
-  await fetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, {
-    method: "PATCH",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ sha: newCommit.sha })
-  });
-}
-
-async function fetchGithubFile(path: string) {
-  const token = process.env.GITHUB_TOKEN;
-  const owner = process.env.GITHUB_REPO_OWNER;
-  const repo = process.env.GITHUB_REPO_NAME;
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-  
-  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github.v3+json" } });
-  if (!res.ok) return null;
-  return await res.json();
-}
-
-async function deleteGithubFile(path: string, sha: string) {
-  const token = process.env.GITHUB_TOKEN;
-  const owner = process.env.GITHUB_REPO_OWNER;
-  const repo = process.env.GITHUB_REPO_NAME;
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-
-  await fetch(url, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ message: `Delete pending image`, sha })
-  });
-}
-
-export async function POST() {
-  try {
-    const queuePath = "data/queue.json";
-    const queueFile = await fetchGithubFile(queuePath);
-    if (!queueFile) throw new Error("Queue file not found");
-
-    let queueContent = JSON.parse(Buffer.from(queueFile.content, "base64").toString("utf-8"));
-    if (!queueContent.approved || queueContent.approved.length === 0) {
-      return NextResponse.json({ error: "No approved items to publish." }, { status: 400 });
-    }
-
-    const filesToCommit: { path: string; content: string; encoding?: "utf-8" | "base64" }[] = [];
-    const fileUpdates: Record<string, any[]> = {};
-    const newCategories: Record<string, any> = {};
-
-    // ==========================================
-    // 1. PROCESS ALL APPROVED ITEMS
-    // ==========================================
-    for (const item of queueContent.approved) {
-      
-      // 🚀 AUTO-CORRECTION: Verify filePath is correct
-      if (item.targetType === "article" && item.intent !== "add" && item.contextId) {
-        const currentFile = await fetchGithubFile(item.filePath);
-        let foundCorrect = false;
-        
-        if (currentFile) {
-          const cc = JSON.parse(Buffer.from(currentFile.content, "base64").toString("utf-8"));
-          if (cc.articles?.some((a: any) => a.id === item.contextId)) foundCorrect = true;
-        }
-        
-        if (!foundCorrect) {
-          const articleCats = ["culture", "education", "geography", "health", "infrastructure", "landmarks", "religion", "history"];
-          for (const cat of articleCats) {
-            const testPath = `data/articles/${cat}.json`;
-            if (testPath === item.filePath) continue;
-            const fd = await fetchGithubFile(testPath);
-            if (fd) {
-              const cc = JSON.parse(Buffer.from(fd.content, "base64").toString("utf-8"));
-              if (cc.articles?.some((a: any) => a.id === item.contextId)) {
-                item.filePath = testPath;
-                break;
-              }
-            }
-          }
-        }
+  // 3. Create blobs (skip deleted files)
+  const treeEntries = await Promise.all(
+    files.map(async (f) => {
+      if (f.delete) {
+        return { path: f.path, mode: "100644", type: "blob", sha: null };   // ✅ tree API delete
       }
+      const blobRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: f.content, encoding: f.encoding || "utf-8" }),
+      });
+      if (!blobRes.ok) throw new Error(`Blob creation failed for ${f.path} (${blobRes.status})`);
+      const blob = await blobRes.json();
+      if (!blob?.sha) throw new Error(`Blob missing SHA for ${f.path}`);
+      return { path: f.path, mode: "100644", type: "blob", sha: blob.sha };
+    })
+  );
 
+  // 4. Create tree
+  const treeRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ base_tree: baseTreeSha, tree: treeEntries }),
+  });
+  if (!treeRes.ok) throw new Error(`Tree creation failed (${treeRes.status})`);
+  const newTree = await treeRes.json();
+  if (!newTree?.sha) throw new Error("Tree missing SHA");
+
+  // 5. Create commit
+  const newCommitRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message, tree: newTree.sha, parents: [commitSha] }),
+  });
+  if (!newCommitRes.ok) throw new Error(`Commit creation failed (${newCommitRes.status})`);
+  const newCommit = await newCommitRes.json();
+  if (!newCommit?.sha) throw new Error("Commit missing SHA");
+
+  // 6. Update ref
+  const updateRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sha: newCommit.sha }),
+  });
+  if (!updateRes.ok) throw new Error(`Ref update failed (${updateRes.status})`);
+}
+
+// ─────────────────────────────────────────────
+// Cache for file fetches (avoids duplicate calls)
+// ─────────────────────────────────────────────
+class FileCache {
+  private cache = new Map<string, { data: any; sha: string; content: any }>();
+  
+  async get(path: string): Promise<{ data: any; sha: string; content: any } | null> {
+    if (this.cache.has(path)) return this.cache.get(path)!;
+    const file = await fetchGithubFile(path);
+    if (!file) {
+      this.cache.set(path, { data: null, sha: "", content: null });
+      return null;
+    }
+    const content = JSON.parse(Buffer.from(file.content, "base64").toString("utf-8"));
+    const entry = { data: file, sha: file.sha, content };
+    this.cache.set(path, entry);
+    return entry;
+  }
+}
+
+// ─────────────────────────────────────────────
+// POST /api/admin/publish
+// ─────────────────────────────────────────────
+export async function POST(request: NextRequest) {
+  // 🔐 STEP 1: Auth
+  const sessionCookie = request.cookies.get("admin_session")?.value;
+  if (!(await isValidSession(sessionCookie))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: NO_STORE });
+  }
+
+  // 🔐 STEP 2: Env
+  const envError = checkEnv();
+  if (envError) {
+    console.error(`[publish] ${envError}`);
+    return NextResponse.json({ error: "Server configuration error" }, { status: 500, headers: NO_STORE });
+  }
+
+  // 🔐 STEP 3: Load queue
+  const fileCache = new FileCache();
+  const queuePath = "data/queue.json";
+  const queueEntry = await fileCache.get(queuePath);
+  
+  if (!queueEntry) {
+    return NextResponse.json({ error: "Queue file not found" }, { status: 500, headers: NO_STORE });
+  }
+
+  const queueContent = queueEntry.content;
+  if (!Array.isArray(queueContent.approved) || queueContent.approved.length === 0) {
+    return NextResponse.json({ error: "No approved items to publish." }, { status: 400, headers: NO_STORE });
+  }
+
+  // 🔐 STEP 4: Validate all items BEFORE processing (fail-fast on malicious)
+  const validItems: any[] = [];
+  const rejectedItems: { id: string; reason: string }[] = [];
+  for (const item of queueContent.approved) {
+    const err = validateItem(item);
+    if (err) {
+      console.warn(`[publish] Rejecting item ${item?.id || "unknown"}: ${err}`);
+      rejectedItems.push({ id: item?.id || "unknown", reason: err });
+      continue;
+    }
+    validItems.push(item);
+  }
+
+  if (validItems.length === 0) {
+    return NextResponse.json(
+      { error: "No valid items to publish", rejected: rejectedItems },
+      { status: 400, headers: NO_STORE }
+    );
+  }
+
+  const SERVER_NOW = new Date().toISOString();
+
+  try {
+    const filesToCommit: { path: string; content: string; encoding?: "utf-8" | "base64"; delete?: boolean }[] = [];
+    const fileUpdates: Record<string, any[]> = {};
+    const newCategories: Record<string, any[]> = {};
+    const pendingImagesToDelete: { path: string; sha: string }[] = [];
+
+    // ────── STEP 5: Process items (validate file existence) ──────
+    for (const item of validItems) {
       let newImageUrl = "";
 
-      // Handle Image Upload (Move to final destination)
+      // Image handling
       if (item.pendingImageUrl) {
-        const pendingPath = `public${item.pendingImageUrl}`; 
+        const pendingPath = `public${item.pendingImageUrl}`;
         const pendingFile = await fetchGithubFile(pendingPath);
         
         if (pendingFile) {
           const base64Content = pendingFile.content.replace(/\n/g, "");
-          let finalPath = "";
           
+          // ✅ Content hash for SEO-stable URL (no more Date.now())
+          const hash = createHash("sha256").update(base64Content).digest("hex").slice(0, 10);
+          
+          let finalPath = "";
           if (item.currentImagePath && item.currentImagePath !== "Unknown") {
-             finalPath = `public/${item.currentImagePath.startsWith("/") ? item.currentImagePath.slice(1) : item.currentImagePath}`;
+            finalPath = `public/${item.currentImagePath.startsWith("/") ? item.currentImagePath.slice(1) : item.currentImagePath}`;
+          } else if (item.targetType === "person") {
+            finalPath = `public/images/people/${item.contextId}.jpg`;
+          } else if (item.targetType === "landmark") {
+            finalPath = `public/images/landmarks/${item.contextId}.jpg`;
           } else {
-             if (item.targetType === "person") finalPath = `public/images/people/${item.contextId}.jpg`;
-             else if (item.targetType === "landmark") finalPath = `public/images/landmarks/${item.contextId}.jpg`;
-             else finalPath = `public/images/articles/${item.contextId}.jpg`; 
+            finalPath = `public/images/articles/${item.contextId}.jpg`;
           }
 
           filesToCommit.push({ path: finalPath, content: base64Content, encoding: "base64" });
-          await deleteGithubFile(pendingPath, pendingFile.sha);
           
-          newImageUrl = `/${finalPath.replace("public/", "")}?t=${Date.now()}`;
+          // ✅ Queue image deletion for AFTER successful commit
+          pendingImagesToDelete.push({ path: pendingPath, sha: pendingFile.sha });
+          
+          newImageUrl = `/${finalPath.replace("public/", "")}?v=${hash}`;
+        } else {
+          console.warn(`[publish] Pending image missing for ${item.id}: ${pendingPath}`);
         }
       }
 
-      // Handle New Categories
+      // New category
       if (item.customCategory && item.jsonObj?.Category) {
-        const catId = item.jsonObj.Category;
-        let catFile = "data/categories.json";
-        if (item.targetType === "directory") catFile = "data/directory.json";
-        else if (item.targetType === "image") catFile = "data/media.json";
-
+        const catFile = item.targetType === "directory" ? "data/directory.json" 
+          : item.targetType === "image" ? "data/media.json" 
+          : "data/categories.json";
+        
         if (!newCategories[catFile]) newCategories[catFile] = [];
-        newCategories[catFile].push({ id: catId, title: item.customCategory, icon: "📁", description: "User contributed" });
+        newCategories[catFile].push({
+          id: item.jsonObj.Category,
+          title: item.customCategory,
+          icon: "📁",
+          description: "User contributed",
+        });
       }
 
-      // Push item to fileUpdates for later processing
       if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
       fileUpdates[item.filePath].push({ ...item, newImageUrl });
     }
 
-    // ==========================================
-    // 2. APPLY UPDATES TO TARGET JSON FILES
-    // ==========================================
+    // ────── STEP 6: Apply updates to JSON files ──────
     for (const [filePath, updates] of Object.entries(fileUpdates)) {
-      const fileData = await fetchGithubFile(filePath);
+      const entry = await fileCache.get(filePath);
       
-      let currentContent: any = fileData ? JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")) : {};
+      // ✅ CRITICAL FIX — fail-fast on missing file (no data destruction)
+      if (!entry) {
+        throw new Error(`Refusing to overwrite missing file: ${filePath}. Publish aborted.`);
+      }
       
+      const currentContent = entry.content;
       if (filePath.includes("articles") && !currentContent.articles) currentContent.articles = [];
-      if (filePath.includes("directory") && !currentContent.items) currentContent.items = currentContent.items || [];
+      if (filePath.includes("directory") && !currentContent.items) currentContent.items = [];
       if (filePath.includes("media") && !currentContent.gallery) currentContent.gallery = { categories: [], photos: [] };
       if (filePath.includes("media") && !currentContent.landmarks) currentContent.landmarks = [];
       if (filePath.includes("people") && !currentContent.people) currentContent.people = [];
 
       for (const u of updates) {
-        const itemDate = new Date(u.timestamp).getTime();
+        // ✅ Server-side timestamp (no time travel)
+        const editDate = SERVER_NOW.split("T")[0];
 
         // A. NEW ARTICLE
         if (u.targetType === "article" && u.intent === "add") {
           const data = u.jsonObj;
-          const newArticle = {
+          currentContent.articles.push({
             id: u.contextId,
             title: data["Article Title"] || "Untitled",
             subtitle: "New contribution",
@@ -186,16 +289,15 @@ export async function POST() {
             categories: [data.Category || "general"],
             content: [{ heading: "Overview", text: data["Story"] || "" }],
             hero: u.newImageUrl || null,
-            lastUpdated: u.timestamp.split('T')[0],
-            lastEditedBy: u.userName
-          };
-          currentContent.articles.push(newArticle);
+            datePublished: editDate,      // ✅ new field
+            lastUpdated: editDate,        // ✅ server time
+            lastEditedBy: u.userName,
+          });
         }
-
         // B. NEW PERSON
         else if (u.targetType === "person" && u.intent === "add") {
           const data = u.jsonObj;
-          const newPerson = {
+          currentContent.people.push({
             id: u.contextId,
             name: data["Full Name"] || "Unknown",
             role: data["Role"] || "",
@@ -203,131 +305,104 @@ export async function POST() {
             dob: data["Date of Birth"] || "",
             deathDate: data["Date of Death"] || "",
             photo: u.newImageUrl || "",
-            lastUpdated: u.timestamp.split('T')[0],
-            lastEditedBy: u.userName
-          };
-          currentContent.people.push(newPerson);
+            lastUpdated: editDate,
+            lastEditedBy: u.userName,
+          });
         }
-
         // C. NEW DIRECTORY ITEM
         else if (u.targetType === "directory" && u.intent === "add") {
           const data = u.jsonObj;
-          const newItem = {
+          currentContent.items.push({
             id: u.contextId,
             name: data["Name"] || "Unknown",
             categoryId: data.Category || "general",
             phone: data["Phone Number"] || "",
             address: data["Address"] || "",
             isEmergency: false,
-            lastUpdated: u.timestamp.split('T')[0],
-            lastEditedBy: u.userName
-          };
-          currentContent.items.push(newItem);
+            lastUpdated: editDate,
+            lastEditedBy: u.userName,
+          });
         }
-
         // D. NEW GALLERY PHOTO
         else if (u.targetType === "image" && u.intent === "add") {
           const data = u.jsonObj;
-          const newPhoto = {
+          currentContent.gallery.photos.push({
             id: u.contextId,
             src: u.newImageUrl || "/icon.png",
             caption: data["Photo Title"] || "New Photo",
             category: data.Category || "general",
-            year: data["Year"] || new Date().getFullYear().toString()
-          };
-          currentContent.gallery.photos.push(newPhoto);
+            year: data["Year"] || new Date().getFullYear().toString(),
+          });
         }
-
-        // E. EXISTING ARTICLE UPDATES
+        // E. ARTICLE UPDATE
         else if (filePath.includes("articles")) {
           currentContent.articles = currentContent.articles.map((a: any) => {
-            if (a.id === u.contextId) {
-              
-              if (u.intent === "image_update") a.hero = u.newImageUrl;
-              
-              if (u.intent === "edit") {
-                if (u.field === "Article Title") a.title = u.newValue;
-                else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
-                else if (u.field === "Article Summary") a.summary = u.newValue;
-                else if (u.field.startsWith("Paragraph: ")) {
-                  const headingName = u.field.replace("Paragraph: ", "");
-                  a.content = a.content.map((block: any) => {
-                    if (block.heading === headingName) block.text = u.newValue;
-                    return block;
-                  });
-                }
-                else if (u.field.startsWith("Infobox: ")) {
-                  const infoKey = u.field.replace("Infobox: ", "");
-                  if (a.infobox) a.infobox[infoKey] = u.newValue;
-                }
-              }
-
-              const currentDate = new Date(a.lastUpdated || "2000-01-01").getTime();
-              if (itemDate >= currentDate) {
-                a.lastUpdated = u.timestamp.split('T')[0];
-                a.lastEditedBy = u.userName;
+            if (a.id !== u.contextId) return a;
+            if (u.intent === "image_update") a.hero = u.newImageUrl;
+            if (u.intent === "edit") {
+              if (u.field === "Article Title") a.title = u.newValue;
+              else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
+              else if (u.field === "Article Summary") a.summary = u.newValue;
+              else if (u.field.startsWith("Paragraph: ")) {
+                const headingName = u.field.replace("Paragraph: ", "");
+                a.content = a.content.map((b: any) => b.heading === headingName ? { ...b, text: u.newValue } : b);
+              } else if (u.field.startsWith("Infobox: ")) {
+                const infoKey = u.field.replace("Infobox: ", "");
+                if (a.infobox) a.infobox[infoKey] = u.newValue;
               }
             }
+            // ✅ datePublished preserve, lastUpdated = server time
+            if (!a.datePublished) a.datePublished = a.lastUpdated || editDate;
+            a.lastUpdated = editDate;
+            a.lastEditedBy = u.userName;
             return a;
           });
         }
-
-        // F. EXISTING PERSON UPDATES
+        // F. PERSON UPDATE
         else if (filePath.includes("people")) {
           currentContent.people = currentContent.people.map((p: any) => {
-            if (p.id === u.contextId) {
-              
-              if (u.intent === "image_update") p.photo = u.newImageUrl;
-              
-              if (u.intent === "edit") {
-                if (u.field === "Full Name") p.name = u.newValue;
-                else if (u.field === "Role") p.role = u.newValue;
-                else if (u.field === "Biography") p.bio = u.newValue;
-                else if (u.field === "Life Journey") p.journey = u.newValue;
-                else if (u.field === "Birthplace") p.birthplace = u.newValue;
-                else if (u.field === "Locality") p.locality = u.newValue;
-                else if (u.field === "Lifespan (DOB/DOD)") p.dob = u.newValue;
-              }
-
-              const currentDate = new Date(p.lastUpdated || "2000-01-01").getTime();
-              if (itemDate >= currentDate) {
-                p.lastUpdated = u.timestamp.split('T')[0];
-                p.lastEditedBy = u.userName;
-              }
+            if (p.id !== u.contextId) return p;
+            if (u.intent === "image_update") p.photo = u.newImageUrl;
+            if (u.intent === "edit") {
+              if (u.field === "Full Name") p.name = u.newValue;
+              else if (u.field === "Role") p.role = u.newValue;
+              else if (u.field === "Biography") p.bio = u.newValue;
+              else if (u.field === "Life Journey") p.journey = u.newValue;
+              else if (u.field === "Birthplace") p.birthplace = u.newValue;
+              else if (u.field === "Locality") p.locality = u.newValue;
+              else if (u.field === "Lifespan (DOB/DOD)") p.dob = u.newValue;
             }
+            p.lastUpdated = editDate;
+            p.lastEditedBy = u.userName;
             return p;
           });
         }
-
-        // G. EXISTING DIRECTORY UPDATES
+        // G. DIRECTORY UPDATE
         else if (filePath.includes("directory")) {
           currentContent.items = currentContent.items.map((i: any) => {
-            if (i.id === u.contextId) {
-              if (u.intent === "edit") {
-                if (u.field === "Phone Number") i.phone = u.newValue;
-                else if (u.field === "Address") i.address = u.newValue;
-                else if (u.field === "Timing") i.timing = u.newValue;
-              }
-
-              const currentDate = new Date(i.lastUpdated || "2000-01-01").getTime();
-              if (itemDate >= currentDate) {
-                i.lastUpdated = u.timestamp.split('T')[0];
-                i.lastEditedBy = u.userName;
-              }
+            if (i.id !== u.contextId) return i;
+            if (u.intent === "edit") {
+              if (u.field === "Phone Number") i.phone = u.newValue;
+              else if (u.field === "Address") i.address = u.newValue;
+              else if (u.field === "Timing") i.timing = u.newValue;
             }
+            i.lastUpdated = editDate;
+            i.lastEditedBy = u.userName;
             return i;
           });
         }
-
-        // H. EXISTING LANDMARK UPDATES
+        // H. LANDMARK UPDATE
         else if (filePath.includes("media.json")) {
           currentContent.landmarks = currentContent.landmarks.map((l: any) => {
-            if (l.id === u.contextId) {
-              if (u.intent === "edit" && u.field === "Coordinates") {
-                const parts = u.newValue.split(",");
-                if (parts.length === 2) {
-                   l.lat = parseFloat(parts[0].trim());
-                   l.lng = parseFloat(parts[1].trim());
+            if (l.id !== u.contextId) return l;
+            if (u.intent === "edit" && u.field === "Coordinates") {
+              const parts = u.newValue.split(",");
+              if (parts.length === 2) {
+                const lat = parseFloat(parts[0].trim());
+                const lng = parseFloat(parts[1].trim());
+                if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+                  l.lat = lat;
+                  l.lng = lng;
                 }
               }
             }
@@ -335,54 +410,61 @@ export async function POST() {
           });
         }
       }
-
       filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
-    // ==========================================
-    // 3. ADD NEW CATEGORIES
-    // ==========================================
+    // ────── STEP 7: New categories ──────
     for (const [filePath, cats] of Object.entries(newCategories)) {
-      const fileData = await fetchGithubFile(filePath);
-      let currentContent: any = fileData ? JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")) : {};
-      
-      if (filePath.includes("categories.json")) {
-        if (!currentContent.categories) currentContent.categories = [];
-        cats.forEach((cat: any) => {
-          if (!currentContent.categories.find((c: any) => c.id === cat.id)) currentContent.categories.push(cat);
-        });
+      const entry = await fileCache.get(filePath);
+      if (!entry) {
+        console.warn(`[publish] Skipping new category for missing file: ${filePath}`);
+        continue;
       }
-      if (filePath.includes("directory.json")) {
-        if (!currentContent.categories) currentContent.categories = [];
-        cats.forEach((cat: any) => {
-          if (!currentContent.categories.find((c: any) => c.id === cat.id)) currentContent.categories.push(cat);
-        });
-      }
+      const currentContent = entry.content;
       if (filePath.includes("media.json")) {
-        if (!currentContent.gallery) currentContent.gallery = {};
+        if (!currentContent.gallery) currentContent.gallery = { categories: [], photos: [] };
         if (!currentContent.gallery.categories) currentContent.gallery.categories = [];
-        cats.forEach((cat: any) => {
-          if (!currentContent.gallery.categories.find((c: any) => c.id === cat.id)) currentContent.gallery.categories.push(cat);
+        cats.forEach((c) => {
+          if (!currentContent.gallery.categories.find((x: any) => x.id === c.id)) {
+            currentContent.gallery.categories.push(c);
+          }
+        });
+      } else {
+        if (!currentContent.categories) currentContent.categories = [];
+        cats.forEach((c) => {
+          if (!currentContent.categories.find((x: any) => x.id === c.id)) {
+            currentContent.categories.push(c);
+          }
         });
       }
-      const existingIndex = filesToCommit.findIndex(f => f.path === filePath);
-      if (existingIndex !== -1) filesToCommit[existingIndex].content = JSON.stringify(currentContent, null, 2);
+      const idx = filesToCommit.findIndex((f) => f.path === filePath);
+      if (idx !== -1) filesToCommit[idx].content = JSON.stringify(currentContent, null, 2);
       else filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
-    // ==========================================
-    // 4. CLEAR QUEUE & COMMIT
-    // ==========================================
+    // ────── STEP 8: Clear queue + mark images for deletion ──────
     queueContent.approved = [];
-    const queueIndex = filesToCommit.findIndex(f => f.path === queuePath);
-    if (queueIndex !== -1) filesToCommit[queueIndex].content = JSON.stringify(queueContent, null, 2);
+    const qIdx = filesToCommit.findIndex((f) => f.path === queuePath);
+    if (qIdx !== -1) filesToCommit[qIdx].content = JSON.stringify(queueContent, null, 2);
     else filesToCommit.push({ path: queuePath, content: JSON.stringify(queueContent, null, 2) });
 
-    await commitMultipleFiles(filesToCommit, `Batch Publish: Content & Metadata Update`);
-    return NextResponse.json({ success: true });
+    // ✅ Include image deletions IN THE SAME COMMIT (atomic)
+    for (const img of pendingImagesToDelete) {
+      filesToCommit.push({ path: img.path, content: "", encoding: "base64", delete: true });
+    }
 
+    // ────── STEP 9: Single atomic commit ──────
+    await commitMultipleFiles(filesToCommit, `Batch Publish: ${validItems.length} updates (${rejectedItems.length} rejected)`);
+
+    return NextResponse.json(
+      { success: true, published: validItems.length, rejected: rejectedItems },
+      { headers: NO_STORE }
+    );
   } catch (error: any) {
-    console.error("Publish Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("[publish] Fatal error:", error);
+    return NextResponse.json(
+      { error: error?.message || "Publish failed" },
+      { status: 500, headers: NO_STORE }
+    );
   }
 }
