@@ -64,15 +64,22 @@ export function EditContactModal({ itemName, itemId, currentPhone }: EditContact
   return (
     <>
       <button 
+        type="button"
         onClick={(e) => { e.preventDefault(); setIsOpen(true); }} 
-        className="inline-flex items-center justify-center p-1.5 text-ink/40 hover:text-accent hover:bg-accent/10 rounded-sm transition-all ml-1 no-print"
+        className="inline-flex items-center justify-center p-1.5 text-ink/40 hover:text-accent hover:bg-accent/10 rounded-sm transition-all ml-1 no-print focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         title="Suggest an update for this number"
+        aria-label={`Suggest an update for ${itemName}`}
       >
-        <Pencil size={14} />
+        <Pencil size={14} aria-hidden="true" />
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-ink/70 backdrop-blur-sm animate-in fade-in no-print">
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-ink/70 backdrop-blur-sm animate-in fade-in no-print"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Update Contact"
+        >
           <div className="bg-surface w-full max-w-md rounded-sm shadow-xl border border-divider flex flex-col">
             
             <div className="flex justify-between items-center p-5 border-b border-divider bg-canvas/50">
@@ -80,38 +87,58 @@ export function EditContactModal({ itemName, itemId, currentPhone }: EditContact
                 <h2 className="font-serif font-bold text-ink text-lg">Update Contact</h2>
                 <p className="text-sm text-ink-muted mt-1 truncate">{itemName}</p>
               </div>
-              <button onClick={() => setIsOpen(false)} className="p-2 border border-divider rounded-sm hover:bg-canvas">
-                <X size={18} />
+              <button 
+                type="button"
+                onClick={() => setIsOpen(false)} 
+                className="p-2 border border-divider rounded-sm hover:bg-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="Close modal"
+              >
+                <X size={18} aria-hidden="true" />
               </button>
             </div>
 
             <div className="p-5">
               {isSuccess ? (
                 <div className="text-center py-8">
-                  <CheckCircle2 size={40} className="text-green-600 mx-auto mb-3" />
+                  <CheckCircle2 size={40} className="text-green-600 mx-auto mb-3" aria-hidden="true" />
                   <h3 className="text-lg font-serif font-bold text-ink">Update Received</h3>
                   <p className="text-sm text-ink-muted mt-1">The new number has been sent for review.</p>
                 </div>
               ) : (
                 <form id="edit-contact-form" onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-1.5">Current Number</label>
-                    <input type="text" disabled value={currentPhone} className="w-full h-11 px-4 rounded-sm border border-divider bg-canvas text-ink-muted text-sm cursor-not-allowed" />
+                    <label htmlFor="currentPhone" className="block text-sm font-semibold text-ink mb-1.5">Current Number</label>
+                    <input 
+                      id="currentPhone"
+                      type="text" 
+                      disabled 
+                      value={currentPhone} 
+                      className="w-full h-11 px-4 rounded-sm border border-divider bg-canvas text-ink-muted text-sm cursor-not-allowed" 
+                    />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-1.5">New Number <span className="text-red-500">*</span></label>
+                    <label htmlFor="newPhone" className="block text-sm font-semibold text-ink mb-1.5">New Number <span className="text-red-500">*</span></label>
                     <input 
+                      id="newPhone"
                       type="tel" 
                       required 
                       value={newPhone} 
                       onChange={(e) => setNewPhone(e.target.value)} 
                       placeholder="Enter 10-digit number"
-                      className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none" 
+                      autoComplete="tel"
+                      className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" 
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink mb-1.5">Source of Information <span className="text-red-500">*</span></label>
-                    <input type="text" name="source_reason" required placeholder="e.g. I am the owner" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none" />
+                    <label htmlFor="source_reason" className="block text-sm font-semibold text-ink mb-1.5">Source of Information <span className="text-red-500">*</span></label>
+                    <input 
+                      id="source_reason"
+                      type="text" 
+                      name="source_reason" 
+                      required 
+                      placeholder="e.g. I am the owner" 
+                      className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" 
+                    />
                   </div>
                 </form>
               )}
@@ -119,9 +146,13 @@ export function EditContactModal({ itemName, itemId, currentPhone }: EditContact
 
             {!isSuccess && (
               <div className="p-4 border-t border-divider bg-canvas/50 flex justify-end gap-3">
-                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 border border-divider rounded-sm text-sm">Cancel</button>
+                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 border border-divider rounded-sm text-sm hover:bg-surface">Cancel</button>
                 <button type="submit" form="edit-contact-form" disabled={isSubmitting || !newPhone} className="px-5 py-2 bg-accent text-white rounded-sm font-semibold text-sm flex items-center gap-2 disabled:opacity-50">
-                  {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : "Submit Update"}
+                  {isSubmitting ? (
+                    <><Loader2 size={16} className="animate-spin" aria-hidden="true" /> Submitting...</>
+                  ) : (
+                    "Submit Update"
+                  )}
                 </button>
               </div>
             )}
