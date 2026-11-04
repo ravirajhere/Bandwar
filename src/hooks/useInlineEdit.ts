@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/components/ui/Toast";
 import { useContributorGate } from "./useContributorGate"; 
 
@@ -18,11 +18,27 @@ export function useInlineEdit(
   const [value, setValue] = useState(initialValue);
   const [draft, setDraft] = useState(initialValue);
 
-  const startEditing = () => { setDraft(value); setStatus("editing"); };
-  const cancelEditing = () => { setDraft(value); setStatus("idle"); };
+  // 🚀 FIX: Sync state if initialValue changes (e.g., on client-side navigation)
+  useEffect(() => {
+    setValue(initialValue);
+    setDraft(initialValue);
+  }, [initialValue]);
 
-  const saveEdit = async () => {
-    if (draft.trim() === value.trim()) { setStatus("idle"); return; }
+  const startEditing = useCallback(() => { 
+    setDraft(value); 
+    setStatus("editing"); 
+  }, [value]);
+
+  const cancelEditing = useCallback(() => { 
+    setDraft(value); 
+    setStatus("idle"); 
+  }, [value]);
+
+  const saveEdit = useCallback(async () => {
+    if (draft.trim() === value.trim()) { 
+      setStatus("idle"); 
+      return; 
+    }
 
     setStatus("saving");
     const formData = new FormData();
@@ -43,15 +59,17 @@ export function useInlineEdit(
           toast("Suggestion sent for review.", "success");
           setTimeout(() => setStatus("idle"), 4000);
         } else {
-          setStatus("error");
-          toast("Failed to send suggestion.", "error");
+          // 🚀 FIX: Revert to editing state so the user doesn't lose their draft
+          setStatus("editing");
+          toast("Failed to send suggestion. Please try again.", "error");
         }
       } catch (err) {
-        setStatus("error");
-        toast("Network error.", "error");
+        // 🚀 FIX: Revert to editing state
+        setStatus("editing");
+        toast("Network error. Please try again.", "error");
       }
     });
-  };
+  }, [draft, value, contextType, contextId, fieldName, submitWithGate, toast]);
 
   return {
     status, value, draft, setDraft, startEditing, cancelEditing, saveEdit,
