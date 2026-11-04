@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isValidSession } from "@/lib/adminAuth";
+import { getArticleById } from "@/lib/data"; // 🚀 IMPORTED to find existing articles
 
 export const runtime = "nodejs";
 const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
@@ -118,10 +119,19 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // 🚀 SMART FALLBACK: If filePath is undefined, route to the correct article category
+      // 🚀 SMART FIX: Find the actual file for EXISTING articles
       let targetPath = item.filePath;
-      if (!targetPath || targetPath === "undefined") {
-        const cat = item.jsonObj?.Category || "general";
+      
+      if (item.intent === "edit" || item.intent === "image_update") {
+        const existingArticle = getArticleById(item.contextId);
+        if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
+          targetPath = `data/articles/${existingArticle.categories[0]}.json`;
+        }
+      }
+
+      // Fallback if still missing (e.g., new article)
+      if (!targetPath || targetPath === "undefined" || targetPath.includes("general.json")) {
+        const cat = item.jsonObj?.Category || "education";
         targetPath = `data/articles/${cat}.json`;
       }
 
@@ -154,7 +164,7 @@ export async function POST(request: NextRequest) {
           currentContent.articles = currentContent.articles.map((a: any) => {
             if (a.id !== u.contextId) return a;
             if (u.intent === "image_update") a.hero = u.newImageUrl;
-            // ... other update logic
+            // other edit logic...
             a.lastUpdated = editDate;
             return a;
           });
