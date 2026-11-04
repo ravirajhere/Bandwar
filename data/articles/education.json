@@ -322,6 +322,50 @@
       "tags": ["nps kunjartol", "kunjartol school bandwar", "ward 9 school bihar", "sarva shiksha abhiyan school", "udise 10201013301", "primary school begusarai"]
     },
     {
+      "id": "gautam-buddha-global-school-bandwar",
+      "title": "Gautam Buddha Global School: Bandwar's Oldest Private School",
+      "metaTitle": "Gautam Buddha Global School Bandwar (Est. 2010)",
+      "metaDescription": "Gautam Buddha Global School (Est. 2010) is the oldest private school in Bandwar, Begusarai. Led by Director Subhash Kumar and Chairman Yatindra Narayan Singh.",
+      "subtitle": "The pioneer of private education in Bandwar, established in 2010",
+      "categories": ["education", "history"],
+      "summary": "Established in 2010, Gautam Buddha Global School holds the distinction of being the oldest private school in Bandwar village, Begusarai. Led by Director Subhash Kumar and Chairman Yatindra Narayan Singh, the school laid the foundation for private education in the village long before others followed.",
+      "hero": "images/education/gautam-buddha-global-school-building.jpg",
+      "photos": [
+        {
+          "src": "images/education/gautam-buddha-global-school-building.jpg",
+          "caption": "The distinct pink and blue building of Gautam Buddha Global School, established in 2010.",
+          "imageAlt": "Gautam Buddha Global School building with its pink exterior and blue accents in Bandwar, Begusarai"
+        }
+      ],
+      "infobox": {
+        "Type": "Private Unaided School",
+        "Established": "2010",
+        "Significance": "Oldest private school in Bandwar",
+        "Location": "Bandwar, Begusarai, Bihar",
+        "Director": "Subhash Kumar",
+        "Chairman": "Yatindra Narayan Singh",
+        "Medium": "Hindi / English",
+        "Exterior": "Vibrant Pink with Navy Blue accents"
+      },
+      "datePublished": "2026-11-04",
+      "lastUpdated": "2026-11-04",
+      "content": [
+        { "heading": "Overview & History", "text": "Gautam Buddha Global School is a private educational institution situated in Bandwar, Begusarai. Established in 2010, it holds a special place in the village's history as the <strong>first private school</strong> to open its doors in Bandwar. At a time when rural education was predominantly reliant on government schools or commuting to Begusarai town, this school pioneered the private education sector within the village." },
+        { "heading": "Leadership and Vision", "text": "The school is led by Director Subhash Kumar and Chairman Yatindra Narayan Singh. Their vision in 2010 was to bring modern educational practices to the village level. By combining traditional values with contemporary teaching methods, the leadership aimed to prepare students for the challenges of the modern world. Chairman Yatindra Narayan Singh is also noted in local records as a respected teacher in the Bandwar area, bringing deep educational expertise to the institution." },
+        { "heading": "Campus and Infrastructure", "text": "The school's building is easily recognisable, featuring a vibrant pink exterior with navy blue structural accents. It is a two-storey structure with a clear signboard reading 'Gautam Buddha Global School' in English and Hindi, positioned above the ground-floor entrance. The campus is enclosed by a multi-coloured boundary wall, painted in distinct panels of yellow, pink, green, and navy blue. The courtyard area in front of the building provides space for students." },
+        { "heading": "Impact on the Community", "text": "For over 15 years, Gautam Buddha Global School has served the families of Bandwar. When it opened in 2010, it provided a local alternative for parents who wished to invest in a more structured or English-medium education for their children without the need to commute to Begusarai town. It set the stage for other private schools (like [[adharsh-vikash-vidhya-mandir|Adharsh Vikash Vidhya Mandir]] and [[st-paul-school-bandwar|St. Paul School]]) that would eventually open in the village years later. It continues to provide employment opportunities for local teachers and staff." }
+      ],
+      "faqs": [
+        { "q": "When was Gautam Buddha Global School established?", "a": "It was established in 2010, making it the oldest private school in Bandwar village." },
+        { "q": "Who is the Director of Gautam Buddha Global School?", "a": "The Director of the school is Subhash Kumar." },
+        { "q": "Who is the Chairman of Gautam Buddha Global School?", "a": "The Chairman of the school is Yatindra Narayan Singh, a well-known educator in the Bandwar area." },
+        { "q": "Where is Gautam Buddha Global School located?", "a": "The school is located in Bandwar village, in the Begusarai district of Bihar. Its campus is enclosed by a colourful boundary wall." }
+      ],
+      "related": ["ms-bandwar-middle-school", "adharsh-vikash-vidhya-mandir", "st-paul-school-bandwar"],
+      "location": { "lat": 25.5005, "lng": 86.1610 },
+      "tags": ["gautam buddha global school", "oldest private school bandwar", "established 2010", "subhash kumar director", "yatindra narayan singh", "begusarai education", "bandwar schools"]
+    },
+    {
       "id": "adharsh-vikash-vidhya-mandir",
       "title": "Adharsh Vikash Vidhya Mandir, Bandwar",
       "metaTitle": "Adharsh Vikash Vidhya Mandir - Private School Bandwar",
@@ -340,6 +384,7 @@
       "infobox": {
         "Type": "Private unaided school",
         "Established": "2015",
+        "Director": "Chandramohan Kumar",
         "UDISE Code": "10201008405",
         "Classes": "1–8",
         "Medium": "Hindi",
@@ -348,23 +393,25 @@
         "Management": "Private Unaided (Recognized)"
       },
       "datePublished": "2026-08-20",
-      "lastUpdated": "2026-08-20",
+      "lastUpdated": "2026-11-04",
       "content": [
-        { "heading": "Overview", "text": "Adharsh Vikash Vidhya Mandir is a private unaided school in Bandwar, established in 2015 with UDISE code 10201008405. It offers primary education (Classes 1–5) with upper primary classes (6–8), and is one of only two private schools in the village — the other being [[st-paul-school-bandwar|St. Paul School]]." },
-        { "heading": "Why It Matters", "text": "Until 2015, most schools in Bandwar were government-run. The opening of Adharsh Vikash Vidhya Mandir gave parents a private alternative. The school's enrolment of 151 students — 111 from Other Backward Classes, 34 from the general category — reflects the demand for private schooling in rural Bihar." },
+        { "heading": "Overview", "text": "Adharsh Vikash Vidhya Mandir is a private unaided school in Bandwar, established in 2015 with UDISE code 10201008405. It offers primary education (Classes 1–5) with upper primary classes (6–8). It is one of three private schools in the village — the others being [[gautam-buddha-global-school-bandwar|Gautam Buddha Global School]] and [[st-paul-school-bandwar|St. Paul School]]." },
+        { "heading": "Leadership", "text": "The school is led by Director Chandramohan Kumar. Under his guidance, the school has become a reliable alternative for parents seeking private education in Hindi medium, bridging the gap between traditional government schooling and high-cost English medium institutions." },
+        { "heading": "Why It Matters", "text": "Until 2010, most schools in Bandwar were government-run. The opening of Adharsh Vikash Vidhya Mandir in 2015 gave parents another private alternative. The school's enrolment of 151 students — 111 from Other Backward Classes, 34 from the general category — reflects the growing demand for private schooling in rural Bihar." },
         { "heading": "Facilities", "text": "The school operates from a rented building with 14 classrooms, all in good condition. It has a library, playground, drinking water, electricity, internet, medical checkups, and ramps. Furniture availability, however, is minimal." },
         { "heading": "Teachers", "text": "The school has 15 teachers — 7 male and 8 female. 11 of the 15 teachers do not hold a formal teaching qualification (neither B.Ed. nor D.El.Ed.). Only 1 holds a D.El.Ed. diploma. This is a common pattern among low-cost private schools in rural India." },
-        { "heading": "Context", "text": "Adharsh Vikash Vidhya Mandir is one of two private schools in Bandwar, and one of three schools in the village offering the full Class 1–8 range (along with [[ms-bandwar-middle-school|MS Bandwar]] and [[st-paul-school-bandwar|St. Paul School]])." }
+        { "heading": "Context", "text": "Adharsh Vikash Vidhya Mandir is one of the private schools in Bandwar, and one of three schools in the village offering the full Class 1–8 range (along with [[ms-bandwar-middle-school|MS Bandwar]] and [[st-paul-school-bandwar|St. Paul School]])." }
       ],
       "faqs": [
-        { "q": "When was Adharsh Vikash Vidhya Mandir established?", "a": "Adharsh Vikash Vidhya Mandir was established in 2015 — one of the first private schools in Bandwar. Its UDISE code is 10201008405." },
+        { "q": "When was Adharsh Vikash Vidhya Mandir established?", "a": "Adharsh Vikash Vidhya Mandir was established in 2015. Its UDISE code is 10201008405." },
+        { "q": "Who is the Director of Adharsh Vikash Vidhya Mandir?", "a": "The Director of the school is Chandramohan Kumar." },
         { "q": "What classes does Adharsh Vikash Vidhya Mandir offer?", "a": "The school offers Classes 1 through 8 — primary with upper primary." },
         { "q": "How many students study at Adharsh Vikash Vidhya Mandir?", "a": "According to the UDISE+ report for 2025-26, the school has 151 students — 84 boys and 67 girls." },
         { "q": "Do teachers at Adharsh Vikash have formal teaching qualifications?", "a": "Most do not — 11 of the school's 15 teachers hold neither a B.Ed. nor a D.El.Ed. qualification." }
       ],
-      "related": ["st-paul-school-bandwar", "ms-bandwar-middle-school", "gps-bandwar-musahri-school", "uhs-plus-2-bandwar"],
+      "related": ["st-paul-school-bandwar", "gautam-buddha-global-school-bandwar", "ms-bandwar-middle-school", "gps-bandwar-musahri-school"],
       "location": { "lat": 25.5006, "lng": 86.1616 },
-      "tags": ["adharsh vikash vidhya mandir", "private school bandwar", "begusarai private school", "udise 10201008405", "hindi medium school bihar"]
+      "tags": ["adharsh vikash vidhya mandir", "private school bandwar", "chandramohan kumar director", "begusarai private school", "udise 10201008405", "hindi medium school bihar"]
     },
     {
       "id": "st-paul-school-bandwar",
@@ -385,6 +432,7 @@
       "infobox": {
         "Type": "Private unaided school",
         "Established": "2015",
+        "Director": "Ayush Anand",
         "UDISE Code": "10201008404",
         "Classes": "1–8",
         "Medium": "English, Hindi",
@@ -393,9 +441,10 @@
         "Management": "Private Unaided (Recognized)"
       },
       "datePublished": "2026-10-05",
-      "lastUpdated": "2026-10-05",
+      "lastUpdated": "2026-11-04",
       "content": [
-        { "heading": "Overview", "text": "St. Paul School is a private unaided English-medium school in Bandwar, established in 2015 with UDISE code 10201008404. It offers Classes 1 through 8 and is one of the only two private schools in the village — the other being [[adharsh-vikash-vidhya-mandir|Adharsh Vikash Vidhya Mandir]]." },
+        { "heading": "Overview", "text": "St. Paul School is a private unaided English-medium school in Bandwar, established in 2015 with UDISE code 10201008404. It offers Classes 1 through 8 and is one of three private schools in the village — the others being [[gautam-buddha-global-school-bandwar|Gautam Buddha Global School]] and [[adharsh-vikash-vidhya-mandir|Adharsh Vikash Vidhya Mandir]]." },
+        { "heading": "Leadership", "text": "The school is led by Director Ayush Anand. Under his leadership, St. Paul School has focused on providing English-medium education with modern facilities like an ICT lab, aiming to prepare village students for a competitive global landscape." },
         { "heading": "A Different Enrolment", "text": "According to the UDISE+ report for 2025-26, St. Paul School has 209 students — 149 boys and 60 girls. Only 15 students (7%) belong to Below Poverty Line households, compared to 87–98% in the village's government schools. 62 students are from the general category." },
         { "heading": "Infrastructure", "text": "The school has 11 classrooms (8 in good condition), a private pucca building, a library, an ICT lab, drinking water, electricity, internet, medical checkups, and ramps. It does not have a playground. The school received formal recognition for its primary classes in 2017 and for upper primary in 2020." },
         { "heading": "Teachers", "text": "The school has 14 teachers — 11 male and 3 female. Only 2 hold B.Ed. qualifications; 5 teachers have no formal teaching qualification. This is consistent with the wider pattern of private unaided schools in rural Bihar." },
@@ -403,13 +452,14 @@
       ],
       "faqs": [
         { "q": "What is the medium of instruction at St. Paul School?", "a": "St. Paul School's medium of instruction is primarily English, with Hindi as a secondary language." },
-        { "q": "When was St. Paul School established?", "a": "St. Paul School was established in 2015 — one of the first private schools in Bandwar. Its UDISE code is 10201008404." },
+        { "q": "When was St. Paul School established?", "a": "St. Paul School was established in 2015. Its UDISE code is 10201008404." },
+        { "q": "Who is the Director of St. Paul School?", "a": "The Director of the school is Ayush Anand." },
         { "q": "How many students study at St. Paul School?", "a": "According to the UDISE+ report for 2025-26, the school has 209 students — 149 boys and 60 girls." },
         { "q": "Does St. Paul School have an ICT lab?", "a": "Yes — the school has an ICT (Information and Communication Technology) lab, along with a library, drinking water, electricity, internet, and medical checkups." }
       ],
-      "related": ["adharsh-vikash-vidhya-mandir", "ms-bandwar-middle-school", "uhs-plus-2-bandwar", "snk-high-school-bandwar"],
+      "related": ["adharsh-vikash-vidhya-mandir", "gautam-buddha-global-school-bandwar", "ms-bandwar-middle-school", "uhs-plus-2-bandwar"],
       "location": { "lat": 25.5003, "lng": 86.1610 },
-      "tags": ["st paul school bandwar", "english medium school bandwar", "private school begusarai", "udise 10201008404", "ict lab school bihar"]
+      "tags": ["st paul school bandwar", "english medium school bandwar", "ayush anand director", "private school begusarai", "udise 10201008404", "ict lab school bihar"]
     },
     {
       "id": "vaani-vilas-library-bandwar",
