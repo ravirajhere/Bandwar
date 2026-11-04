@@ -4,16 +4,15 @@ import { getArticleById, getContributors } from "@/lib/data";
 export const runtime = "nodejs";
 const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
 
-// Basic Rate Limiting
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 function checkRateLimit(ip: string) {
   const now = Date.now();
   const entry = rateLimitMap.get(ip);
   if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + 3600000 }); // 1 hour
+    rateLimitMap.set(ip, { count: 1, resetAt: now + 3600000 });
     return true;
   }
-  if (entry.count >= 10) return false; // 10 requests per hour
+  if (entry.count >= 10) return false;
   entry.count++;
   return true;
 }
@@ -68,12 +67,14 @@ export async function POST(req: NextRequest) {
       if (imgRes.ok) pendingImageUrl = `/images/pending/${editId}.jpg`;
     }
 
-    // Save to Queue
+    // 🚀 FIX: Auto-resolve filePath based on Category
+    const cat = formData.get("Category") as string || "education";
+    const filePath = `data/articles/${cat.toLowerCase()}.json`;
+
     const queueUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/queue.json`;
     const queueRes = await fetch(queueUrl, { headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" } });
     
     let fileData = null;
-    // 🚀 TYPESCRIPT FIX: Explicitly defining pending and approved as any[]
     let queueContent: { pending: any[], approved: any[] } = { pending: [], approved: [] };
     
     if (queueRes.ok) { 
@@ -83,7 +84,20 @@ export async function POST(req: NextRequest) {
       if (!Array.isArray(queueContent.approved)) queueContent.approved = [];
     }
     
-    const queueItem = { id: `edit_${Date.now()}`, type, contextId, userName: userNameRaw, userUsername, timestamp: new Date().toISOString(), pendingImageUrl, intent: "add" };
+    const queueItem = { 
+      id: `edit_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`, 
+      type, 
+      contextId, 
+      userName: userNameRaw, 
+      userUsername, 
+      timestamp: new Date().toISOString(), 
+      pendingImageUrl, 
+      intent: "add",
+      filePath: filePath, // 🚀 CRITICAL FIX
+      targetType: type.includes("Article") ? "article" : "article",
+      jsonObj: { Category: cat }
+    };
+    
     queueContent.pending.push(queueItem);
 
     await fetch(queueUrl, {
