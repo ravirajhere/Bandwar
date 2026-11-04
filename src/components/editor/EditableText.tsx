@@ -60,17 +60,32 @@ export function EditableText({
             e.target.style.height = `${e.target.scrollHeight}px`;
           }}
           onKeyDown={handleKeyDown}
+          aria-label={`Edit ${fieldName}`}
+          spellCheck="true"
+          autoComplete="off"
           className={`w-full bg-surface border-2 border-accent rounded-sm px-2 py-1 outline-none resize-none overflow-hidden font-sans text-ink disabled:opacity-70 ${className}`}
         />
         
-        <div className="absolute -bottom-10 left-0 flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md z-50">
-          <button onClick={() => saveEdit()} disabled={status === "saving"} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm disabled:opacity-50">
-            {status === "saving" ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} 
+        <div 
+          className="absolute -bottom-10 left-0 flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md z-50 animate-in fade-in zoom-in-95"
+          role="toolbar"
+          aria-label="Edit actions"
+        >
+          <button 
+            onClick={() => saveEdit()} 
+            disabled={status === "saving"} 
+            className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            {status === "saving" ? <Loader2 size={12} className="animate-spin" aria-hidden="true" /> : <Check size={12} aria-hidden="true" />} 
             {status === "saving" ? "Saving..." : "Save"}
           </button>
-          <div className="w-px h-4 bg-white/20"></div>
-          <button onClick={cancelEditing} disabled={status === "saving"} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm text-red-300 disabled:opacity-50">
-            <X size={12} /> Cancel
+          <div className="w-px h-4 bg-white/20" aria-hidden="true"></div>
+          <button 
+            onClick={cancelEditing} 
+            disabled={status === "saving"} 
+            className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm text-red-300 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+          >
+            <X size={12} aria-hidden="true" /> Cancel
           </button>
         </div>
       </div>
@@ -90,15 +105,22 @@ export function EditableText({
           {value || "—"}
         </Component>
 
-        <button onClick={startEditing} className="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all">
-          <Pencil size={16} />
+        <button 
+          onClick={startEditing} 
+          className="absolute right-0 top-1/2 -translate-y-1/2 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm transition-all"
+          aria-label={`Edit ${fieldName}`}
+        >
+          <Pencil size={16} aria-hidden="true" />
         </button>
 
         {status === "pending" && (
-          <span className="absolute -right-2 top-1/2 -translate-y-1/2 flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
-          </span>
+          <>
+            <span className="absolute -right-2 top-1/2 -translate-y-1/2 flex h-3 w-3" aria-hidden="true">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+            </span>
+            <span className="sr-only">Update pending review</span>
+          </>
         )}
       </div>
       {registrationModal}
