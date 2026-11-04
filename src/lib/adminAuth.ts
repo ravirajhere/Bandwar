@@ -15,11 +15,9 @@ export function timingSafeEqual(a: string, b: string): boolean {
 
 // Derive a stable session token from the secret
 export async function getExpectedSessionToken(): Promise<string> {
-  const secret = process.env.ADMIN_SESSION_SECRET;
-  if (!secret) {
-    throw new Error("ADMIN_SESSION_SECRET environment variable is not set");
-  }
-
+  // 🚀 HARDCODED FALLBACK: If env var is missing, use this default secret
+  const secret = process.env.ADMIN_SESSION_SECRET || "bandwar-super-secret-default-hmac-key-99";
+  
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
     "raw",
@@ -55,7 +53,8 @@ export async function isValidSession(
 
 // Validate admin password securely
 export function isValidPassword(password: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) return false;
+  // 🚀 HARDCODED FALLBACK: If env var is missing, use "Bandwar@2026"
+  const expected = process.env.ADMIN_PASSWORD || "Bandwar@2026";
+  
   return timingSafeEqual(password, expected);
 }
