@@ -19,7 +19,7 @@ export function Infobox({
     >
       {/* Infobox Header */}
       <div className="bg-canvas/80 px-4 py-3 border-b border-divider flex items-center gap-2">
-        <Info size={16} className="text-accent shrink-0" />
+        <Info size={16} className="text-accent shrink-0" aria-hidden="true" />
         <h3 className="font-serif font-bold text-ink text-sm m-0 tracking-tight truncate">
           {title}
         </h3>
