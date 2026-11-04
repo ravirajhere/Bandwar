@@ -70,32 +70,59 @@ export function EditableInfoboxRow({
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={handleKeyDown}
                 disabled={status === "saving"}
-                className="flex-1 min-w-0 bg-surface border border-accent rounded-sm px-2 py-1 outline-none text-sm text-ink disabled:opacity-70"
+                aria-label={`Edit ${label}`}
+                spellCheck="true"
+                autoComplete="off"
+                className="flex-1 min-w-0 bg-surface border border-accent rounded-sm px-2 py-1 outline-none text-sm text-ink disabled:opacity-70 focus:ring-2 focus:ring-accent/20"
               />
               <div className="flex items-center gap-1 shrink-0">
-                <button onClick={() => saveEdit()} disabled={status === "saving"} className="p-1 bg-accent text-white rounded-sm hover:bg-accent-hover disabled:opacity-50">
-                  {status === "saving" ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                <button 
+                  type="button"
+                  onClick={() => saveEdit()} 
+                  disabled={status === "saving"} 
+                  className="p-1 bg-accent text-white rounded-sm hover:bg-accent-hover disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  aria-label="Save changes"
+                >
+                  {status === "saving" ? <Loader2 size={12} className="animate-spin" aria-hidden="true" /> : <Check size={12} aria-hidden="true" />}
                 </button>
-                <button onClick={cancelEditing} disabled={status === "saving"} className="p-1 bg-canvas border border-divider text-ink-muted rounded-sm hover:text-ink disabled:opacity-50">
-                  <X size={12} />
+                <button 
+                  type="button"
+                  onClick={cancelEditing} 
+                  disabled={status === "saving"} 
+                  className="p-1 bg-canvas border border-divider text-ink-muted rounded-sm hover:text-ink disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  aria-label="Cancel editing"
+                >
+                  <X size={12} aria-hidden="true" />
                 </button>
               </div>
             </>
           ) : (
             <>
-              <span onClick={startEditing} className={`flex-1 min-w-0 cursor-text hover:bg-accent/5 rounded-sm px-1 -mx-1 py-0.5 transition-colors truncate ${status === "pending" ? "opacity-60" : ""}`} title={value}>
+              <span 
+                onClick={startEditing} 
+                className={`flex-1 min-w-0 cursor-text hover:bg-accent/5 rounded-sm px-1 -mx-1 py-0.5 transition-colors truncate ${status === "pending" ? "opacity-60" : ""}`} 
+                title={value}
+              >
                 {value || "—"}
               </span>
               
-              <button onClick={startEditing} className="shrink-0 opacity-0 group-hover:opacity-60 hover:!opacity-100 transition-opacity text-ink/40 hover:text-accent p-0.5 no-print">
-                <Pencil size={11} />
+              <button 
+                type="button"
+                onClick={startEditing} 
+                className="shrink-0 opacity-0 group-hover:opacity-60 hover:!opacity-100 focus-visible:opacity-100 transition-opacity text-ink/40 hover:text-accent p-0.5 no-print focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
+                aria-label={`Edit ${label}`}
+              >
+                <Pencil size={11} aria-hidden="true" />
               </button>
 
               {status === "pending" && (
-                <span className="shrink-0 flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-amber-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                </span>
+                <>
+                  <span className="shrink-0 flex h-2 w-2 relative" aria-hidden="true">
+                    <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-amber-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                  </span>
+                  <span className="sr-only">Update pending review</span>
+                </>
               )}
             </>
           )}
