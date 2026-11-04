@@ -12,6 +12,7 @@ export function useContributorGate() {
     cb: (data: FormData) => Promise<void>;
   } | null>(null);
 
+  // 🚀 Load contributor from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem(CONTRIBUTOR_STORAGE_KEY);
     if (stored) {
@@ -19,7 +20,8 @@ export function useContributorGate() {
     }
   }, []);
 
-  const submitWithGate = async (
+  // 🚀 PERFORMANCE FIX: Wrap in useCallback to prevent unnecessary re-renders
+  const submitWithGate = useCallback(async (
     formData: FormData,
     callback: (data: FormData) => Promise<void>
   ) => {
@@ -34,9 +36,9 @@ export function useContributorGate() {
       setPendingSubmit({ data: formData, cb: callback });
       setShowRegistration(true);
     }
-  };
+  }, [contributor]);
 
-  const handleRegistrationComplete = async (newContributor: Contributor) => {
+  const handleRegistrationComplete = useCallback(async (newContributor: Contributor) => {
     setContributor(newContributor);
     localStorage.setItem(CONTRIBUTOR_STORAGE_KEY, JSON.stringify(newContributor));
     setShowRegistration(false);
@@ -48,18 +50,19 @@ export function useContributorGate() {
       await cb(data);
       setPendingSubmit(null);
     }
-  };
+  }, [pendingSubmit]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setShowRegistration(false);
     setPendingSubmit(null);
-  };
+  }, []);
 
   // 🚀 EditModeToggle se login trigger karne ke liye
   const requestLogin = useCallback(() => {
     setShowRegistration(true);
   }, []);
 
+  // 🚀 Render Registration Modal
   const registrationModal = showRegistration ? (
     <RegisterProfileModal
       onComplete={handleRegistrationComplete}
