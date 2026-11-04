@@ -1,48 +1,96 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
 import { MapPin, Clock, ShieldCheck, ArrowRight, PhoneCall, Users, BookOpen } from "lucide-react";
-import LandmarkMapWrapper from "@/components/map/LandmarkMapWrapper"; // 🚀 Path Updated
+import LandmarkMapWrapper from "@/components/map/LandmarkMapWrapper";
 import { DevNotice } from "@/components/home/DevNotice"; 
-
 import iconImage from "@/app/icon.png"; 
 
 interface StatItem { label: string; value: string; }
+
+export async function generateMetadata(): Promise<Metadata> {
+  const config = getMasterData();
+  const baseUrl = config.site.url;
+  const ogImage = `${baseUrl}/${(config.home?.hero?.image || "").replace(/^\//, "")}`;
+
+  return {
+    title: { absolute: "Bandwar Village Archive — Begusarai, Bihar" },
+    description: config.seo?.defaultDescription || "Explore the history, temples, schools, and daily life of Bandwar village, Begusarai (Bihar). A community-built digital archive.",
+    alternates: {
+      canonical: "/",
+      languages: { "en-IN": "/", "x-default": "/" },
+    },
+    openGraph: {
+      type: "website",
+      title: "Bandwar Village Archive — Begusarai, Bihar",
+      description: config.seo?.defaultDescription || "The community-built digital archive of Bandwar village, Begusarai (Bihar).",
+      url: baseUrl,
+      siteName: "Bandwar Village Archive",
+      locale: "en_IN",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: config.home?.hero?.alt || "Bandwar Village" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Bandwar Village Archive — Begusarai, Bihar",
+      description: "The community-built digital archive of Bandwar village, Begusarai (Bihar).",
+      images: [ogImage],
+    },
+  };
+}
 
 export default function Home() {
   const config = getMasterData();
   const home = config.home;
   const allArticles = getAllArticles();
   const media = getMediaData();
+  const baseUrl = config.site.url;
   
-  // Data.ts me articles pehle se lastUpdated ke hisaab se sort hote hain (Newest first)
-  const latestArticles = allArticles.slice(0, 4);
+  const latestArticles = [...allArticles]
+    .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime())
+    .slice(0, 4);
 
   if (!home) return null;
 
+  const homeJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${baseUrl}/#webpage`,
+        url: baseUrl,
+        name: "Bandwar Village Archive — Begusarai, Bihar",
+        description: config.seo?.defaultDescription || config.site.description,
+        isPartOf: { "@id": `${baseUrl}/#website` },
+        about: { "@id": `${baseUrl}/#place` },
+        inLanguage: "en-IN",
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${baseUrl}/#latest-articles`,
+        name: "Recently Updated Articles",
+        numberOfItems: latestArticles.length,
+        itemListElement: latestArticles.map((a, i) => ({
+          "@type": "ListItem", position: i + 1, url: `${baseUrl}/article/${a.id}`, name: a.title,
+        })),
+      },
+    ],
+  };
+
   return (
     <div className="bg-canvas min-h-screen pb-16 md:pb-24">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }} />
+      
       <div className="container mx-auto px-4 md:px-0 pt-6 md:pt-10">
-        
-        {/* 🚀 NAYA: Development Notice (Dismissible) */}
         <DevNotice />
 
-        {/* =========================================
-            1. HERO SECTION (NYT / Britannica Inspired)
-            ========================================= */}
+        {/* 1. HERO SECTION */}
         <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider">
           <div className="absolute inset-0 bg-ink/70 z-10"></div>
-          <Image
-            src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`}
-            alt={home.hero.alt}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
+          <Image src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`} alt={home.hero.alt} fill className="object-cover" priority sizes="100vw" />
           <div className="relative z-20 px-6 py-20 md:py-32 lg:py-40 3xl:py-56 flex flex-col items-center text-center">
             <span className="text-white bg-ink/50 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-sm text-sm font-bold tracking-widest uppercase mb-6 flex items-center gap-2">
-              <MapPin size={14} /> {home.hero.location}
+              <MapPin size={14} aria-hidden="true" /> {home.hero.location}
             </span>
             <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl 3xl:text-8xl text-white mb-6 font-bold max-w-4xl leading-tight">
               {home.hero.title}
@@ -51,29 +99,21 @@ export default function Home() {
               {home.hero.tagline}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto">
-              <Link 
-                href="/section" 
-                className="bg-accent hover:bg-accent-hover text-white px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
-              >
+              <Link href="/section" className="bg-accent hover:bg-accent-hover text-white px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
                 Explore the Archive
               </Link>
-              <Link 
-                href="/gallery" 
-                className="bg-surface hover:bg-canvas text-ink border border-divider px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
-              >
+              <Link href="/gallery" className="bg-surface hover:bg-canvas text-ink border border-divider px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
                 View Gallery
               </Link>
             </div>
           </div>
         </section>
 
-        {/* =========================================
-            2. QUICK ACCESS (GOV.UK / GitHub Inspired)
-            ========================================= */}
+        {/* 2. QUICK ACCESS */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-16 md:mb-24">
           <Link href="/directory" className="bg-surface border border-divider p-6 rounded-sm hover:border-accent transition-colors group flex items-start gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
             <div className="w-10 h-10 bg-canvas border border-divider rounded-sm flex items-center justify-center shrink-0 group-hover:bg-accent/5 transition-colors">
-              <PhoneCall size={20} className="text-accent" />
+              <PhoneCall size={20} className="text-accent" aria-hidden="true" />
             </div>
             <div>
               <h3 className="font-serif font-bold text-lg text-ink mb-1 group-hover:text-accent transition-colors">Emergency Directory</h3>
@@ -83,7 +123,7 @@ export default function Home() {
           
           <Link href="/people" className="bg-surface border border-divider p-6 rounded-sm hover:border-accent transition-colors group flex items-start gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
             <div className="w-10 h-10 bg-canvas border border-divider rounded-sm flex items-center justify-center shrink-0 group-hover:bg-accent/5 transition-colors">
-              <Users size={20} className="text-accent" />
+              <Users size={20} className="text-accent" aria-hidden="true" />
             </div>
             <div>
               <h3 className="font-serif font-bold text-lg text-ink mb-1 group-hover:text-accent transition-colors">People of Bandwar</h3>
@@ -93,7 +133,7 @@ export default function Home() {
 
           <Link href="/section" className="bg-surface border border-divider p-6 rounded-sm hover:border-accent transition-colors group flex items-start gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
             <div className="w-10 h-10 bg-canvas border border-divider rounded-sm flex items-center justify-center shrink-0 group-hover:bg-accent/5 transition-colors">
-              <BookOpen size={20} className="text-accent" />
+              <BookOpen size={20} className="text-accent" aria-hidden="true" />
             </div>
             <div>
               <h3 className="font-serif font-bold text-lg text-ink mb-1 group-hover:text-accent transition-colors">Historical Archive</h3>
@@ -102,34 +142,22 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* =========================================
-            3. MAP SECTION (Wikipedia / Meta Inspired)
-            ========================================= */}
+        {/* 3. MAP SECTION */}
         <section className="mb-16 md:mb-24">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-4 flex-grow">
               <h2 className="font-serif text-2xl md:text-3xl font-bold text-ink flex items-center gap-2 shrink-0">
-                <MapPin className="text-accent" size={24} /> Explore the Village Map
+                <MapPin className="text-accent" size={24} aria-hidden="true" /> Explore the Village Map
               </h2>
               <div className="h-px bg-divider flex-grow hidden sm:block"></div>
             </div>
-            
-            {/* 🚀 Naya: Full Map link */}
-            <Link 
-              href="/map" 
-              className="text-accent text-sm font-semibold hover:underline flex items-center gap-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-            >
-              Open Full Map <ArrowRight size={14} />
+            <Link href="/map" className="text-accent text-sm font-semibold hover:underline flex items-center gap-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+              Open Full Map <ArrowRight size={14} aria-hidden="true" />
             </Link>
           </div>
           
           <div className="bg-surface border border-divider rounded-sm overflow-hidden h-[400px] md:h-[500px] 3xl:h-[700px] relative z-0">
-            <LandmarkMapWrapper 
-              landmarks={media.landmarks || []} 
-              activeLandmark={null} 
-              showLegend={false}
-              showScale={false}
-            />
+            <LandmarkMapWrapper landmarks={media.landmarks || []} activeLandmark={null} showLegend={false} showScale={false} />
           </div>
           <p className="text-center text-sm text-ink-muted mt-3">
             Click on the markers to see the exact location of temples, schools, and landmarks in Bandwar. 
@@ -137,46 +165,29 @@ export default function Home() {
           </p>
         </section>
 
-        {/* =========================================
-            4. ABOUT & ARTICLES GRID
-            ========================================= */}
+        {/* 4. ABOUT & ARTICLES GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          
-          {/* LEFT COLUMN: About & Articles */}
           <div className="lg:col-span-8 space-y-12">
             
             {/* About Section */}
             <section className="bg-surface border border-divider rounded-sm">
               <div className="px-5 py-3 border-b border-divider bg-canvas/50 flex items-center gap-2">
                 <div className="w-2 h-2 bg-accent rounded-sm"></div>
-                <h2 className="font-serif text-lg font-bold text-ink m-0 uppercase tracking-wide">
-                  About {home.hero.title}
-                </h2>
+                <h2 className="font-serif text-lg font-bold text-ink m-0 uppercase tracking-wide">About {home.hero.title}</h2>
               </div>
               <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-start">
                 <div className="w-full md:w-1/3 shrink-0 rounded-sm overflow-hidden border border-divider">
                   <div className="relative w-full aspect-[4/3]">
-                    <Image
-                      src={iconImage} 
-                      alt="About Bandwar Village"
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover"
-                    />
+                    <Image src={home.about.image || iconImage} alt={home.about.imageAlt || "About Bandwar Village"} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none">
                   <h3 className="font-serif text-xl md:text-2xl mt-0 mb-3 text-ink font-bold">{home.about.title}</h3>
                   {home.about.paragraphs.map((p: string, idx: number) => (
-                    <p key={idx} className="text-ink/80 leading-relaxed mb-4">
-                      {p}
-                    </p>
+                    <p key={idx} className="text-ink/80 leading-relaxed mb-4">{p}</p>
                   ))}
-                  <Link 
-                    href="/about" 
-                    className="inline-flex items-center text-accent hover:text-accent-hover font-semibold mt-2 no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-                  >
-                    Read full history <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                  <Link href="/about" className="inline-flex items-center text-accent hover:text-accent-hover font-semibold mt-2 no-underline group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+                    Read full history <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                   </Link>
                 </div>
               </div>
@@ -186,41 +197,29 @@ export default function Home() {
             <section>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                 <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2">
-                  <Clock size={20} className="text-accent" /> Recently Updated
+                  <Clock size={20} className="text-accent" aria-hidden="true" /> Recently Updated
                 </h2>
-                <Link 
-                  href="/section" 
-                  className="text-accent text-sm font-semibold hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-                >
-                  View all articles <ArrowRight size={14} />
+                <Link href="/section" className="text-accent text-sm font-semibold hover:underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
+                  View all articles <ArrowRight size={14} aria-hidden="true" />
                 </Link>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {latestArticles.map((article) => (
-                  <Link 
-                    href={`/article/${article.id}`} 
-                    key={article.id}
-                    className="bg-surface border border-divider rounded-sm p-5 hover:border-accent transition-colors group flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                  >
-                    <h3 className="font-serif text-lg font-bold text-ink group-hover:text-accent transition-colors mb-2 leading-snug">
-                      {article.title}
-                    </h3>
-                    <p className="text-ink-muted text-sm line-clamp-3 mb-4 flex-grow leading-relaxed">
-                      {article.summary}
-                    </p>
+                  <Link href={`/article/${article.id}`} key={article.id} className="bg-surface border border-divider rounded-sm p-5 hover:border-accent transition-colors group flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                    <h3 className="font-serif text-lg font-bold text-ink group-hover:text-accent transition-colors mb-2 leading-snug">{article.title}</h3>
+                    <p className="text-ink-muted text-sm line-clamp-3 mb-4 flex-grow leading-relaxed">{article.summary}</p>
                     
-                    {/* Trust Badge (Date & Editor Name) */}
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-ink-muted mt-auto pt-3 border-t border-divider">
-                      <span className="flex items-center gap-1">
-                        <Clock size={12} className="text-accent/70" />
-                        {article.lastUpdated}
-                      </span>
+                      <time dateTime={article.lastUpdated} className="flex items-center gap-1">
+                        <Clock size={12} className="text-accent/70" aria-hidden="true" />
+                        {new Date(article.lastUpdated).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })}
+                      </time>
                       {article.lastEditedBy && (
                         <>
                           <span className="text-divider">•</span>
                           <span className="flex items-center gap-1 text-accent font-medium">
-                            <ShieldCheck size={12} />
+                            <ShieldCheck size={12} aria-hidden="true" />
                             By {article.lastEditedBy}
                           </span>
                         </>
@@ -232,15 +231,11 @@ export default function Home() {
             </section>
           </div>
 
-          {/* RIGHT COLUMN: Sidebar (Stats & Pullquote) */}
+          {/* RIGHT COLUMN */}
           <aside className="lg:col-span-4 space-y-6">
-            
-            {/* Statistics Infobox (Wikipedia Style) */}
             <section className="bg-surface border border-divider rounded-sm">
               <div className="px-5 py-3 border-b border-divider bg-canvas/50">
-                <h2 className="font-serif font-bold text-ink text-sm tracking-widest uppercase m-0">
-                  Village Statistics
-                </h2>
+                <h2 className="font-serif font-bold text-ink text-sm tracking-widest uppercase m-0">Village Statistics</h2>
               </div>
               <div className="p-5">
                 <dl className="text-sm m-0 space-y-3">
@@ -256,20 +251,17 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Editorial Pullquote (NYT Style) */}
             <section className="bg-canvas border border-divider border-l-4 border-l-accent rounded-sm p-6">
               <h3 className="font-serif text-lg font-bold text-ink mb-3">Did you know?</h3>
               <blockquote className="text-ink/80 text-base italic leading-relaxed mb-4 m-0 p-0 border-none">
-                "{home.pullquote.text}"
+                &ldquo;{home.pullquote.text}&rdquo;
               </blockquote>
               <p className="text-accent font-semibold text-sm text-right m-0 uppercase tracking-wider">
                 — {home.pullquote.cite}
               </p>
             </section>
-            
           </aside>
         </div>
-
       </div>
     </div>
   );
