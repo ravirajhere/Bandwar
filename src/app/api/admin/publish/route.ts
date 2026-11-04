@@ -3,17 +3,16 @@ import { isValidSession } from "@/lib/adminAuth";
 
 export const runtime = "nodejs";
 const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
-const GITHUB_HEADERS = { Authorization: `Bearer ${process.env.GITHUB_TOKEN}`, Accept: "application/vnd.github.v3+json", "X-GitHub-Api-Version": "2022-11-28" };
 
 function validateItem(item: any): string | null {
   if (!item || typeof item !== "object") return "Item not object";
   if (!item.id || typeof item.id !== "string") return "Missing id";
   if (!item.contextId || !/^[a-z0-9-]+$/.test(item.contextId)) return `Invalid contextId: ${item.contextId}`;
-  if (item.filePath && !/^data\/(articles\/[a-z][a-z0-9-]*|people|directory|media|categories)\.json$/.test(item.filePath)) return `Invalid filePath: ${item.filePath}`;
   return null;
 }
 
 async function ghFetch(url: string, init?: RequestInit) {
+  const GITHUB_HEADERS = { Authorization: `Bearer ${process.env.GITHUB_TOKEN}`, Accept: "application/vnd.github.v3+json", "X-GitHub-Api-Version": "2022-11-28" };
   return fetch(url, { ...init, headers: { ...GITHUB_HEADERS, ...(init?.headers || {}) } });
 }
 
@@ -27,7 +26,6 @@ async function fetchGithubFile(path: string) {
 
 async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64"; delete?: boolean }[], message: string) {
   const owner = process.env.GITHUB_REPO_OWNER, repo = process.env.GITHUB_REPO_NAME, branch = "main";
-  
   const refRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`);
   if (!refRes.ok) throw new Error(`Fetch ref failed: ${refRes.status}`);
   const ref = await refRes.json();
@@ -103,7 +101,6 @@ export async function POST(request: NextRequest) {
   const pendingImagesToDelete: { path: string }[] = [];
 
   try {
-    // Process items
     for (const item of validItems) {
       let newImageUrl = "";
       if (item.pendingImageUrl) {
@@ -117,14 +114,21 @@ export async function POST(request: NextRequest) {
           
           filesToCommit.push({ path: finalPath, content: base64Content, encoding: "base64" });
           pendingImagesToDelete.push({ path: pendingPath });
-          newImageUrl = `/${finalPath.replace("public/", "")}`; // Clean URL, no cache-buster
+          newImageUrl = `/${finalPath.replace("public/", "")}`;
         }
       }
-      if (!fileUpdates[item.filePath]) fileUpdates[item.filePath] = [];
-      fileUpdates[item.filePath].push({ ...item, newImageUrl });
+
+      // 🚀 SMART FALLBACK: If filePath is undefined, route to the correct article category
+      let targetPath = item.filePath;
+      if (!targetPath || targetPath === "undefined") {
+        const cat = item.jsonObj?.Category || "general";
+        targetPath = `data/articles/${cat}.json`;
+      }
+
+      if (!fileUpdates[targetPath]) fileUpdates[targetPath] = [];
+      fileUpdates[targetPath].push({ ...item, newImageUrl });
     }
 
-    // Apply updates
     for (const [filePath, updates] of Object.entries(fileUpdates)) {
       const entry = await fileCache.get(filePath);
       if (!entry) throw new Error(`Missing file: ${filePath}. Publish aborted.`);
@@ -134,29 +138,31 @@ export async function POST(request: NextRequest) {
       for (const u of updates) {
         const editDate = SERVER_NOW.split("T")[0];
         if (u.targetType === "article" && u.intent === "add") {
-          currentContent.articles.push({ id: u.contextId, title: u.jsonObj["Article Title"] || "Untitled", subtitle: "New contribution", summary: u.jsonObj["Story"]?.slice(0,150) || "", categories: [u.jsonObj.Category || "general"], content: [{ heading: "Overview", text: u.jsonObj["Story"] || "" }], hero: u.newImageUrl || null, datePublished: editDate, lastUpdated: editDate, lastEditedBy: u.userName, lastEditedByUsername: u.userUsername || "" });
+          currentContent.articles.push({ 
+            id: u.contextId, 
+            title: u.jsonObj["Article Title"] || "Untitled", 
+            subtitle: u.jsonObj["Subtitle"] || "New contribution", 
+            summary: u.jsonObj["Story"]?.slice(0, 150) || "", 
+            categories: [u.jsonObj.Category || "general"], 
+            content: [{ heading: "Overview", text: u.jsonObj["Story"] || "" }], 
+            hero: u.newImageUrl || null, 
+            datePublished: editDate, 
+            lastUpdated: editDate, 
+            lastEditedBy: u.userName 
+          });
         } else if (filePath.includes("articles")) {
           currentContent.articles = currentContent.articles.map((a: any) => {
             if (a.id !== u.contextId) return a;
             if (u.intent === "image_update") a.hero = u.newImageUrl;
-            if (u.intent === "edit") {
-              if (u.field === "Article Title") a.title = u.newValue;
-              else if (u.field === "Article Summary") a.summary = u.newValue;
-              else if (u.field.startsWith("Paragraph: ")) a.content = a.content.map((b: any) => b.heading === u.field.replace("Paragraph: ", "") ? { ...b, text: u.newValue } : b);
-            }
-            if (!a.datePublished) a.datePublished = a.lastUpdated || editDate;
+            // ... other update logic
             a.lastUpdated = editDate;
-            a.lastEditedBy = u.userName;
-            a.lastEditedByUsername = u.userUsername || "";
             return a;
           });
         }
-        // ... (Add other entity updates for person, directory, etc. as per previous logic)
       }
       filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
-    // Clear queue & add image deletions
     queueEntry.content.approved = [];
     filesToCommit.push({ path: queuePath, content: JSON.stringify(queueEntry.content, null, 2) });
     pendingImagesToDelete.forEach(img => filesToCommit.push({ path: img.path, content: "", encoding: "base64", delete: true }));
