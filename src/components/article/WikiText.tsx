@@ -37,7 +37,10 @@ export function WikiText({ text, validIds }: WikiTextProps) {
               <Link 
                 key={index} 
                 href={`/contribute?new=${id}`} 
+                // 🚀 SEO FIX: No-follow on missing links to save crawl budget
+                rel="nofollow"
                 title={`${displayLabel} (Page not found. Click to suggest)`}
+                aria-label={`${displayLabel} (Page not found. Click to suggest a new article)`}
                 className="text-red-600 dark:text-red-400 font-medium underline decoration-red-500/30 dark:decoration-red-400/30 underline-offset-4 hover:decoration-red-600 dark:hover:decoration-red-400 hover:text-red-700 dark:hover:text-red-300 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas rounded-sm"
               >
                 {displayLabel}
