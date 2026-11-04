@@ -8,12 +8,13 @@
         "culture",
         "religion"
       ],
-      "summary": "The Bandwar Krishna Janmashtami Mela is a historic fair held annually in Bandwar, running for over two hundred years. Considered the oldest Janmashtami fair in Bihar, it is famous for its traditional mud-pit wrestling (Kushti), drawing wrestlers from across Bihar, Nepal, and beyond. Held at the village ground near the [[historic-well|chaupal]], the fair is deeply connected to the [[krishna-mandir-bada|Bada Krishna Mandir]] and [[krishna-mandir-chhota|Chhota Krishna Mandir]].",
+      "summary": "The Bandwar Krishna Janmashtami Mela is a historic fair held annually in Bandwar, running for over two hundred years. Considered the oldest Janmashtami fair in Bihar, it is famous for its traditional mud-pit wrestling (Kushti), drawing wrestlers from across Bihar, Nepal, and beyond. Held at the village ground near the [[historic-well-chaupal-bandwar|chaupal]], the fair is deeply connected to the [[bada-krishna-mandir-bandwar|Bada Krishna Mandir]] and [[chhota-krishna-mandir-bandwar|Chhota Krishna Mandir]].",
       "hero": "images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
       "photos": [
         {
           "src": "images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
-          "caption": "The historic Janmashtami Mela at the village ground in Bandwar, Bihar."
+          "caption": "The historic Janmashtami Mela at the village ground in Bandwar, Bihar.",
+          "imageAlt": "The historic Janmashtami Mela at the village ground in Bandwar, Begusarai, Bihar (2026)"
         }
       ],
       "infobox": {
@@ -26,11 +27,12 @@
         "Main attraction": "Mud-pit wrestling ([[kushti-mud-pit-wrestling-bandwar-mela|Kushti]])",
         "Entry Fee": "None — community funded"
       },
+      "datePublished": "2026-09-06",
       "lastUpdated": "2026-09-06",
       "content": [
         {
           "heading": "A 200-Year-Old Legacy",
-          "text": "According to local record-keepers and village elders, the fair has been held continuously for over two centuries. It predates the district of Begusarai itself (established 1972) and even the independence of India (1947). If the elders' reckoning is correct, the Janmashtami Mela was already an ancient tradition when the [[snk-high-school|S.N.K. gurukul]] was founded in 1942. The fair has survived the transition from British rule to independence, the partition of the subcontinent, and the many changes that have transformed rural Bihar — a record of continuity that very few institutions in the region can match."
+          "text": "According to local record-keepers and village elders, the fair has been held continuously for over two centuries. It predates the district of Begusarai itself (established 1972) and even the independence of India (1947). If the elders' reckoning is correct, the Janmashtami Mela was already an ancient tradition when the [[snk-high-school-bandwar|S.N.K. gurukul]] was founded in 1942. The fair has survived the transition from British rule to independence, the partition of the subcontinent, and the many changes that have transformed rural Bihar — a record of continuity that very few institutions in the region can match."
         },
         {
           "heading": "The Heart of the Fair: Mud-Pit Wrestling",
@@ -42,7 +44,7 @@
         },
         {
           "heading": "The Temple Connection",
-          "text": "The fair is closely connected to the village's two Krishna temples — the [[krishna-mandir-bada|Bada Krishna Mandir]] and the [[krishna-mandir-chhota|Chhota Krishna Mandir]]. On the day of Janmashtami, both temples remain open through the night, and a special abhishek (ritual bath) is performed on the idols at midnight — the hour of Krishna's birth. Villagers move between the temples and the fairground through the day and night, and the fair's schedule is timed to coincide with the temple rituals. The fair is, in effect, an extension of the temples' Janmashtami celebrations."
+          "text": "The fair is closely connected to the village's two Krishna temples — the [[bada-krishna-mandir-bandwar|Bada Krishna Mandir]] and the [[chhota-krishna-mandir-bandwar|Chhota Krishna Mandir]]. On the day of Janmashtami, both temples remain open through the night, and a special abhishek (ritual bath) is performed on the idols at midnight — the hour of Krishna's birth. Villagers move between the temples and the fairground through the day and night, and the fair's schedule is timed to coincide with the temple rituals. The fair is, in effect, an extension of the temples' Janmashtami celebrations."
         },
         {
           "heading": "Recognition and Preservation",
@@ -75,9 +77,9 @@
         "kushti-mud-pit-wrestling-bandwar-mela",
         "chhath-puja-bandwar-bandh-burhi-gandak",
         "ram-katha-thakurbari-bandwar-2021",
-        "krishna-mandir-bada",
-        "krishna-mandir-chhota",
-        "historic-well"
+        "bada-krishna-mandir-bandwar",
+        "chhota-krishna-mandir-bandwar",
+        "historic-well-chaupal-bandwar"
       ],
       "location": {
         "lat": 25.5008,
@@ -101,12 +103,13 @@
         "culture",
         "religion"
       ],
-      "summary": "Chhath Puja is the most significant festival in Bihar and the Mithila region, dedicated to Surya Dev (the Sun God) and Chhathi Maiya. In Bandwar, the festival is celebrated at the [[bandh|bandh]] along the [[burhi-gandak|Burhi Gandak]], with the entire village gathering on the riverbank. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh, and the village observes four days of rigorous fasting and Vedic rituals.",
+      "summary": "Chhath Puja is the most significant festival in Bihar and the Mithila region, dedicated to Surya Dev (the Sun God) and Chhathi Maiya. In Bandwar, the festival is celebrated at the [[bandh-embankment-bandwar|bandh]] along the [[burhi-gandak-river-bandwar|Burhi Gandak]], with the entire village gathering on the riverbank. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh, and the village observes four days of rigorous fasting and Vedic rituals.",
       "hero": "images/culture/bandwar-chhath-puja-surya-dev-idol-bandh.jpg",
       "photos": [
         {
           "src": "images/culture/bandwar-chhath-puja-surya-dev-idol-bandh.jpg",
-          "caption": "Surya Dev idol at the bandh during Chhath Puja in Bandwar."
+          "caption": "Surya Dev idol at the bandh during Chhath Puja in Bandwar.",
+          "imageAlt": "Surya Dev idol on his seven-horse chariot at the bandh during Chhath Puja in Bandwar, Begusarai (2026)"
         }
       ],
       "infobox": {
@@ -118,11 +121,12 @@
         "Main venue": "The bandh, Burhi Gandak",
         "Key Ritual": "Standing in water to offer Arghya to the Sun"
       },
+      "datePublished": "2026-10-28",
       "lastUpdated": "2026-10-28",
       "content": [
         {
           "heading": "Overview",
-          "text": "Chhath Puja is the most important festival of Bihar — more significant, in popular practice, than Diwali or Holi. It is dedicated to Surya Dev (the Sun God) and Chhathi Maiya (also known as Usha, his sister/wife), and is observed over four days with strict fasting and Vedic ritual. The festival has no priestly intermediary — devotees pray directly to the sun. In Bandwar, the festival is celebrated at the [[bandh|bandh]] along the [[burhi-gandak|Burhi Gandak]], and it is the single largest gathering of the village in the course of the year."
+          "text": "Chhath Puja is the most important festival of Bihar — more significant, in popular practice, than Diwali or Holi. It is dedicated to Surya Dev (the Sun God) and Chhathi Maiya (also known as Usha, his sister/wife), and is observed over four days with strict fasting and Vedic ritual. The festival has no priestly intermediary — devotees pray directly to the sun. In Bandwar, the festival is celebrated at the [[bandh-embankment-bandwar|bandh]] along the [[burhi-gandak-river-bandwar|Burhi Gandak]], and it is the single largest gathering of the village in the course of the year."
         },
         {
           "heading": "The Four-Day Ritual",
@@ -134,7 +138,7 @@
         },
         {
           "heading": "At Bandwar's Bandh",
-          "text": "At Bandwar, Chhath is celebrated by the entire village. Devotees gather at the [[bandh|bandh]] — the embankment along the [[burhi-gandak|Burhi Gandak]] — before sunrise and sunset. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh. The festival draws villagers from across Bandwar, and also from the surrounding villages, many of whom come to offer prayers at the same spot their parents and grandparents used. The evening arghya is the more crowded of the two — thousands of villagers stand on the slope of the bandh and in the shallow water below, creating one of the most striking sights of the rural Bihar festival calendar."
+          "text": "At Bandwar, Chhath is celebrated by the entire village. Devotees gather at the [[bandh-embankment-bandwar|bandh]] — the embankment along the [[burhi-gandak-river-bandwar|Burhi Gandak]] — before sunrise and sunset. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh. The festival draws villagers from across Bandwar, and also from the surrounding villages, many of whom come to offer prayers at the same spot their parents and grandparents used. The evening arghya is the more crowded of the two — thousands of villagers stand on the slope of the bandh and in the shallow water below, creating one of the most striking sights of the rural Bihar festival calendar."
         },
         {
           "heading": "A Note on Community and Equality",
@@ -166,10 +170,10 @@
       "related": [
         "sama-chakeva-mithila-festival-bandwar",
         "janmashtami-mela-bandwar-bihar",
-        "burhi-gandak",
-        "bandh",
-        "historic-well",
-        "jal-jeevan-tank"
+        "burhi-gandak-river-bandwar",
+        "bandh-embankment-bandwar",
+        "historic-well-chaupal-bandwar",
+        "jal-jeevan-mission-water-tower-bandwar"
       ],
       "location": {
         "lat": 25.5005,
@@ -197,7 +201,8 @@
       "photos": [
         {
           "src": "images/culture/bandwar-sama-chakeva-clay-idols-mithila-festival.jpg",
-          "caption": "Handcrafted clay idols of Sama and Chakeva during the festival in Bandwar."
+          "caption": "Handcrafted clay idols of Sama and Chakeva during the festival in Bandwar.",
+          "imageAlt": "Handcrafted clay idols of Sama and Chakeva during the Sama Chakeva festival in Bandwar, Begusarai (2026)"
         }
       ],
       "infobox": {
@@ -209,6 +214,7 @@
         "Key Elements": "Clay idols, Maithili folk songs, brother-sister bond",
         "Ecological Link": "Arrival of Himalayan migratory birds"
       },
+      "datePublished": "2026-10-30",
       "lastUpdated": "2026-10-30",
       "content": [
         {
@@ -250,8 +256,8 @@
         "chhath-puja-bandwar-bandh-burhi-gandak",
         "janmashtami-mela-bandwar-bihar",
         "mithila-painting-madhubani-bandwar",
-        "burhi-gandak",
-        "bandh"
+        "burhi-gandak-river-bandwar",
+        "bandh-embankment-bandwar"
       ],
       "location": {
         "lat": 25.5005,
@@ -279,7 +285,8 @@
       "photos": [
         {
           "src": "images/culture/bandwar-mithila-madhubani-painting-traditional-art.jpg",
-          "caption": "A traditional Mithila (Madhubani) painting depicting natural motifs and deities."
+          "caption": "A traditional Mithila (Madhubani) painting depicting natural motifs and deities.",
+          "imageAlt": "A traditional Mithila (Madhubani) painting depicting natural motifs and deities, Bandwar, Begusarai (2026)"
         }
       ],
       "infobox": {
@@ -291,6 +298,7 @@
         "Common Motifs": "Fish, peacocks, serpents, lotus, Hindu deities",
         "Global Recognition": "GI Tag, worldwide exhibitions"
       },
+      "datePublished": "2026-03-08",
       "lastUpdated": "2026-03-08",
       "content": [
         {
@@ -361,7 +369,8 @@
       "photos": [
         {
           "src": "images/culture/bandwar-ram-katha-thakurbari-pandal-2021.jpg",
-          "caption": "Ram Katha at Thakurbari, 2021, with villagers gathered under the pandal."
+          "caption": "Ram Katha at Thakurbari, 2021, with villagers gathered under the pandal.",
+          "imageAlt": "Ram Katha at Ram Mandir Thakurbari, Bandwar, 2021, with villagers gathered under the pink-and-white pandal"
         }
       ],
       "infobox": {
@@ -372,7 +381,10 @@
         "Text": "Ramcharitmanas (Tulsidas)",
         "Recent edition": "2021"
       },
+      "datePublished": "2026-11-03",
       "lastUpdated": "2026-11-03",
+      "lastEditedBy": "Ravi Raj",
+      "lastEditedByUsername": "ravi-raj",
       "content": [
         {
           "heading": "Overview",
@@ -418,12 +430,12 @@
         }
       ],
       "related": [
-        "ram-mandir-thakurbari",
+        "ram-mandir-thakurbari-bandwar",
         "chhath-puja-bandwar-bandh-burhi-gandak",
         "janmashtami-mela-bandwar-bihar",
-        "hanuman-mandir",
-        "shivala",
-        "historic-well"
+        "sankat-mochan-hanuman-mandir-bandwar",
+        "shivala-temple-bandwar",
+        "historic-well-chaupal-bandwar"
       ],
       "location": {
         "lat": 25.501,
@@ -437,8 +449,7 @@
         "vaishnavite tradition mithila",
         "bandwar religion",
         "ram mandir thakurbari"
-      ],
-      "lastEditedBy": "Ravi Raj"
+      ]
     },
     {
       "id": "kushti-mud-pit-wrestling-bandwar-mela",
@@ -452,7 +463,8 @@
       "photos": [
         {
           "src": "images/culture/bandwar-kushti-mud-pit-wrestling-janmashtami-mela.jpg",
-          "caption": "Wrestlers competing in the traditional mud-pit (Kushti) at the Janmashtami fair in Bandwar."
+          "caption": "Wrestlers competing in the traditional mud-pit (Kushti) at the Janmashtami fair in Bandwar.",
+          "imageAlt": "Wrestlers competing in the traditional mud-pit Kushti at the Janmashtami fair in Bandwar, Begusarai (2026)"
         }
       ],
       "infobox": {
@@ -463,6 +475,7 @@
         "Prize": "Honour only",
         "When": "Janmashtami (August–September)"
       },
+      "datePublished": "2026-09-07",
       "lastUpdated": "2026-09-07",
       "content": [
         {
@@ -516,9 +529,9 @@
         "janmashtami-mela-bandwar-bihar",
         "chhath-puja-bandwar-bandh-burhi-gandak",
         "shahid-rajesh-memorial-cricket-tournament-bandwar",
-        "krishna-mandir-bada",
-        "historic-well",
-        "shaheed-dwar"
+        "bada-krishna-mandir-bandwar",
+        "historic-well-chaupal-bandwar",
+        "shaheed-ramchandra-dwar-bandwar"
       ],
       "location": {
         "lat": 25.5008,
@@ -547,7 +560,8 @@
       "photos": [
         {
           "src": "images/culture/bandwar-shahid-rajesh-memorial-cricket-tournament-2026.jpg",
-          "caption": "The Shahid Rajesh Memorial Cricket Tournament at the village ground in Bandwar."
+          "caption": "The Shahid Rajesh Memorial Cricket Tournament at the village ground in Bandwar.",
+          "imageAlt": "The Shahid Rajesh Memorial Cricket Tournament at the village ground in Bandwar, Begusarai (2026)"
         }
       ],
       "infobox": {
@@ -558,6 +572,7 @@
         "Prize": "₹25,000 (winner), ₹12,500 (runner-up)",
         "Village teams": "B.C.C. Bandwar 11, S.R.K.C. Bandwar 11"
       },
+      "datePublished": "2026-01-15",
       "lastUpdated": "2026-01-15",
       "content": [
         {
@@ -606,10 +621,10 @@
       "related": [
         "kushti-mud-pit-wrestling-bandwar-mela",
         "janmashtami-mela-bandwar-bihar",
-        "shaheed-dwar",
+        "shaheed-ramchandra-dwar-bandwar",
         "chhath-puja-bandwar-bandh-burhi-gandak",
-        "historic-well",
-        "roads"
+        "historic-well-chaupal-bandwar",
+        "roads-connectivity-bandwar"
       ],
       "location": {
         "lat": 25.5002,
