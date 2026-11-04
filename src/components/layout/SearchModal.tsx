@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, X, CornerDownLeft, FileText, User, Phone, MapPin, Loader2 } from "lucide-react";
+import { Search, X, CornerDownLeft, FileText, User, Phone, MapPin } from "lucide-react";
 import { SearchItem } from "@/lib/search-data";
 
 interface SearchModalProps {
@@ -11,6 +11,9 @@ interface SearchModalProps {
   onClose: () => void;
   searchIndex: SearchItem[];
 }
+
+// 🚀 FIX: Escape regex special characters to prevent UI crashes on search
+const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) {
   const router = useRouter();
@@ -21,7 +24,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  // 🚀 Filter and Group Logic
+  // 🚀 Filter Logic
   const rawResults = query.trim() === "" 
     ? [] 
     : searchIndex.filter(item => 
@@ -29,7 +32,6 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         item.description.toLowerCase().includes(query.toLowerCase())
       ).slice(0, 20); // Limit to 20 results for performance
 
-  // Flattened list for keyboard navigation
   const results = rawResults;
 
   // Reset selected index when query changes
@@ -102,10 +104,10 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
 
   if (!isOpen) return null;
 
-  // 🚀 Highlight matched text (strict, formal)
+  // 🚀 Highlight matched text (with escaped regex)
   const highlightText = (text: string, highlight: string) => {
     if (!highlight.trim()) return <span>{text}</span>;
-    const regex = new RegExp(`(${highlight})`, "gi");
+    const regex = new RegExp(`(${escapeRegExp(highlight)})`, "gi");
     const parts = text.split(regex);
     return parts.map((part, i) => 
       regex.test(part) 
@@ -117,11 +119,11 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
   // 🚀 Type-based Icon & Label
   const getTypeInfo = (type: string) => {
     switch (type.toLowerCase()) {
-      case "article": return { icon: <FileText size={16} />, label: "Article" };
-      case "person": return { icon: <User size={16} />, label: "Person" };
-      case "directory": return { icon: <Phone size={16} />, label: "Directory" };
-      case "landmark": return { icon: <MapPin size={16} />, label: "Landmark" };
-      default: return { icon: <FileText size={16} />, label: "Page" };
+      case "article": return { icon: <FileText size={16} aria-hidden="true" />, label: "Article" };
+      case "person": return { icon: <User size={16} aria-hidden="true" />, label: "Person" };
+      case "directory": return { icon: <Phone size={16} aria-hidden="true" />, label: "Directory" };
+      case "landmark": return { icon: <MapPin size={16} aria-hidden="true" />, label: "Landmark" };
+      default: return { icon: <FileText size={16} aria-hidden="true" />, label: "Page" };
     }
   };
 
@@ -141,7 +143,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         
         {/* Search Input Bar */}
         <div className="flex items-center border-b border-divider p-4 3xl:p-5 bg-canvas shrink-0">
-          <Search className="text-ink/40 ml-1 mr-3 shrink-0 3xl:w-6 3xl:h-6" size={22} />
+          <Search className="text-ink/40 ml-1 mr-3 shrink-0 3xl:w-6 3xl:h-6" size={22} aria-hidden="true" />
           <input
             ref={inputRef}
             type="text"
@@ -156,7 +158,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
             className="p-2 text-ink/40 hover:text-ink hover:bg-divider/50 rounded-sm transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Close search"
           >
-            <X size={20} />
+            <X size={20} aria-hidden="true" />
           </button>
         </div>
 
@@ -165,7 +167,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
           {query.trim() === "" ? (
             // Formal Empty State
             <div className="flex flex-col items-center justify-center py-16 3xl:py-24 text-ink/40">
-              <Search size={40} className="mb-4 opacity-30" />
+              <Search size={40} className="mb-4 opacity-30" aria-hidden="true" />
               <p className="text-sm font-medium uppercase tracking-wider mb-1">Archive Search</p>
               <p className="text-xs">Type a keyword to search across articles, people, and directory.</p>
             </div>
@@ -238,7 +240,7 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
             </span>
           </div>
           <span className="flex items-center gap-1 font-medium text-accent">
-            <CornerDownLeft size={12} /> Archive Search
+            <CornerDownLeft size={12} aria-hidden="true" /> Archive Search
           </span>
         </div>
       </div>
