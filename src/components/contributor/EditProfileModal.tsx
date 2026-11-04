@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { X, Loader2, Save, UploadCloud, User } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
@@ -108,24 +108,36 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
   };
 
   return (
-    <div className="fixed inset-0 z-modal flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm no-print">
+    <div 
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm no-print animate-in fade-in"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Edit Profile"
+    >
       <div className="bg-surface w-full max-w-lg rounded-sm border border-divider shadow-xl flex flex-col max-h-[90vh]">
         <div className="flex justify-between items-center p-5 border-b border-divider bg-canvas/50">
           <h2 className="font-serif font-bold text-ink text-lg">Edit Profile</h2>
-          <button onClick={onClose} className="p-2 border border-divider rounded-sm hover:bg-canvas"><X size={18} /></button>
+          <button 
+            type="button"
+            onClick={onClose} 
+            className="p-2 border border-divider rounded-sm hover:bg-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label="Close modal"
+          >
+            <X size={18} aria-hidden="true" />
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-5 overflow-y-auto space-y-5">
           
           {/* 🚀 Photo Upload Section */}
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 rounded-full border border-divider bg-canvas flex items-center justify-center shrink-0 overflow-hidden relative group cursor-pointer">
+            <div className="w-20 h-20 rounded-full border border-divider bg-canvas flex items-center justify-center shrink-0 overflow-hidden relative group cursor-pointer focus-within:ring-2 focus-within:ring-accent">
               {preview ? (
-                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                <img src={preview} alt="Profile Preview" className="w-full h-full object-cover" />
               ) : (
-                <User size={32} className="text-ink/20" />
+                <User size={32} className="text-ink/20" aria-hidden="true" />
               )}
-              <div className="absolute inset-0 bg-ink/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 bg-ink/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">
                 <UploadCloud size={20} className="text-white" />
               </div>
               <input 
@@ -133,6 +145,7 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
                 accept="image/*"
                 onChange={handlePhotoChange}
                 className="absolute inset-0 opacity-0 cursor-pointer"
+                aria-label="Upload new profile photo"
               />
             </div>
             <div>
@@ -142,31 +155,50 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-ink mb-1.5">Username (Can only be changed once)</label>
+            <label htmlFor="username" className="block text-sm font-semibold text-ink mb-1.5">Username (Can only be changed once)</label>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-mono text-accent font-semibold">@</span>
+              <span className="text-sm font-mono text-accent font-semibold" aria-hidden="true">@</span>
               <input 
+                id="username"
                 type="text" 
                 value={username.replace('@', '')} 
                 onChange={(e) => setUsername(`@${e.target.value.replace(/[^a-zA-Z0-9_]/g, '')}`)}
                 disabled={contributor.hasChangedUsername}
-                className="flex-1 h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none disabled:opacity-50" 
+                autoComplete="off"
+                className="flex-1 h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none disabled:opacity-50 focus:ring-2 focus:ring-accent/20" 
               />
             </div>
             {contributor.hasChangedUsername && <p className="text-[10px] text-red-500 mt-1">You have already used your one-time username change.</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-ink mb-1.5">Bio</label>
-            <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={3} placeholder="Tell us a bit about yourself..." className="w-full px-4 py-3 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none resize-y" />
+            <label htmlFor="bio" className="block text-sm font-semibold text-ink mb-1.5">Bio</label>
+            <textarea 
+              id="bio"
+              value={bio} 
+              onChange={(e) => setBio(e.target.value)} 
+              rows={3} 
+              placeholder="Tell us a bit about yourself..." 
+              className="w-full px-4 py-3 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none resize-y focus:ring-2 focus:ring-accent/20" 
+            />
           </div>
 
           {error && <p className="text-sm text-red-500 bg-red-500/10 p-2 border border-red-500/20 rounded-sm">{error}</p>}
 
           <div className="pt-2 flex justify-end gap-3">
-            <button type="button" onClick={onClose} className="px-4 py-2 border border-divider rounded-sm text-sm">Cancel</button>
-            <button type="submit" disabled={isSubmitting} className="px-5 py-2 bg-accent text-white rounded-sm font-semibold text-sm flex items-center gap-2">
-              {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />} Save Changes
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="px-4 py-2 border border-divider rounded-sm text-sm hover:bg-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              disabled={isSubmitting} 
+              className="px-5 py-2 bg-accent text-white rounded-sm font-semibold text-sm flex items-center gap-2 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              {isSubmitting ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <Save size={16} aria-hidden="true" />} Save Changes
             </button>
           </div>
         </form>
