@@ -73,8 +73,15 @@ export async function POST(req: NextRequest) {
     const queueRes = await fetch(queueUrl, { headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" } });
     
     let fileData = null;
-    let queueContent = { pending: [], approved: [] };
-    if (queueRes.ok) { fileData = await queueRes.json(); queueContent = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")); }
+    // 🚀 TYPESCRIPT FIX: Explicitly defining pending and approved as any[]
+    let queueContent: { pending: any[], approved: any[] } = { pending: [], approved: [] };
+    
+    if (queueRes.ok) { 
+      fileData = await queueRes.json(); 
+      queueContent = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")); 
+      if (!Array.isArray(queueContent.pending)) queueContent.pending = [];
+      if (!Array.isArray(queueContent.approved)) queueContent.approved = [];
+    }
     
     const queueItem = { id: `edit_${Date.now()}`, type, contextId, userName: userNameRaw, userUsername, timestamp: new Date().toISOString(), pendingImageUrl, intent: "add" };
     queueContent.pending.push(queueItem);
