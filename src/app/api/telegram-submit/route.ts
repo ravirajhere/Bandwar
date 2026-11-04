@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getArticleById, getContributors } from "@/lib/data";
+import { getArticleById, getContributors } from "@/lib/data"; // 🚀 Imported getArticleById
 
 export const runtime = "nodejs";
 const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
@@ -67,9 +67,23 @@ export async function POST(req: NextRequest) {
       if (imgRes.ok) pendingImageUrl = `/images/pending/${editId}.jpg`;
     }
 
-    // 🚀 FIX: Auto-resolve filePath based on Category
-    const cat = formData.get("Category") as string || "education";
-    const filePath = `data/articles/${cat.toLowerCase()}.json`;
+    const intent = type === "Image Update Suggestion" ? "image_update" : (formData.get("field") ? "edit" : "add");
+    
+    // 🚀 SMART FIX: Find exact filePath based on Article ID
+    let filePath = "";
+    
+    if (intent === "image_update" || intent === "edit") {
+      const existingArticle = getArticleById(contextId);
+      if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
+        filePath = `data/articles/${existingArticle.categories[0]}.json`;
+      }
+    }
+
+    if (!filePath) {
+      // Fallback for new articles
+      const cat = String(formData.get("Category") || "education").toLowerCase().replace(/[^a-z0-9-]/g, "-");
+      filePath = `data/articles/${cat}.json`;
+    }
 
     const queueUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/queue.json`;
     const queueRes = await fetch(queueUrl, { headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" } });
@@ -92,10 +106,10 @@ export async function POST(req: NextRequest) {
       userUsername, 
       timestamp: new Date().toISOString(), 
       pendingImageUrl, 
-      intent: "add",
-      filePath: filePath, // 🚀 CRITICAL FIX
-      targetType: type.includes("Article") ? "article" : "article",
-      jsonObj: { Category: cat }
+      intent,
+      filePath, // 🚀 Now properly resolved
+      targetType: type.includes("Article") || intent === "image_update" ? "article" : "article",
+      jsonObj: { Category: filePath.split('/').pop()?.replace('.json', '') }
     };
     
     queueContent.pending.push(queueItem);
