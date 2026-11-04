@@ -178,7 +178,8 @@ export default function Home() {
               <div className="p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-start">
                 <div className="w-full md:w-1/3 shrink-0 rounded-sm overflow-hidden border border-divider">
                   <div className="relative w-full aspect-[4/3]">
-                    <Image src={home.about.image || iconImage} alt={home.about.imageAlt || "About Bandwar Village"} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                    {/* 🚀 FIX: Forced to use icon.png */}
+                    <Image src={iconImage} alt={home.about.imageAlt || "About Bandwar Village"} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 </div>
                 <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none">
