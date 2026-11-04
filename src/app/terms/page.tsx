@@ -1,21 +1,86 @@
 import { Metadata } from "next";
+import { getMasterData } from "@/lib/data";
 import { FileText, AlertTriangle, Scale, Copyright, UserX, Globe, Gavel } from "lucide-react";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Terms of Use | Bandwar Portal",
-  description: "Terms and conditions for using the Bandwar Village Portal and contributing to the digital archive.",
-};
+// 🚀 SEO FIX: Dynamic Metadata with Canonical & OG tags
+export async function generateMetadata(): Promise<Metadata> {
+  const config = getMasterData();
+  const baseUrl = config.site.url;
+  const ogImage = `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
+  
+  const title = "Terms of Use";
+  const description = "Terms and conditions for using the Bandwar Village Archive and contributing to the digital archive.";
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/terms`,
+      languages: {
+        "en-IN": `${baseUrl}/terms`,
+        "x-default": `${baseUrl}/terms`,
+      },
+    },
+    openGraph: {
+      type: "website",
+      title: `${title} — Bandwar Village Archive`,
+      description,
+      url: `${baseUrl}/terms`,
+      siteName: config.site.name,
+      locale: "en_IN",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: "Terms of Use - Bandwar Village Archive" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — Bandwar Village Archive`,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 export default function TermsPage() {
+  const config = getMasterData();
+  const baseUrl = config.site.url;
+
+  // 🚀 JSON-LD Schema
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${baseUrl}/terms#webpage`,
+        url: `${baseUrl}/terms`,
+        name: "Terms of Use — Bandwar Village Archive",
+        description: "Terms and conditions for using the Bandwar Village Archive.",
+        isPartOf: { "@id": `${baseUrl}/#website` },
+        inLanguage: "en-IN",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+          { "@type": "ListItem", "position": 2, "name": "Terms of Use", "item": `${baseUrl}/terms` }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="bg-canvas min-h-screen py-10 md:py-16 3xl:py-24">
+      {/* 🚀 JSON-LD Injection */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="container mx-auto px-4 md:px-0 max-w-[900px]">
         
         {/* 🏛️ Page Header */}
         <div className="mb-12 md:mb-16 text-center">
           <div className="w-16 h-16 3xl:w-20 3xl:h-20 bg-surface border border-divider text-accent rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <Scale size={32} className="3xl:w-10 3xl:h-10" />
+            <Scale size={32} className="3xl:w-10 3xl:h-10" aria-hidden="true" />
           </div>
           <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink mb-4 font-semibold tracking-tight">
             Terms of Use
@@ -31,25 +96,25 @@ export default function TermsPage() {
           <div className="prose prose-lg dark:prose-invert max-w-none text-ink/80 leading-relaxed 3xl:prose-xl">
             
             <p className="text-lg 3xl:text-xl font-medium text-ink mb-8">
-              Welcome to the Bandwar Village Portal. By accessing or using this website, you agree to comply with and be bound by the following Terms of Use. If you do not agree with any part of these terms, please refrain from using the portal.
+              Welcome to the Bandwar Village Archive. By accessing or using this website, you agree to comply with and be bound by the following Terms of Use. If you do not agree with any part of these terms, please refrain from using the archive.
             </p>
 
             <h2 className="flex items-center gap-2 mt-10 mb-4 text-ink">
-              <Globe size={24} className="text-accent" /> 1. Nature of the Portal
+              <Globe size={24} className="text-accent" aria-hidden="true" /> 1. Nature of the Archive
             </h2>
             <p>
-              The Bandwar Village Portal is a community-driven digital archive and informational website. It is <strong>not</strong> an official government website, nor is it affiliated with any political party or commercial entity. The content is managed by a volunteer editorial team comprising residents and descendants of Bandwar.
+              The Bandwar Village Archive is a community-driven digital archive and informational website. It is <strong>not</strong> an official government website, nor is it affiliated with any political party or commercial entity. The content is managed by a volunteer editorial team comprising residents and descendants of Bandwar.
             </p>
 
             <h2 className="flex items-center gap-2 mt-10 mb-4 text-ink">
-              <AlertTriangle size={24} className="text-accent" /> 2. Accuracy Disclaimer
+              <AlertTriangle size={24} className="text-accent" aria-hidden="true" /> 2. Accuracy Disclaimer
             </h2>
             <p>
-              While we strive to provide accurate and up-to-date information, the content on this portal is provided "as is" and for general informational purposes only. Because this is a community-maintained archive, errors or omissions may occur. For official matters (such as land records, government schemes, or emergency services), please contact the relevant government authorities directly.
+              While we strive to provide accurate and up-to-date information, the content on this archive is provided "as is" and for general informational purposes only. Because this is a community-maintained archive, errors or omissions may occur. For official matters (such as land records, government schemes, or emergency services), please contact the relevant government authorities directly.
             </p>
 
             <h2 className="flex items-center gap-2 mt-10 mb-4 text-ink">
-              <FileText size={24} className="text-accent" /> 3. User Contributions & Conduct
+              <FileText size={24} className="text-accent" aria-hidden="true" /> 3. User Contributions & Conduct
             </h2>
             <p>
               We encourage visitors to contribute to the archive via our inline editing tools and Telegram bot. By submitting content, you agree to the following:
@@ -62,29 +127,29 @@ export default function TermsPage() {
             </ul>
 
             <h2 className="flex items-center gap-2 mt-10 mb-4 text-ink">
-              <Copyright size={24} className="text-accent" /> 4. Intellectual Property & Licensing
+              <Copyright size={24} className="text-accent" aria-hidden="true" /> 4. Intellectual Property & Licensing
             </h2>
             <p>
               We believe in open knowledge. However, the rights to the content are managed as follows:
             </p>
             <ul className="space-y-2 mb-6">
-              <li><strong>Content:</strong> All text and historical photographs are the property of their respective contributors. Content is licensed under <strong>CC BY-NC-SA 4.0</strong> (Creative Commons). You may share it for non-commercial purposes with proper attribution to the portal.</li>
-              <li><strong>Code:</strong> The underlying source code of this portal is licensed under the <strong>MIT License</strong>.</li>
+              <li><strong>Content:</strong> All text and historical photographs are the property of their respective contributors. Content is licensed under <strong>CC BY-NC-SA 4.0</strong> (Creative Commons). You may share it for non-commercial purposes with proper attribution to the archive.</li>
+              <li><strong>Code:</strong> The underlying source code of this archive is licensed under the <strong>MIT License</strong>.</li>
               <li><strong>Image Ownership:</strong> When you submit a photograph, you confirm that you own the rights to it or have permission to share it. Do not upload copyrighted images from the internet.</li>
             </ul>
 
             <h2 className="flex items-center gap-2 mt-10 mb-4 text-ink">
-              <UserX size={24} className="text-accent" /> 5. Limitation of Liability
+              <UserX size={24} className="text-accent" aria-hidden="true" /> 5. Limitation of Liability
             </h2>
             <p>
-              The Bandwar Village Community and the editors of this portal shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of this website or reliance on its content. Use of the information provided is at your own risk.
+              The Bandwar Village Community and the editors of this archive shall not be held liable for any direct, indirect, incidental, or consequential damages arising from the use of this website or reliance on its content. Use of the information provided is at your own risk.
             </p>
 
             <h2 className="flex items-center gap-2 mt-10 mb-4 text-ink">
-              <Gavel size={24} className="text-accent" /> 6. Governing Law & Changes
+              <Gavel size={24} className="text-accent" aria-hidden="true" /> 6. Governing Law & Changes
             </h2>
             <p>
-              These terms are governed by and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Begusarai, Bihar. We reserve the right to modify these terms at any time. Continued use of the portal after changes are made constitutes acceptance of the new terms.
+              These terms are governed by and construed in accordance with the laws of India. Any disputes shall be subject to the exclusive jurisdiction of the courts in Begusarai, Bihar. We reserve the right to modify these terms at any time. Continued use of the archive after changes are made constitutes acceptance of the new terms.
             </p>
 
             <p className="mt-10 pt-6 border-t border-divider">
