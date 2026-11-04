@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image"; // 🚀 SEO FIX: Added Next.js Image
 import { notFound } from "next/navigation";
 import { getPeopleData, getMasterData } from "@/lib/data"; 
 import { Metadata } from "next";
@@ -7,7 +8,7 @@ import { EditableText } from "@/components/editor/EditableText";
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
 import { EditModeToggle } from "@/components/editor/EditModeToggle";
-import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton"; // 🚀 Naya Import
+import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton";
 
 export async function generateStaticParams() {
   const data = getPeopleData();
@@ -23,27 +24,43 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const person = data.people.find((p) => p.id === id);
 
   if (!person) {
-    return { title: "Person Not Found | Bandwar Portal" };
+    return { title: "Person Not Found", robots: { index: false } };
   }
 
   const baseUrl = config.site.url;
   const personUrl = `${baseUrl}/people/${person.id}`;
   
-  const imageUrl = person.photo 
-    ? (person.photo.startsWith("http") ? person.photo : `${baseUrl}/${person.photo.startsWith("/") ? person.photo.slice(1) : person.photo}`)
-    : `${baseUrl}/icon.png`;
+  // 🚀 SEO FIX: Strip query strings for OG Image
+  const cleanPhoto = person.photo ? person.photo.split('?')[0] : null;
+  const imageUrl = cleanPhoto 
+    ? (cleanPhoto.startsWith("http") ? cleanPhoto : `${baseUrl}/${cleanPhoto.replace(/^\//, "")}`)
+    : `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
+
+  const description = person.bio 
+    ? person.bio.slice(0, 160) 
+    : `${person.name} — ${person.role} from Bandwar village, Begusarai (Bihar).`;
 
   return {
-    title: `${person.name} | ${config.site.name}`,
-    description: person.bio.substring(0, 160),
-    alternates: { canonical: personUrl },
+    title: person.name, // Layout template will add "— Bandwar Village Archive"
+    description,
+    alternates: {
+      canonical: personUrl,
+      languages: { "en-IN": personUrl, "x-default": personUrl },
+    },
     openGraph: {
       title: `${person.name} - ${person.role}`,
-      description: person.bio.substring(0, 160),
+      description,
       url: personUrl,
       siteName: config.site.name,
-      images: [{ url: imageUrl, width: 800, height: 800, alt: person.name }],
+      locale: "en_IN",
+      images: [{ url: imageUrl, width: 800, height: 800, alt: person.photoAlt || person.name }],
       type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${person.name} - ${person.role}`,
+      description,
+      images: [imageUrl],
     },
   };
 }
@@ -60,32 +77,48 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
   
   const baseUrl = config.site.url;
   const personUrl = `${baseUrl}/people/${person.id}`;
-  const imageUrl = person.photo 
-    ? (person.photo.startsWith("http") ? person.photo : `${baseUrl}/${person.photo.startsWith("/") ? person.photo.slice(1) : person.photo}`)
+  
+  // 🚀 SEO FIX: Strip query strings for Schema & Next Image
+  const cleanPhoto = person.photo ? person.photo.split('?')[0] : null;
+  const imageUrl = cleanPhoto 
+    ? (cleanPhoto.startsWith("http") ? cleanPhoto : `${baseUrl}/${cleanPhoto.replace(/^\//, "")}`)
     : `${baseUrl}/icon.png`;
 
-  const personJsonLd = {
+  // 🚀 SEO FIX: Unified @graph with ProfilePage schema
+  const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "@id": `${personUrl}/#person`,
-    "name": person.name,
-    "jobTitle": person.role,
-    "description": person.bio,
-    "image": imageUrl,
-    "url": personUrl,
-    ...(person.dob && { "birthDate": person.dob }),
-    ...(person.deathDate && { "deathDate": person.deathDate }),
-    ...(person.birthplace && { "birthPlace": { "@type": "Place", "name": person.birthplace } }),
-    ...(person.locality && { "homeLocation": { "@type": "Place", "name": person.locality } })
-  };
-
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
-      { "@type": "ListItem", "position": 2, "name": "People", "item": `${baseUrl}/people` },
-      { "@type": "ListItem", "position": 3, "name": person.name, "item": personUrl }
+    "@graph": [
+      {
+        "@type": "ProfilePage",
+        "@id": `${personUrl}#webpage`,
+        url: personUrl,
+        name: `${person.name} — Bandwar Village Archive`,
+        description: person.bio?.slice(0, 160) || `${person.name} - ${person.role}`,
+        isPartOf: { "@id": `${baseUrl}/#website` },
+        mainEntity: { "@id": `${personUrl}#person` },
+        inLanguage: "en-IN",
+      },
+      {
+        "@type": "Person",
+        "@id": `${personUrl}#person`,
+        "name": person.name,
+        "jobTitle": person.role,
+        "description": person.bio,
+        "image": imageUrl,
+        "url": personUrl,
+        ...(person.dob && { "birthDate": person.dob }),
+        ...(person.deathDate && { "deathDate": person.deathDate }),
+        ...(person.birthplace && { "birthPlace": { "@type": "Place", "name": person.birthplace } }),
+        ...(person.locality && { "homeLocation": { "@type": "Place", "name": person.locality } })
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
+          { "@type": "ListItem", "position": 2, "name": "People", "item": `${baseUrl}/people` },
+          { "@type": "ListItem", "position": 3, "name": person.name, "item": personUrl }
+        ]
+      }
     ]
   };
 
@@ -95,7 +128,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
         
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify([personJsonLd, breadcrumbJsonLd]) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
         <div className="container mx-auto px-4 md:px-0">
@@ -103,9 +136,9 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
           {/* Breadcrumbs */}
           <nav className="mb-6 text-sm text-ink-muted flex items-center gap-2 no-print flex-wrap" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Home</Link>
-            <ChevronRight size={14} className="text-divider shrink-0" />
+            <ChevronRight size={14} className="text-divider shrink-0" aria-hidden="true" />
             <Link href="/people" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">People</Link>
-            <ChevronRight size={14} className="text-divider shrink-0" />
+            <ChevronRight size={14} className="text-divider shrink-0" aria-hidden="true" />
             <span className="text-ink font-medium truncate max-w-[200px] sm:max-w-none">{person.name}</span>
           </nav>
 
@@ -117,19 +150,21 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                 
                 {/* 🚀 Photo Container with Update Button */}
                 <div className="relative w-full aspect-square bg-canvas border-b border-divider overflow-hidden group">
-                  {person.photo ? (
-                    <img
-                      src={person.photo}
+                  {cleanPhoto ? (
+                    <Image
+                      src={cleanPhoto}
                       alt={person.photoAlt || person.name}
-                      className="w-full h-full object-cover object-top"
+                      fill
+                      className="object-cover object-top"
+                      sizes="(max-width: 1024px) 100vw, 33vw"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-ink/20">
-                      <User size={64} className="3xl:w-24 3xl:h-24" />
+                      <User size={64} className="3xl:w-24 3xl:h-24" aria-hidden="true" />
                     </div>
                   )}
                   
-                  {/* 🚀 Image Update Button (Sirf Edit Mode mein dikhega) */}
+                  {/* Image Update Button (Sirf Edit Mode mein dikhega) */}
                   <div className="no-print">
                     <ImageUpdateButton 
                       contextName={person.name} 
@@ -213,7 +248,7 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                         <dt className="text-ink/50 font-bold text-[10px] 3xl:text-xs uppercase tracking-wider">Locality</dt>
                         <dd className="text-ink m-0">
                           <span className="font-medium flex items-center gap-1">
-                            <MapPin size={12} className="text-accent shrink-0" /> 
+                            <MapPin size={12} className="text-accent shrink-0" aria-hidden="true" /> 
                             <EditableText
                               initialValue={person.locality}
                               contextId={person.id}
@@ -241,14 +276,14 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
                   </h1>
                   
                   <div className="flex items-center gap-2 text-sm text-ink-muted">
-                    {person.lastEditedBy ? (
+                    {person.lastEditedBy && person.lastUpdated ? (
                       <div className="flex items-center gap-1.5 font-medium">
-                        <ShieldCheck size={16} className="text-accent" />
-                        <span>Updated {person.lastUpdated} by {person.lastEditedBy}</span>
+                        <ShieldCheck size={16} className="text-accent" aria-hidden="true" />
+                        <span>Updated <time dateTime={person.lastUpdated}>{new Date(person.lastUpdated).toLocaleDateString("en-IN", { year: 'numeric', month: 'short', day: 'numeric' })}</time> by {person.lastEditedBy}</span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-1.5 font-medium">
-                        <Calendar size={16} />
+                        <Calendar size={16} aria-hidden="true" />
                         <span>Profile Verified</span>
                       </div>
                     )}
