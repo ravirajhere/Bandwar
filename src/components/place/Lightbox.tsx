@@ -105,9 +105,14 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
 
   const currentPhoto = photos[currentIndex];
   
-  const imageSrc = currentPhoto.src.startsWith("http") || currentPhoto.src.startsWith("/") 
+  // 🚀 SEO FIX: Strip query strings for Next.js Image optimization
+  const rawSrc = currentPhoto.src.startsWith("http") || currentPhoto.src.startsWith("/") 
     ? currentPhoto.src 
     : `/${currentPhoto.src}`;
+  const imageSrc = rawSrc.split('?')[0]; 
+  
+  // Fallback for imageAlt if added to media.json later
+  const altText = (currentPhoto as any).imageAlt || currentPhoto.caption;
 
   return (
     <div 
@@ -134,7 +139,7 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
           onClick={onClose}
           aria-label="Close Lightbox"
         >
-          <X size={24} className="md:w-6 md:h-6" strokeWidth={2.5} />
+          <X size={24} className="md:w-6 md:h-6" strokeWidth={2.5} aria-hidden="true" />
         </button>
       </div>
 
@@ -153,7 +158,7 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
           <Image
             key={currentPhoto.id} 
             src={imageSrc}
-            alt={currentPhoto.caption}
+            alt={altText}
             fill
             className="object-contain drop-shadow-2xl animate-in zoom-in-95 duration-300" 
             sizes="100vw"
@@ -170,14 +175,14 @@ export function Lightbox({ photos, initialIndex, onClose }: LightboxProps) {
               className="hidden md:flex absolute left-4 xl:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-ink/50 hover:bg-ink/80 p-3.5 xl:p-4 rounded-full backdrop-blur-md border border-white/10 transition-all z-[105] focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
               aria-label="Previous image"
             >
-              <ChevronLeft size={32} />
+              <ChevronLeft size={32} aria-hidden="true" />
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); handleNext(); }}
               className="hidden md:flex absolute right-4 xl:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white bg-ink/50 hover:bg-ink/80 p-3.5 xl:p-4 rounded-full backdrop-blur-md border border-white/10 transition-all z-[105] focus:outline-none focus-visible:ring-4 focus-visible:ring-accent/50"
               aria-label="Next image"
             >
-              <ChevronRight size={32} />
+              <ChevronRight size={32} aria-hidden="true" />
             </button>
           </>
         )}
