@@ -109,10 +109,11 @@ export function ImageUpdateButton({
     <>
       <button 
         onClick={(e) => { e.preventDefault(); setIsOpen(true); }} 
-        className="absolute top-4 right-4 z-20 bg-ink/70 hover:bg-accent text-white p-2.5 rounded-sm backdrop-blur-md transition-all shadow-md no-print"
+        className="absolute top-4 right-4 z-20 bg-ink/70 hover:bg-accent text-white p-2.5 rounded-sm backdrop-blur-md transition-all shadow-md no-print focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
         title="Suggest a new photo"
+        aria-label={`Suggest a new photo for ${contextName}`}
       >
-        <Pencil size={16} />
+        <Pencil size={16} aria-hidden="true" />
       </button>
 
       {isOpen && (
@@ -124,15 +125,19 @@ export function ImageUpdateButton({
                 <h2 className="font-serif font-bold text-ink text-lg">Update Photograph</h2>
                 <p className="text-sm text-ink-muted mt-1 truncate">{contextName}</p>
               </div>
-              <button onClick={() => setIsOpen(false)} className="p-2 border border-divider rounded-sm hover:bg-canvas">
-                <X size={18} />
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="p-2 border border-divider rounded-sm hover:bg-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label="Close modal"
+              >
+                <X size={18} aria-hidden="true" />
               </button>
             </div>
 
             <div className="p-5">
               {isSuccess ? (
                 <div className="text-center py-8">
-                  <CheckCircle2 size={40} className="text-green-600 mx-auto mb-3" />
+                  <CheckCircle2 size={40} className="text-green-600 mx-auto mb-3" aria-hidden="true" />
                   <h3 className="text-lg font-serif font-bold text-ink">Photo Received</h3>
                   <p className="text-sm text-ink-muted mt-1">The editorial team will review this image.</p>
                 </div>
@@ -146,8 +151,9 @@ export function ImageUpdateButton({
                       required 
                       onChange={(e) => setFileName(e.target.files?.[0]?.name || "")} 
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                      aria-label="Select an image to upload"
                     />
-                    <UploadCloud size={28} className={`mx-auto mb-2 ${fileName ? 'text-green-500' : 'text-accent'}`} />
+                    <UploadCloud size={28} className={`mx-auto mb-2 ${fileName ? 'text-green-500' : 'text-accent'}`} aria-hidden="true" />
                     <p className="text-sm font-medium text-ink truncate px-4">
                       {fileName ? fileName : "Click to select an image"}
                     </p>
@@ -164,9 +170,9 @@ export function ImageUpdateButton({
 
             {!isSuccess && (
               <div className="p-4 border-t border-divider bg-canvas/50 flex justify-end gap-3">
-                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 border border-divider rounded-sm text-sm">Cancel</button>
+                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 border border-divider rounded-sm text-sm hover:bg-surface">Cancel</button>
                 <button type="submit" form="image-update-form" disabled={isSubmitting || !fileName} className="px-5 py-2 bg-accent text-white rounded-sm font-semibold text-sm flex items-center gap-2 disabled:opacity-50">
-                  {isSubmitting ? <><Loader2 size={16} className="animate-spin" /> Uploading...</> : "Submit for Review"}
+                  {isSubmitting ? <><Loader2 size={16} className="animate-spin" aria-hidden="true" /> Uploading...</> : "Submit for Review"}
                 </button>
               </div>
             )}
