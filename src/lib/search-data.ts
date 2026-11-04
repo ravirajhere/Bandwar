@@ -5,11 +5,12 @@ import {
   getMediaData 
 } from "./data";
 
+// 🚀 SEO FIX: Aligned types with SearchModal.tsx UI labels
 export type SearchItem = {
   id: string;
   title: string;
   description: string;
-  type: "Article" | "Person" | "Contact" | "Place";
+  type: "article" | "person" | "directory" | "landmark" | "photo";
   url: string;
 };
 
@@ -21,8 +22,8 @@ export function getSearchIndex(): SearchItem[] {
     getAllArticles().forEach(a => index.push({
       id: `article-${a.id}`,
       title: a.title,
-      description: a.summary,
-      type: "Article",
+      description: a.summary.slice(0, 160),
+      type: "article",
       url: `/article/${a.id}`
     }));
   } catch (e) { 
@@ -34,8 +35,8 @@ export function getSearchIndex(): SearchItem[] {
     getPeopleData().people.forEach(p => index.push({
       id: `person-${p.id}`,
       title: p.name,
-      description: `${p.role}${p.locality ? ` • ${p.locality}` : ""}`, // Role + Locality
-      type: "Person",
+      description: `${p.role || "Community Member"}${p.locality ? ` • ${p.locality}` : ""}`,
+      type: "person",
       url: `/people/${p.id}`
     }));
   } catch (e) { 
@@ -44,40 +45,55 @@ export function getSearchIndex(): SearchItem[] {
 
   // 3. Directory (Emergency, Doctors, Shops, Utilities)
   try {
-    getDirectoryData().items.forEach(d => index.push({
-      id: `directory-${d.id}`,
-      title: d.name,
-      description: d.description || `${d.categoryId} contact${d.address ? ` • ${d.address}` : ""}`,
-      type: "Contact",
-      url: `/directory` // Filhaal sab directory page par le ja rahe hain
-    }));
+    const dirData = getDirectoryData();
+    const catMap = new Map(dirData.categories.map(c => [c.id, c.title]));
+
+    dirData.items.forEach(d => {
+      const catName = catMap.get(d.categoryId) || "Service";
+      index.push({
+        id: `directory-${d.id}`,
+        title: d.name,
+        description: d.description || `${catName}${d.address ? ` • ${d.address}` : ""}`,
+        type: "directory",
+        url: `/directory`
+      });
+    });
   } catch (e) { 
     console.error("Error reading directory for search", e); 
   }
 
-  // 4. Places & Landmarks (Temples, Schools, Map locations)
+  // 4. Places, Landmarks & Photos
   try {
     const media = getMediaData();
     
-    // Landmarks ko index karein
+    // Landmarks
     if (media.landmarks) {
-      media.landmarks.forEach(place => index.push({
-        id: `place-${place.id || place.name}`,
-        title: place.name || place.title || "Landmark",
-        description: place.description || `A landmark in ${place.category}`,
-        type: "Place",
-        url: `/place` // Filhaal sab place page par le ja rahe hain
-      }));
+      media.landmarks.forEach(place => {
+        const placeName = place.name || place.title || "Landmark";
+        const placeCat = place.category || "Location";
+        
+        index.push({
+          id: `landmark-${place.id || placeName}`,
+          title: placeName,
+          description: place.description || `A ${placeCat} in Bandwar`,
+          type: "landmark",
+          url: `/map` // 🚀 FIXED: Landmarks are explored on the Map page
+        });
+      });
     }
 
-    // Gallery photos ko bhi index karein (caption ke through)
-    media.gallery.photos.forEach(photo => index.push({
-      id: `photo-${photo.id}`,
-      title: photo.caption,
-      description: `Photo from ${photo.year} • ${photo.category}`,
-      type: "Place",
-      url: `/place`
-    }));
+    // Gallery photos
+    media.gallery.photos.forEach(photo => {
+      const galleryCat = media.gallery.categories.find(c => c.id === photo.category)?.title || photo.category;
+      
+      index.push({
+        id: `photo-${photo.id}`,
+        title: photo.caption,
+        description: `Photograph from ${photo.year || "Archive"} • ${galleryCat}`,
+        type: "photo",
+        url: `/gallery` // 🚀 FIXED: Photos are explored in the Gallery page
+      });
+    });
 
   } catch (e) { 
     console.error("Error reading media for search", e); 
