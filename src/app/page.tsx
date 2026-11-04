@@ -85,7 +85,7 @@ export default function Home() {
         <DevNotice />
 
         {/* 1. HERO SECTION */}
-        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider min-h-[400px] md:min-h-[500px] flex items-center justify-center">
+        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] flex items-center justify-center">
           <div className="absolute inset-0 bg-ink/70 z-10"></div>
           <Image 
             src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`} 
@@ -96,14 +96,14 @@ export default function Home() {
             unoptimized={true}
             sizes="100vw" 
           />
-          <div className="relative z-20 px-6 py-20 md:py-32 lg:py-40 3xl:py-56 flex flex-col items-center text-center w-full">
-            <span className="text-white bg-ink/50 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-sm text-sm font-bold tracking-widest uppercase mb-6 flex items-center gap-2">
+          <div className="relative z-20 px-6 py-12 md:py-20 flex flex-col items-center text-center w-full">
+            <span className="text-white bg-ink/50 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-sm text-sm font-bold tracking-widest uppercase mb-4 md:mb-6 flex items-center gap-2">
               <MapPin size={14} aria-hidden="true" /> {home.hero.location}
             </span>
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl 3xl:text-8xl text-white mb-6 font-bold max-w-4xl leading-tight">
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl 3xl:text-8xl text-white mb-4 md:mb-6 font-bold max-w-4xl leading-tight">
               {home.hero.title}
             </h1>
-            <p className="text-white/90 text-lg md:text-xl lg:text-2xl 3xl:text-3xl max-w-3xl mb-10 leading-relaxed text-pretty">
+            <p className="text-white/90 text-lg md:text-xl lg:text-2xl 3xl:text-3xl max-w-3xl mb-8 md:mb-10 leading-relaxed text-pretty">
               {home.hero.tagline}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto">
