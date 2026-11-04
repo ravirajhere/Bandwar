@@ -74,15 +74,28 @@ export function EditableParagraph({
       <div className="w-full border-l-2 border-l-accent pl-3 -ml-3">
         <div className="flex items-center justify-between mb-2 bg-surface border border-divider rounded-sm px-2 py-1">
           <div className="flex items-center gap-1">
-            <button onClick={() => setShowPreview(false)} className={`text-xs px-2 py-1 rounded-sm transition-colors flex items-center gap-1 ${!showPreview ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}>
-              <Edit3 size={12} /> Write
+            <button 
+              type="button"
+              onClick={() => setShowPreview(false)} 
+              className={`text-xs px-2 py-1 rounded-sm transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${!showPreview ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
+            >
+              <Edit3 size={12} aria-hidden="true" /> Write
             </button>
-            <button onClick={() => setShowPreview(true)} className={`text-xs px-2 py-1 rounded-sm transition-colors flex items-center gap-1 ${showPreview ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}>
-              <Eye size={12} /> Preview
+            <button 
+              type="button"
+              onClick={() => setShowPreview(true)} 
+              className={`text-xs px-2 py-1 rounded-sm transition-colors flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${showPreview ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
+            >
+              <Eye size={12} aria-hidden="true" /> Preview
             </button>
           </div>
-          <button onClick={insertWikiLink} className="text-xs px-2 py-1 text-ink-muted hover:bg-canvas rounded-sm flex items-center gap-1">
-            <LinkIcon size={12} /> Wiki Link
+          <button 
+            type="button"
+            onClick={insertWikiLink} 
+            className="text-xs px-2 py-1 text-ink-muted hover:bg-canvas rounded-sm flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            aria-label="Insert Wiki Link"
+          >
+            <LinkIcon size={12} aria-hidden="true" /> Wiki Link
           </button>
         </div>
 
@@ -101,7 +114,10 @@ export function EditableParagraph({
             }}
             onKeyDown={handleKeyDown}
             disabled={status === "saving"}
-            className="w-full bg-surface border border-divider rounded-sm px-4 py-3 outline-none focus:border-accent resize-none overflow-hidden font-sans text-ink text-base leading-relaxed disabled:opacity-70 min-h-[120px]"
+            aria-label={`Edit ${fieldName}`}
+            spellCheck="true"
+            autoComplete="off"
+            className="w-full bg-surface border border-divider rounded-sm px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 resize-none overflow-hidden font-sans text-ink text-base leading-relaxed disabled:opacity-70 min-h-[120px]"
           />
         )}
 
@@ -109,13 +125,23 @@ export function EditableParagraph({
           <p className="text-[11px] text-ink-muted hidden sm:block">
             <kbd className="bg-canvas border border-divider px-1 py-0.5 rounded-sm text-[10px]">⌘/Ctrl + Enter</kbd> to save • <kbd className="bg-canvas border border-divider px-1 py-0.5 rounded-sm text-[10px]">Esc</kbd> to cancel
           </p>
-          <div className="flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md ml-auto">
-            <button onClick={() => saveEdit()} disabled={status === "saving"} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm disabled:opacity-50">
-              {status === "saving" ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
+          <div className="flex items-center gap-1 bg-ink text-white p-1 rounded-sm shadow-md ml-auto" role="toolbar" aria-label="Edit actions">
+            <button 
+              type="button"
+              onClick={() => saveEdit()} 
+              disabled={status === "saving"} 
+              className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              {status === "saving" ? <Loader2 size={12} className="animate-spin" aria-hidden="true" /> : <Check size={12} aria-hidden="true" />} Save
             </button>
-            <div className="w-px h-4 bg-white/20"></div>
-            <button onClick={cancelEditing} disabled={status === "saving"} className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm text-red-300 disabled:opacity-50">
-              <X size={12} /> Cancel
+            <div className="w-px h-4 bg-white/20" aria-hidden="true"></div>
+            <button 
+              type="button"
+              onClick={cancelEditing} 
+              disabled={status === "saving"} 
+              className="flex items-center gap-1 text-xs px-2 py-1 hover:bg-white/20 rounded-sm text-red-300 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+            >
+              <X size={12} aria-hidden="true" /> Cancel
             </button>
           </div>
         </div>
@@ -126,17 +152,29 @@ export function EditableParagraph({
   return (
     <>
       <div className="relative group">
-        <div onClick={startEditing} className={`cursor-text hover:bg-accent/5 hover:outline-dashed hover:outline-1 hover:outline-accent/30 rounded-sm transition-all ${status === "pending" ? "opacity-60" : ""} ${className}`} title={`Click to edit ${fieldName}`}>
+        <div 
+          onClick={startEditing} 
+          className={`cursor-text hover:bg-accent/5 hover:outline-dashed hover:outline-1 hover:outline-accent/30 rounded-sm transition-all ${status === "pending" ? "opacity-60" : ""} ${className}`} 
+          title={`Click to edit ${fieldName}`}
+        >
           {renderContent(value)}
         </div>
-        <button onClick={startEditing} className="absolute -right-8 top-1 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 transition-all no-print">
-          <Pencil size={14} />
+        <button 
+          type="button"
+          onClick={startEditing} 
+          className="absolute -right-8 top-1 p-1.5 text-ink/30 hover:text-accent opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm transition-all no-print"
+          aria-label={`Edit ${fieldName}`}
+        >
+          <Pencil size={14} aria-hidden="true" />
         </button>
         {status === "pending" && (
-          <span className="absolute -right-2 top-1 flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
-          </span>
+          <>
+            <span className="absolute -right-2 top-1 flex h-3 w-3" aria-hidden="true">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+            </span>
+            <span className="sr-only">Update pending review</span>
+          </>
         )}
       </div>
       {registrationModal}
