@@ -12,7 +12,8 @@ interface StatItem { label: string; value: string; }
 export async function generateMetadata(): Promise<Metadata> {
   const config = getMasterData();
   const baseUrl = config.site.url;
-  const ogImage = `${baseUrl}/${(config.home?.hero?.image || "").replace(/^\//, "")}`;
+  const heroImage = config.home?.hero?.image || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg";
+  const ogImage = `${baseUrl}/${heroImage.replace(/^\//, "")}`;
 
   return {
     title: { absolute: "Bandwar Village Archive — Begusarai, Bihar" },
@@ -36,6 +37,10 @@ export async function generateMetadata(): Promise<Metadata> {
       description: "The community-built digital archive of Bandwar village, Begusarai (Bihar).",
       images: [ogImage],
     },
+    // 🚀 FIX: Tell browser to preload the main image for faster LCP
+    other: {
+      'preload-image': heroImage
+    }
   };
 }
 
@@ -85,7 +90,7 @@ export default function Home() {
         <DevNotice />
 
         {/* 1. HERO SECTION */}
-        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider aspect-[4/3] md:aspect-[16/9] lg:aspect-[21/9] flex items-center justify-center">
+        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider h-[400px] md:h-[500px] 3xl:h-[700px] flex items-center justify-center">
           <div className="absolute inset-0 bg-ink/70 z-10"></div>
           <Image 
             src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`} 
@@ -93,7 +98,6 @@ export default function Home() {
             fill 
             className="object-cover" 
             priority 
-            unoptimized={true}
             sizes="100vw" 
           />
           <div className="relative z-20 px-6 py-12 md:py-20 flex flex-col items-center text-center w-full">
