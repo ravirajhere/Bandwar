@@ -4,7 +4,7 @@ import Link from "next/link";
 import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
 import { MapPin, Clock, ShieldCheck, ArrowRight, PhoneCall, Users, BookOpen } from "lucide-react";
 import LandmarkMapWrapper from "@/components/map/LandmarkMapWrapper";
-import { DevNotice } from "@/components/home/DevNotice"; 
+// import { DevNotice } from "@/components/home/DevNotice"; // 🚀 FIX: Temporarily removed to fix CLS
 import iconImage from "@/app/icon.png"; 
 
 interface StatItem { label: string; value: string; }
@@ -37,10 +37,6 @@ export async function generateMetadata(): Promise<Metadata> {
       description: "The community-built digital archive of Bandwar village, Begusarai (Bihar).",
       images: [ogImage],
     },
-    // 🚀 FIX: Tell browser to preload the main image for faster LCP
-    other: {
-      'preload-image': heroImage
-    }
   };
 }
 
@@ -87,10 +83,10 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }} />
       
       <div className="container mx-auto px-4 md:px-0 pt-6 md:pt-10">
-        <DevNotice />
+        {/* <DevNotice /> */}
 
-        {/* 1. HERO SECTION */}
-        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider h-[400px] md:h-[500px] 3xl:h-[700px] flex items-center justify-center">
+        {/* 🚀 1. HERO SECTION (Fixed Mobile Layout) */}
+        <section className="relative w-full rounded-sm overflow-hidden mb-12 md:mb-16 border border-divider flex items-center justify-center py-16 md:py-24 3xl:py-32">
           <div className="absolute inset-0 bg-ink/70 z-10"></div>
           <Image 
             src={home.hero.image.startsWith("/") ? home.hero.image : `/${home.hero.image}`} 
@@ -100,21 +96,21 @@ export default function Home() {
             priority 
             sizes="100vw" 
           />
-          <div className="relative z-20 px-6 py-12 md:py-20 flex flex-col items-center text-center w-full">
-            <span className="text-white bg-ink/50 backdrop-blur-sm border border-white/20 px-4 py-1.5 rounded-sm text-sm font-bold tracking-widest uppercase mb-4 md:mb-6 flex items-center gap-2">
+          <div className="relative z-20 px-4 md:px-6 w-full max-w-5xl flex flex-col items-center text-center">
+            <span className="text-white bg-ink/50 backdrop-blur-sm border border-white/20 px-3 py-1.5 rounded-sm text-xs sm:text-sm font-bold tracking-widest uppercase mb-4 md:mb-6 flex items-center gap-2">
               <MapPin size={14} aria-hidden="true" /> {home.hero.location}
             </span>
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl 3xl:text-8xl text-white mb-4 md:mb-6 font-bold max-w-4xl leading-tight">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl 3xl:text-8xl text-white mb-4 md:mb-6 font-bold leading-tight">
               {home.hero.title}
             </h1>
-            <p className="text-white/90 text-lg md:text-xl lg:text-2xl 3xl:text-3xl max-w-3xl mb-8 md:mb-10 leading-relaxed text-pretty">
+            <p className="text-white/90 text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl mb-8 md:mb-10 leading-relaxed">
               {home.hero.tagline}
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto">
-              <Link href="/section" className="bg-accent hover:bg-accent-hover text-white px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 w-full sm:w-auto">
+              <Link href="/section" className="w-full sm:w-auto bg-accent hover:bg-accent-hover text-white px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
                 Explore the Archive
               </Link>
-              <Link href="/gallery" className="bg-surface hover:bg-canvas text-ink border border-divider px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+              <Link href="/gallery" className="w-full sm:w-auto bg-surface hover:bg-canvas text-ink border border-divider px-8 py-3.5 rounded-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
                 View Gallery
               </Link>
             </div>
