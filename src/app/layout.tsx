@@ -127,7 +127,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning>
       <head>
-        {/* 🚀 FIX: Preload fonts to reduce CLS, then load stylesheet */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
