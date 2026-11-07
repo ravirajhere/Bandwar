@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794060427511_96fcbn",
       "type": "Gallery Image",
@@ -17,8 +18,8 @@
       "currentImagePath": "Unknown",
       "jsonObj": {
         "Category": "landmarks"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
