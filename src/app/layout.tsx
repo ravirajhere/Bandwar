@@ -48,8 +48,9 @@ export async function generateMetadata(): Promise<Metadata> {
       icon: [{ url: "/favicon.ico", sizes: "any" }],
       apple: { url: "/images/brand/apple-touch-icon.png", sizes: "180x180" },
     },
+    // 🚀 GOOGLE SEARCH CONSOLE VERIFICATION ADDED HERE
     verification: {
-      google: config.seo?.verification?.google || undefined,
+      google: "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs",
     }
   };
 }
@@ -57,6 +58,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const config = getMasterData();
   const baseUrl = config.site.url;
+
+  // 🚀 Extract Hero image for Preload (Improves LCP)
+  const heroImage = config.home?.hero?.image 
+    ? (config.home.hero.image.startsWith("/") ? config.home.hero.image : `/${config.home.hero.image}`) 
+    : "/images/geography/burhi-gandak-river-dawn-bandwar.jpg";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -127,15 +133,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning>
       <head>
+        {/* 🚀 Preload Hero Image for faster LCP */}
+        <link rel="preload" as="image" href={heroImage} fetchPriority="high" />
+
+        {/* 🚀 Google Fonts Loading (Non-Blocking) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
           href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" 
           rel="stylesheet" 
+          media="print"
+          // @ts-ignore
+          onLoad="this.media='all'"
         />
         <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
         
+        {/* Anti-Flicker Dark Mode Script */}
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('bandwar-theme')==='dark'||(!('bandwar-theme'in localStorage)&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}` }} />
+        
+        {/* Site-wide JSON-LD Schema */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="bg-canvas text-ink font-sans antialiased min-h-screen flex flex-col">
