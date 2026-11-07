@@ -8,7 +8,7 @@ const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
 function validateItem(item: any): string | null {
   if (!item || typeof item !== "object") return "Item not object";
   if (!item.id || typeof item.id !== "string") return "Missing id";
-  if (!item.contextId || !/^[a-z0-9-]+$/.test(item.contextId)) return `Invalid contextId: ${item.contextId}`;
+  if (!item.contextId || item.contextId === "new-item") return "Invalid contextId";
   return null;
 }
 
@@ -105,7 +105,6 @@ export async function POST(request: NextRequest) {
     for (const item of validItems) {
       let newImageUrl = "";
       
-      // 1. Move Pending Image to Final Destination
       if (item.pendingImageUrl) {
         const pendingPath = `public${item.pendingImageUrl}`;
         const pendingFile = await fetchGithubFile(pendingPath);
@@ -121,67 +120,112 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // 2. 🚀 BULLETPROOF ROUTING: Find the correct target file path
+      // 🚀 STRICT PATH RESOLUTION
       let targetPath = item.filePath;
-      const existingArticle = getArticleById(item.contextId);
+      
+      if (item.targetType === "gallery") {
+        targetPath = "data/media.json";
+      } else if (item.targetType === "person") {
+        targetPath = "data/people.json";
+      } else if (item.targetType === "directory") {
+        targetPath = "data/directory.json";
+      } else if (item.targetType === "article") {
+        const existingArticle = getArticleById(item.contextId);
+        if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
+          targetPath = `data/articles/${existingArticle.categories[0]}.json`;
+        } else if (item.intent !== "add") {
+          throw new Error(`Article ${item.contextId} not found. Cannot update.`);
+        }
+      }
 
-      if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
-        // If the article exists, ALWAYS route to its actual category file, ignoring what the client sent.
-        targetPath = `data/articles/${existingArticle.categories[0]}.json`;
-      } else if (!targetPath || targetPath === "undefined" || targetPath.includes("general.json")) {
-        // Fallback for new articles if path is bad
+      if (!targetPath || targetPath.includes("general.json")) {
         const cat = item.jsonObj?.Category || "education";
         targetPath = `data/articles/${cat}.json`;
       }
 
       if (!fileUpdates[targetPath]) fileUpdates[targetPath] = [];
-      fileUpdates[targetPath].push({ ...item, newImageUrl, resolvedPath: targetPath });
+      fileUpdates[targetPath].push({ ...item, newImageUrl });
     }
 
-    // 3. Apply Updates to JSON files
+    // 🚀 APPLY UPDATES
     for (const [filePath, updates] of Object.entries(fileUpdates)) {
       const entry = await fileCache.get(filePath);
       if (!entry) throw new Error(`Missing file: ${filePath}. Publish aborted.`);
       
       const currentContent = entry.content;
       if (filePath.includes("articles") && !currentContent.articles) currentContent.articles = [];
+      if (filePath === "data/media.json") {
+        if (!currentContent.gallery) currentContent.gallery = { categories: [], photos: [] };
+        if (!currentContent.gallery.photos) currentContent.gallery.photos = [];
+      }
+      if (filePath === "data/people.json" && !currentContent.people) currentContent.people = [];
       
       for (const u of updates) {
         const editDate = SERVER_NOW.split("T")[0];
         
-        // 🚀 EXECUTE UPDATE BASED ON INTENT
-        if (u.intent === "add" && u.type !== "Image Update Suggestion") {
-          // Create New Article
-          currentContent.articles.push({ 
-            id: u.contextId, 
-            title: u.jsonObj?.["Article Title"] || "Untitled", 
-            subtitle: u.jsonObj?.["Subtitle"] || "New contribution", 
-            summary: u.jsonObj?.["Story"]?.slice(0, 150) || "", 
-            categories: [u.jsonObj?.Category || "general"], 
-            content: [{ heading: "Overview", text: u.jsonObj?.["Story"] || "" }], 
-            hero: u.newImageUrl || null, 
-            datePublished: editDate, 
-            lastUpdated: editDate, 
-            lastEditedBy: u.userName 
+        if (u.targetType === "gallery" && u.intent === "add") {
+          currentContent.gallery.photos.push({
+            id: u.contextId,
+            src: u.newImageUrl,
+            caption: u.jsonObj?.["Photo Title"] || "New Photo",
+            category: u.jsonObj?.Category || "daily-life",
+            year: u.jsonObj?.Year || new Date().getFullYear().toString()
           });
-        } else {
-          // Update Existing Article
+        } else if (u.targetType === "person" && u.intent === "add") {
+          const data = u.jsonObj || {};
+          currentContent.people.push({
+            id: u.contextId,
+            name: data["Full Name"] || "Unknown",
+            role: data["Role"] || "",
+            bio: data["Biography"] || "",
+            dob: data["Date of Birth"] || "",
+            deathDate: data["Date of Death"] || "",
+            photo: u.newImageUrl || "",
+            lastUpdated: editDate,
+            lastEditedBy: u.userName
+          });
+        } else if (u.targetType === "directory" && u.intent === "add") {
+          const data = u.jsonObj || {};
+          currentContent.items.push({
+            id: u.contextId,
+            name: data["Name"] || "Unknown",
+            categoryId: data.Category || "general",
+            phone: data["Phone Number"] || "",
+            address: data["Address"] || "",
+            isEmergency: false,
+            lastUpdated: editDate,
+            lastEditedBy: u.userName
+          });
+        } else if (u.targetType === "article" && u.intent === "add") {
+          const data = u.jsonObj || {};
+          currentContent.articles.push({
+            id: u.contextId,
+            title: data["Article Title"] || "Untitled",
+            subtitle: "New contribution",
+            summary: data["Story"] ? data["Story"].slice(0, 150) + "..." : "",
+            categories: [data.Category || "general"],
+            content: [{ heading: "Overview", text: data["Story"] || "" }],
+            hero: u.newImageUrl || null,
+            datePublished: editDate,
+            lastUpdated: editDate,
+            lastEditedBy: u.userName
+          });
+        } else if (filePath.includes("articles")) {
           currentContent.articles = currentContent.articles.map((a: any) => {
             if (a.id !== u.contextId) return a;
-            
-            if (u.intent === "image_update" || u.type === "Image Update Suggestion") {
-              if (u.targetType === "person") a.photo = u.newImageUrl;
-              else a.hero = u.newImageUrl;
-            } else if (u.intent === "edit") {
+            if (u.intent === "image_update") a.hero = u.newImageUrl;
+            if (u.intent === "edit") {
               if (u.field === "Article Title") a.title = u.newValue;
               else if (u.field === "Article Subtitle") a.subtitle = u.newValue;
               else if (u.field === "Article Summary") a.summary = u.newValue;
               else if (u.field.startsWith("Paragraph: ")) {
                 const headingName = u.field.replace("Paragraph: ", "");
                 a.content = a.content.map((b: any) => b.heading === headingName ? { ...b, text: u.newValue } : b);
+              } else if (u.field.startsWith("Infobox: ")) {
+                const infoKey = u.field.replace("Infobox: ", "");
+                if (a.infobox) a.infobox[infoKey] = u.newValue;
               }
             }
-            
             a.lastUpdated = editDate;
             a.lastEditedBy = u.userName;
             return a;
@@ -191,12 +235,10 @@ export async function POST(request: NextRequest) {
       filesToCommit.push({ path: filePath, content: JSON.stringify(currentContent, null, 2) });
     }
 
-    // 4. Clear Queue & Delete Pending Images
     queueEntry.content.approved = [];
     filesToCommit.push({ path: queuePath, content: JSON.stringify(queueEntry.content, null, 2) });
     pendingImagesToDelete.forEach(img => filesToCommit.push({ path: img.path, content: "", encoding: "base64", delete: true }));
 
-    // 5. Atomic Commit to GitHub
     await commitMultipleFiles(filesToCommit, `Batch Publish: ${validItems.length} updates`);
     return NextResponse.json({ success: true, published: validItems.length }, { headers: NO_STORE });
   } catch (error: any) {
