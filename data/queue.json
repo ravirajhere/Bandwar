@@ -1,5 +1,23 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794067734644_uyuf7s",
+      "type": "Person Submission",
+      "contextId": "person-dr-arman-anand",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-07T16:08:54.644Z",
+      "pendingImageUrl": null,
+      "intent": "add",
+      "filePath": "data/people.json",
+      "targetType": "person",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "Unknown",
+      "jsonObj": {}
+    }
+  ],
   "approved": [
     {
       "id": "edit_1794060427511_96fcbn",
