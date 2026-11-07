@@ -19,6 +19,16 @@
       "photo": "",
       "joinedAt": "2026-11-01",
       "hasChangedUsername": false
+    },
+    {
+      "id": "paradox",
+      "username": "@paradox",
+      "displayName": "Paradox",
+      "email": "",
+      "bio": "",
+      "photo": "",
+      "joinedAt": "2026-11-07",
+      "hasChangedUsername": false
     }
   ]
 }
