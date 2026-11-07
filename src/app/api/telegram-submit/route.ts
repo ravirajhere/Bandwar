@@ -35,8 +35,13 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const type = String(formData.get("type") || "").slice(0, 100);
-    const contextIdRaw = String(formData.get("contextId") || "unknown").slice(0, 100);
+    const contextIdRaw = String(formData.get("contextId") || "").slice(0, 100);
     const contextId = contextIdRaw.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+    
+    // 🚀 STRICT VALIDATION: Reject if ID is missing or invalid
+    if (!contextId || contextId === "new-item" || contextId === "unknown") {
+      return NextResponse.json({ error: "Invalid or missing Context ID. Cannot process." }, { status: 400, headers: NO_STORE });
+    }
     
     const userNameRaw = String(formData.get("submitterName") || "").slice(0, 100).trim() || "Anonymous";
     const userUsernameRaw = String(formData.get("submitterUsername") || "").slice(0, 50).trim();
@@ -67,29 +72,39 @@ export async function POST(req: NextRequest) {
       if (imgRes.ok) pendingImageUrl = `/images/pending/${editId}.jpg`;
     }
 
-    // 🚀 DETERMINE INTENT
+    // 🚀 DETERMINE INTENT & TARGET
     let intent = "add";
-    if (type === "Image Update Suggestion" || (type.includes("Image") && pendingImageUrl && formData.get("currentImagePath") !== "Unknown")) {
+    const targetType = String(formData.get("targetType") || "").toLowerCase();
+
+    if (type.includes("Image Update") || (type.includes("Image") && pendingImageUrl && formData.get("currentImagePath") !== "Unknown")) {
       intent = "image_update";
     } else if (formData.get("field") && formData.get("suggestedValue")) {
       intent = "edit";
     }
 
-    // 🚀 SMART ROUTING: Find the exact target file
     let filePath = "";
     
-    if (intent === "image_update" || intent === "edit") {
-      // It's an update to an existing article. Find where it lives.
-      const existingArticle = getArticleById(contextId);
-      if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
-        filePath = `data/articles/${existingArticle.categories[0]}.json`;
+    // 🚀 STRICT ROUTING
+    if (targetType === "gallery") {
+      filePath = "data/media.json";
+    } else if (targetType === "person") {
+      filePath = "data/people.json";
+    } else if (targetType === "directory") {
+      filePath = "data/directory.json";
+    } else if (targetType === "article") {
+      if (intent === "image_update" || intent === "edit") {
+        const existingArticle = getArticleById(contextId);
+        if (existingArticle && existingArticle.categories && existingArticle.categories.length > 0) {
+          filePath = `data/articles/${existingArticle.categories[0]}.json`;
+        } else {
+          return NextResponse.json({ error: "Article not found for update." }, { status: 404, headers: NO_STORE });
+        }
       } else {
-        filePath = "data/articles/landmarks.json"; // Safe fallback
+        const cat = String(formData.get("Category") || "general").toLowerCase().replace(/[^a-z0-9-]/g, "-");
+        filePath = `data/articles/${cat}.json`;
       }
     } else {
-      // It's a brand new addition.
-      const cat = String(formData.get("Category") || "general").toLowerCase().replace(/[^a-z0-9-]/g, "-");
-      filePath = `data/articles/${cat}.json`;
+      return NextResponse.json({ error: "Invalid target type." }, { status: 400, headers: NO_STORE });
     }
 
     const queueUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/queue.json`;
@@ -114,13 +129,13 @@ export async function POST(req: NextRequest) {
       timestamp: new Date().toISOString(), 
       pendingImageUrl, 
       intent,
-      filePath, // 🚀 Target locked!
-      targetType: intent === "image_update" ? "article" : (String(formData.get("targetType") || "article")),
+      filePath,
+      targetType,
       field: formData.get("field") || "",
       oldValue: formData.get("currentValue") || "",
       newValue: formData.get("suggestedValue") || "",
       currentImagePath: formData.get("currentImagePath") || "Unknown",
-      jsonObj: { Category: filePath.split('/').pop()?.replace('.json', '') || "general" }
+      jsonObj: targetType === "article" ? { Category: filePath.split('/').pop()?.replace('.json', '') || "general" } : {}
     };
     
     queueContent.pending.push(queueItem);
@@ -131,8 +146,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({ message: `New submission ${queueItem.id}`, content: Buffer.from(JSON.stringify(queueContent, null, 2)).toString("base64"), ...(fileData && { sha: fileData.sha }) }),
     });
 
-    // Telegram Notify
-    const tgMsg = `🔔 <b>New ${escapeHtml(type.toUpperCase())}</b>\n\n👤 <b>By:</b> ${escapeHtml(userNameRaw)}\n🎯 <b>Target:</b> <code>${escapeHtml(contextId)}</code>\n👇 <b>Review:</b> https://bandwar.vercel.app/admin/dashboard`;
+    const tgMsg = `🔔 <b>New ${escapeHtml(type.toUpperCase())}</b>\n\n👤 <b>By:</b> ${escapeHtml(userNameRaw)}\n🎯 <b>Target:</b> <code>${escapeHtml(contextId)}</code>\n📂 <b>Type:</b> ${escapeHtml(targetType)}\n👇 <b>Review:</b> https://bandwar.vercel.app/admin/dashboard`;
     await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId, text: tgMsg, parse_mode: "HTML", disable_web_page_preview: true }),
