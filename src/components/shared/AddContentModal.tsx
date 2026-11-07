@@ -13,6 +13,7 @@ interface AddContentModalProps {
   categories?: { id: string; title: string }[]; 
 }
 
+// 🚀 Image Compression
 const compressImage = async (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -45,9 +46,9 @@ const compressImage = async (file: File): Promise<File> => {
   });
 };
 
-const generateFileName = (title: string) => {
-  if (!title) return "";
-  return title.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-") + "-bandwar.jpg";
+// 🚀 Safe Slugify
+const slugify = (text: string) => {
+  return text.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
 };
 
 export function AddContentModal({ type, customButtonText, categories = [] }: AddContentModalProps) {
@@ -60,21 +61,18 @@ export function AddContentModal({ type, customButtonText, categories = [] }: Add
   const [fileName, setFileName] = useState("");
   const [isCompressing, setIsCompressing] = useState(false);
   const [liveTitle, setLiveTitle] = useState("");
-  const [suggestedFileName, setSuggestedFileName] = useState("");
   
   const [showCustomCat, setShowCustomCat] = useState(false);
   const [customCategory, setCustomCategory] = useState("");
 
-  useEffect(() => {
-    if (type === "image" || type === "article" || type === "person") {
-      setSuggestedFileName(generateFileName(liveTitle));
-    }
-  }, [liveTitle, type]);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    
+    // 🚀 STRICT VALIDATION: Prevent empty submissions
+    if (type === "article" && liveTitle.length < 3) return toast("Title must be at least 3 characters.", "error");
+    if (type === "image" && liveTitle.length < 3) return toast("Caption must be at least 3 characters.", "error");
 
+    setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
     const imageFile = formData.get("attachment") as File;
 
@@ -94,22 +92,29 @@ export function AddContentModal({ type, customButtonText, categories = [] }: Add
     }
 
     if (showCustomCat && customCategory.trim()) {
-      const slug = customCategory.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      const slug = slugify(customCategory);
       formData.set("Category", slug);
       formData.set("customCategory", customCategory.trim());
     }
 
+    // 🚀 STRICT ID GENERATION
+    let generatedId = "";
+    if (type === "article") generatedId = slugify(liveTitle);
+    else if (type === "image") generatedId = `photo-${Date.now()}`; // Gallery gets photo-timestamp
+    else if (type === "person") generatedId = `person-${slugify(liveTitle)}`;
+    else generatedId = `dir-${Date.now()}`;
+
+    // Normalize Types
     const typeMap: Record<string, string> = {
       article: "Article Submission",
       person: "Person Submission",
       directory: "Directory Submission",
       image: "Gallery Image"
     };
-    const generatedId = liveTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     
     formData.append("type", typeMap[type]);
-    formData.append("contextId", generatedId || "new-item");
-    formData.append("targetType", type);
+    formData.append("contextId", generatedId);
+    formData.append("targetType", type === "image" ? "gallery" : type); // 🚀 Explicit mapping
 
     await submitWithGate(formData, async (data) => {
       try {
@@ -179,7 +184,7 @@ export function AddContentModal({ type, customButtonText, categories = [] }: Add
         <div className="space-y-4">
           <div>
             <label htmlFor="article-title" className="block text-sm font-semibold text-ink mb-1.5">Article Title <span className="text-red-500">*</span></label>
-            <input id="article-title" type="text" name="Article Title" required onChange={(e) => setLiveTitle(e.target.value)} placeholder="e.g. History of Bandwar" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" />
+            <input id="article-title" type="text" name="Article Title" required minLength={3} onChange={(e) => setLiveTitle(e.target.value)} placeholder="e.g. History of Bandwar" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" />
           </div>
           <CategorySelector label="Category" id="article-category" />
           <div>
@@ -204,7 +209,7 @@ export function AddContentModal({ type, customButtonText, categories = [] }: Add
         <div className="space-y-4">
           <div>
             <label htmlFor="photo-title" className="block text-sm font-semibold text-ink mb-1.5">Photo Caption <span className="text-red-500">*</span></label>
-            <input id="photo-title" type="text" name="Photo Title" required onChange={(e) => setLiveTitle(e.target.value)} placeholder="e.g. Old Thakurbari" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" />
+            <input id="photo-title" type="text" name="Photo Title" required minLength={3} onChange={(e) => setLiveTitle(e.target.value)} placeholder="e.g. Old Thakurbari" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2 sm:col-span-1">
@@ -220,7 +225,6 @@ export function AddContentModal({ type, customButtonText, categories = [] }: Add
             <UploadCloud size={28} className={`mx-auto mb-2 ${fileName ? 'text-green-500' : 'text-accent'}`} aria-hidden="true" />
             <p className="text-sm font-medium text-ink">{fileName ? fileName : "Click to select photograph"}</p>
           </div>
-          <input type="hidden" name="Suggested File Name" value={suggestedFileName} />
         </div>
       )
     },
@@ -231,7 +235,7 @@ export function AddContentModal({ type, customButtonText, categories = [] }: Add
         <div className="space-y-4">
           <div>
             <label htmlFor="directory-name" className="block text-sm font-semibold text-ink mb-1.5">Name <span className="text-red-500">*</span></label>
-            <input id="directory-name" type="text" name="Name" required placeholder="e.g. Ganesh Medical Store" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" />
+            <input id="directory-name" type="text" name="Name" required onChange={(e) => setLiveTitle(e.target.value)} placeholder="e.g. Ganesh Medical Store" className="w-full h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none focus:ring-2 focus:ring-accent/20" />
           </div>
           <CategorySelector label="Category" id="directory-category" />
           <div className="grid grid-cols-2 gap-4">
@@ -337,7 +341,12 @@ export function AddContentModal({ type, customButtonText, categories = [] }: Add
             {!isSuccess && (
               <div className="p-4 border-t border-divider bg-canvas/50 shrink-0 flex justify-end gap-3">
                 <button type="button" onClick={() => setIsOpen(false)} disabled={isSubmitting || isCompressing} className="px-4 py-2 rounded-sm border border-divider text-sm font-medium hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">Cancel</button>
-                <button type="submit" form={`add-form-${type}`} disabled={isSubmitting || isCompressing} className="px-5 flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white py-2 rounded-sm font-semibold text-sm disabled:opacity-50 min-w-[140px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">
+                <button 
+                  type="submit" 
+                  form={`add-form-${type}`} 
+                  disabled={isSubmitting || isCompressing || liveTitle.length < 3} 
+                  className="px-5 flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white py-2 rounded-sm font-semibold text-sm disabled:opacity-50 min-w-[140px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
                   {isSubmitting || isCompressing ? (
                     <><Loader2 size={16} className="animate-spin" aria-hidden="true" /> {isCompressing ? "Compressing..." : "Submitting..."}</>
                   ) : (
