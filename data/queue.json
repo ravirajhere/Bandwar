@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794129502444_rhfq3g",
       "type": "Image Update Suggestion",
@@ -15,8 +16,8 @@
       "oldValue": "",
       "newValue": "",
       "currentImagePath": "Unknown",
-      "jsonObj": {}
+      "jsonObj": {},
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
