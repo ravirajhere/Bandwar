@@ -18,44 +18,5 @@
       "jsonObj": {}
     }
   ],
-  "approved": [
-    {
-      "id": "edit_1794060427511_96fcbn",
-      "type": "Gallery Image",
-      "contextId": "new-item",
-      "userName": "Paradox",
-      "userUsername": "",
-      "timestamp": "2026-11-07T14:07:07.511Z",
-      "pendingImageUrl": "/images/pending/edit_1794060426494_sbxkte.jpg",
-      "intent": "image_update",
-      "filePath": "data/articles/landmarks.json",
-      "targetType": "article",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "Unknown",
-      "jsonObj": {
-        "Category": "landmarks"
-      },
-      "approvedVia": "Dashboard"
-    },
-    {
-      "id": "edit_1794128994290_8021e9",
-      "type": "Person Submission",
-      "contextId": "person-ansh-kumar",
-      "userName": "Admin",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-08T09:09:54.290Z",
-      "pendingImageUrl": null,
-      "intent": "add",
-      "filePath": "data/people.json",
-      "targetType": "person",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "Unknown",
-      "jsonObj": {},
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
