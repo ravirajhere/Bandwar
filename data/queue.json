@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794130062908_fwirx2",
       "type": "Image Update Suggestion",
@@ -15,8 +16,8 @@
       "oldValue": "",
       "newValue": "",
       "currentImagePath": "/images/people/ansh-kumar-bandwar.jpg",
-      "jsonObj": {}
+      "jsonObj": {},
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
