@@ -1,23 +1,4 @@
 {
   "pending": [],
-  "approved": [
-    {
-      "id": "edit_1794129502444_rhfq3g",
-      "type": "Image Update Suggestion",
-      "contextId": "ansh-kumar-bandwar",
-      "userName": "Admin",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-08T09:18:22.444Z",
-      "pendingImageUrl": "/images/pending/edit_1794129501336_8v44la.jpg",
-      "intent": "image_update",
-      "filePath": "data/people.json",
-      "targetType": "person",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "Unknown",
-      "jsonObj": {},
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
