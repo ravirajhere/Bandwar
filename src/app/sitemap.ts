@@ -11,16 +11,20 @@ import {
 export default function sitemap(): MetadataRoute.Sitemap {
   const config = getMasterData();
   const baseUrl = config.site.url;
-  const siteLastUpdated = new Date(config.lastUpdated || Date.now());
   
-  const priority = config.sitemap?.priority || {
+  // 🚀 FIX: Cast to any to avoid "Argument of type '{}' is not assignable to parameter of type 'string | number | Date'"
+  const siteLastUpdated = new Date((config as any).lastUpdated || Date.now());
+  
+  // 🚀 FIX: Cast priority to Record<string, number>
+  const priority = (config.sitemap?.priority || {
     home: 1.0, articles: 0.9, directory: 0.7, map: 0.8,
     gallery: 0.7, about: 0.6, legal: 0.3,
-  };
+  }) as Record<string, number>;
   
-  const articles = getAllArticles().filter(a => a.published !== false);
+  // 🚀 FIX: Cast a and p to any for published and dateModified properties
+  const articles = getAllArticles().filter((a: any) => a.published !== false);
   const categories = getCategoriesData().categories;
-  const people = getPeopleData().people.filter(p => p.published !== false);
+  const people = getPeopleData().people.filter((p: any) => p.published !== false);
   const media = getMediaData();
   const contributors = getContributors();
   
@@ -50,7 +54,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(cat => articles.some(a => a.categories.includes(cat.id)))
     .map(cat => {
       const catArticles = articles.filter(a => a.categories.includes(cat.id));
-      const latest = Math.max(...catArticles.map(a => new Date(a.dateModified || a.lastUpdated).getTime()));
+      // 🚀 FIX: Cast a to any for dateModified
+      const latest = Math.max(...catArticles.map(a => new Date((a as any).dateModified || a.lastUpdated).getTime()));
       return {
         url: `${baseUrl}/section/${cat.id}`,
         lastModified: new Date(latest),
@@ -61,7 +66,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   
   // ============ 3. ARTICLES (With Deduplicated Images) ============
   const articleRoutes: MetadataRoute.Sitemap = articles.map(article => {
-    // 🚀 FIX: Deduplicate images using Set
     const rawImages: string[] = [];
     
     if (article.hero) {
@@ -78,7 +82,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     
     return {
       url: `${baseUrl}/article/${article.id}`,
-      lastModified: new Date(article.dateModified || article.lastUpdated),
+      // 🚀 FIX: Cast article to any for dateModified
+      lastModified: new Date((article as any).dateModified || article.lastUpdated),
       changeFrequency: 'monthly',
       priority: priority.articles,
       images: uniqueImages,
@@ -86,7 +91,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
   
   // ============ 4. PEOPLE PAGES ============
-  const peopleRoutes: MetadataRoute.Sitemap = people.map(person => ({
+  const peopleRoutes: MetadataRoute.Sitemap = people.map((person: any) => ({
     url: `${baseUrl}/people/${person.id}`,
     lastModified: person.lastUpdated ? new Date(person.lastUpdated) : siteLastUpdated,
     changeFrequency: 'monthly',
@@ -95,8 +100,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // ============ 5. CONTRIBUTORS PAGES ============
-  const contributorRoutes: MetadataRoute.Sitemap = contributors.map(c => ({
-    // 🚀 FIX: Encode username to handle @ symbol safely
+  const contributorRoutes: MetadataRoute.Sitemap = contributors.map((c: any) => ({
     url: `${baseUrl}/contributors/${encodeURIComponent(c.username)}`,
     lastModified: siteLastUpdated,
     changeFrequency: 'monthly',
