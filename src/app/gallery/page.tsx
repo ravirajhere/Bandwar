@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `${baseUrl}/gallery`,
+      canonical: `${baseUrl}/gallery`, // 🚀 Agar naya path hai, toh yahan update karein
       languages: {
         "en-IN": `${baseUrl}/gallery`,
         "x-default": `${baseUrl}/gallery`,
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title: `${title} — Bandwar Village Archive`,
       description,
-      url: `${baseUrl}/gallery`,
+      url: `${baseUrl}/gallery`, // 🚀 Agar naya path hai, toh yahan update karein
       siteName: config.site.name,
       locale: "en_IN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: "Village Gallery - Bandwar Archive" }],
@@ -53,7 +53,7 @@ export default function GalleryPage() {
     .filter((c) => c.id !== "all")
     .map((c) => ({ id: c.id, title: c.title }));
 
-  // 🚀 JSON-LD Schema (Helps Google Images rank the photos)
+  // 🚀 JSON-LD Schema (Optimized for Google Images)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -83,7 +83,10 @@ export default function GalleryPage() {
           contentUrl: `${baseUrl}/${photo.src.split('?')[0].replace(/^\//, "")}`,
           name: photo.caption,
           description: photo.caption,
-          ...(photo.year && { uploadDate: `${photo.year}-01-01` })
+          // 🚀 FIX: Changed to datePublished and added dimensions for better Google Images ranking
+          ...(photo.year && { datePublished: `${photo.year}-01-01` }),
+          width: 1200, 
+          height: 800
         }))
       }
     ]
