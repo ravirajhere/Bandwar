@@ -62,6 +62,8 @@
       "role": "Student",
       "locality": "Ward No. 7, Bandwar",
       "birthplace": "Begusarai, Bihar",
+      "photo": "/images/people/ansh-kumar-bandwar.jpg",
+      "photoAlt": "Ansh Kumar, Student from Bandwar",
       "bio": "Ansh Kumar is a student hailing from Ward No. 7 in Bandwar village, Begusarai. He is currently pursuing his education and represents the young generation of the village. As a dedicated student, he is actively engaged in his academic pursuits, contributing to the growing educational landscape of Bandwar.",
       "lastUpdated": "2026-11-08",
       "lastEditedBy": "Admin"
