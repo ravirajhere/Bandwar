@@ -2,7 +2,7 @@
 
 # 🏛️ Bandwar Village Archive
 
-**A community-built, zero-database digital archive for Bandwar village, Begusarai (Bihar).**
+**A community-built digital archive for Bandwar village, Begusarai (Bihar).**
 
 [![Next.js 15](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
 [![React 19](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
