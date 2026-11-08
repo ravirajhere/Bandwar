@@ -1,23 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1794067734644_uyuf7s",
-      "type": "Person Submission",
-      "contextId": "person-dr-arman-anand",
-      "userName": "Bandwar Editor",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-07T16:08:54.644Z",
-      "pendingImageUrl": null,
-      "intent": "add",
-      "filePath": "data/people.json",
-      "targetType": "person",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "Unknown",
-      "jsonObj": {}
-    },
-    {
       "id": "edit_1794129502444_rhfq3g",
       "type": "Image Update Suggestion",
       "contextId": "ansh-kumar-bandwar",
