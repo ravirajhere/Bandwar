@@ -16,23 +16,6 @@
       "newValue": "",
       "currentImagePath": "Unknown",
       "jsonObj": {}
-    },
-    {
-      "id": "edit_1794128994290_8021e9",
-      "type": "Person Submission",
-      "contextId": "person-ansh-kumar",
-      "userName": "Admin",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-08T09:09:54.290Z",
-      "pendingImageUrl": null,
-      "intent": "add",
-      "filePath": "data/people.json",
-      "targetType": "person",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "Unknown",
-      "jsonObj": {}
     }
   ],
   "approved": [
@@ -54,6 +37,24 @@
       "jsonObj": {
         "Category": "landmarks"
       },
+      "approvedVia": "Dashboard"
+    },
+    {
+      "id": "edit_1794128994290_8021e9",
+      "type": "Person Submission",
+      "contextId": "person-ansh-kumar",
+      "userName": "Admin",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-08T09:09:54.290Z",
+      "pendingImageUrl": null,
+      "intent": "add",
+      "filePath": "data/people.json",
+      "targetType": "person",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "Unknown",
+      "jsonObj": {},
       "approvedVia": "Dashboard"
     }
   ]
