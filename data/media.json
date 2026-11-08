@@ -35,7 +35,7 @@
       },
       {
         "id": "banyan-tree",
-        "src": "images/geography/banyan-tree-bandwar.jpg",
+        "src": "images/home/banyan-tree-bandwar.jpg",
         "caption": "A banyan tree — the village's natural landmark",
         "category": "nature",
         "year": "2025"
@@ -80,6 +80,13 @@
         "src": "images/landmarks/shivala-village-corner-bandwar.jpg",
         "caption": "A corner of Bandwar — the Shivala and daily life",
         "category": "daily-life",
+        "year": "2025"
+      },
+      {
+        "id": "gautam-buddha-school",
+        "src": "images/education/gautam-buddha-global-school-building.jpg",
+        "caption": "Gautam Buddha Global School — the oldest private school",
+        "category": "schools",
         "year": "2025"
       },
       {
@@ -189,7 +196,7 @@
       },
       {
         "id": "sbi-2025",
-        "src": "images/infrastructure/sbi-bank-bandwar-branch-building-2025.jpg",
+        "src": "images/infrastructure/sbi-bank-bandwar-branch-building.jpg",
         "caption": "SBI Bandwar, 2025",
         "category": "infrastructure",
         "year": "2025"
@@ -203,21 +210,21 @@
       },
       {
         "id": "post-office",
-        "src": "images/infrastructure/bandwar-post-office-building.jpg",
+        "src": "images/infrastructure/banduar-post-office-bandwar-building.jpg",
         "caption": "Banduar Post Office, serving PIN 851131",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "petrol-pump",
-        "src": "images/infrastructure/ram-janki-fuels-indian-oil-petrol-pump-bandwar-sh55.jpg",
+        "src": "images/infrastructure/ram-janki-fuels-indian-oil-petrol-pump-bandwar.jpg",
         "caption": "Ram Janki Fuels — the Indian Oil petrol pump",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "nal-jal-tank",
-        "src": "images/infrastructure/jal-jeevan-mission-water-tower-bandwar-bihar.jpg",
+        "src": "images/infrastructure/jal-jeevan-mission-water-tower-bandwar.jpg",
         "caption": "Jal Jeevan Mission water tower",
         "category": "infrastructure",
         "year": "2025"
@@ -238,7 +245,7 @@
       },
       {
         "id": "construction",
-        "src": "images/infrastructure/bandwar-village-road-construction-bricks.jpg",
+        "src": "images/infrastructure/bandwar-village-road-construction.jpg",
         "caption": "Bricks and timber on a village road",
         "category": "daily-life",
         "year": "2025"
@@ -505,7 +512,7 @@
       "lng": 86.162000,
       "description": "The village's only bank branch. IFSC: SBIN0015585. ATM also available.",
       "article": "sbi-bank-bandwar",
-      "photo": "images/infrastructure/sbi-bank-bandwar-branch-building-2025.jpg"
+      "photo": "images/infrastructure/sbi-bank-bandwar-branch-building.jpg"
     },
     {
       "id": "petrol-pump",
@@ -517,7 +524,7 @@
       "lng": 86.157625,
       "description": "Indian Oil petrol pump on SH 55. Operated as Ram Janki Fuels.",
       "article": "ram-janki-petrol-pump-bandwar",
-      "photo": "images/infrastructure/ram-janki-fuels-indian-oil-petrol-pump-bandwar-sh55.jpg"
+      "photo": "images/infrastructure/ram-janki-fuels-indian-oil-petrol-pump-bandwar.jpg"
     },
     {
       "id": "snk-high-school",
