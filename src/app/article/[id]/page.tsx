@@ -82,8 +82,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     return dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
   };
 
-  // 🚀 IMAGE SEO: Create ImageObject array for Google Images
-  const imagesArray = [];
+  // 🚀 FIX: Added type "any[]" to prevent TypeScript build error
+  const imagesArray: any[] = [];
+  
   if (article.hero) {
     const imgUrl = article.hero.startsWith("http") ? article.hero : `${baseUrl}/${article.hero.replace(/^\//, "")}`;
     imagesArray.push({
@@ -94,6 +95,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "caption": article.title
     });
   }
+  
   if (article.photos && article.photos.length > 0) {
     article.photos.forEach(photo => {
       const imgUrl = photo.src.startsWith("http") ? photo.src : `${baseUrl}/${photo.src.replace(/^\//, "")}`;
