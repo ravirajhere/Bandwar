@@ -32,13 +32,13 @@
     },
     {
       "id": "anshkumarhere",
-      "username": "@anshkumarhere",
+      "username": "@anshkumarsingh",
       "displayName": "Ansh Kumar",
       "email": "",
-      "bio": "",
-      "photo": "",
+      "bio": "I am 'Ansh Kumar Singh', a student of class 9th currently living in Bandwar, Begusarai",
+      "photo": "/images/contributors/anshkumarhere.jpg?t=1794220281483",
       "joinedAt": "2026-11-08",
-      "hasChangedUsername": false
+      "hasChangedUsername": true
     }
   ]
 }
