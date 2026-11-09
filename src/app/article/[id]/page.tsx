@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const ogImage = article.hero ? `${baseUrl}/${article.hero.replace(/^\//, '')}` : `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
 
   return {
-    title: article.metaTitle || article.title, // Layout template adds "— Bandwar Village Archive"
+    title: article.metaTitle || article.title,
     description: article.metaDescription || article.summary.slice(0, 160),
     alternates: {
       canonical: `${baseUrl}/article/${article.id}`,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       images: [{ url: ogImage, width: 1200, height: 630, alt: article.photos?.[0]?.imageAlt || article.title }],
       publishedTime: article.datePublished || article.lastUpdated,
       modifiedTime: article.dateModified || article.lastUpdated,
-      authors: [config.organization?.name || config.site.name],
+      authors: [article.lastEditedBy || config.organization?.name || config.site.name],
       section: article.categories[0],
       tags: article.categories,
     },
@@ -64,34 +64,74 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const allArticles = getAllArticles();
   const config = getMasterData(); 
   const categoriesData = getCategoriesData().categories; 
-  const contributors = getContributors(); // For Author Schema
+  const contributors = getContributors();
 
   if (!article) notFound();
 
   const baseUrl = config.site.url;
   const articleUrl = `${baseUrl}/article/${article.id}`;
-  const imageUrl = article.hero ? (article.hero.startsWith("http") ? article.hero : `${baseUrl}/${article.hero.replace(/^\//, "")}`) : `${baseUrl}/icon.png`;
-
+  
   const categoryTitle = article.categories?.[0] 
     ? article.categories[0].charAt(0).toUpperCase() + article.categories[0].slice(1)
     : "Uncategorized";
 
   const validArticleIds = allArticles.map(a => a.id);
 
-  const backlinks = allArticles.filter(a => {
-    if (a.id === article.id) return false;
-    return a.content.some(block => {
-      const regex = new RegExp(`\\[\\[${article.id}(\\|.*?)?\\]\\]`, 'i');
-      return regex.test(block.text);
-    });
-  });
+  // 🚀 Helper to format ISO Dates for Google
+  const formatToISO = (dateStr: string) => {
+    return dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
+  };
 
-  // Author handling for E-E-A-T
+  // 🚀 IMAGE SEO: Create ImageObject array for Google Images
+  const imagesArray = [];
+  if (article.hero) {
+    const imgUrl = article.hero.startsWith("http") ? article.hero : `${baseUrl}/${article.hero.replace(/^\//, "")}`;
+    imagesArray.push({
+      "@type": "ImageObject",
+      "url": imgUrl,
+      "width": 1200,
+      "height": 630,
+      "caption": article.title
+    });
+  }
+  if (article.photos && article.photos.length > 0) {
+    article.photos.forEach(photo => {
+      const imgUrl = photo.src.startsWith("http") ? photo.src : `${baseUrl}/${photo.src.replace(/^\//, "")}`;
+      // Avoid duplicate hero image in array
+      if (!imagesArray.some(img => img.url === imgUrl)) {
+        imagesArray.push({
+          "@type": "ImageObject",
+          "url": imgUrl,
+          "width": 800,
+          "height": 600,
+          "caption": photo.caption || article.title
+        });
+      }
+    });
+  }
+
+  // 🚀 WORD COUNT: Helps Google understand content depth
+  const wordCount = article.content.reduce((acc, block) => acc + block.text.split(/\s+/).length, 0) + article.summary.split(/\s+/).length;
+
+  // 🚀 AUTHOR FIX: Proper Person Schema for E-E-A-T
   const authorName = article.lastEditedBy || config.site.name;
   const authorUsername = article.lastEditedByUsername;
-  const authorObj = authorUsername && contributors.find(c => c.username === authorUsername) 
-    ? { "@type": "Person", "@id": `${baseUrl}/contributors/${authorUsername}#person`, name: authorName, url: `${baseUrl}/contributors/${authorUsername}` }
-    : { "@type": "Organization", "@id": `${baseUrl}/#organization`, name: authorName };
+  let authorObj: any = { 
+    "@type": "Person", 
+    "name": authorName 
+  };
+
+  if (authorUsername && contributors.find(c => c.username === authorUsername)) {
+    authorObj["@id"] = `${baseUrl}/contributors/${authorUsername}#person`;
+    authorObj["url"] = `${baseUrl}/contributors/${authorUsername}`;
+  } else if (!article.lastEditedBy) {
+    // Fallback to Organization if no person is mentioned
+    authorObj = { 
+      "@type": "Organization", 
+      "@id": `${baseUrl}/#organization`, 
+      "name": config.site.name 
+    };
+  }
 
   const articleJsonLd = {
     "@type": "Article",
@@ -99,7 +139,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     "mainEntityOfPage": { "@type": "WebPage", "@id": articleUrl },
     "headline": article.title.slice(0, 110),
     "description": article.summary.slice(0, 160),
-    "image": [imageUrl],
+    "image": imagesArray, // 🚀 Fixed: Now sends full ImageObjects
     "inLanguage": "en-IN",
     "articleSection": categoryTitle,
     "author": authorObj,
@@ -109,9 +149,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "name": config.site.name,
       "logo": { "@type": "ImageObject", "url": `${baseUrl}/images/brand/bandwar-logo.svg`, "width": 512, "height": 512 }
     },
-    "datePublished": article.datePublished || article.lastUpdated,
-    "dateModified": article.dateModified || article.lastUpdated,
+    "datePublished": formatToISO(article.datePublished || article.lastUpdated),
+    "dateModified": formatToISO(article.dateModified || article.lastUpdated),
     "isPartOf": { "@id": `${baseUrl}/#website` },
+    "wordCount": wordCount, // 🚀 Fixed: Adds depth signal
+    "isAccessibleForFree": true, // 🚀 Fixed: Signals no paywall
     "speakable": {
       "@type": "SpeakableSpecification",
       "cssSelector": [".article-lead-summary", "h1"]
@@ -127,13 +169,21 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     ]
   };
 
-  // Note: FAQ Schema removed per 2026 Google guidelines (deprecated for non-gov/health sites)
   const combinedJsonLd = {
     "@context": "https://schema.org",
     "@graph": [articleJsonLd, breadcrumbJsonLd]
   };
 
   const generateAnchorId = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  
+  const backlinks = allArticles.filter(a => {
+    if (a.id === article.id) return false;
+    return a.content.some(block => {
+      const regex = new RegExp(`\\[\\[${article.id}(\\|.*?)?\\]\\]`, 'i');
+      return regex.test(block.text);
+    });
+  });
+
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
 
   return (
