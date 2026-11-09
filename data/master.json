@@ -125,8 +125,8 @@
 
   "seo": {
     "titlePattern": "{title} — Bandwar Village Archive",
-    "titlePatternHome": "Bandwar Village Archive — Begusarai, Bihar",
-    "defaultDescription": "Explore the history, temples, schools, and daily life of Bandwar village, Begusarai (Bihar). A community-built digital archive.",
+    "titlePatternHome": "Bandwar Village, Begusarai (Bihar) - History & Culture",
+    "defaultDescription": "Explore the history, temples, schools, and daily life of Bandwar village, Begusarai (Bihar). A community-built digital archive of Mithila's heritage.",
     "keywords": ["Bandwar village", "Bandwar Begusarai", "Bandwar Bihar", "Mithila village", "Burhi Gandak", "Bihar village archive"],
     "ogImage": "/images/geography/burhi-gandak-river-dawn-bandwar.jpg",
     "ogImageWidth": 1200,
@@ -142,7 +142,7 @@
       "maxSnippet": -1
     },
     "verification": {
-      "google": null,
+      "google": "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs",
       "bing": null
     },
     "structuredData": {
@@ -305,6 +305,7 @@
 
   "organization": {
     "name": "Bandwar Village Archive",
+    "alternateName": ["Bandwar Archive", "बनद्वार ग्राम पुरालेख"],
     "type": "NGO",
     "foundingDate": "2024",
     "founders": ["Bandwar Village Community"],
@@ -387,7 +388,7 @@
       "eyebrow": "About This Archive",
       "title": "A Village in Its Own Words",
       "paragraphs": [
-        "Bandwar is a village in the Begusarai district of Bihar, part of the historic Mithila region. It sits along the flood-prone Burhi Gandak river — a fact that has shaped its name, its architecture, and its people. This archive is a community-built record of the village, kept by the village."
+        "Bandwar is a historic village in the Begusarai district of Bihar, part of the Mithila region. Situated along the flood-prone Burhi Gandak river, this archive is a community-built record of the village — kept by the village."
       ],
       "image": "/images/home/about-bandwar-village.jpg",
       "imageAlt": "A view of Bandwar village, Begusarai, Bihar"
