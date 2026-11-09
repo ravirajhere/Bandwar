@@ -5,7 +5,6 @@ import { Camera, ChevronRight, Image as ImageIcon } from "lucide-react";
 import { AddContentModal } from "@/components/shared/AddContentModal";
 import Link from "next/link";
 
-// 🚀 SEO FIX: Dynamic Metadata with Canonical & OG tags
 export async function generateMetadata(): Promise<Metadata> {
   const config = getMasterData();
   const baseUrl = config.site.url;
@@ -18,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `${baseUrl}/gallery`, // 🚀 Agar naya path hai, toh yahan update karein
+      canonical: `${baseUrl}/gallery`,
       languages: {
         "en-IN": `${baseUrl}/gallery`,
         "x-default": `${baseUrl}/gallery`,
@@ -28,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title: `${title} — Bandwar Village Archive`,
       description,
-      url: `${baseUrl}/gallery`, // 🚀 Agar naya path hai, toh yahan update karein
+      url: `${baseUrl}/gallery`,
       siteName: config.site.name,
       locale: "en_IN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: "Village Gallery - Bandwar Archive" }],
@@ -48,12 +47,10 @@ export default function GalleryPage() {
   const baseUrl = config.site.url;
   const photoCount = media.gallery.photos.length;
 
-  // 🚀 Dynamic categories for the upload form (excluding "All")
   const uploadCategories = media.gallery.categories
     .filter((c) => c.id !== "all")
     .map((c) => ({ id: c.id, title: c.title }));
 
-  // 🚀 JSON-LD Schema (Optimized for Google Images)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -77,16 +74,18 @@ export default function GalleryPage() {
         "@type": "ImageGallery",
         "@id": `${baseUrl}/gallery#gallery`,
         name: "Bandwar Village Photo Archive",
-        // 🚀 SEO TIP: We only send top 20 images to schema to keep the HTML payload light.
         associatedMedia: media.gallery.photos.slice(0, 20).map(photo => ({
           "@type": "ImageObject",
-          contentUrl: `${baseUrl}/${photo.src.split('?')[0].replace(/^\//, "")}`,
-          name: photo.caption,
-          description: photo.caption,
-          // 🚀 FIX: Changed to datePublished and added dimensions for better Google Images ranking
-          ...(photo.year && { datePublished: `${photo.year}-01-01` }),
-          width: 1200, 
-          height: 800
+          "url": `${baseUrl}/${photo.src.split('?')[0].replace(/^\//, "")}`,
+          "width": 1200, 
+          "height": 800,
+          "name": photo.caption,
+          "description": `${photo.caption} - Photograph taken in Bandwar Village, Begusarai, Bihar.`,
+          "caption": photo.caption,
+          "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
+          "copyrightNotice": "© Bandwar Village Archive",
+          "license": `${baseUrl}/about#license`,
+          ...(photo.year && { "datePublished": `${photo.year}-01-01` })
         }))
       }
     ]
@@ -95,16 +94,10 @@ export default function GalleryPage() {
   return (
     <div className="bg-canvas min-h-screen py-8 md:py-12 3xl:py-16">
       
-      {/* 🚀 JSON-LD Injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* 🚀 Immersive Layout for Gallery */}
       <div className="container mx-auto max-w-[1600px] px-4 md:px-0">
         
-        {/* 🏛️ Breadcrumbs (Strict) */}
         <nav className="flex items-center gap-2 text-sm text-ink-muted mb-6 no-print" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">
             Home
@@ -113,7 +106,6 @@ export default function GalleryPage() {
           <span className="text-ink font-medium">Gallery</span>
         </nav>
 
-        {/* 🏛️ Page Header */}
         <div className="border-b border-divider pb-6 mb-8 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-2">
@@ -128,7 +120,6 @@ export default function GalleryPage() {
             </p>
           </div>
           
-          {/* 🚀 Action Button (Dynamic Categories passed) */}
           <div className="shrink-0 pt-1">
             <AddContentModal 
               type="image" 
@@ -138,13 +129,11 @@ export default function GalleryPage() {
           </div>
         </div>
 
-        {/* 📊 Archive Stats */}
         <div className="flex items-center gap-2 mb-6 text-xs font-bold text-ink-muted uppercase tracking-wider">
           <ImageIcon size={16} className="text-accent" aria-hidden="true" />
           <span>{photoCount} Photographs in Archive</span>
         </div>
 
-        {/* Gallery Grid (Main Content) */}
         <GalleryGrid 
           photos={media.gallery.photos} 
           categories={media.gallery.categories} 
