@@ -18,15 +18,19 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = getMasterData();
-  const defaultOgImage = config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg";
+  const baseUrl = config.site.url;
+  const defaultOgImage = `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
   
   return {
     title: { 
       default: "Bandwar Village Archive — Begusarai, Bihar", 
       template: "%s — Bandwar Village Archive"
     },
-    description: config.seo?.defaultDescription || config.site.description,
-    metadataBase: new URL(config.site.url),
+    description: config.seo?.defaultDescription || "Explore the history, temples, schools, and daily life of Bandwar village, Begusarai (Bihar). A community-built digital archive.",
+    metadataBase: new URL(baseUrl),
+    alternates: {
+      canonical: "/",
+    },
     robots: {
       index: true, follow: true,
       googleBot: {
@@ -35,20 +39,24 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
     openGraph: {
+      type: "website",
       siteName: "Bandwar Village Archive",
       locale: "en_IN",
-      type: "website",
+      url: baseUrl,
+      title: "Bandwar Village Archive — Begusarai, Bihar",
+      description: config.seo?.defaultDescription || "A community-built digital archive of Bandwar village.",
       images: [{ url: defaultOgImage, width: 1200, height: 630, alt: "The Burhi Gandak river at dawn in Bandwar village, Begusarai" }],
     },
     twitter: {
       card: "summary_large_image",
+      title: "Bandwar Village Archive — Begusarai, Bihar",
+      description: config.seo?.defaultDescription || "A community-built digital archive of Bandwar village.",
       images: [defaultOgImage],
     },
     icons: {
       icon: [{ url: "/favicon.ico", sizes: "any" }],
       apple: { url: "/images/brand/apple-touch-icon.png", sizes: "180x180" },
     },
-    // 🚀 GOOGLE SEARCH CONSOLE VERIFICATION ADDED HERE
     verification: {
       google: "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs",
     }
@@ -59,11 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const config = getMasterData();
   const baseUrl = config.site.url;
 
-  // 🚀 Extract Hero image for Preload (Improves LCP)
-  const heroImage = config.home?.hero?.image 
-    ? (config.home.hero.image.startsWith("/") ? config.home.hero.image : `/${config.home.hero.image}`) 
-    : "/images/geography/burhi-gandak-river-dawn-bandwar.jpg";
-
+  // 🚀 ADVANCED JSON-LD (Entity SEO & E-E-A-T)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -94,6 +98,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         description: config.organization?.mission || config.site.description,
         foundingDate: "2024",
         areaServed: { "@type": "Place", name: "Bandwar, Begusarai, Bihar, India" },
+        // 🚀 NEW: Tells Google what this organization is an expert in (E-E-A-T)
+        knowsAbout: [
+          "Bandwar Village History",
+          "Mithila Culture",
+          "Begusarai District",
+          "Bihar Heritage",
+          "Village Archives"
+        ],
       },
       ...(config.village ? [{
         "@type": "Place",
@@ -101,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         name: config.village.name,
         alternateName: config.village.alias,
         additionalType: "https://en.wikipedia.org/wiki/Village",
+        description: "Bandwar is a historic village in the Mithila region of Bihar, India, located on the banks of the Burhi Gandak river.",
         address: {
           "@type": "PostalAddress",
           addressLocality: "Bandwar",
@@ -133,9 +146,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning>
       <head>
-        {/* 🚀 Preload Hero Image for faster LCP */}
-        <link rel="preload" as="image" href={heroImage} fetchPriority="high" />
-
+        {/* 🚀 FIX: Removed manual image preload. Next.js <Image priority> handles LCP perfectly. */}
+        
         {/* 🚀 Google Fonts Loading (Non-Blocking) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
