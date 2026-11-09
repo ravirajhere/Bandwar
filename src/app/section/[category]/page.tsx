@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const ogImage = `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
 
   return {
-    title: category.title, // Layout template will append "— Bandwar Village Archive"
+    title: category.title,
     description: category.description,
     alternates: {
       canonical: url,
@@ -60,9 +60,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   if (!category) notFound();
 
   const baseUrl = config.site.url;
+  // 🚀 SEO TIP: getAllArticles already sorts by newest first
   const articles = getAllArticles().filter(a => a.categories.includes(category.id));
 
-  // 🚀 SEO FIX: JSON-LD Schema (CollectionPage + Breadcrumb + ItemList)
+  // 🚀 ADVANCED JSON-LD Schema (CollectionPage + Breadcrumb + Deep ItemList)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -73,10 +74,16 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         name: `${category.title} — Bandwar Village Archive`,
         description: category.description,
         isPartOf: { "@id": `${baseUrl}/#website` },
+        about: { "@id": `${baseUrl}/#place` }, // 🚀 Links to main Village entity
+        mainEntity: {
+          "@type": "ItemList",
+          "@id": `${baseUrl}/section/${category.id}#itemlist`
+        },
         inLanguage: "en-IN",
       },
       {
         "@type": "BreadcrumbList",
+        "@id": `${baseUrl}/section/${category.id}#breadcrumb`,
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
           { "@type": "ListItem", "position": 2, "name": "Archive", "item": `${baseUrl}/section` },
@@ -87,13 +94,29 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         "@type": "ItemList",
         "@id": `${baseUrl}/section/${category.id}#itemlist`,
         name: `${category.title} Articles`,
+        description: `List of articles related to ${category.title} in Bandwar Village.`,
         numberOfItems: articles.length,
-        itemListElement: articles.slice(0, 20).map((article, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          url: `${baseUrl}/article/${article.id}`,
-          name: article.title
-        }))
+        itemListOrder: "https://schema.org/ItemListOrderDescending", // 🚀 Tells Google it's sorted Newest-First
+        itemListElement: articles.slice(0, 20).map((article, index) => {
+          // 🚀 ADVANCED: Adding images to ItemList helps Google show Carousels in Search
+          const images: string[] = [];
+          if (article.hero) {
+            images.push(article.hero.startsWith("http") ? article.hero : `${baseUrl}/${article.hero.replace(/^\//, "")}`);
+          }
+          
+          return {
+            "@type": "ListItem",
+            position: index + 1,
+            url: `${baseUrl}/article/${article.id}`,
+            name: article.title,
+            ...(images.length > 0 && { 
+              image: {
+                "@type": "ImageObject",
+                "url": images[0]
+              }
+            })
+          };
+        })
       }] : [])
     ]
   };
