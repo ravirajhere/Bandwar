@@ -77,12 +77,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
   const validArticleIds = allArticles.map(a => a.id);
 
-  // 🚀 Helper to format ISO Dates for Google
   const formatToISO = (dateStr: string) => {
     return dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
   };
 
-  // 🚀 FIX: Added type "any[]" to prevent TypeScript build error
+  // 🚀 ADVANCED IMAGE SEO: Adding creator, license, and precise descriptions to fight "Toran" confusion
   const imagesArray: any[] = [];
   
   if (article.hero) {
@@ -92,30 +91,37 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "url": imgUrl,
       "width": 1200,
       "height": 630,
-      "caption": article.title
+      "name": `${article.title} - Bandwar Village Archive`,
+      "description": `Photograph related to ${article.title} in Bandwar Village, Begusarai, Bihar, India.`,
+      "caption": article.title,
+      "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
+      "copyrightNotice": "© Bandwar Village Archive",
+      "license": `${baseUrl}/about#license`
     });
   }
   
   if (article.photos && article.photos.length > 0) {
     article.photos.forEach(photo => {
       const imgUrl = photo.src.startsWith("http") ? photo.src : `${baseUrl}/${photo.src.replace(/^\//, "")}`;
-      // Avoid duplicate hero image in array
       if (!imagesArray.some(img => img.url === imgUrl)) {
         imagesArray.push({
           "@type": "ImageObject",
           "url": imgUrl,
           "width": 800,
           "height": 600,
-          "caption": photo.caption || article.title
+          "name": photo.caption || article.title,
+          "description": `${photo.caption || article.title} - Located in Bandwar Village, Begusarai, Bihar.`,
+          "caption": photo.caption || article.title,
+          "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
+          "copyrightNotice": "© Bandwar Village Archive",
+          "license": `${baseUrl}/about#license`
         });
       }
     });
   }
 
-  // 🚀 WORD COUNT: Helps Google understand content depth
   const wordCount = article.content.reduce((acc, block) => acc + block.text.split(/\s+/).length, 0) + article.summary.split(/\s+/).length;
 
-  // 🚀 AUTHOR FIX: Proper Person Schema for E-E-A-T
   const authorName = article.lastEditedBy || config.site.name;
   const authorUsername = article.lastEditedByUsername;
   let authorObj: any = { 
@@ -127,7 +133,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     authorObj["@id"] = `${baseUrl}/contributors/${authorUsername}#person`;
     authorObj["url"] = `${baseUrl}/contributors/${authorUsername}`;
   } else if (!article.lastEditedBy) {
-    // Fallback to Organization if no person is mentioned
     authorObj = { 
       "@type": "Organization", 
       "@id": `${baseUrl}/#organization`, 
@@ -141,7 +146,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     "mainEntityOfPage": { "@type": "WebPage", "@id": articleUrl },
     "headline": article.title.slice(0, 110),
     "description": article.summary.slice(0, 160),
-    "image": imagesArray, // 🚀 Fixed: Now sends full ImageObjects
+    "image": imagesArray, 
     "inLanguage": "en-IN",
     "articleSection": categoryTitle,
     "author": authorObj,
@@ -154,8 +159,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     "datePublished": formatToISO(article.datePublished || article.lastUpdated),
     "dateModified": formatToISO(article.dateModified || article.lastUpdated),
     "isPartOf": { "@id": `${baseUrl}/#website` },
-    "wordCount": wordCount, // 🚀 Fixed: Adds depth signal
-    "isAccessibleForFree": true, // 🚀 Fixed: Signals no paywall
+    "wordCount": wordCount, 
+    "isAccessibleForFree": true, 
     "speakable": {
       "@type": "SpeakableSpecification",
       "cssSelector": [".article-lead-summary", "h1"]
@@ -195,7 +200,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         <ReadingProgress />
         <MobileTOC content={article.content} hasFaqs={!!(article.faqs && article.faqs.length > 0)} />
 
-        {/* PRINT-ONLY HEADER */}
         <div className="hidden print-only mb-8 pb-4 border-b-2 border-black">
           <div className="flex justify-between items-end">
             <div>
@@ -211,7 +215,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
         <div className="container mx-auto px-4 md:px-0 grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)_320px] 3xl:grid-cols-[300px_minmax(0,1fr)_380px] gap-8 xl:gap-12 3xl:gap-16">
           
-          {/* LEFT COLUMN (Desktop TOC) */}
           <aside className="hidden lg:block no-print">
             <div className="sticky top-24 bg-surface border border-divider p-4 3xl:p-5 text-sm">
               <h4 className="font-bold text-ink mb-3 pb-2 border-b border-divider text-xs uppercase tracking-wider">Contents</h4>
@@ -236,7 +239,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           </aside>
 
-          {/* MIDDLE COLUMN (Main Content) */}
           <div className="min-w-0 article-body-wrapper">
             <nav className="flex items-center gap-2 text-[13px] text-ink-muted mb-6 no-print flex-wrap">
               <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Home</Link>
@@ -378,7 +380,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-          {/* RIGHT COLUMN (Infobox) */}
           <aside className="hidden xl:block no-print">
             <div className="sticky top-24">
               {article.infobox && <Infobox data={article.infobox} title={article.title} articleId={article.id} />}
