@@ -5,13 +5,32 @@ const nextConfig = {
   compress: true,
   trailingSlash: false, // 🚀 SEO FIX: Prevents duplicate URLs like /about/ and /about
 
-  // 🚀 SEO FIX: Image Optimization
+  // 🚀 SEO FIX & IMAGE FIX
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     deviceSizes: [400, 640, 800, 1024, 1200, 1600, 1920],
     imageSizes: [64, 96, 128, 256, 384],
+    qualities: [75, 85, 100], // 🚀 Next.js 15+ ke liye qualities define karna zaroori hai
     dangerouslyAllowSVG: false,
+    
+    // Agar aapke paas external images hain (jaise unsplash ya koi aur CDN), toh unhe yahan add karein
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'bandwar.vercel.app', // Aapka khud ka domain
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com', // Example external domain
+      }
+    ],
+    
+    // 🚨 IMPORTANT FIX 🚨
+    // Agar aapki images Vercel par load nahi ho rahi hain (403 error), 
+    // toh niche wali line ko uncomment (// hatakar) kar dein. 
+    // Isse Next.js images ko optimize nahi karega aur direct load karega.
+    // unoptimized: true, 
   },
 
   // 🚀 SECURITY FIX: Global & Admin Headers
