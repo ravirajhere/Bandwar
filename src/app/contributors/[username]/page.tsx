@@ -8,11 +8,13 @@ import { ProfileClientWrapper } from "@/components/contributor/ProfileClientWrap
 
 export async function generateStaticParams() {
   const contributors = getAllContributors();
-  return contributors.map((c) => ({ username: encodeURIComponent(c.username) }));
+  // 🚀 FIX: Removed encodeURIComponent so URLs show @ instead of %40
+  return contributors.map((c) => ({ username: c.username }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
+  // Keep decodeURIComponent so old %40 links still work
   const username = decodeURIComponent(resolvedParams.username);
   const contributor = getContributorByUsername(username);
   const config = getMasterData();
@@ -20,7 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
   if (!contributor) return { title: "Contributor Not Found", robots: { index: false } };
 
   const baseUrl = config.site.url;
-  const profileUrl = `${baseUrl}/contributors/${encodeURIComponent(contributor.username)}`;
+  // 🚀 FIX: Using direct username
+  const profileUrl = `${baseUrl}/contributors/${contributor.username}`;
   const bio = contributor.bio?.slice(0, 160) || `${contributor.displayName} — a contributor to the Bandwar Village Archive.`;
   const ogImage = contributor.photo ? `${baseUrl}/${contributor.photo.replace(/^\//, "")}` : `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
 
@@ -45,6 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
 export default async function ContributorProfile({ params }: { params: Promise<{ username: string }> }) {
   const resolvedParams = await params;
+  // Keep decodeURIComponent for safety
   const username = decodeURIComponent(resolvedParams.username);
   const contributor = getContributorByUsername(username);
   const config = getMasterData();
@@ -53,7 +57,8 @@ export default async function ContributorProfile({ params }: { params: Promise<{
   if (!contributor) notFound();
 
   const baseUrl = config.site.url;
-  const profileUrl = `${baseUrl}/contributors/${encodeURIComponent(contributor.username)}`;
+  // 🚀 FIX: Using direct username
+  const profileUrl = `${baseUrl}/contributors/${contributor.username}`;
   
   // E-E-A-T: Find articles edited by this user
   const authoredArticles = allArticles.filter(a => 
