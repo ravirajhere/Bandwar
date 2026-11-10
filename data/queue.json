@@ -1,4 +1,22 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794325653961_st5km8",
+      "type": "Image Update Suggestion",
+      "contextId": "satyam-bharti-bandwar",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-10T15:47:33.961Z",
+      "pendingImageUrl": "/images/pending/edit_1794325651652_g1xtqf.jpg",
+      "intent": "image_update",
+      "filePath": "data/people.json",
+      "targetType": "person",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "/images/people/satyam-bharti-bandwar.jpg",
+      "jsonObj": {}
+    }
+  ],
   "approved": []
 }
