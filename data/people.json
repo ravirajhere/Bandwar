@@ -72,7 +72,7 @@
       "id": "dr-arman-anand-singh-bandwar",
       "name": "Dr. Armaan Anand Singh",
       "role": "Professor & Author",
-      "locality": "Ward No 7, Bandwar, Begusarai",
+      "locality": "Bandwar, Begusarai",
       "birthplace": "Begusarai, Bihar",
       "photo": "/images/people/dr-arman-anand-singh-bandwar.jpg",
       "photoAlt": "Dr. Armaan Anand Singh, Professor and Author from Bandwar",
@@ -97,6 +97,65 @@
         "neend-jise-raat-bhar-nahin-aati",
         "ganga-jamuni-tehzeeb",
         "cultural-head"
+      ],
+      "lastUpdated": "2026-11-10",
+      "lastEditedBy": "Bandwar Editor"
+    },
+    {
+      "id": "ramchandra-singh-bandwar",
+      "name": "Ramchandra Singh",
+      "role": "Freedom Fighter & Martyr (Shaheed)",
+      "locality": "Bandwar (Vandwar), Begusarai",
+      "birthplace": "Bandwar (Vandwar), Begusarai",
+      "photo": "/images/people/ramchandra-singh-bandwar.jpg",
+      "photoAlt": "Ramchandra Singh, Freedom Fighter and Martyr from Bandwar",
+      "titles": [
+        "Shaheed",
+        "Freedom Fighter"
+      ],
+      "notableFor": "One of the six students martyred in the police firing at Begusarai on 26 January 1931 during India's freedom struggle. The Shaheed Ramchandra Dwar in Bandwar is named in his honour.",
+      "journey": "Ramchandra Singh, a native of Vandwar (Bandwar) in Begusarai, was among the six students killed in police firing at Begusarai on 26 January 1931 during India's freedom movement. His sacrifice is remembered in local history, and the Shaheed Ramchandra Dwar in Bandwar stands as a memorial to his martyrdom.",
+      "bio": "Ramchandra Singh was a freedom fighter and martyr from Vandwar (Bandwar) in Begusarai district, Bihar. He was one of the six students martyred in the police firing at Begusarai on 26 January 1931 during the Indian freedom struggle. His legacy is preserved in the village through the Shaheed Ramchandra Dwar, a memorial gateway built in his honour, which remains a symbol of Bandwar's contribution to India's independence movement.",
+      "tags": [
+        "freedom-fighter",
+        "shaheed",
+        "martyr",
+        "1931",
+        "independence-movement",
+        "bandwar",
+        "shaheed-ramchandra-dwar"
+      ],
+      "lastUpdated": "2026-11-10",
+      "lastEditedBy": "Bandwar Archive"
+    },
+    {
+      "id": "satyam-bharti-bandwar",
+      "name": "Satyam Bharti",
+      "role": "Author & Poet",
+      "locality": "Ward No. 4, Bandwar",
+      "birthplace": "Bandwar (Vandwar), Begusarai",
+      "dob": "1996-12-11",
+      "photo": "/images/people/satyam-bharti-bandwar.jpg",
+      "photoAlt": "Satyam Bharti, Author and Poet from Bandwar",
+      "titles": [
+        "Author",
+        "Poet",
+        "Ghazal Writer",
+        "Doha Writer"
+      ],
+      "notableFor": "Author of the ghazal collection 'Suno Sadanira', which received the Ravinesh Kumar Verma Smriti Samman; also published the doha collection 'Bikhar Rahe Pratiman'.",
+      "journey": "Satyam Bharti, born on 11 December 1996 in Vandwar (Bandwar), is a young Hindi author and poet. His ghazal collection 'Suno Sadanira' earned him the Ravinesh Kumar Verma Smriti Samman. He has also published a collection of dohas titled 'Bikhar Rahe Pratiman'. He resides in Ward No. 4 of Bandwar.",
+      "bio": "Satyam Bharti is a young Hindi author and poet from Vandwar (Bandwar) in Begusarai district, Bihar. Born on 11 December 1996, he has made a mark in Hindi literature with his ghazal collection 'Suno Sadanira', which received the Ravinesh Kumar Verma Smriti Samman. He has also published a doha collection titled 'Bikhar Rahe Pratiman'. A resident of Ward No. 4 in Bandwar, he represents the village's vibrant literary tradition.",
+      "tags": [
+        "author",
+        "poet",
+        "ghazal",
+        "doha",
+        "hindi-literature",
+        "suno-sadanira",
+        "bikhar-rahe-pratiman",
+        "ravinesh-kumar-verma-smriti-samman",
+        "bandwar"
       ],
       "lastUpdated": "2026-11-10",
       "lastEditedBy": "Bandwar Editor"
