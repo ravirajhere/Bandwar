@@ -1,23 +1,4 @@
 {
   "pending": [],
-  "approved": [
-    {
-      "id": "edit_1794324297710_21e35z",
-      "type": "Image Update Suggestion",
-      "contextId": "dr-arman-anand-singh-bandwar",
-      "userName": "Bandwar Editor",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-10T15:24:57.710Z",
-      "pendingImageUrl": "/images/pending/edit_1794324296624_n1r8zt.jpg",
-      "intent": "image_update",
-      "filePath": "data/people.json",
-      "targetType": "person",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "/images/people/dr-arman-anand-singh-bandwar.jpg",
-      "jsonObj": {},
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
