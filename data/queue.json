@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794325653961_st5km8",
       "type": "Image Update Suggestion",
@@ -15,8 +16,8 @@
       "oldValue": "",
       "newValue": "",
       "currentImagePath": "/images/people/satyam-bharti-bandwar.jpg",
-      "jsonObj": {}
+      "jsonObj": {},
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
