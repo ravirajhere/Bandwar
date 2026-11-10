@@ -69,13 +69,35 @@
       "lastEditedBy": "Admin"
     },
     {
-      "id": "person-dr-arman-anand",
-      "name": "Unknown",
-      "role": "",
-      "bio": "",
-      "dob": "",
-      "deathDate": "",
-      "photo": "",
+      "id": "dr-arman-anand-singh-bandwar",
+      "name": "Dr. Armaan Anand Singh",
+      "role": "Professor & Author",
+      "locality": "Ward No 7, Bandwar, Begusarai",
+      "birthplace": "Begusarai, Bihar",
+      "photo": "/images/people/dr-arman-anand-singh-bandwar.jpg",
+      "photoAlt": "Dr. Armaan Anand Singh, Professor and Author from Bandwar",
+      "titles": [
+        "Professor",
+        "Author",
+        "Poet",
+        "Nodal Coordinator",
+        "Cultural Head"
+      ],
+      "notableFor": "Hindi professor at G.D. College, Begusarai, and author of the poetry collection 'Neend Jise Raat Bhar Nahin Aati'. Known for his literary contributions and active role in local educational and cultural initiatives.",
+      "journey": "Dr. Armaan Anand Singh is a Hindi professor at G.D. College (Ganesh Dutt College) in Begusarai. He is also the Nodal Coordinator for the District Extension Centre and the head of the college's Cultural Committee (Sanskriti Prakoshth). As an author, he published a poetry collection titled 'Neend Jise Raat Bhar Nahin Aati'. His poems often explore themes of love, reality, and social commentary, and he has been described as a poet of 'Ganga-Jamuni tehzeeb'. His work has been featured on the 'Vishwa Hindi Sahitya' blog.",
+      "bio": "Dr. Armaan Anand Singh is a prominent academic and literary figure from Bandwar in the Begusarai district of Bihar. He serves as a professor in the Hindi Department of G.D. College, Begusarai, and has held significant administrative roles, including Nodal Coordinator of the District Extension Centre. As an author, his poetry collection 'Neend Jise Raat Bhar Nahin Aati' reflects deep emotional and realistic themes. He is actively involved in organizing cultural and literary events, contributing significantly to the educational and cultural landscape of the region.",
+      "tags": [
+        "professor",
+        "author",
+        "poet",
+        "hindi-literature",
+        "g-d-college",
+        "begusarai",
+        "bandwar",
+        "neend-jise-raat-bhar-nahin-aati",
+        "ganga-jamuni-tehzeeb",
+        "cultural-head"
+      ],
       "lastUpdated": "2026-11-10",
       "lastEditedBy": "Bandwar Editor"
     }
