@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794323537779_edpzrk",
       "type": "Person Submission",
@@ -15,8 +16,8 @@
       "oldValue": "",
       "newValue": "",
       "currentImagePath": "Unknown",
-      "jsonObj": {}
+      "jsonObj": {},
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
