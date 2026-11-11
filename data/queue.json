@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794402209724_3ma9d2",
       "type": "Image Update Suggestion",
@@ -17,8 +18,8 @@
       "currentImagePath": "images/education/st-paul-school-bandwar-building.jpg",
       "jsonObj": {
         "Category": "education"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
