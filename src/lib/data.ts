@@ -113,7 +113,37 @@ export function getAllArticles(): Article[] {
     if (fileName.endsWith(".json")) {
       const rawData = readJsonFile(`articles/${fileName}`);
       const parsedData = validateData(ArticleListSchema, rawData, `articles/${fileName}`);
-      allArticles = [...allArticles, ...parsedData.articles];
+      
+      // ✅ SMART IMAGE CHECKER: Ensures images exist before sending to UI
+      const safeArticles = parsedData.articles.map((art: any) => {
+        let updatedArt = { ...art };
+        
+        // Check 'hero' image
+        if (updatedArt.hero && !updatedArt.hero.startsWith("http")) {
+          const cleanSrc = updatedArt.hero.split("?")[0].replace(/^\//, "");
+          const imgPath = path.join(process.cwd(), "public", cleanSrc);
+          if (!fs.existsSync(imgPath)) {
+            updatedArt.hero = FALLBACK_IMAGE; // Use fallback if file is missing
+          }
+        } else if (!updatedArt.hero) {
+          updatedArt.hero = FALLBACK_IMAGE; // Use fallback if field is empty
+        }
+
+        // Check 'image' field (just in case your cards use 'image' instead of 'hero')
+        if (updatedArt.image && !updatedArt.image.startsWith("http")) {
+          const cleanSrc = updatedArt.image.split("?")[0].replace(/^\//, "");
+          const imgPath = path.join(process.cwd(), "public", cleanSrc);
+          if (!fs.existsSync(imgPath)) {
+            updatedArt.image = FALLBACK_IMAGE;
+          }
+        } else if (!updatedArt.image) {
+           updatedArt.image = FALLBACK_IMAGE;
+        }
+
+        return updatedArt;
+      });
+
+      allArticles = [...allArticles, ...safeArticles];
     }
   }
 
