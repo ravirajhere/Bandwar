@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794401789427_apq71d",
+      "type": "Image Update Suggestion",
+      "contextId": "adharsh-vikash-vidhya-mandir",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-11T12:56:29.427Z",
+      "pendingImageUrl": "/images/pending/edit_1794401788144_oyqkng.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/education.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
+      "jsonObj": {
+        "Category": "education"
+      }
+    }
+  ],
   "approved": []
 }
