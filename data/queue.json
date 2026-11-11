@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794401789427_apq71d",
       "type": "Image Update Suggestion",
@@ -17,8 +18,8 @@
       "currentImagePath": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
       "jsonObj": {
         "Category": "education"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
