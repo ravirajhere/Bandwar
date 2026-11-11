@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794400440971_qpa7k8",
+      "type": "Image Update Suggestion",
+      "contextId": "gps-paschimibandwar-school",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-11T12:34:00.971Z",
+      "pendingImageUrl": "/images/pending/edit_1794400439622_m2qkp7.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/education.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/education/gps-paschimibandwar-school-building.jpg",
+      "jsonObj": {
+        "Category": "education"
+      }
+    }
+  ],
   "approved": []
 }
