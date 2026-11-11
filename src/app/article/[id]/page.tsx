@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getAllArticles, getArticleById, getMasterData, getCategoriesData, getContributors } from "@/lib/data"; 
+import { getAllArticles, getArticleById, getMasterData, getCategoriesData, getContributors, FALLBACK_IMAGE } from "@/lib/data"; 
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!article) return { title: "Not Found", robots: { index: false } };
 
   const baseUrl = config.site.url;
-  const ogImage = article.hero ? `${baseUrl}/${article.hero.replace(/^\//, '')}` : `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
+  // ✅ Use fallback.jpg when article has no hero image
+  const ogImage = article.hero
+    ? `${baseUrl}/${article.hero.replace(/^\//, '')}`
+    : `${baseUrl}${FALLBACK_IMAGE}`;
 
   return {
     title: article.metaTitle || article.title,
@@ -120,6 +123,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     });
   }
 
+  // ✅ Fallback image for JSON-LD if article has NO real images at all
+  // (Real images always take priority for SEO)
+  if (imagesArray.length === 0) {
+    imagesArray.push({
+      "@type": "ImageObject",
+      "url": `${baseUrl}${FALLBACK_IMAGE}`,
+      "width": 1200,
+      "height": 675,
+      "name": `${article.title} - Bandwar Village Archive`,
+      "description": `Archive image for ${article.title} in Bandwar Village, Begusarai, Bihar.`,
+      "caption": article.title,
+      "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
+      "copyrightNotice": "© Bandwar Village Archive",
+      "license": `${baseUrl}/about#license`
+    });
+  }
+
   const wordCount = article.content.reduce((acc, block) => acc + block.text.split(/\s+/).length, 0) + article.summary.split(/\s+/).length;
 
   const authorName = article.lastEditedBy || config.site.name;
@@ -192,6 +212,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   });
 
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
+
+  // ✅ Hero path: real hero if exists, otherwise fallback (still editable via ArticleHeroImage)
+  const heroSrc = article.hero ? article.hero : FALLBACK_IMAGE;
 
   return (
     <EditModeProvider>
@@ -285,11 +308,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             </header>
 
-            {article.hero && (
-              <div className="mb-8">
-                <ArticleHeroImage hero={article.hero} title={article.title} articleId={article.id} altText={article.photos?.[0]?.imageAlt || article.title} />
-              </div>
-            )}
+            {/* ✅ Hero image: shows real hero, or fallback.jpg if not uploaded yet */}
+            <div className="mb-8">
+              <ArticleHeroImage 
+                hero={heroSrc} 
+                title={article.title} 
+                articleId={article.id} 
+                altText={article.photos?.[0]?.imageAlt || article.title} 
+              />
+            </div>
 
             <div className="mb-10 article-lead-summary">
               <EditableParagraph initialValue={article.summary} contextId={article.id} contextType="Article" fieldName="Article Summary" className="text-lg md:text-xl 3xl:text-[1.35rem] text-ink leading-relaxed font-medium" />
