@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794411791837_pw4zv6",
+      "type": "Image Update Suggestion",
+      "contextId": "sama-chakeva-mithila-festival-bandwar",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-11T15:43:11.837Z",
+      "pendingImageUrl": "/images/pending/edit_1794411790706_ivgj3k.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/culture.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "/fallback.jpg",
+      "jsonObj": {
+        "Category": "culture"
+      }
+    }
+  ],
   "approved": []
 }
