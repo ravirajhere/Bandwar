@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794411344148_xg9qjc",
+      "type": "Image Update Suggestion",
+      "contextId": "health-infrastructure-bandwar-village",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-11T15:35:44.148Z",
+      "pendingImageUrl": "/images/pending/edit_1794411342910_ozqx27.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/health.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "/fallback.jpg",
+      "jsonObj": {
+        "Category": "health"
+      }
+    }
+  ],
   "approved": []
 }
