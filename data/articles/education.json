@@ -292,7 +292,7 @@
         "education"
       ],
       "summary": "GPS Paschimibandwar (Government Primary School, West Bandwar) is a government primary school in the western part of Bandwar village, Begusarai, Bihar. Established in 1952 with UDISE code 10201008402, it serves Classes 1 through 5 with 150 students.",
-      "hero": "images/education/gps-paschimibandwar-school-building.jpg",
+      "hero": "/images/education/gps-paschimibandwar-school-building.jpg",
       "photos": [
         {
           "src": "images/education/gps-paschimibandwar-school-building.jpg",
@@ -311,7 +311,7 @@
         "Management": "State Government"
       },
       "datePublished": "2026-07-10",
-      "lastUpdated": "2026-07-10",
+      "lastUpdated": "2026-11-11",
       "content": [
         {
           "heading": "Overview",
@@ -368,7 +368,8 @@
         "begusarai primary school",
         "udise 10201008402",
         "government school bihar"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "gps-mohanpur-kanya-school",
