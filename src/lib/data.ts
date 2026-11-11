@@ -12,6 +12,31 @@ import { Contributor } from "./contributor";
 // ==========================================
 // 1. CORE HELPERS
 // ==========================================
+
+// 🖼️ Global fallback image — served from /public/fallback.jpg
+// Used for articles/media that haven't uploaded a real image yet.
+export const FALLBACK_IMAGE = "/fallback.jpg";
+
+/**
+ * Returns a safe, render-ready image path for an article.
+ * - Empty / null / undefined  → FALLBACK_IMAGE
+ * - Query strings (?v=hash)    → stripped for Next.js <Image> compatibility
+ * - Leading slash              → preserved (for /public rendering)
+ */
+export function getArticleImage(image?: string | null): string {
+  if (!image || image.trim() === "") return FALLBACK_IMAGE;
+  return image.split("?")[0];
+}
+
+/**
+ * Same logic as getArticleImage, but for gallery / map landmarks.
+ * Keeping it separate lets us swap the fallback later without touching articles.
+ */
+export function getMediaImage(src?: string | null): string {
+  if (!src || src.trim() === "") return FALLBACK_IMAGE;
+  return src.split("?")[0];
+}
+
 const readJsonFile = (filePath: string) => {
   const fullPath = path.join(process.cwd(), "data", filePath);
   try {
