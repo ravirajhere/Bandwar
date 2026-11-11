@@ -98,7 +98,7 @@
         "culture"
       ],
       "summary": "Bandwar's Ram temple, distinguished by its twin shikharas, is one of the most recognisable structures in the village. It is the site of the annual [[ram-katha-thakurbari-bandwar-2021|Ram Katha]] — the recitation of the Ramcharitmanas — and is especially striking against the evening sky at sunset.",
-      "hero": "images/articles/ram-mandir-thakurbari-bandwar.jpg",
+      "hero": "images/religion/ram-mandir-thakurbari-bandwar.jpg",
       "photos": [
         {
           "src": "images/religion/ram-mandir-thakurbari-bandwar.jpg",
@@ -109,7 +109,7 @@
           "caption": "The temple at sunset, its twin shikharas silhouetted against the sky."
         },
         {
-          "src": "images/culture/bandwar-ram-katha-thakurbari-pandal-2021.jpg",
+          "src": "images/religion/bandwar-ram-katha-thakurbari-pandal-2021.jpg",
           "caption": "Ram Katha at the temple courtyard, 2021."
         }
       ],
@@ -701,7 +701,7 @@
         "autumn durga puja bihar",
         "bandwar village temples"
       ],
-      "lastEditedBy": "Ravi Raj"
+      "lastEditedBy": "Bandwar Editor"
     }
   ]
 }
