@@ -11,7 +11,7 @@
         "history"
       ],
       "summary": "Established in 1942 by Pandit Taradutt Pathak, S.N.K. High School is the oldest educational institution in Bandwar, Begusarai. Originally a free Sanskrit gurukul, it now operates as a government secondary school (Classes 9-10) with UDISE code 10201013302.",
-      "hero": "images/education/snk-high-school-bandwar-campus.jpg",
+      "hero": "/images/education/snk-high-school-bandwar-campus.jpg",
       "photos": [
         {
           "src": "images/education/snk-high-school-bandwar-campus.jpg",
@@ -32,7 +32,7 @@
         "Location": "Bandwar, Begusarai, Bihar"
       },
       "datePublished": "2026-01-26",
-      "lastUpdated": "2026-01-26",
+      "lastUpdated": "2026-11-11",
       "content": [
         {
           "heading": "Origins — The 1942 Gurukul",
@@ -90,7 +90,8 @@
         "sanskrit school bandwar",
         "udise 10201013302",
         "oldest school bandwar"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "uhs-plus-2-bandwar",
