@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794405824190_jvcr94",
+      "type": "Image Update Suggestion",
+      "contextId": "snk-high-school-bandwar",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-11T14:03:44.190Z",
+      "pendingImageUrl": "/images/pending/edit_1794405822968_q2dnkk.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/education.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/education/snk-high-school-bandwar-campus.jpg",
+      "jsonObj": {
+        "Category": "education"
+      }
+    }
+  ],
   "approved": []
 }
