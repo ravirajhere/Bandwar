@@ -733,7 +733,7 @@
         "education"
       ],
       "summary": "Adharsh Vikash Vidhya Mandir is a private unaided primary school in Bandwar village, Begusarai, Bihar. Established in 2015 with UDISE code 10201008405, it offers Classes 1 through 8 in Hindi medium.",
-      "hero": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
+      "hero": "/images/education/adharsh-vikash-vidhya-mandir-building.jpg",
       "photos": [
         {
           "src": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
@@ -753,7 +753,7 @@
         "Management": "Private Unaided (Recognized)"
       },
       "datePublished": "2026-08-20",
-      "lastUpdated": "2026-11-04",
+      "lastUpdated": "2026-11-11",
       "content": [
         {
           "heading": "Overview",
@@ -819,7 +819,8 @@
         "begusarai private school",
         "udise 10201008405",
         "hindi medium school bihar"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "st-paul-school-bandwar",
