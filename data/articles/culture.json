@@ -197,7 +197,7 @@
         "culture"
       ],
       "summary": "Sama Chakeva is a vibrant folk festival celebrated in the Mithila region, including Bandwar, right after Chhath Puja. It celebrates the deep bond between brothers and sisters. Sisters create colourful clay idols of Sama and Chakeva (symbolizing migratory birds) and perform rituals, sing traditional Maithili songs, and eventually submerge the idols in the river.",
-      "hero": "images/culture/bandwar-sama-chakeva-clay-idols-mithila-festival.jpg",
+      "hero": "/fallback.jpg",
       "photos": [
         {
           "src": "images/culture/bandwar-sama-chakeva-clay-idols-mithila-festival.jpg",
@@ -215,7 +215,7 @@
         "Ecological Link": "Arrival of Himalayan migratory birds"
       },
       "datePublished": "2026-10-30",
-      "lastUpdated": "2026-10-30",
+      "lastUpdated": "2026-11-11",
       "content": [
         {
           "heading": "Overview",
@@ -271,7 +271,8 @@
         "brother sister festival bihar",
         "migratory birds mithila",
         "kartik purnima festival"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "mithila-painting-madhubani-bandwar",
