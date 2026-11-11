@@ -832,7 +832,7 @@
         "education"
       ],
       "summary": "St. Paul School is a private unaided English-medium school in Bandwar village, Begusarai, Bihar. Established in 2015 with UDISE code 10201008404, it offers Classes 1 through 8 in English and Hindi medium. It serves primarily middle-income families, with only 7% of students from Below Poverty Line households.",
-      "hero": "images/education/st-paul-school-bandwar-building.jpg",
+      "hero": "/images/education/st-paul-school-bandwar-building.jpg",
       "photos": [
         {
           "src": "images/education/st-paul-school-bandwar-building.jpg",
@@ -852,7 +852,7 @@
         "Management": "Private Unaided (Recognized)"
       },
       "datePublished": "2026-10-05",
-      "lastUpdated": "2026-11-04",
+      "lastUpdated": "2026-11-11",
       "content": [
         {
           "heading": "Overview",
@@ -918,7 +918,8 @@
         "private school begusarai",
         "udise 10201008404",
         "ict lab school bihar"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "vaani-vilas-library-bandwar",
