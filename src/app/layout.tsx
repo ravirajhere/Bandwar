@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getMasterData } from "@/lib/data";
+import { getSearchIndex } from "@/lib/search-data"; // 🚀 NEW IMPORT
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -43,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       siteName: "Bandwar Village Archive",
-      locale: siteLanguage.replace("-", "_"), // en_IN format for OG
+      locale: siteLanguage.replace("-", "_"),
       url: baseUrl,
       title: "Bandwar Village Archive — Begusarai, Bihar",
       description: config.seo?.defaultDescription || "A community-built digital archive of Bandwar village.",
@@ -65,7 +66,6 @@ export async function generateMetadata(): Promise<Metadata> {
     category: "history",
     creator: "Bandwar Village Community",
     publisher: "Bandwar Village Archive",
-    // 🚀 2026 SEO FIX: Apple Web App meta tags for iOS users
     appleWebApp: {
       capable: true,
       title: "Bandwar Archive",
@@ -78,10 +78,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const config = getMasterData();
   const baseUrl = config.site.url;
   const siteLanguage = config.site.language || "en-IN";
-
-  // 🚀 2026 ADVANCED JSON-LD (Entity SEO, E-E-A-T & AI Optimization)
   
-  // Extract social links safely
+  // 🚀 FIX: Fetch Search Index on the server
+  const searchIndex = getSearchIndex();
+
   const socialLinks = Object.values(config.social || {}).filter(Boolean) as string[];
 
   const jsonLd = {
@@ -95,7 +95,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         description: config.site.description,
         inLanguage: siteLanguage,
         publisher: { "@id": `${baseUrl}/#organization` },
-        // 🚀 AI SEARCH CONTEXT
         about: { "@id": `${baseUrl}/#place` },
         keywords: "Bandwar, Begusarai, Bihar, Mithila, Village Archive, History",
         potentialAction: {
@@ -105,7 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         },
       },
       {
-        "@type": ["Organization", "NGO", "CommunityOrganization"], // 🚀 Broadened Entity Types
+        "@type": ["Organization", "NGO"],
         "@id": `${baseUrl}/#organization`,
         name: config.organization?.name || "Bandwar Village Archive",
         url: baseUrl,
@@ -116,15 +115,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         },
         description: config.organization?.mission || config.site.description,
         foundingDate: config.organization?.foundingDate || "2024",
-        email: config.contact?.email || "contact@bandwar.in", // 🚀 Added Email
-        // 🚀 NEW: Verified Social Links (E-E-A-T)
+        email: config.contact?.email || "contact@bandwar.in",
         ...(socialLinks.length > 0 && { sameAs: socialLinks }),
         areaServed: { "@type": "Place", name: "Bandwar, Begusarai, Bihar, India" },
         contactPoint: {
           "@type": "ContactPoint",
           contactType: "customer support",
           email: config.contact?.email || "contact@bandwar.in",
-          availableLanguage: ["English", "Hindi", "Maithili"] // 🚀 Localized Support
+          availableLanguage: ["English", "Hindi", "Maithili"]
         },
         knowsAbout: [
           "Bandwar Village History",
@@ -174,7 +172,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang={siteLanguage} dir={config.site.dir || "ltr"} suppressHydrationWarning>
       <head>
-        {/* 🚀 Core Web Vitals: Fonts loaded asynchronously */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
@@ -186,10 +183,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <style dangerouslySetInnerHTML={{ __html: fontStyles }} />
         
-        {/* Anti-Flicker Dark Mode Script */}
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('bandwar-theme')==='dark'||(!('bandwar-theme'in localStorage)&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}` }} />
         
-        {/* Site-wide JSON-LD Schema */}
         <script 
           type="application/ld+json" 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
@@ -200,7 +195,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <ToastProvider>
-          <Header />
+          {/* 🚀 FIX: Pass the search index to Header */}
+          <Header searchIndex={searchIndex} />
           <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
             {children}
           </main>
