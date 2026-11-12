@@ -1,0 +1,225 @@
+{
+  "articles": [
+    {
+      "id": "diara-farming-bandwar-burhi-gandak",
+      "title": "Diara Farming in Bandwar: Agriculture on the Edge of the Burhi Gandak",
+      "subtitle": "The fertile, risky lands that feed the village",
+      "categories": [
+        "economy",
+        "geography",
+        "agriculture"
+      ],
+      "summary": "Diara lands are the fertile floodplains along the [[burhi-gandak-river-bandwar|Burhi Gandak]] river. In Bandwar, these lands are the backbone of the village's agricultural economy, producing wheat, maize, and pulses. However, farming here is a high-stakes gamble against the monsoon floods, requiring diesel-powered pumps and Kisan Credit Cards to survive.",
+      "hero": "images/economy/bandwar-diara-farming-wheat-crop.jpg",
+      "photos": [
+        {
+          "src": "images/economy/bandwar-diara-farming-wheat-crop.jpg",
+          "caption": "Farmers working on the fertile Diara lands near the Burhi Gandak river in Bandwar.",
+          "imageAlt": "Farmers working on the Diara lands near the Burhi Gandak river in Bandwar, Begusarai (2026)"
+        }
+      ],
+      "infobox": {
+        "Type": "Agricultural practice",
+        "Land Type": "Diara (Floodplain)",
+        "Main Crops": "Wheat, Maize, Pulses",
+        "Key Challenge": "Floods and irrigation",
+        "Local Support": "SBI Bandwar (KCC), Ram Janki Fuels (Diesel)"
+      },
+      "datePublished": "2026-11-12",
+      "lastUpdated": "2026-11-12",
+      "content": [
+        {
+          "heading": "The Gift and the Threat of the River",
+          "text": "The [[burhi-gandak-river-bandwar|Burhi Gandak]] is the lifeline of Bandwar's agriculture. Every year, when the river recedes after the monsoon, it leaves behind a layer of fresh, nutrient-rich silt. This creates the 'Diara' lands—the highly fertile floodplains along the river's edge. According to the Census 2011, Bandwar has 635 cultivators and 1,839 agricultural labourers who rely directly on this land. The Diara is where the village grows its wheat, maize, and pulses. But this fertility comes with a deadly risk. If the monsoon rains are too heavy or arrive late, the same river that enriches the soil can wash away an entire season's crop in a single night."
+        },
+        {
+          "heading": "The Machinery of Survival",
+          "text": "Farming in the Diara requires constant vigilance and modern machinery. Because the land is flat and the water table is high, farmers rely heavily on diesel-powered water pumps for irrigation during the dry spells. This is where the [[ram-janki-petrol-pump-bandwar|Ram Janki Fuels petrol pump]] on SH 55 plays a vital economic role. During the sowing and harvest seasons, tractors and pump sets line up at the pump to refuel. Without this steady supply of diesel, the Diara lands would remain dependent on unpredictable rains."
+        },
+        {
+          "heading": "Financing the Harvest",
+          "text": "Agriculture is expensive. To buy high-yield seeds, fertilizers, and to hire tractors, farmers need capital upfront. This is where the [[sbi-bank-bandwar|State Bank of India (SBI) branch in Bandwar]] becomes the backbone of the rural economy. The bank issues Kisan Credit Cards (KCC) to local farmers, allowing them to purchase essential inputs on credit and repay the loan after selling their harvest. For the landless agricultural labourers, the bank facilitates the Direct Benefit Transfer (DBT) of MGNREGA wages, ensuring that the village's most vulnerable families have some income during the lean months."
+        },
+        {
+          "heading": "Life on the Edge",
+          "text": "The people of Bandwar have learned to read the river. Elders can predict the nature of the monsoon by watching the currents of the Burhi Gandak. Yet, the risk never disappears. The [[bandh-embankment-bandwar|embankment (bandh)]] protects the village's homes, but it cannot protect the crops growing on the river's edge. Thus, the Diara farmer lives in a constant cycle of hope and anxiety—hoping for a bumper harvest, but always ready to flee if the floodwaters rise."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What are Diara lands in Bandwar?",
+          "a": "Diara lands are the fertile floodplains located along the Burhi Gandak river. They receive fresh silt during the monsoon, making them highly suitable for growing wheat, maize, and pulses."
+        },
+        {
+          "q": "What is the biggest risk for Diara farmers?",
+          "a": "The biggest risk is flooding. A late or heavy monsoon can submerge the entire crop, leading to severe financial losses for the farmers."
+        },
+        {
+          "q": "How do farmers in Bandwar finance their farming?",
+          "a": "Farmers rely on Kisan Credit Cards (KCC) provided by the SBI Bandwar branch to buy seeds and fertilizers. They also use diesel from the local petrol pump for irrigation."
+        }
+      ],
+      "related": [
+        "burhi-gandak-river-bandwar",
+        "sbi-bank-bandwar",
+        "ram-janki-petrol-pump-bandwar",
+        "bandh-embankment-bandwar"
+      ],
+      "location": {
+        "lat": 25.5005,
+        "lng": 86.1575
+      },
+      "tags": [
+        "diara farming bandwar",
+        "agriculture in bandwar",
+        "burhi gandak farming",
+        "kisan credit card bandwar",
+        "wheat farming bihar",
+        "begusarai agriculture"
+      ]
+    },
+    {
+      "id": "bandwar-haat-village-market-economy",
+      "title": "The Bandwar Haat: Inside the Village Market Economy",
+      "subtitle": "Where the village buys, sells, and catches up on the news",
+      "categories": [
+        "economy",
+        "culture"
+      ],
+      "summary": "The local weekly market, or Haat, is the commercial heart of Bandwar. It is where farmers sell their surplus vegetables, local traders bring goods from Begusarai, and villagers gather for their daily needs. The Haat represents the informal economy of rural Bihar, operating alongside the formal banking system of the SBI branch.",
+      "hero": "images/economy/bandwar-village-haat-market.jpg",
+      "photos": [
+        {
+          "src": "images/economy/bandwar-village-haat-market.jpg",
+          "caption": "A bustling local market (Haat) in Bandwar village.",
+          "imageAlt": "Villagers buying and selling goods at the local Haat in Bandwar, Begusarai (2026)"
+        }
+      ],
+      "infobox": {
+        "Type": "Weekly Village Market (Haat)",
+        "Main Goods": "Vegetables, Clothes, Utensils, Spices, Snacks",
+        "Currency": "Cash and UPI (increasingly)",
+        "Location": "Village Centre (near main roads)"
+      },
+      "datePublished": "2026-11-12",
+      "lastUpdated": "2026-11-12",
+      "content": [
+        {
+          "heading": "The Pulse of the Local Economy",
+          "text": "While the [[sbi-bank-bandwar|SBI bank]] handles the formal economy, the real pulse of Bandwar's daily life can be felt at the local Haat (market). The Haat is where the village's informal economy thrives. Here, farmers from the [[diara-farming-bandwar-burhi-gandak|Diara lands]] bring their surplus vegetables—tomatoes, potatoes, and seasonal greens—to sell. Local traders set up stalls under temporary tents, selling everything from cheap clothing and plastic utensils to spices and local snacks."
+        },
+        {
+          "heading": "A Hub of Information",
+          "text": "The Haat is more than just a place of commerce; it is a social institution. It is where villagers exchange news, discuss local politics (often remembering leaders like [[chandrashekhar-chowk-bandwar|Chandrashekhar Singh]]), and share updates on the monsoon. During the harvest season, the market buzzes with the energy of agricultural labourers buying supplies. After the tragedy of the [[diarrhea-outbreak-bandwar-september-2025|2025 diarrhea outbreak]], the Haat also became a critical space for health workers to spread awareness about water contamination and the use of ORS."
+        },
+        {
+          "heading": "Modernising Commerce",
+          "text": "The rural economy is slowly changing. The younger generation, working in cities like Delhi and Punjab, often send money back home via UPI or the [[bandwar-post-office|post office]]. This digital cash flow has changed how people shop at the Haat. While older villagers still rely on physical cash, many younger families now pay local vendors using QR codes. This shift reflects Bandwar's growing connection to the broader Indian economy, even as it retains its traditional village market charm."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What is a Haat?",
+          "a": "A Haat is a traditional weekly rural market. In Bandwar, it serves as the primary place for buying and selling daily goods like vegetables, clothes, and local products."
+        },
+        {
+          "q": "What goods are sold at the Bandwar Haat?",
+          "a": "Villagers sell surplus agricultural produce, while traders bring in clothing, spices, household items, and local snacks."
+        },
+        {
+          "q": "Is digital payment used in the village market?",
+          "a": "Yes, increasingly. The rise of migrant labour and remittances has brought UPI to the village, and many younger vendors now accept digital payments."
+        }
+      ],
+      "related": [
+        "sbi-bank-bandwar",
+        "bandwar-post-office",
+        "chandrashekhar-chowk-bandwar",
+        "diara-farming-bandwar-burhi-gandak"
+      ],
+      "location": {
+        "lat": 25.5008,
+        "lng": 86.161
+      },
+      "tags": [
+        "bandwar village market",
+        "rural haat bihar",
+        "local economy bandwar",
+        "begusarai haat",
+        "village commerce bihar"
+      ]
+    },
+    {
+      "id": "janmashtami-mela-economy-bandwar",
+      "title": "The Economics of the Janmashtami Mela in Bandwar",
+      "subtitle": "How a 200-year-old fair drives temporary commerce and local livelihoods",
+      "categories": [
+        "economy",
+        "culture"
+      ],
+      "summary": "The [[janmashtami-mela-bandwar-bihar|Bandwar Janmashtami Mela]] is not just a religious gathering; it is a massive temporary economic event. For three days, the village ground transforms into a bustling marketplace with temporary food stalls, toy sellers, and services for the wrestlers. The Mela provides a vital injection of cash into the village's local economy.",
+      "hero": "images/economy/bandwar-janmashtami-mela-stalls.jpg",
+      "photos": [
+        {
+          "src": "images/economy/bandwar-janmashtami-mela-stalls.jpg",
+          "caption": "Temporary stalls and vendors at the Janmashtami Mela in Bandwar.",
+          "imageAlt": "Vendors selling goods at the historic Janmashtami Mela in Bandwar, Begusarai (2026)"
+        }
+      ],
+      "infobox": {
+        "Type": "Temporary Market/Fair Economy",
+        "Occasion": "Janmashtami Mela",
+        "Duration": "2-3 days",
+        "Key Businesses": "Food stalls, Toys (Jhoola), Spices, Wrestling services",
+        "Economic Impact": "High local cash flow"
+      },
+      "datePublished": "2026-11-12",
+      "lastUpdated": "2026-11-12",
+      "content": [
+        {
+          "heading": "The Transformation of the Village Ground",
+          "text": "For most of the year, the village ground is a quiet, open space used for cricket or drying crops. But during the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]], it transforms completely. The Mela brings an influx of vendors from Bandwar and neighbouring blocks. Villagers set up temporary tea stalls, sweet shops (selling local specialties), and stalls selling clothes and toys. For many families in Bandwar, the Mela is an opportunity to earn extra income by renting out space, selling food, or providing services to the thousands of visitors who arrive for the [[kushti-mud-pit-wrestling-bandwar-mela|mud-pit wrestling (Kushti)]]."
+        },
+        {
+          "heading": "The Wrestling Economy",
+          "text": "The Kushti matches at the Mela attract wrestlers from across Bihar, Rajasthan, Madhya Pradesh, and even Nepal. This influx of athletes creates a mini-service economy. Local youth earn money by preparing the mud pit, supplying water for the wrestlers, and selling food to their supporters. While there is no official prize money, local wrestling akhadas and patrons often provide informal financial support or gifts to the winning wrestlers, which circulates money back into the local community."
+        },
+        {
+          "heading": "The Toy and Sweet Stalls",
+          "text": "For the children of Bandwar, the Mela is a wonderland. Temporary stalls selling colorful clay toys, plastic whistles, and traditional sweets (like batasha and khaja) see heavy footfall. The money spent here might seem small in absolute terms, but for a village economy, it represents a significant surge in retail cash flow. Vendors from Begusarai town often set up large stalls, but local villagers manage the smaller, more localized shops."
+        },
+        {
+          "heading": "A Cash Injection",
+          "text": "The Mela is entirely community-funded. There is no corporate sponsorship, and no ticketed entry. The money that flows during these three days—from the pockets of visitors into the hands of local vendors, tea sellers, and laborers—acts as a vital economic stimulus for the village. It shows that Bandwar's oldest tradition is not just a spiritual event, but a crucial component of its seasonal economic cycle."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does the Janmashtami Mela help the local economy of Bandwar?",
+          "a": "Yes, the Mela creates temporary employment and business opportunities. Local villagers set up food stalls, sell goods, and provide services to the thousands of visitors, generating significant cash flow."
+        },
+        {
+          "q": "Are there commercial sponsors at the Mela?",
+          "a": "No. The Janmashtami Mela in Bandwar is famous for being uncommercialised. There are no corporate sponsors or branded stalls; it is entirely community-funded."
+        }
+      ],
+      "related": [
+        "janmashtami-mela-bandwar-bihar",
+        "kushti-mud-pit-wrestling-bandwar-mela",
+        "bandwar-haat-village-market-economy",
+        "diara-farming-bandwar-burhi-gandak"
+      ],
+      "location": {
+        "lat": 25.5008,
+        "lng": 86.1608
+      },
+      "tags": [
+        "janmashtami mela economy",
+        "local commerce bandwar",
+        "village fair economics bihar",
+        "kushti wrestling economy",
+        "temporary market bandwar"
+      ]
+    }
+  ]
+}
