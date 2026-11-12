@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Article } from "@/lib/schema";
-import { Calendar, Image as ImageIcon, ArrowRight } from "lucide-react";
+import { Calendar, ArrowRight } from "lucide-react"; // ImageIcon hata diya hai kyunki ab fallback image aayegi
 
 const formatDate = (dateString: string) => {
   try {
@@ -10,12 +10,13 @@ const formatDate = (dateString: string) => {
 };
 
 export function ArticleCard({ article }: { article: Article }) {
+  // ✅ FIX: Use displayHero (from data.ts) to automatically handle fallback
+  // Agar real image hai toh woh aayegi, warna seedha /fallback.jpg aayega
+  const rawHero = (article as any).displayHero || article.hero || "/fallback.jpg";
+  
   // 🚀 SEO FIX: Strip query strings (?v=hash) to prevent Next.js Image crashes
-  const rawHero = article.hero;
-  const cleanHero = rawHero ? rawHero.split('?')[0] : null;
-  const imageSrc = cleanHero 
-    ? (cleanHero.startsWith("/") ? cleanHero : `/${cleanHero}`) 
-    : null;
+  const cleanHero = rawHero.split('?')[0];
+  const imageSrc = cleanHero.startsWith("/") ? cleanHero : `/${cleanHero}`;
 
   // 🚀 SEO FIX: Use specific imageAlt if available, else fallback to title
   const altText = article.photos?.[0]?.imageAlt || article.title;
@@ -26,22 +27,14 @@ export function ArticleCard({ article }: { article: Article }) {
       className="group flex flex-col bg-surface border border-divider rounded-lg overflow-hidden shadow-sm hover:shadow-md hover:border-accent/40 transition-all duration-300 h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       {/* 🖼️ Thumbnail Image (Top) */}
-      <div className="relative w-full aspect-[16/9] 3xl:aspect-[21/9] bg-canvas overflow-hidden shrink-0 flex items-center justify-center border-b border-divider">
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={altText}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        ) : (
-          // ✅ Formal Fallback: Agar image nahi hai toh yeh dikhega
-          <div className="flex flex-col items-center justify-center text-ink/20">
-            <ImageIcon size={40} className="mb-2 3xl:w-16 3xl:h-16" aria-hidden="true" />
-            <span className="text-[11px] 3xl:text-xs font-bold uppercase tracking-wider">No Image Available</span>
-          </div>
-        )}
+      <div className="relative w-full aspect-[16/9] 3xl:aspect-[21/9] bg-canvas overflow-hidden shrink-0 border-b border-divider">
+        <Image
+          src={imageSrc}
+          alt={altText}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
         
         {/* Category Badge (Dark Glass Effect) */}
         <div className="absolute top-3 left-3 bg-ink/70 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-md text-[10px] 3xl:text-xs font-bold text-white uppercase tracking-wider shadow-sm z-10">
