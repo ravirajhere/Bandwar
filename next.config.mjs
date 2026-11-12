@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  trailingSlash: false, // 🚀 SEO FIX: Prevents duplicate URLs like /about/ and /about
+  trailingSlash: false, 
 
   // 🚀 SEO FIX & IMAGE FIX
   images: {
@@ -11,29 +11,22 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
     deviceSizes: [400, 640, 800, 1024, 1200, 1600, 1920],
     imageSizes: [64, 96, 128, 256, 384],
-    qualities: [75, 85, 100], // 🚀 Next.js 15+ ke liye qualities define karna zaroori hai
+    qualities: [75, 85, 100], 
     dangerouslyAllowSVG: false,
     
-    // Agar aapke paas external images hain (jaise unsplash ya koi aur CDN), toh unhe yahan add karein
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'bandwar.vercel.app', // Aapka khud ka domain
+        hostname: 'bandwar.vercel.app', 
       },
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com', // Example external domain
+        hostname: 'images.unsplash.com', 
       }
     ],
-    
-    // 🚨 IMPORTANT FIX 🚨
-    // Agar aapki images Vercel par load nahi ho rahi hain (403 error), 
-    // toh niche wali line ko uncomment (// hatakar) kar dein. 
-    // Isse Next.js images ko optimize nahi karega aur direct load karega.
-    // unoptimized: true, 
   },
 
-  // 🚀 SECURITY FIX: Global & Admin Headers
+  // 🚀 SECURITY & CACHING FIX (2026 Standards)
   async headers() {
     return [
       {
@@ -45,11 +38,25 @@ const nextConfig = {
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
       },
+      // 🚀 IMAGE SEO FIX: Aggressive Caching for all images
+      {
+        source: "/images/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      // 🚀 NEXT.JS IMAGE CDN CACHING
+      {
+        source: "/_next/image/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
       {
         source: "/admin/:path*",
         headers: [
           { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive, nosnippet" },
-          { key: "X-Frame-Options", value: "DENY" }, // Prevents clickjacking
+          { key: "X-Frame-Options", value: "DENY" }, 
           { key: "Cache-Control", value: "no-store, max-age=0" },
         ],
       },
@@ -63,11 +70,11 @@ const nextConfig = {
     ];
   },
 
-  // 🚀 SEO FIX: 301 Redirects for old URLs
+  // 🚀 SEO FIX: 301 Redirects for old URLs (Aapka data same rahega)
   async redirects() {
     return [
       { source: '/article', destination: '/section', permanent: true },
-      { source: '/section/people', destination: '/people', permanent: true }, // From categories.json cleanup
+      { source: '/section/people', destination: '/people', permanent: true }, 
       
       // --- HEALTH ---
       { source: '/article/health-infrastructure', destination: '/article/health-infrastructure-bandwar-village', permanent: true },
