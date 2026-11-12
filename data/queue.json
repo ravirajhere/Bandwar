@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794446697906_phjyy5",
       "type": "Image Update Suggestion",
@@ -17,8 +18,8 @@
       "currentImagePath": "/images/health/bandwar-health-sub-centre-building.jpg",
       "jsonObj": {
         "Category": "health"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
