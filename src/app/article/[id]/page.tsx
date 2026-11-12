@@ -26,13 +26,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!article) return { title: "Not Found", robots: { index: false } };
 
   const baseUrl = config.site.url;
-  
   const seoImage = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
-  const ogImage = seoImage.startsWith("http") 
-    ? seoImage 
-    : `${baseUrl}/${seoImage.replace(/^\//, '')}`;
+  const ogImage = seoImage.startsWith("http") ? seoImage : `${baseUrl}/${seoImage.replace(/^\//, '')}`;
 
-  // 🚀 2026 SEO FIX: Ensure all dates are ISO 8601 format
   const pubDate = article.datePublished || article.lastUpdated;
   const modDate = article.dateModified || article.lastUpdated;
 
@@ -84,11 +80,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     : "Uncategorized";
 
   const validArticleIds = allArticles.map(a => a.id);
-
-  const formatToISO = (dateStr: string) => {
-    return dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
-  };
-
+  const formatToISO = (dateStr: string) => dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
   const heroForSEO = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
 
   // ==========================================
@@ -107,8 +99,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "description": `Photograph related to ${article.title} in Bandwar Village, Begusarai, Bihar, India.`,
       "caption": article.photos?.[0]?.caption || article.title,
       "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
+      "creditText": "Bandwar Village Archive", // 🚀 ADDED
       "copyrightNotice": "© Bandwar Village Archive",
-      "license": `${baseUrl}/about#license`
+      "license": `${baseUrl}/about#license`,
+      "acquireLicensePage": `${baseUrl}/about#license` // 🚀 THIS IS THE FIX
     });
   }
   
@@ -125,8 +119,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           "description": `${photo.caption || article.title} - Located in Bandwar Village, Begusarai, Bihar.`,
           "caption": photo.caption || article.title,
           "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
+          "creditText": "Bandwar Village Archive", // 🚀 ADDED
           "copyrightNotice": "© Bandwar Village Archive",
-          "license": `${baseUrl}/about#license`
+          "license": `${baseUrl}/about#license`,
+          "acquireLicensePage": `${baseUrl}/about#license` // 🚀 THIS IS THE FIX
         });
       }
     });
@@ -142,8 +138,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "description": `Archive image for ${article.title} in Bandwar Village, Begusarai, Bihar.`,
       "caption": article.title,
       "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
+      "creditText": "Bandwar Village Archive", // 🚀 ADDED
       "copyrightNotice": "© Bandwar Village Archive",
-      "license": `${baseUrl}/about#license`
+      "license": `${baseUrl}/about#license`,
+      "acquireLicensePage": `${baseUrl}/about#license` // 🚀 THIS IS THE FIX
     });
   }
 
@@ -190,8 +188,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "@type": "Place", 
       "name": "Bandwar Village", 
       "address": { "@type": "PostalAddress", "addressLocality": "Begusarai", "addressRegion": "Bihar", "addressCountry": "IN" }
-    }, // 🚀 2026 Entity Linking
-    "mentions": article.tags?.map((tag: string) => ({ "@type": "Thing", "name": tag })) || [], // 🚀 AI Search Context
+    }, 
+    "mentions": article.tags?.map((tag: string) => ({ "@type": "Thing", "name": tag })) || [], 
     "keywords": article.tags?.join(", ") || "",
     "wordCount": wordCount, 
     "isAccessibleForFree": true, 
@@ -201,7 +199,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     }
   };
 
-  // 🚀 2026 CRITICAL FIX: Add FAQ Schema for Google SGE (People Also Ask)
   const faqJsonLd = (article.faqs && article.faqs.length > 0) ? {
     "@type": "FAQPage",
     "@id": `${articleUrl}#faq`,
@@ -225,7 +222,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     ]
   };
 
-  // Combine all schemas into a single Graph
   const combinedJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -256,7 +252,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         <ReadingProgress />
         <MobileTOC content={article.content} hasFaqs={!!(article.faqs && article.faqs.length > 0)} />
 
-        {/* Print-only header */}
         <div className="hidden print-only mb-8 pb-4 border-b-2 border-black">
           <div className="flex justify-between items-end">
             <div>
