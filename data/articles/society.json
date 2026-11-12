@@ -86,7 +86,7 @@
         "culture"
       ],
       "summary": "Bandwar is not a single, uniform settlement; it is a collective of distinct 'Tolas' (neighborhoods). From the historic Musahri Tola and the bustling Kunjartoli to the riverine communities of Malha and Khatha Tol, each area has its own character. Central junctions like Chaubatta and Mohra Chowk serve as the commercial arteries, binding the village's social fabric together.",
-      "hero": "images/society/bandwar-village-lane-tola.jpg",
+      "hero": "/images/society/bandwar-village-lane-tola.jpg",
       "photos": [
         {
           "src": "images/society/bandwar-village-lane-tola.jpg",
@@ -152,7 +152,8 @@
         "mohra chowk",
         "malha tola",
         "khatha tol"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "community-panchayat-bandwar",

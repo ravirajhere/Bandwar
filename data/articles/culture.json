@@ -9,7 +9,7 @@
         "religion"
       ],
       "summary": "The Bandwar Krishna Janmashtami Mela is a historic fair held annually in Bandwar, running for over two hundred years. Considered the oldest Janmashtami fair in Bihar, it is famous for its traditional mud-pit wrestling (Kushti), drawing wrestlers from across Bihar, Nepal, and beyond. Held at the village ground near the [[historic-well-chaupal-bandwar|chaupal]], the fair is deeply connected to the [[bada-krishna-mandir-bandwar|Bada Krishna Mandir]] and [[chhota-krishna-mandir-bandwar|Chhota Krishna Mandir]].",
-      "hero": "images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
+      "hero": "/images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
       "photos": [
         {
           "src": "images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
@@ -28,7 +28,7 @@
         "Entry Fee": "None — community funded"
       },
       "datePublished": "2026-09-06",
-      "lastUpdated": "2026-09-06",
+      "lastUpdated": "2026-11-12",
       "content": [
         {
           "heading": "A 200-Year-Old Legacy",
@@ -93,7 +93,8 @@
         "begusarai culture",
         "krishna janmashtami bihar",
         "bandwar village fair"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "chhath-puja-bandwar-bandh-burhi-gandak",
