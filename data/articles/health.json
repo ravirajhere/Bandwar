@@ -109,10 +109,10 @@
         "infrastructure"
       ],
       "summary": "Bandwar village has only one understaffed health sub-centre and no primary health centre (PHC). For 12,000+ residents, the nearest PHC is at Sadar and the district hospital is 18 km away in Begusarai. With no ambulance service, villagers rely on informal RMPs, ASHA workers, and Anganwadi centres. The September 2025 diarrhea outbreak exposed the deadly consequences of this infrastructure deficit.",
-      "hero": "/fallback.jpg",
+      "hero": "/images/health/bandwar-health-sub-centre-building.jpg",
       "photos": [
         {
-          "src": "images/health/bandwar-health-sub-centre-building-bihar.jpg",
+          "src": "/images/health/bandwar-health-sub-centre-building.jpg",
           "caption": "The health sub-centre serving Bandwar village, which often faces staff shortages and lacks basic medicines.",
           "imageAlt": "The health sub-centre serving Bandwar village in Begusarai, which often faces staff shortages and lacks basic medicines"
         }
