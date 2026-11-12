@@ -1,23 +1,5 @@
 {
-  "pending": [
-    {
-      "id": "edit_1794466746608_dbayn7",
-      "type": "Image Update Suggestion",
-      "contextId": "yatindra-narayan-singh-bandwar",
-      "userName": "Admin",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-12T06:59:06.608Z",
-      "pendingImageUrl": "/images/pending/edit_1794466745584_mdak3i.jpg",
-      "intent": "image_update",
-      "filePath": "data/people.json",
-      "targetType": "person",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "Unknown",
-      "jsonObj": {}
-    }
-  ],
+  "pending": [],
   "approved": [
     {
       "id": "edit_1794466488500_7diryg",
@@ -34,6 +16,24 @@
       "oldValue": "",
       "newValue": "",
       "currentImagePath": "/images/people/mahant-surendra-das-bandwar.jpg",
+      "jsonObj": {},
+      "approvedVia": "Dashboard"
+    },
+    {
+      "id": "edit_1794466746608_dbayn7",
+      "type": "Image Update Suggestion",
+      "contextId": "yatindra-narayan-singh-bandwar",
+      "userName": "Admin",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T06:59:06.608Z",
+      "pendingImageUrl": "/images/pending/edit_1794466745584_mdak3i.jpg",
+      "intent": "image_update",
+      "filePath": "data/people.json",
+      "targetType": "person",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "Unknown",
       "jsonObj": {},
       "approvedVia": "Dashboard"
     }
