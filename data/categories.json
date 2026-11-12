@@ -31,6 +31,12 @@
       "description": "Agriculture, local businesses, banking, and employment in the village." 
     },
     { 
+      "id": "agriculture", 
+      "title": "Agriculture", 
+      "icon": "🌾", 
+      "description": "Diara farming, crops, and the agricultural backbone of Bandwar." 
+    },
+    { 
       "id": "infrastructure", 
       "title": "Infrastructure", 
       "icon": "🏗️", 
@@ -41,6 +47,12 @@
       "title": "Culture", 
       "icon": "🎉", 
       "description": "Historic fairs, Janmashtami Mela, Chhath Puja, and daily village life." 
+    },
+    { 
+      "id": "society", 
+      "title": "Society", 
+      "icon": "👥", 
+      "description": "Demographics, 17 Wards, Tolas (neighborhoods), and village governance." 
     },
     { 
       "id": "sports", 
