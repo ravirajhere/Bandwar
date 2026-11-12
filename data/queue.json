@@ -1,25 +1,5 @@
 {
-  "pending": [
-    {
-      "id": "edit_1794459640265_075ar0",
-      "type": "Image Update Suggestion",
-      "contextId": "community-panchayat-bandwar",
-      "userName": "Bandwar Editor",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-12T05:00:40.265Z",
-      "pendingImageUrl": "/images/pending/edit_1794459639178_vhnl5b.jpg",
-      "intent": "image_update",
-      "filePath": "data/articles/society.json",
-      "targetType": "article",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "images/society/bandwar-gram-panchayat-office.jpg",
-      "jsonObj": {
-        "Category": "society"
-      }
-    }
-  ],
+  "pending": [],
   "approved": [
     {
       "id": "edit_1794459284964_6qw9zx",
@@ -76,6 +56,26 @@
       "oldValue": "",
       "newValue": "",
       "currentImagePath": "images/society/bandwar-village-aerial-view-wards.jpg",
+      "jsonObj": {
+        "Category": "society"
+      },
+      "approvedVia": "Dashboard"
+    },
+    {
+      "id": "edit_1794459640265_075ar0",
+      "type": "Image Update Suggestion",
+      "contextId": "community-panchayat-bandwar",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T05:00:40.265Z",
+      "pendingImageUrl": "/images/pending/edit_1794459639178_vhnl5b.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/society.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/society/bandwar-gram-panchayat-office.jpg",
       "jsonObj": {
         "Category": "society"
       },
