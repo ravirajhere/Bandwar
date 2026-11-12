@@ -11,7 +11,7 @@ const DateSchema = z.string().regex(
 );
 
 // ==========================================
-// 2. Master Schema (Relaxed for existing data)
+// 2. Master Schema
 // ==========================================
 export const MasterSchema = z.object({
   site: z.object({ 
@@ -129,7 +129,7 @@ export const MasterSchema = z.object({
   seo: z.object({
     titlePattern: z.string(),
     titlePatternHome: z.string(),
-    defaultDescription: z.string(), // 🚀 Relaxed max length
+    defaultDescription: z.string(), 
     keywords: z.array(z.string()).optional(),
     ogImage: z.string(),
     ogImageWidth: z.number().optional(),
@@ -148,8 +148,8 @@ export const MasterSchema = z.object({
       google: z.string().nullable().optional(),
       bing: z.string().nullable().optional(),
     }).passthrough().optional(),
-    structuredData: z.any().optional(), // 🚀 Fixed: Unrecognized key error
-  }).passthrough().optional(), // 🚀 Removed .strict()
+    structuredData: z.any().optional(), 
+  }).passthrough(),
 
   sitemap: z.object({
     includePages: z.array(z.string()),
@@ -158,45 +158,58 @@ export const MasterSchema = z.object({
     includeGallery: z.boolean().optional(),
     changeFrequency: z.string().optional(),
     priority: z.record(z.number()).optional(),
-  }).passthrough().optional(), // 🚀 Removed .strict()
+  }).passthrough().optional(),
 
 }).passthrough();
 
 // ==========================================
-// 3. Article Schema (Relaxed Limits)
+// 3. Article Schema (With Auto-Fix for SEO)
 // ==========================================
 export const ArticleSchema = z.object({
   id: IdSchema,
   title: z.string(),
-  metaTitle: z.string().optional(), // 🚀 Relaxed
-  metaDescription: z.string().optional(), // 🚀 Relaxed
+  metaTitle: z.string().optional(), // Next.js fallback handles this
+  metaDescription: z.string().optional(), // Next.js fallback handles this
   subtitle: z.string(),
   categories: z.array(IdSchema).min(1, "Article must have at least one category"),
-  summary: z.string(), // 🚀 Relaxed max length
+  summary: z.string(),
   hero: z.string().optional(),
-  photos: z.array(z.object({ 
-    src: z.string(), 
-    caption: z.string(),
-    imageAlt: z.string().optional(), // 🚀 Made optional to prevent build fail
-  })).default([]),
+  
+  // 🚀 2026 SEO AUTO-FIX: If imageAlt is missing, it auto-generates from caption or title.
+  photos: z.array(
+    z.object({ 
+      src: z.string(), 
+      caption: z.string(),
+      imageAlt: z.string().optional(),
+    }).transform(photo => ({
+      ...photo,
+      imageAlt: photo.imageAlt || photo.caption || "Bandwar Village Archive"
+    }))
+  ).default([]),
+  
   infobox: z.record(z.string()).optional(),
   datePublished: DateSchema.optional(),
   dateModified: DateSchema.optional(),
   lastUpdated: DateSchema,
   lastEditedBy: z.string().optional(),
   lastEditedByUsername: z.string().optional(),
-  published: z.boolean().optional(),
+  
+  // 🚀 2026 SEO FIX: Default to true so sitemap doesn't break
+  published: z.boolean().default(true),
+  
   content: z.array(z.object({ 
     heading: z.string(), 
     text: z.string() 
   })).min(1),
+  
   faqs: z.array(z.object({ 
     q: z.string(), 
     a: z.string() 
   })).default([]),
+  
   related: z.array(IdSchema).default([]),
   location: z.object({ lat: z.number(), lng: z.number() }).optional(),
-  tags: z.array(z.string()).default([]), // 🚀 Relaxed max length
+  tags: z.array(z.string()).default([]), 
 }).passthrough();
 
 export const ArticleListSchema = z.object({ articles: z.array(ArticleSchema) });
@@ -210,7 +223,7 @@ export const PhotoSchema = z.object({
   caption: z.string(), 
   category: z.string(), 
   year: z.string(),
-});
+}).passthrough();
 
 export const TimelineEventSchema = z.object({
   id: z.string(), 
@@ -222,7 +235,7 @@ export const TimelineEventSchema = z.object({
   category: z.string(),
   icon: z.string().optional(), 
   article: z.string().optional(),
-});
+}).passthrough();
 
 export const LandmarkSchema = z.object({
   id: z.string().optional(),
@@ -246,10 +259,10 @@ export const MediaSchema = z.object({
   timeline: z.array(TimelineEventSchema),
   eras: z.array(z.object({ id: z.string(), title: z.string(), subtitle: z.string(), color: z.string() })),
   landmarks: z.array(LandmarkSchema).optional(),
-});
+}).passthrough();
 
 // ==========================================
-// 5. People Schema
+// 5. People Schema (With Auto-Fix for SEO)
 // ==========================================
 export const PersonSchema = z.object({
   id: IdSchema, 
@@ -266,9 +279,15 @@ export const PersonSchema = z.object({
   journey: z.string().optional(),
   lastUpdated: DateSchema.optional(),
   lastEditedBy: z.string().optional(),
-  published: z.boolean().optional(),
+  published: z.boolean().default(true), // 🚀 Auto-default
   tags: z.array(z.string()).optional(),
-}).passthrough();
+}).passthrough().transform(person => {
+  // 🚀 2026 SEO AUTO-FIX: If photo exists but photoAlt is missing, generate it.
+  if (person.photo && !person.photoAlt) {
+    person.photoAlt = `${person.name} - ${person.role} in Bandwar`;
+  }
+  return person;
+});
 
 export const PeopleDataSchema = z.object({ people: z.array(PersonSchema) });
 
@@ -306,7 +325,7 @@ export const DirectoryDataSchema = z.object({
 }).passthrough();
 
 // ==========================================
-// 8. Contributor Schema (E-E-A-T)
+// 8. Contributor Schema
 // ==========================================
 export const ContributorSchema = z.object({
   username: z.string(),
