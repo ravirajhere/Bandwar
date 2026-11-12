@@ -13,25 +13,13 @@ import { Contributor } from "./contributor";
 // 1. CORE HELPERS
 // ==========================================
 
-// 🖼️ Global fallback image — served from /public/fallback.jpg
-// Used for articles/media that haven't uploaded a real image yet.
 export const FALLBACK_IMAGE = "/fallback.jpg";
 
-/**
- * Returns a safe, render-ready image path for an article.
- * - Empty / null / undefined  → FALLBACK_IMAGE
- * - Query strings (?v=hash)    → stripped for Next.js <Image> compatibility
- * - Leading slash              → preserved (for /public rendering)
- */
 export function getArticleImage(image?: string | null): string {
   if (!image || image.trim() === "") return FALLBACK_IMAGE;
   return image.split("?")[0];
 }
 
-/**
- * Same logic as getArticleImage, but for gallery / map landmarks.
- * Keeping it separate lets us swap the fallback later without touching articles.
- */
 export function getMediaImage(src?: string | null): string {
   if (!src || src.trim() === "") return FALLBACK_IMAGE;
   return src.split("?")[0];
@@ -62,7 +50,6 @@ function validateData<T extends z.ZodTypeAny>(schema: T, data: unknown, fileName
   return parsed.data as z.infer<T>;
 }
 
-// Ensures "@ramesh" and "ramesh" match perfectly
 function normalizeUsername(u: string): string {
   return u.replace(/^@/, "").toLowerCase().trim();
 }
@@ -80,7 +67,6 @@ const cache = {
   contributors: null as Contributor[] | null,
 };
 
-// Optional: Call this during dev hot-reload if needed
 export function clearCache() {
   (Object.keys(cache) as (keyof typeof cache)[]).forEach((k) => {
     (cache as any)[k] = null;
@@ -114,31 +100,31 @@ export function getAllArticles(): Article[] {
       const rawData = readJsonFile(`articles/${fileName}`);
       const parsedData = validateData(ArticleListSchema, rawData, `articles/${fileName}`);
       
-      // ✅ SMART IMAGE CHECKER: Ensures images exist before sending to UI
+      // ✅ SAFE IMAGE CHECKER: Original data untouched, creates 'displayHero' for UI
       const safeArticles = parsedData.articles.map((art: any) => {
         let updatedArt = { ...art };
         
-        // Check 'hero' image
+        // 1. Check hero for DISPLAY
+        let needsHeroFallback = false;
         if (updatedArt.hero && !updatedArt.hero.startsWith("http")) {
           const cleanSrc = updatedArt.hero.split("?")[0].replace(/^\//, "");
           const imgPath = path.join(process.cwd(), "public", cleanSrc);
-          if (!fs.existsSync(imgPath)) {
-            updatedArt.hero = FALLBACK_IMAGE; // Use fallback if file is missing
-          }
+          if (!fs.existsSync(imgPath)) needsHeroFallback = true;
         } else if (!updatedArt.hero) {
-          updatedArt.hero = FALLBACK_IMAGE; // Use fallback if field is empty
+          needsHeroFallback = true;
         }
+        updatedArt.displayHero = needsHeroFallback ? FALLBACK_IMAGE : updatedArt.hero;
 
-        // Check 'image' field (just in case your cards use 'image' instead of 'hero')
+        // 2. Check image for DISPLAY
+        let needsImgFallback = false;
         if (updatedArt.image && !updatedArt.image.startsWith("http")) {
           const cleanSrc = updatedArt.image.split("?")[0].replace(/^\//, "");
           const imgPath = path.join(process.cwd(), "public", cleanSrc);
-          if (!fs.existsSync(imgPath)) {
-            updatedArt.image = FALLBACK_IMAGE;
-          }
+          if (!fs.existsSync(imgPath)) needsImgFallback = true;
         } else if (!updatedArt.image) {
-           updatedArt.image = FALLBACK_IMAGE;
+           needsImgFallback = true;
         }
+        updatedArt.displayImage = needsImgFallback ? FALLBACK_IMAGE : updatedArt.image;
 
         return updatedArt;
       });
@@ -147,7 +133,6 @@ export function getAllArticles(): Article[] {
     }
   }
 
-  // ✅ Sort by dateModified || lastUpdated (Newest first)
   allArticles.sort((a, b) => {
     const aDate = (a as any).dateModified || a.lastUpdated;
     const bDate = (b as any).dateModified || b.lastUpdated;
@@ -168,7 +153,6 @@ export function getArticlesByCategory(categoryId: string): Article[] {
   );
 }
 
-// ✅ Centralized date helper for consistent SEO output
 export function getArticleDates(article: Article): { published: string; modified: string } {
   return {
     published: (article as any).datePublished || article.lastUpdated,
@@ -182,7 +166,6 @@ export function getMediaData(): Media {
   const rawData = readJsonFile("media.json");
   const media = validateData(MediaSchema, rawData, "media.json");
   
-  // ✅ Fix: Filter out photos but STRIP query strings (e.g. ?v=hash) first
   if (media.gallery && media.gallery.photos) {
     media.gallery.photos = media.gallery.photos.filter((photo) => {
       const pathWithoutQuery = photo.src.split("?")[0];
@@ -224,10 +207,6 @@ export function getDirectoryData(): DirectoryData {
   return cache.directory;
 }
 
-// ==========================================
-// 4. CONTRIBUTORS DATA (E-E-A-T)
-// ==========================================
-
 export function getContributors(): Contributor[] {
   if (cache.contributors) return cache.contributors;
   
@@ -240,12 +219,10 @@ export function getContributors(): Contributor[] {
   const rawData = readJsonFile("contributors.json");
   const parsed = validateData(ContributorsDataSchema, rawData, "contributors.json");
   
-  // 🚀 TYPESCRIPT FIX: Double casting to bypass the strict type mismatch
   cache.contributors = parsed.contributors as unknown as Contributor[];
   return cache.contributors;
 }
 
-// ✅ Alias added for Contributors page static params
 export function getAllContributors(): Contributor[] {
   return getContributors();
 }
