@@ -20,6 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const config = getMasterData();
   const baseUrl = config.site.url;
   const defaultOgImage = `${baseUrl}${config.seo?.ogImage || "/images/geography/burhi-gandak-river-dawn-bandwar.jpg"}`;
+  const siteLanguage = config.site.language || "en-IN";
   
   return {
     title: { 
@@ -30,6 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(baseUrl),
     alternates: {
       canonical: "/",
+      languages: { [siteLanguage]: "/", "x-default": "/" },
     },
     robots: {
       index: true, follow: true,
@@ -41,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       siteName: "Bandwar Village Archive",
-      locale: "en_IN",
+      locale: siteLanguage.replace("-", "_"), // en_IN format for OG
       url: baseUrl,
       title: "Bandwar Village Archive — Begusarai, Bihar",
       description: config.seo?.defaultDescription || "A community-built digital archive of Bandwar village.",
@@ -59,15 +61,29 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     verification: {
       google: "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs",
-    }
+    },
+    category: "history",
+    creator: "Bandwar Village Community",
+    publisher: "Bandwar Village Archive",
+    // 🚀 2026 SEO FIX: Apple Web App meta tags for iOS users
+    appleWebApp: {
+      capable: true,
+      title: "Bandwar Archive",
+      statusBarStyle: "default",
+    },
   };
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const config = getMasterData();
   const baseUrl = config.site.url;
+  const siteLanguage = config.site.language || "en-IN";
 
-  // 🚀 ADVANCED JSON-LD (Entity SEO & E-E-A-T)
+  // 🚀 2026 ADVANCED JSON-LD (Entity SEO, E-E-A-T & AI Optimization)
+  
+  // Extract social links safely
+  const socialLinks = Object.values(config.social || {}).filter(Boolean) as string[];
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -77,8 +93,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         url: baseUrl,
         name: "Bandwar Village Archive",
         description: config.site.description,
-        inLanguage: "en-IN",
+        inLanguage: siteLanguage,
         publisher: { "@id": `${baseUrl}/#organization` },
+        // 🚀 AI SEARCH CONTEXT
+        about: { "@id": `${baseUrl}/#place` },
+        keywords: "Bandwar, Begusarai, Bihar, Mithila, Village Archive, History",
         potentialAction: {
           "@type": "SearchAction",
           target: { "@type": "EntryPoint", urlTemplate: `${baseUrl}/search?q={search_term_string}` },
@@ -86,7 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         },
       },
       {
-        "@type": ["Organization", "NGO"],
+        "@type": ["Organization", "NGO", "CommunityOrganization"], // 🚀 Broadened Entity Types
         "@id": `${baseUrl}/#organization`,
         name: config.organization?.name || "Bandwar Village Archive",
         url: baseUrl,
@@ -96,15 +115,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           width: 512, height: 512,
         },
         description: config.organization?.mission || config.site.description,
-        foundingDate: "2024",
+        foundingDate: config.organization?.foundingDate || "2024",
+        email: config.contact?.email || "contact@bandwar.in", // 🚀 Added Email
+        // 🚀 NEW: Verified Social Links (E-E-A-T)
+        ...(socialLinks.length > 0 && { sameAs: socialLinks }),
         areaServed: { "@type": "Place", name: "Bandwar, Begusarai, Bihar, India" },
-        // 🚀 NEW: Tells Google what this organization is an expert in (E-E-A-T)
+        contactPoint: {
+          "@type": "ContactPoint",
+          contactType: "customer support",
+          email: config.contact?.email || "contact@bandwar.in",
+          availableLanguage: ["English", "Hindi", "Maithili"] // 🚀 Localized Support
+        },
         knowsAbout: [
           "Bandwar Village History",
           "Mithila Culture",
           "Begusarai District",
           "Bihar Heritage",
-          "Village Archives"
+          "Village Archives",
+          "Folk Festivals of Bihar"
         ],
       },
       ...(config.village ? [{
@@ -144,11 +172,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   `;
 
   return (
-    <html lang={config.site.language || "en-IN"} dir={config.site.dir || "ltr"} suppressHydrationWarning>
+    <html lang={siteLanguage} dir={config.site.dir || "ltr"} suppressHydrationWarning>
       <head>
-        {/* 🚀 FIX: Removed manual image preload. Next.js <Image priority> handles LCP perfectly. */}
-        
-        {/* 🚀 Google Fonts Loading (Non-Blocking) */}
+        {/* 🚀 Core Web Vitals: Fonts loaded asynchronously */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 
@@ -164,7 +190,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem('bandwar-theme')==='dark'||(!('bandwar-theme'in localStorage)&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}}catch(e){}` }} />
         
         {/* Site-wide JSON-LD Schema */}
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script 
+          type="application/ld+json" 
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+        />
       </head>
       <body className="bg-canvas text-ink font-sans antialiased min-h-screen flex flex-col">
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-modal focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-sm font-medium text-sm shadow-md">
