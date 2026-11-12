@@ -27,11 +27,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   const baseUrl = config.site.url;
   
-  // ✅ Use displayHero for SEO so it falls back to fallback.jpg if needed
   const seoImage = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
   const ogImage = seoImage.startsWith("http") 
     ? seoImage 
     : `${baseUrl}/${seoImage.replace(/^\//, '')}`;
+
+  // 🚀 2026 SEO FIX: Ensure all dates are ISO 8601 format
+  const pubDate = article.datePublished || article.lastUpdated;
+  const modDate = article.dateModified || article.lastUpdated;
 
   return {
     title: article.metaTitle || article.title,
@@ -48,8 +51,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       siteName: config.site.name,
       locale: "en_IN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: article.photos?.[0]?.imageAlt || article.title }],
-      publishedTime: article.datePublished || article.lastUpdated,
-      modifiedTime: article.dateModified || article.lastUpdated,
+      publishedTime: pubDate,
+      modifiedTime: modDate,
       authors: [article.lastEditedBy || config.organization?.name || config.site.name],
       section: article.categories[0],
       tags: article.categories,
@@ -86,10 +89,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     return dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
   };
 
-  // ✅ Use displayHero for JSON-LD (Ensures Google gets a valid image URL)
   const heroForSEO = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
 
-  // 🚀 ADVANCED IMAGE SEO: Adding creator, license, and precise descriptions
+  // ==========================================
+  // 🚀 ADVANCED JSON-LD SCHEMA (2026 Standards)
+  // ==========================================
   const imagesArray: any[] = [];
   
   if (heroForSEO) {
@@ -101,7 +105,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "height": 630,
       "name": `${article.title} - Bandwar Village Archive`,
       "description": `Photograph related to ${article.title} in Bandwar Village, Begusarai, Bihar, India.`,
-      "caption": article.title,
+      "caption": article.photos?.[0]?.caption || article.title,
       "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
       "copyrightNotice": "© Bandwar Village Archive",
       "license": `${baseUrl}/about#license`
@@ -128,7 +132,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     });
   }
 
-  // ✅ Fallback image for JSON-LD if article has NO real images at all
   if (imagesArray.length === 0) {
     imagesArray.push({
       "@type": "ImageObject",
@@ -169,7 +172,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     "@id": `${articleUrl}#article`,
     "mainEntityOfPage": { "@type": "WebPage", "@id": articleUrl },
     "headline": article.title.slice(0, 110),
-    "description": article.summary.slice(0, 160),
+    "description": article.metaDescription || article.summary.slice(0, 160),
     "image": imagesArray, 
     "inLanguage": "en-IN",
     "articleSection": categoryTitle,
@@ -183,6 +186,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     "datePublished": formatToISO(article.datePublished || article.lastUpdated),
     "dateModified": formatToISO(article.dateModified || article.lastUpdated),
     "isPartOf": { "@id": `${baseUrl}/#website` },
+    "about": { 
+      "@type": "Place", 
+      "name": "Bandwar Village", 
+      "address": { "@type": "PostalAddress", "addressLocality": "Begusarai", "addressRegion": "Bihar", "addressCountry": "IN" }
+    }, // 🚀 2026 Entity Linking
+    "mentions": article.tags?.map((tag: string) => ({ "@type": "Thing", "name": tag })) || [], // 🚀 AI Search Context
+    "keywords": article.tags?.join(", ") || "",
     "wordCount": wordCount, 
     "isAccessibleForFree": true, 
     "speakable": {
@@ -191,8 +201,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     }
   };
 
+  // 🚀 2026 CRITICAL FIX: Add FAQ Schema for Google SGE (People Also Ask)
+  const faqJsonLd = (article.faqs && article.faqs.length > 0) ? {
+    "@type": "FAQPage",
+    "@id": `${articleUrl}#faq`,
+    "mainEntity": article.faqs.map((faq) => ({
+      "@type": "Question",
+      "name": faq.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.a
+      }
+    }))
+  } : null;
+
   const breadcrumbJsonLd = {
     "@type": "BreadcrumbList",
+    "@id": `${articleUrl}#breadcrumb`,
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
       { "@type": "ListItem", "position": 2, "name": categoryTitle, "item": `${baseUrl}/section/${article.categories[0]}` },
@@ -200,9 +225,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     ]
   };
 
+  // Combine all schemas into a single Graph
   const combinedJsonLd = {
     "@context": "https://schema.org",
-    "@graph": [articleJsonLd, breadcrumbJsonLd]
+    "@graph": [
+      articleJsonLd, 
+      ...(faqJsonLd ? [faqJsonLd] : []), 
+      breadcrumbJsonLd
+    ]
   };
 
   const generateAnchorId = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -216,17 +246,17 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   });
 
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
-
-  // ✅ Display logic: Screen par dikhne wali image (Real ya Fallback)
   const heroDisplaySrc = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
 
   return (
     <EditModeProvider>
       <article className="bg-canvas min-h-screen py-6 md:py-10 3xl:py-16 relative font-sans">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedJsonLd) }} />
+        
         <ReadingProgress />
         <MobileTOC content={article.content} hasFaqs={!!(article.faqs && article.faqs.length > 0)} />
 
+        {/* Print-only header */}
         <div className="hidden print-only mb-8 pb-4 border-b-2 border-black">
           <div className="flex justify-between items-end">
             <div>
@@ -312,7 +342,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             </header>
 
-            {/* ✅ Hero image: Shows displayHero, but passes originalHero to editor */}
             <div className="mb-8">
               <ArticleHeroImage 
                 hero={heroDisplaySrc} 
