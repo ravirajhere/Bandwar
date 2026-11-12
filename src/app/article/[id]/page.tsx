@@ -84,7 +84,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const heroForSEO = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
 
   // ==========================================
-  // 🚀 ADVANCED JSON-LD SCHEMA (2026 Standards)
+  // 🚀 ADVANCED JSON-LD SCHEMA (Restored Rich Entity Linking)
   // ==========================================
   const imagesArray: any[] = [];
   
@@ -92,17 +92,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     const imgUrl = heroForSEO.startsWith("http") ? heroForSEO : `${baseUrl}/${heroForSEO.replace(/^\//, "")}`;
     imagesArray.push({
       "@type": "ImageObject",
+      "@id": `${imgUrl}#image`, // 🚀 RESTORED
+      "contentUrl": imgUrl, // 🚀 RESTORED
       "url": imgUrl,
       "width": 1200,
       "height": 630,
       "name": `${article.title} - Bandwar Village Archive`,
       "description": `Photograph related to ${article.title} in Bandwar Village, Begusarai, Bihar, India.`,
       "caption": article.photos?.[0]?.caption || article.title,
-      "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
-      "creditText": "Bandwar Village Archive", // 🚀 ADDED
-      "copyrightNotice": "© Bandwar Village Archive",
+      "creator": { 
+        "@type": "Organization", 
+        "@id": `${baseUrl}/#organization` // 🚀 RESTORED: Links to the main Organization entity (pulls logo, address, sameAs)
+      },
+      "creditText": "Bandwar Village Archive", 
+      "copyrightNotice": "© Bandwar Village Community",
       "license": `${baseUrl}/about#license`,
-      "acquireLicensePage": `${baseUrl}/about#license` // 🚀 THIS IS THE FIX
+      "acquireLicensePage": `${baseUrl}/about#license`,
+      "uploadDate": formatToISO(article.lastUpdated) // 🚀 RESTORED
     });
   }
   
@@ -112,17 +118,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       if (!imagesArray.some(img => img.url === imgUrl)) {
         imagesArray.push({
           "@type": "ImageObject",
+          "@id": `${imgUrl}#image`, // 🚀 RESTORED
+          "contentUrl": imgUrl, // 🚀 RESTORED
           "url": imgUrl,
           "width": 800,
           "height": 600,
           "name": photo.caption || article.title,
           "description": `${photo.caption || article.title} - Located in Bandwar Village, Begusarai, Bihar.`,
           "caption": photo.caption || article.title,
-          "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
-          "creditText": "Bandwar Village Archive", // 🚀 ADDED
-          "copyrightNotice": "© Bandwar Village Archive",
+          "creator": { 
+            "@type": "Organization", 
+            "@id": `${baseUrl}/#organization` // 🚀 RESTORED
+          },
+          "creditText": "Bandwar Village Archive", 
+          "copyrightNotice": "© Bandwar Village Community",
           "license": `${baseUrl}/about#license`,
-          "acquireLicensePage": `${baseUrl}/about#license` // 🚀 THIS IS THE FIX
+          "acquireLicensePage": `${baseUrl}/about#license`,
+          "uploadDate": formatToISO(article.lastUpdated) // 🚀 RESTORED
         });
       }
     });
@@ -131,17 +143,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   if (imagesArray.length === 0) {
     imagesArray.push({
       "@type": "ImageObject",
+      "@id": `${baseUrl}${FALLBACK_IMAGE}#image`,
+      "contentUrl": `${baseUrl}${FALLBACK_IMAGE}`,
       "url": `${baseUrl}${FALLBACK_IMAGE}`,
       "width": 1200,
       "height": 675,
       "name": `${article.title} - Bandwar Village Archive`,
       "description": `Archive image for ${article.title} in Bandwar Village, Begusarai, Bihar.`,
       "caption": article.title,
-      "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
-      "creditText": "Bandwar Village Archive", // 🚀 ADDED
-      "copyrightNotice": "© Bandwar Village Archive",
+      "creator": { 
+        "@type": "Organization", 
+        "@id": `${baseUrl}/#organization` 
+      },
+      "creditText": "Bandwar Village Archive", 
+      "copyrightNotice": "© Bandwar Village Community",
       "license": `${baseUrl}/about#license`,
-      "acquireLicensePage": `${baseUrl}/about#license` // 🚀 THIS IS THE FIX
+      "acquireLicensePage": `${baseUrl}/about#license`,
+      "uploadDate": formatToISO(article.lastUpdated)
     });
   }
 
