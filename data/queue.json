@@ -37,6 +37,25 @@
       "jsonObj": {
         "Category": "culture"
       }
+    },
+    {
+      "id": "edit_1794459601123_cryuom",
+      "type": "Image Update Suggestion",
+      "contextId": "demographics-wards-bandwar",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T05:00:01.124Z",
+      "pendingImageUrl": "/images/pending/edit_1794459600098_s2c7df.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/society.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/society/bandwar-village-aerial-view-wards.jpg",
+      "jsonObj": {
+        "Category": "society"
+      }
     }
   ],
   "approved": []
