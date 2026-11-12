@@ -18,6 +18,25 @@
       "jsonObj": {
         "Category": "culture"
       }
+    },
+    {
+      "id": "edit_1794459396749_6spsm0",
+      "type": "Image Update Suggestion",
+      "contextId": "kushti-mud-pit-wrestling-bandwar-mela",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T04:56:36.749Z",
+      "pendingImageUrl": "/images/pending/edit_1794459395453_df84lp.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/culture.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/culture/bandwar-kushti-mud-pit-wrestling-janmashtami-mela.jpg",
+      "jsonObj": {
+        "Category": "culture"
+      }
     }
   ],
   "approved": []
