@@ -57,18 +57,6 @@
       "lastEditedBy": "Ravi Raj"
     },
     {
-      "id": "ansh-kumar-bandwar",
-      "name": "Ansh Kumar",
-      "role": "Student",
-      "locality": "Ward No. 7, Bandwar",
-      "birthplace": "Begusarai, Bihar",
-      "photo": "/images/people/ansh-kumar-bandwar.jpg",
-      "photoAlt": "Ansh Kumar, Student from Bandwar",
-      "bio": "Ansh Kumar is a student hailing from Ward No. 7 in Bandwar village, Begusarai. He is currently pursuing his education and represents the young generation of the village. As a dedicated student, he is actively engaged in his academic pursuits, contributing to the growing educational landscape of Bandwar.",
-      "lastUpdated": "2026-11-08",
-      "lastEditedBy": "Admin"
-    },
-    {
       "id": "dr-arman-anand-singh-bandwar",
       "name": "Dr. Armaan Anand Singh",
       "role": "Professor & Author",
@@ -159,6 +147,51 @@
       ],
       "lastUpdated": "2026-11-10",
       "lastEditedBy": "Bandwar Editor"
+    },
+    {
+      "id": "yatindra-narayan-singh-bandwar",
+      "name": "Yatindra Narayan Singh",
+      "role": "Educator & Chairman, Gautam Buddha Global School",
+      "locality": "Bandwar",
+      "bio": "A respected educator in the Bandwar area, Yatindra Narayan Singh serves as the Chairman of Gautam Buddha Global School. Information about his detailed journey and contributions to rural education is currently being compiled by the Bandwar Archive team. If you have verified historical details, photographs, or anecdotes about his life, please help us complete this profile.",
+      "lastUpdated": "2026-11-12",
+      "lastEditedBy": "Bandwar Archive"
+    },
+    {
+      "id": "nagendra-pathak-bandwar",
+      "name": "Nagendra Pathak",
+      "role": "Community Member",
+      "locality": "Bandwar",
+      "bio": "Detailed biographical information about Nagendra Pathak is currently being compiled by the Bandwar Archive team. If you have verified historical records, photographs, or anecdotes about his life and contributions to the village, please help us complete this profile.",
+      "lastUpdated": "2026-11-12",
+      "lastEditedBy": "Bandwar Archive"
+    },
+    {
+      "id": "binod-singh-bandwar",
+      "name": "Binod Singh",
+      "role": "Community Member",
+      "locality": "Bandwar",
+      "bio": "Detailed biographical information about Binod Singh is currently being compiled by the Bandwar Archive team. If you have verified historical records, photographs, or anecdotes about his life and contributions to the village, please help us complete this profile.",
+      "lastUpdated": "2026-11-12",
+      "lastEditedBy": "Bandwar Archive"
+    },
+    {
+      "id": "sunil-singh-bandwar",
+      "name": "Sunil Singh",
+      "role": "Community Member",
+      "locality": "Bandwar",
+      "bio": "Detailed biographical information about Sunil Singh is currently being compiled by the Bandwar Archive team. If you have verified historical records, photographs, or anecdotes about his life and contributions to the village, please help us complete this profile.",
+      "lastUpdated": "2026-11-12",
+      "lastEditedBy": "Bandwar Archive"
+    },
+    {
+      "id": "shyamu-singh-bandwar",
+      "name": "Shyamu Singh",
+      "role": "Community Member",
+      "locality": "Bandwar",
+      "bio": "Detailed biographical information about Shyamu Singh is currently being compiled by the Bandwar Archive team. If you have verified historical records, photographs, or anecdotes about his life and contributions to the village, please help us complete this profile.",
+      "lastUpdated": "2026-11-12",
+      "lastEditedBy": "Bandwar Archive"
     }
   ]
 }
