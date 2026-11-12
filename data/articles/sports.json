@@ -9,7 +9,7 @@
         "culture"
       ],
       "summary": "The SRVC Bandwar Volleyball Tournament is one of the most anticipated sporting events in the village. Held annually at the historic ground of S.N.K. High School, right next to the Maharshi Gautam Durga Mandir, the tournament brings together local teams for a fierce but friendly battle. It is a true reflection of the village's love for the game, where the cheers of the crowd echo against the school walls and the temple bells.",
-      "hero": "images/sports/srvc-bandwar-volleyball-tournament-snk-ground.jpg",
+      "hero": "/images/sports/srvc-bandwar-volleyball-tournament-snk-ground.jpg",
       "photos": [
         {
           "src": "images/sports/srvc-bandwar-volleyball-tournament-snk-ground.jpg",
@@ -65,7 +65,10 @@
         "janmashtami-mela-bandwar-bihar",
         "kushti-mud-pit-wrestling-bandwar-mela"
       ],
-      "location": { "lat": 25.5015, "lng": 86.1615 },
+      "location": {
+        "lat": 25.5015,
+        "lng": 86.1615
+      },
       "tags": [
         "srvc bandwar volleyball",
         "bandwar volleyball tournament",
@@ -73,7 +76,8 @@
         "maharshi gautam durga mandir bandwar",
         "village sports bihar",
         "begusarai volleyball"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     }
   ]
 }
