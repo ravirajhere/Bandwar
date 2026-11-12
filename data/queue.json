@@ -1,25 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1794452422887_914lhl",
-      "type": "Image Update Suggestion",
-      "contextId": "srvc-bandwar-volleyball-tournament",
-      "userName": "Bandwar Editor",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-12T03:00:22.887Z",
-      "pendingImageUrl": "/images/pending/edit_1794452421425_upx9je.jpg",
-      "intent": "image_update",
-      "filePath": "data/articles/sports.json",
-      "targetType": "article",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "images/sports/srvc-bandwar-volleyball-tournament-snk-ground.jpg",
-      "jsonObj": {
-        "Category": "sports"
-      }
-    },
-    {
       "id": "edit_1794455301063_t6bxpd",
       "type": "Image Update Suggestion",
       "contextId": "ram-katha-thakurbari-bandwar-2021",
@@ -39,5 +20,26 @@
       }
     }
   ],
-  "approved": []
+  "approved": [
+    {
+      "id": "edit_1794452422887_914lhl",
+      "type": "Image Update Suggestion",
+      "contextId": "srvc-bandwar-volleyball-tournament",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T03:00:22.887Z",
+      "pendingImageUrl": "/images/pending/edit_1794452421425_upx9je.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/sports.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/sports/srvc-bandwar-volleyball-tournament-snk-ground.jpg",
+      "jsonObj": {
+        "Category": "sports"
+      },
+      "approvedVia": "Dashboard"
+    }
+  ]
 }
