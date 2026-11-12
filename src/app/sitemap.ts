@@ -12,12 +12,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const config = getMasterData();
   const baseUrl = config.site.url;
   
-  // 🚀 SEO FIX 1: Never use future dates. Google flags them as spam.
   const getSafeDate = (dateStr?: string | Date) => {
     if (!dateStr) return new Date();
     const d = new Date(dateStr);
     const now = new Date();
-    return d > now ? now : d; // Agar date future mein hai, toh aaj ki date dikhao
+    return d > now ? now : d;
   };
 
   const siteLastUpdated = getSafeDate((config as any).lastUpdated);
@@ -29,9 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   
   const articles = getAllArticles().filter((a: any) => a.published !== false);
   const categories = getCategoriesData().categories;
-  
-  // 🚀 SEO FIX 2: Exclude "Thin Content" (Khokhle profiles). 
-  // Sirf wahi log sitemap mein jayenge jinka bio 20 characters se lamba hai aur placeholder nahi hai.
   const people = getPeopleData().people.filter((p: any) => {
     if (p.published === false) return false;
     if (!p.bio || p.bio.length < 20) return false;
@@ -42,7 +38,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const media = getMediaData();
   const contributors = getContributors();
   
-  // 🚀 SEO FIX 3: Fallback image ko sitemap se hatao (Google ko fake images nahi chahiye)
+  // 🚀 Global Set to track added images and prevent duplicates
+  const addedImages = new Set<string>();
+
   const cleanImage = (img: string) => {
     if (!img) return "";
     const clean = img.split('?')[0].replace(/^\//, "");
@@ -50,17 +48,65 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return img.startsWith("http") ? img : `${baseUrl}/${clean}`;
   };
 
-  // ============ 1. STATIC PAGES ============
+  const getUniqueImages = (rawImages: string[]) => {
+    const unique: string[] = [];
+    rawImages.forEach(img => {
+      const cleaned = cleanImage(img);
+      if (cleaned && !addedImages.has(cleaned)) {
+        addedImages.add(cleaned);
+        unique.push(cleaned);
+      }
+    });
+    return unique;
+  };
+
+  // ==========================================
+  // 🚀 1. ARTICLES FIRST (Highest Priority for Images)
+  // ==========================================
+  // Hum pehle articles scan karenge. Agar koi image Article Hero mein hai, 
+  // toh woh pehle 'addedImages' Set mein chali jayegi.
+  const articleRoutes: MetadataRoute.Sitemap = articles.map(article => {
+    const rawImages: string[] = [];
+    
+    // Hero ko sabse pehle uthayenge
+    if (article.hero) rawImages.push(article.hero);
+    
+    // Uske baad article ki baaki photos
+    article.photos?.forEach(photo => {
+      if (photo.src) rawImages.push(photo.src);
+    });
+    
+    return {
+      url: `${baseUrl}/article/${article.id}`,
+      lastModified: getSafeDate((article as any).dateModified || article.lastUpdated),
+      changeFrequency: 'monthly',
+      priority: priority.articles,
+      images: getUniqueImages(rawImages), // Article URL claim karega image ko
+    };
+  });
+
+  // ==========================================
+  // 🚀 2. STATIC PAGES (Home & Gallery)
+  // ==========================================
+  // Ab jab Gallery scan hogi, toh jo images Article Hero mein use ho chuki hain, 
+  // woh Set mein hain, isliye Gallery unko skip kar degi.
   const staticRoutes: MetadataRoute.Sitemap = [
     { 
       url: baseUrl, 
       lastModified: siteLastUpdated, 
       changeFrequency: 'weekly', 
       priority: priority.home, 
-      images: config.home?.hero?.image ? [cleanImage(config.home.hero.image)].filter(Boolean) : [] 
+      images: config.home?.hero?.image ? getUniqueImages([config.home.hero.image]) : [] 
+    },
+    { 
+      url: `${baseUrl}/gallery`, 
+      lastModified: siteLastUpdated, 
+      changeFrequency: 'monthly', 
+      priority: priority.gallery, 
+      // Sirf wahi images aayengi jo kisi article mein nahi hain (Gallery exclusive)
+      images: getUniqueImages(media.gallery.photos.map(p => p.src)) 
     },
     { url: `${baseUrl}/directory`, lastModified: siteLastUpdated, changeFrequency: 'weekly', priority: priority.directory },
-    { url: `${baseUrl}/gallery`, lastModified: siteLastUpdated, changeFrequency: 'monthly', priority: priority.gallery, images: media.gallery.photos.slice(0, 1000).map(p => cleanImage(p.src)).filter(Boolean) },
     { url: `${baseUrl}/people`, lastModified: siteLastUpdated, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/map`, lastModified: siteLastUpdated, changeFrequency: 'monthly', priority: priority.map },
     { url: `${baseUrl}/section`, lastModified: siteLastUpdated, changeFrequency: 'weekly', priority: 0.7 },
@@ -71,7 +117,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/terms`, lastModified: siteLastUpdated, changeFrequency: 'yearly', priority: priority.legal },
   ];
   
-  // ============ 2. DYNAMIC CATEGORY PAGES ============
+  // ==========================================
+  // 3. DYNAMIC CATEGORY PAGES
+  // ==========================================
   const categoryRoutes: MetadataRoute.Sitemap = categories
     .filter(cat => articles.some(a => a.categories.includes(cat.id)))
     .map(cat => {
@@ -85,48 +133,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       };
     });
   
-  // ============ 3. ARTICLES ============
-  const articleRoutes: MetadataRoute.Sitemap = articles.map(article => {
-    const rawImages: string[] = [];
-    
-    if (article.hero) rawImages.push(cleanImage(article.hero));
-    article.photos?.forEach(photo => {
-      if (photo.src) rawImages.push(cleanImage(photo.src));
-    });
-    
-    const uniqueImages = Array.from(new Set(rawImages)).filter(Boolean);
-    
-    return {
-      url: `${baseUrl}/article/${article.id}`,
-      lastModified: getSafeDate((article as any).dateModified || article.lastUpdated),
-      changeFrequency: 'monthly',
-      priority: priority.articles,
-      images: uniqueImages,
-    };
-  });
-  
-  // ============ 4. PEOPLE PAGES ============
+  // ==========================================
+  // 4. PEOPLE PAGES
+  // ==========================================
   const peopleRoutes: MetadataRoute.Sitemap = people.map((person: any) => ({
     url: `${baseUrl}/people/${person.id}`,
     lastModified: getSafeDate(person.lastUpdated),
     changeFrequency: 'monthly',
     priority: 0.7,
-    images: person.photo ? [cleanImage(person.photo)].filter(Boolean) : [],
+    images: person.photo ? getUniqueImages([person.photo]) : [],
   }));
 
-  // ============ 5. CONTRIBUTORS PAGES ============
+  // ==========================================
+  // 5. CONTRIBUTORS PAGES
+  // ==========================================
   const contributorRoutes: MetadataRoute.Sitemap = contributors.map((c: any) => ({
     url: `${baseUrl}/contributors/${encodeURIComponent(c.username)}`,
     lastModified: siteLastUpdated,
     changeFrequency: 'monthly',
     priority: 0.5,
-    images: c.photo ? [cleanImage(c.photo)].filter(Boolean) : [],
+    images: c.photo ? getUniqueImages([c.photo]) : [],
   }));
   
+  // Return array
   return [
-    ...staticRoutes,
+    ...articleRoutes,     // Articles sabse pehle
+    ...staticRoutes,      // Uske baad static pages (Gallery)
     ...categoryRoutes,
-    ...articleRoutes,
     ...peopleRoutes,
     ...contributorRoutes,
   ];
