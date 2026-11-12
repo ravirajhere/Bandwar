@@ -9,7 +9,7 @@
         "history"
       ],
       "summary": "Bandwar is divided into 17 administrative wards, reflecting a rapidly growing population. While the 2011 Census recorded 12,943 residents, local estimates for 2026 place the population near 22,000. This rapid growth has transformed the village's social fabric, creating a high demand for infrastructure, schools, and healthcare across its numerous Tolas.",
-      "hero": "images/society/bandwar-village-aerial-view-wards.jpg",
+      "hero": "/images/society/bandwar-village-aerial-view-wards.jpg",
       "photos": [
         {
           "src": "images/society/bandwar-village-aerial-view-wards.jpg",
@@ -74,7 +74,8 @@
         "demographics begusarai",
         "village growth bihar",
         "bandwar panchayat"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "tolas-of-bandwar-society",
@@ -162,7 +163,7 @@
         "infrastructure"
       ],
       "summary": "With a population of roughly 22,000 across 17 wards and diverse Tolas like Musahri, Kunjartoli, and Chaubatta, Bandwar's local governance is managed by the Gram Panchayat. However, beyond the formal system, the village runs on a deep-rooted tradition of community participation and 'Shramdaan' (voluntary labour).",
-      "hero": "images/society/bandwar-gram-panchayat-office.jpg",
+      "hero": "/images/society/bandwar-gram-panchayat-office.jpg",
       "photos": [
         {
           "src": "images/society/bandwar-gram-panchayat-office.jpg",
@@ -217,7 +218,7 @@
         "historic-well-chaupal-bandwar"
       ],
       "location": {
-        "lat": 25.5010,
+        "lat": 25.501,
         "lng": 86.1612
       },
       "tags": [
@@ -226,7 +227,8 @@
         "shramdaan bandwar",
         "village governance bihar",
         "mukhiya bandwar"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     }
   ]
 }
