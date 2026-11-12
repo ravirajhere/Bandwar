@@ -1,0 +1,75 @@
+{
+  "id": "srvc-bandwar-volleyball-tournament",
+  "title": "SRVC Bandwar Volleyball: The Annual Clash at SNK Ground",
+  "subtitle": "Dust, sweat, and village pride at Bandwar's premier volleyball tournament",
+  "categories": [
+    "sports",
+    "culture"
+  ],
+  "summary": "The SRVC Bandwar Volleyball Tournament is one of the most anticipated sporting events in the village. Held annually at the historic ground of S.N.K. High School, right next to the Maharshi Gautam Durga Mandir, the tournament brings together local teams for a fierce but friendly battle. It is a true reflection of the village's love for the game, where the cheers of the crowd echo against the school walls and the temple bells.",
+  "hero": "images/sports/srvc-bandwar-volleyball-tournament-ground.jpg",
+  "photos": [
+    {
+      "src": "images/sports/srvc-bandwar-volleyball-tournament-ground.jpg",
+      "caption": "Local players in action during the SRVC Volleyball Tournament at SNK High School ground, Bandwar.",
+      "imageAlt": "Players jumping for a spike during the SRVC Bandwar Volleyball Tournament at SNK High School ground (2026)"
+    }
+  ],
+  "infobox": {
+    "Type": "Volleyball Tournament",
+    "Organiser": "SRVC Bandwar",
+    "Venue": "S.N.K. High School Ground",
+    "Nearby Landmark": "Maharshi Gautam Durga Mandir",
+    "Participants": "Local teams from Bandwar & nearby villages",
+    "Atmosphere": "Community-driven, high energy"
+  },
+  "datePublished": "2026-11-12",
+  "lastUpdated": "2026-11-12",
+  "content": [
+    {
+      "heading": "The Venue: A Historic Ground",
+      "text": "The tournament is not played on any modern indoor court; it takes place on the raw, open ground of the S.N.K. High School. Established in 1942, this ground has been the beating heart of Bandwar's sporting culture for decades. The dusty soil of the ground has witnessed generations of young men diving and sweating for every point. What makes this venue even more special is its spiritual surroundings—the Maharshi Gautam Durga Mandir stands right next to the ground, adding a sense of local pride and community blessing to every match."
+    },
+    {
+      "heading": "SRVC and the Spirit of the Game",
+      "text": "Organised by the local youth and sports enthusiasts under the SRVC Bandwar banner, the tournament is a labour of love. There is no corporate sponsorship, no massive prize money, and no professional referees. It is organised purely for the love of the game and the prestige of winning on home soil. Teams from different tolas of Bandwar and neighboring villages register to compete. The matches are fast, the spikes are aggressive, and the crowd—sitting on the edges of the ground or climbing nearby trees—cheers for every single serve."
+    },
+    {
+      "heading": "Evenings at the SNK Ground",
+      "text": "As the sun sets behind the village, the floodlights (or sometimes just the fading evening light) illuminate the SNK ground. The air fills with the sound of the whistle, the thud of the ball hitting the dust, and the loud shouts of 'Out!' and 'Mine!'. It is one of the few times when the entire village gathers. Elders discuss the techniques of the young players, women cheer from the sidelines, and children run to fetch the ball when it goes out of bounds near the temple. The atmosphere is electric, a perfect blend of sportsmanship and rural community life."
+    },
+    {
+      "heading": "More Than Just a Game",
+      "text": "For the youth of Bandwar, this tournament is a platform to showcase their talent and gain respect. Several local players have honed their skills on this very ground and gone on to represent the block or district level. But more importantly, the SRVC tournament is a time of unity. It bridges social gaps, brings old rivalries to the court, and ends with a mutual respect for the game. It is a festival of sports that sits perfectly alongside the village's other grand traditions like the [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]] and the [[shahid-rajesh-memorial-cricket-tournament-bandwar|Shahid Rajesh Memorial Cricket Tournament]]."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Where is the SRVC Volleyball Tournament held?",
+      "a": "The tournament is held at the ground of S.N.K. High School in Bandwar. The ground is located right next to the Maharshi Gautam Durga Mandir."
+    },
+    {
+      "q": "Who organises the volleyball tournament in Bandwar?",
+      "a": "It is organised by SRVC Bandwar, a local sports group comprising the village youth who manage the teams, the ground, and the schedule of the matches."
+    },
+    {
+      "q": "Can teams from other villages participate?",
+      "a": "Yes, while it is a local village tournament, it often draws teams from neighboring villages who come to compete at the SNK ground."
+    }
+  ],
+  "related": [
+    "snk-high-school-bandwar",
+    "shahid-rajesh-memorial-cricket-tournament-bandwar",
+    "janmashtami-mela-bandwar-bihar",
+    "kushti-mud-pit-wrestling-bandwar-mela"
+  ],
+  "location": { "lat": 25.5015, "lng": 86.1615 },
+  "tags": [
+    "srvc bandwar volleyball",
+    "bandwar volleyball tournament",
+    "snk high school bandwar sports",
+    "maharshi gautam durga mandir bandwar",
+    "village sports bihar",
+    "begusarai volleyball"
+  ]
+}
