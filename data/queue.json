@@ -1,25 +1,4 @@
 {
   "pending": [],
-  "approved": [
-    {
-      "id": "edit_1794446697906_phjyy5",
-      "type": "Image Update Suggestion",
-      "contextId": "health-infrastructure-bandwar-village",
-      "userName": "Admin",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-12T01:24:57.906Z",
-      "pendingImageUrl": "/images/pending/edit_1794446696725_sqfdii.jpg",
-      "intent": "image_update",
-      "filePath": "data/articles/health.json",
-      "targetType": "article",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "/images/health/bandwar-health-sub-centre-building.jpg",
-      "jsonObj": {
-        "Category": "health"
-      },
-      "approvedVia": "Dashboard"
-    }
-  ]
+  "approved": []
 }
