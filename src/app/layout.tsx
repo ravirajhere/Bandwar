@@ -62,6 +62,10 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     verification: {
       google: "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs",
+      // 🚀 ADDED BING VERIFICATION HERE
+      other: {
+        "msvalidate.01": "6C3971730BD8FB6D0A94D21200CC2C27",
+      },
     },
     category: "history",
     creator: "Bandwar Village Community",
@@ -110,7 +114,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         url: baseUrl,
         logo: {
           "@type": "ImageObject",
-          // 🚀 FIXED: Changed from .svg to .png
           url: `${baseUrl}/images/brand/bandwar-logo.png`,
           width: 512, height: 512,
         },
@@ -196,7 +199,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <ToastProvider>
-          {/* 🚀 FIX: Pass the search index to Header */}
           <Header searchIndex={searchIndex} />
           <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
             {children}
