@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794459284964_6qw9zx",
+      "type": "Image Update Suggestion",
+      "contextId": "mithila-painting-madhubani-bandwar",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T04:54:44.964Z",
+      "pendingImageUrl": "/images/pending/edit_1794459283483_nlmrzq.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/culture.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/culture/bandwar-mithila-madhubani-painting-traditional-art.jpg",
+      "jsonObj": {
+        "Category": "culture"
+      }
+    }
+  ],
   "approved": []
 }
