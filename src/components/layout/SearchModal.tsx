@@ -12,7 +12,7 @@ interface SearchModalProps {
   searchIndex: SearchItem[];
 }
 
-// 🚀 FIX: Escape regex special characters to prevent UI crashes on search
+// 🚀 Escape regex special characters
 const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) {
@@ -24,13 +24,15 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
-  // 🚀 Filter Logic
+  // 🚀 FIX: Added safety checks (|| "") to prevent crash if title/description is undefined
   const rawResults = query.trim() === "" 
     ? [] 
-    : searchIndex.filter(item => 
-        item.title.toLowerCase().includes(query.toLowerCase()) || 
-        item.description.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 20); // Limit to 20 results for performance
+    : searchIndex.filter(item => {
+        const safeTitle = (item.title || "").toLowerCase();
+        const safeDesc = (item.description || "").toLowerCase();
+        const safeQuery = query.toLowerCase();
+        return safeTitle.includes(safeQuery) || safeDesc.includes(safeQuery);
+      }).slice(0, 20);
 
   const results = rawResults;
 
@@ -60,16 +62,15 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         onClose();
       } else if (e.key === "ArrowDown") {
         e.preventDefault();
-        setSelectedIndex((prev) => (prev + 1) % results.length);
+        if (results.length > 0) setSelectedIndex((prev) => (prev + 1) % results.length);
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
+        if (results.length > 0) setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
       } else if (e.key === "Enter" && results.length > 0) {
         e.preventDefault();
         router.push(results[selectedIndex].url);
         onClose();
       } else if (e.key === "Tab" && modalRef.current) {
-        // Accessibility Focus Trap
         const focusableElements = modalRef.current.querySelectorAll('input, button, a[href]');
         const firstElement = focusableElements[0] as HTMLElement;
         const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
@@ -104,8 +105,8 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
 
   if (!isOpen) return null;
 
-  // 🚀 Highlight matched text (with escaped regex)
   const highlightText = (text: string, highlight: string) => {
+    if (!text) return null;
     if (!highlight.trim()) return <span>{text}</span>;
     const regex = new RegExp(`(${escapeRegExp(highlight)})`, "gi");
     const parts = text.split(regex);
@@ -116,7 +117,6 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
     );
   };
 
-  // 🚀 Type-based Icon & Label
   const getTypeInfo = (type: string) => {
     switch (type.toLowerCase()) {
       case "article": return { icon: <FileText size={16} aria-hidden="true" />, label: "Article" };
@@ -140,8 +140,6 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
         className="bg-surface w-full max-w-2xl 3xl:max-w-3xl border border-divider rounded-sm shadow-2xl flex flex-col max-h-[75vh] overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()} 
       >
-        
-        {/* Search Input Bar */}
         <div className="flex items-center border-b border-divider p-4 3xl:p-5 bg-canvas shrink-0">
           <Search className="text-ink/40 ml-1 mr-3 shrink-0 3xl:w-6 3xl:h-6" size={22} aria-hidden="true" />
           <input
@@ -162,17 +160,14 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
           </button>
         </div>
 
-        {/* Results Area */}
         <div className="overflow-y-auto p-2 3xl:p-3 custom-scrollbar bg-surface">
           {query.trim() === "" ? (
-            // Formal Empty State
             <div className="flex flex-col items-center justify-center py-16 3xl:py-24 text-ink/40">
               <Search size={40} className="mb-4 opacity-30" aria-hidden="true" />
               <p className="text-sm font-medium uppercase tracking-wider mb-1">Archive Search</p>
               <p className="text-xs">Type a keyword to search across articles, people, and directory.</p>
             </div>
           ) : results.length === 0 ? (
-            // No Results State
             <div className="text-center py-16 text-ink/60">
               <p className="text-base font-serif mb-1">No records found for "<strong className="text-ink">{query}</strong>"</p>
               <p className="text-xs uppercase tracking-wider">Try a different keyword.</p>
@@ -195,12 +190,9 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
                           : "border-transparent hover:bg-canvas/50"
                       }`}
                     >
-                      {/* Type Icon */}
                       <div className={`mt-0.5 shrink-0 ${isSelected ? "text-accent" : "text-ink/40"}`}>
                         {typeInfo.icon}
                       </div>
-
-                      {/* Content */}
                       <div className="min-w-0 flex-grow">
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <span className={`font-serif font-semibold text-[15px] truncate ${isSelected ? "text-accent" : "text-ink"}`}>
@@ -222,7 +214,6 @@ export function SearchModal({ isOpen, onClose, searchIndex }: SearchModalProps) 
           )}
         </div>
 
-        {/* Footer (Keyboard Shortcuts Hint) */}
         <div className="hidden sm:flex items-center justify-between px-4 py-2.5 border-t border-divider bg-canvas/80 text-[11px] text-ink/50 shrink-0">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1">
