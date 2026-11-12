@@ -45,6 +45,7 @@ export default function AboutPage() {
 
   if (!about) return <div className="min-h-screen flex items-center justify-center">About section missing.</div>;
 
+  // 🚀 ADVANCED SCHEMA (Google Search Console Fix for License)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -64,6 +65,19 @@ export default function AboutPage() {
           { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl },
           { "@type": "ListItem", "position": 2, "name": "About", "item": `${baseUrl}/about` }
         ]
+      },
+      // 🚀 NEW: Explicit License Schema for Google Images
+      {
+        "@type": "CreativeWork",
+        "@id": `${baseUrl}/about#archive-license`,
+        "name": "Bandwar Village Archive Content License",
+        "description": "Licensing terms for all photographs, articles, and historical documents on the Bandwar Village Archive.",
+        "creator": { "@id": `${baseUrl}/#organization` },
+        "copyrightHolder": { "@id": `${baseUrl}/#organization` },
+        "copyrightYear": new Date().getFullYear(),
+        "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+        "acquireLicensePage": `${baseUrl}/about#license`,
+        "isAccessibleForFree": true
       }
     ]
   };
