@@ -197,7 +197,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "@type": "Organization",
       "@id": `${baseUrl}/#organization`,
       "name": config.site.name,
-      "logo": { "@type": "ImageObject", "url": `${baseUrl}/images/brand/bandwar-logo.svg`, "width": 512, "height": 512 }
+      "logo": { "@type": "ImageObject", "url": `${baseUrl}/images/brand/bandwar-logo.png`, "width": 512, "height": 512 }
     },
     "datePublished": formatToISO(article.datePublished || article.lastUpdated),
     "dateModified": formatToISO(article.dateModified || article.lastUpdated),
