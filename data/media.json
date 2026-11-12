@@ -15,21 +15,27 @@
       {
         "id": "river-fog",
         "src": "images/geography/burhi-gandak-river-dawn-bandwar.jpg",
+        "articleId": "burhi-gandak-river-bandwar",
         "caption": "The Burhi Gandak at dawn",
+        "imageAlt": "A wide view of the Burhi Gandak river in Bandwar at dawn, with calm waters reflecting the morning light.",
         "category": "nature",
         "year": "2025"
       },
       {
         "id": "river-flowers-yellow",
         "src": "images/geography/burhi-gandak-river-sunset-wildflowers-bandwar.jpg",
+        "articleId": "burhi-gandak-river-bandwar",
         "caption": "Wildflowers on the river bank at sunset",
+        "imageAlt": "Yellow wildflowers blooming on the bank of the Burhi Gandak river in Bandwar during sunset.",
         "category": "nature",
         "year": "2025"
       },
       {
         "id": "river-greenery",
         "src": "images/geography/bandh-embankment-burhi-gandak-bandwar.jpg",
+        "articleId": "bandh-embankment-bandwar",
         "caption": "The Bandh — morning on the Burhi Gandak",
+        "imageAlt": "The green grassy slopes of the Bandh embankment alongside the Burhi Gandak river in Bandwar.",
         "category": "nature",
         "year": "2025"
       },
@@ -37,41 +43,52 @@
         "id": "banyan-tree",
         "src": "images/home/banyan-tree-bandwar.jpg",
         "caption": "A banyan tree — the village's natural landmark",
+        "imageAlt": "A large, ancient banyan tree in Bandwar village, providing shade as a natural landmark.",
         "category": "nature",
         "year": "2025"
       },
       {
         "id": "river-vertical",
         "src": "images/geography/burhi-gandak-river-embankment-vertical-bandwar.jpg",
+        "articleId": "bandh-embankment-bandwar",
         "caption": "The embankment and the river",
+        "imageAlt": "A vertical view of the bandh embankment protecting Bandwar village from the flowing Burhi Gandak river.",
         "category": "nature",
         "year": "2025"
       },
       {
         "id": "shaheed-dwar-day",
         "src": "images/landmarks/shaheed-ramchandra-dwar-bandwar-day.jpg",
+        "articleId": "shaheed-ramchandra-dwar-bandwar",
         "caption": "Shaheed Ramchandra Dwar — the village entrance",
+        "imageAlt": "The Shaheed Ramchandra Dwar entrance gate of Bandwar village during the daytime, bearing a Hindi inscription.",
         "category": "landmarks",
         "year": "2025"
       },
       {
         "id": "shaheed-dwar-night",
         "src": "images/landmarks/shaheed-ramchandra-dwar-bandwar-night.jpg",
+        "articleId": "shaheed-ramchandra-dwar-bandwar",
         "caption": "Shaheed Ramchandra Dwar — lit at night",
+        "imageAlt": "The Shaheed Ramchandra Dwar entrance gate of Bandwar village illuminated by lights at night.",
         "category": "landmarks",
         "year": "2025"
       },
       {
         "id": "chandrashekhar-chowk",
         "src": "images/landmarks/chandrashekhar-chowk-statue-bandwar.jpg",
+        "articleId": "chandrashekhar-chowk-bandwar",
         "caption": "Chandrashekhar Chowk — the village square",
+        "imageAlt": "The statue of Chandrashekhar Singh under a red canopy at Chandrashekhar Chowk in Bandwar village.",
         "category": "landmarks",
         "year": "2025"
       },
       {
         "id": "well",
         "src": "images/landmarks/historic-well-chaupal-bandwar.jpg",
+        "articleId": "historic-well-chaupal-bandwar",
         "caption": "The historic well — Chaupal",
+        "imageAlt": "The historic well and chaupal gathering area in the centre of Bandwar village.",
         "category": "landmarks",
         "year": "2025"
       },
@@ -79,321 +96,412 @@
         "id": "village-corner",
         "src": "images/landmarks/shivala-village-corner-bandwar.jpg",
         "caption": "A corner of Bandwar — the Shivala and daily life",
+        "imageAlt": "A serene corner of Bandwar village showing the pathway near Shivala temple.",
         "category": "daily-life",
         "year": "2025"
       },
       {
         "id": "gautam-buddha-school",
         "src": "images/education/gautam-buddha-global-school-bandwar-building.jpg",
+        "articleId": "gautam-buddha-global-school-bandwar",
         "caption": "Gautam Buddha Global School — the oldest private school",
+        "imageAlt": "The pink and blue exterior of Gautam Buddha Global School, the oldest private school in Bandwar.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "school-signboard",
         "src": "images/education/ms-bandwar-middle-school-building.jpg",
+        "articleId": "ms-bandwar-middle-school",
         "caption": "Rajkiyakrit Madhya Vidyalaya, established 1955",
+        "imageAlt": "The main building and signboard of Rajkiyakrit Madhya Vidyalaya (MS Bandwar) established in 1955.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "school-prangan",
         "src": "images/education/ms-bandwar-middle-school-courtyard.jpg",
+        "articleId": "ms-bandwar-middle-school",
         "caption": "The middle school courtyard, 2020",
+        "imageAlt": "The open courtyard area inside the MS Bandwar middle school campus.",
         "category": "schools",
         "year": "2020"
       },
       {
         "id": "snk-school",
         "src": "images/education/snk-high-school-bandwar-campus.jpg",
+        "articleId": "snk-high-school-bandwar",
         "caption": "Bhagwandutt S.N.K. High School — the village's oldest school",
+        "imageAlt": "The historic campus building of Bhagwandutt S.N.K. High School in Bandwar, established in 1942.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "uhs-school",
         "src": "images/education/uhs-plus-2-bandwar-school-building.jpg",
+        "articleId": "uhs-plus-2-bandwar",
         "caption": "UHS +2 Bandwar — the higher secondary school",
+        "imageAlt": "The pucca building block of UHS +2 Bandwar, the village's higher secondary school.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "gps-paschimi",
         "src": "images/education/gps-paschimibandwar-school-building.jpg",
+        "articleId": "gps-paschimibandwar-school",
         "caption": "GPS Paschimibandwar, established 1952",
+        "imageAlt": "The main building of Government Primary School Paschimibandwar established in 1952.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "gps-mohanpur",
         "src": "images/education/gps-mohanpur-kanya-school-building.jpg",
+        "articleId": "gps-mohanpur-kanya-school",
         "caption": "GPS Mohanpur Kanya — the girls' primary school",
+        "imageAlt": "The building of GPS Mohanpur Kanya, the dedicated girls' primary school in Bandwar.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "gps-musahri",
         "src": "images/education/gps-bandwar-musahri-school-building.jpg",
+        "articleId": "gps-bandwar-musahri-school",
         "caption": "GPS Bandwar Musahri in the Musahri tola",
+        "imageAlt": "The main building of GPS Bandwar Musahri located in the Musahri tola of the village.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "nps-kunjartol",
         "src": "images/education/nps-kunjartol-wd-9-school-building.jpg",
+        "articleId": "nps-kunjartol-wd-9",
         "caption": "NPS Kunjartol WD-9, established 2007",
+        "imageAlt": "The building of New Primary School Kunjartol Ward 9, established in 2007.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "adharsh-vikash",
         "src": "images/education/adharsh-vikash-vidhya-mandir-building.jpg",
+        "articleId": "adharsh-vikash-vidhya-mandir",
         "caption": "Adharsh Vikash Vidhya Mandir — a private school",
+        "imageAlt": "The exterior building of Adharsh Vikash Vidhya Mandir, a private school in Bandwar.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "st-paul",
         "src": "images/education/st-paul-school-bandwar-building.jpg",
+        "articleId": "st-paul-school-bandwar",
         "caption": "St. Paul School — English medium private school",
+        "imageAlt": "The main building of St. Paul School, an English-medium private institution in Bandwar.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "library-gate",
         "src": "images/education/vaani-vilas-library-bandwar-building.jpg",
+        "articleId": "vaani-vilas-library-bandwar",
         "caption": "Vaani Vilas Pustakalaya — the village library",
+        "imageAlt": "The front view of Vaani Vilas Pustakalaya, the historic village library in Bandwar.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "library-books",
         "src": "images/education/vaani-vilas-library-bandwar-books.jpg",
+        "articleId": "vaani-vilas-library-bandwar",
         "caption": "Bookshelves inside Vaani Vilas Pustakalaya",
+        "imageAlt": "Wooden cabinets filled with books and reference materials inside Vaani Vilas Pustakalaya.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "library-reading-area",
         "src": "images/education/vaani-vilas-library-bandwar-reading-area.jpg",
+        "articleId": "vaani-vilas-library-bandwar",
         "caption": "The reading area of Vaani Vilas Pustakalaya",
+        "imageAlt": "A large wooden table and chairs set up for readers in the Vaani Vilas library reading room.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "library-portraits",
         "src": "images/education/vaani-vilas-library-bandwar-portraits.jpg",
+        "articleId": "vaani-vilas-library-bandwar",
         "caption": "Commemorative plaques at Vaani Vilas Pustakalaya",
+        "imageAlt": "Commemorative plaques on the wall inside the Vaani Vilas Pustakalaya library.",
         "category": "schools",
         "year": "2025"
       },
       {
         "id": "library-diwali",
         "src": "images/education/vaani-vilas-library-bandwar-diwali.jpg",
+        "articleId": "vaani-vilas-library-bandwar",
         "caption": "Diwali celebrations at the library",
+        "imageAlt": "The community celebrating Diwali with lights and decorations at Vaani Vilas Pustakalaya.",
         "category": "schools",
         "year": "2026"
       },
       {
         "id": "sbi-2015",
         "src": "images/infrastructure/sbi-bank-bandwar-branch-building-2015.jpg",
+        "articleId": "sbi-bank-bandwar",
         "caption": "SBI Bandwar, 2015",
+        "imageAlt": "The older beige building of the State Bank of India Bandwar branch as it appeared in 2015.",
         "category": "infrastructure",
         "year": "2015"
       },
       {
         "id": "sbi-2025",
         "src": "images/infrastructure/sbi-bank-bandwar-branch-building.jpg",
+        "articleId": "sbi-bank-bandwar",
         "caption": "SBI Bandwar, 2025",
+        "imageAlt": "The newly renovated SBI Bandwar branch building with a modern blue and white exterior.",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "sbi-atm",
         "src": "images/infrastructure/sbi-atm-bandwar-branch.jpg",
+        "articleId": "sbi-bank-bandwar",
         "caption": "SBI ATM at Bandwar",
+        "imageAlt": "The 24/7 SBI ATM kiosk installed next to the Bandwar bank branch.",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "post-office",
         "src": "images/infrastructure/banduar-post-office-bandwar-building.jpg",
+        "articleId": "bandwar-post-office",
         "caption": "Banduar Post Office, serving PIN 851131",
+        "imageAlt": "The building of Banduar Branch Post Office serving Bandwar village and PIN code 851131.",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "petrol-pump",
         "src": "images/infrastructure/ram-janki-fuels-indian-oil-petrol-pump-bandwar.jpg",
+        "articleId": "ram-janki-petrol-pump-bandwar",
         "caption": "Ram Janki Fuels — the Indian Oil petrol pump",
+        "imageAlt": "The tall canopy and fuel stations of Ram Janki Fuels, an Indian Oil petrol pump on SH 55 near Bandwar.",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "nal-jal-tank",
         "src": "images/infrastructure/jal-jeevan-mission-water-tower-bandwar.jpg",
+        "articleId": "jal-jeevan-mission-water-tower-bandwar",
         "caption": "Jal Jeevan Mission water tower",
+        "imageAlt": "The blue and white steel frame of the Jal Jeevan Mission water tower near the Bandwar embankment.",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "panchayat",
         "src": "images/infrastructure/gram-panchayat-bhawan-bandwar.jpg",
+        "articleId": "community-panchayat-bandwar",
         "caption": "Gram Panchayat Bhawan, Bandwar",
+        "imageAlt": "The official building of Gram Panchayat Bhawan in Bandwar village.",
         "category": "infrastructure",
         "year": "2025"
       },
       {
         "id": "health-sub-centre",
         "src": "images/health/bandwar-health-sub-centre-building-bihar.jpg",
+        "articleId": "health-infrastructure-bandwar-village",
         "caption": "The health sub-centre serving Bandwar village",
+        "imageAlt": "The government health sub-centre building providing basic medical facilities to Bandwar.",
         "category": "health",
         "year": "2025"
       },
       {
         "id": "construction",
         "src": "images/infrastructure/bandwar-village-road-construction.jpg",
+        "articleId": "roads-connectivity-bandwar",
         "caption": "Bricks and timber on a village road",
+        "imageAlt": "Construction materials like bricks and timber stacked on the side of a village road in Bandwar.",
         "category": "daily-life",
         "year": "2025"
       },
       {
         "id": "village-lane",
         "src": "images/infrastructure/bandwar-musahri-tola-village-lane-bamboo-fencing.jpg",
+        "articleId": "roads-connectivity-bandwar",
         "caption": "A village lane — bamboo fences and daily life",
+        "imageAlt": "A narrow rural lane in Bandwar with traditional bamboo fencing along the houses.",
         "category": "daily-life",
         "year": "2025"
       },
       {
         "id": "diarrhea-outbreak-lane",
         "src": "images/health/bandwar-musahri-tola-village-lane-diarrhea-outbreak.jpg",
+        "articleId": "diarrhea-outbreak-bandwar-september-2025",
         "caption": "Musahri Tola — the site of the 2025 outbreak",
+        "imageAlt": "A narrow lane in Musahri Tola, Bandwar, where the September 2025 diarrhea outbreak was concentrated.",
         "category": "daily-life",
         "year": "2025"
       },
       {
         "id": "thakurbari-sunset",
         "src": "images/religion/ram-mandir-thakurbari-bandwar-sunset.jpg",
+        "articleId": "ram-mandir-thakurbari-bandwar",
         "caption": "Ram Mandir Thakurbari at sunset",
+        "imageAlt": "The twin shikharas of Ram Mandir Thakurbari silhouetted against the evening sky at sunset.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "ram-mandir-thakurbari",
         "src": "images/religion/ram-mandir-thakurbari-bandwar.jpg",
+        "articleId": "ram-mandir-thakurbari-bandwar",
         "caption": "Ram Mandir Thakurbari",
+        "imageAlt": "A clear daytime view of Ram Mandir Thakurbari, showing its unique twin-spire architecture.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "temple-durga",
         "src": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
+        "articleId": "maharishi-gautam-durga-mandir-bandwar",
         "caption": "Maharishi Gautam Aadi Shakti Durga Mandir",
+        "imageAlt": "The vibrant orange exterior and green pillars of Maharishi Gautam Aadi Shakti Durga Mandir.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "temple-durga-murti",
         "src": "images/religion/maharishi-gautam-durga-mandir-idol-bandwar.jpg",
+        "articleId": "maharishi-gautam-durga-mandir-bandwar",
         "caption": "Chaiti Durga idol inside the temple",
+        "imageAlt": "The ten-armed Chaiti Durga idol seated on a lion inside the temple sanctum.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "krishna-mandir-bada",
         "src": "images/religion/bada-krishna-mandir-bandwar.jpg",
+        "articleId": "bada-krishna-mandir-bandwar",
         "caption": "Bada Krishna Mandir",
+        "imageAlt": "The whitewashed exterior and arched entrance of the Bada Krishna Mandir in Bandwar.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "krishna-mandir-bada-murti",
         "src": "images/religion/bada-krishna-mandir-idol.jpg",
+        "articleId": "bada-krishna-mandir-bandwar",
         "caption": "Radha-Krishna idol inside the larger temple",
+        "imageAlt": "The beautifully adorned Radha-Krishna idol with a golden prabhavali inside Bada Krishna Mandir.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "krishna-mandir-chhota",
         "src": "images/religion/chhota-krishna-mandir-bandwar.jpg",
+        "articleId": "chhota-krishna-mandir-bandwar",
         "caption": "Chhota Krishna Mandir",
+        "imageAlt": "The colourful scalloped arches and marble steps of the Chhota Krishna Mandir.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "krishna-mandir-chhota-murti",
         "src": "images/religion/chhota-krishna-mandir-idol-bandwar.jpg",
+        "articleId": "chhota-krishna-mandir-bandwar",
         "caption": "Radha-Krishna idol inside the smaller temple",
+        "imageAlt": "The Radha-Krishna idol seated on the Shesh Naag inside Chhota Krishna Mandir.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "hanuman-mandir-murti",
         "src": "images/religion/sankat-mochan-hanuman-mandir-bandwar.jpg",
+        "articleId": "sankat-mochan-hanuman-mandir-bandwar",
         "caption": "Sankat Mochan Hanuman idol",
+        "imageAlt": "The bright vermilion red idol of Hanuman ji holding a mace inside the Sankat Mochan Mandir.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "baba-bhole-mandir",
         "src": "images/religion/baba-bhole-durgasthan-hanuman-mandir-bandwar.jpg",
+        "articleId": "baba-bhole-durgasthan-hanuman-mandir-bandwar",
         "caption": "Baba Bhole Durgasthan Hanuman Mandir",
+        "imageAlt": "The blue-grey shikhara and maroon walls of the multi-deity Baba Bhole Durgasthan Hanuman Mandir.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "shivala",
         "src": "images/religion/shivala-temple-bandwar.jpg",
+        "articleId": "shivala-temple-bandwar",
         "caption": "Shivala — the village's Shiva temple",
+        "imageAlt": "The traditional Nagara-style white exterior and shikhara of Shivala temple in Bandwar.",
         "category": "temples",
         "year": "2025"
       },
       {
         "id": "chhath-puja-murti",
         "src": "images/religion/bandwar-chhath-puja-surya-dev-idol-bandh.jpg",
+        "articleId": "chhath-puja-bandwar-bandh-burhi-gandak",
         "caption": "Chhath Puja — Surya Dev idol at Bandh",
+        "imageAlt": "A large idol of Surya Dev on his seven-horse chariot set up at the bandh for Chhath Puja.",
         "category": "festivals",
         "year": "2025"
       },
       {
         "id": "janmashtami-mela",
         "src": "images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
+        "articleId": "janmashtami-mela-bandwar-bihar",
         "caption": "The historic Janmashtami Mela at the village ground",
+        "imageAlt": "A large crowd gathered at the village ground in Bandwar for the historic Janmashtami Mela.",
         "category": "festivals",
         "year": "2025"
       },
       {
         "id": "kushti",
         "src": "images/culture/bandwar-kushti-mud-pit-wrestling-janmashtami-mela.jpg",
+        "articleId": "kushti-mud-pit-wrestling-bandwar-mela",
         "caption": "Wrestlers competing in the traditional mud-pit (Kushti)",
+        "imageAlt": "Two wrestlers grappling in the wet mud pit during the traditional Kushti tournament at the Bandwar mela.",
         "category": "festivals",
         "year": "2025"
       },
       {
         "id": "ram-katha-2021",
         "src": "images/culture/bandwar-ram-katha-thakurbari-pandal-2021.jpg",
+        "articleId": "ram-katha-thakurbari-bandwar-2021",
         "caption": "Ram Katha at Thakurbari, 2021",
+        "imageAlt": "Villagers gathered under a pink-and-white pandal for the Ram Katha recitation at Thakurbari in 2021.",
         "category": "festivals",
         "year": "2021"
       },
       {
         "id": "sama-chakeva",
         "src": "images/culture/bandwar-sama-chakeva-clay-idols-mithila-festival.jpg",
+        "articleId": "sama-chakeva-mithila-festival-bandwar",
         "caption": "Handcrafted clay idols of Sama and Chakeva",
+        "imageAlt": "Colourful handcrafted clay idols of birds representing Sama and Chakeva during the Mithila festival.",
         "category": "festivals",
         "year": "2025"
       },
       {
         "id": "cricket-tournament",
         "src": "images/culture/bandwar-shahid-rajesh-memorial-cricket-tournament-2026.jpg",
+        "articleId": "shahid-rajesh-memorial-cricket-tournament-bandwar",
         "caption": "Shahid Rajesh Memorial Cricket Tournament, 2026",
+        "imageAlt": "A cricket match in progress at the village ground during the Shahid Rajesh Memorial Tournament.",
         "category": "festivals",
         "year": "2026"
       },
       {
         "id": "mithila-painting",
         "src": "images/culture/bandwar-mithila-madhubani-painting-traditional-art.jpg",
+        "articleId": "mithila-painting-madhubani-bandwar",
         "caption": "A traditional Mithila (Madhubani) painting",
+        "imageAlt": "An intricate traditional Mithila (Madhubani) painting featuring natural motifs and deities.",
         "category": "daily-life",
         "year": "2025"
       },
@@ -401,6 +509,7 @@
         "id": "madhuri-dhala-junction",
         "src": "images/landmarks/madhuri-dhala-junction-sh55-bandwar.jpg",
         "caption": "Madhuri Dhala — the turning point to Bandwar from SH 55",
+        "imageAlt": "The Madhuri Dhala road junction on SH 55 where the link road to Bandwar village branches off.",
         "category": "landmarks",
         "year": "2026"
       },
@@ -408,6 +517,7 @@
         "id": "grace-brick-plant",
         "src": "images/infrastructure/grace-brick-plant-bandwar.jpg",
         "caption": "Grace Brick Plant — a local industrial unit",
+        "imageAlt": "The kiln and manufacturing area of the Grace Brick Plant on the outskirts of Bandwar.",
         "category": "infrastructure",
         "year": "2026"
       },
@@ -415,6 +525,7 @@
         "id": "hp-gas-gramin-vitrak",
         "src": "images/infrastructure/hp-gas-gramin-vitrak-bandwar.jpg",
         "caption": "HP Gas rural LPG distributor",
+        "imageAlt": "The storefront of the HP Gas Gramin Vitrak providing LPG cylinders to Bandwar residents.",
         "category": "infrastructure",
         "year": "2026"
       },
@@ -422,6 +533,7 @@
         "id": "government-bamboo-exporting-plant",
         "src": "images/infrastructure/government-bamboo-exporting-plant-bandwar.jpg",
         "caption": "Bamboo tree guards at the government facility",
+        "imageAlt": "Bamboo structures and tree guards crafted at the government bamboo facility in Bandwar.",
         "category": "infrastructure",
         "year": "2026"
       },
@@ -429,6 +541,7 @@
         "id": "government-fertilizer-shop",
         "src": "images/infrastructure/government-fertilizer-shop-pm-kisan-bandwar.jpg",
         "caption": "Subsidised urea and DAP at PM-KISAN outlet",
+        "imageAlt": "Fertilizer bags stacked at the PM-KISAN Urvarak outlet providing subsidised urea and DAP to farmers.",
         "category": "infrastructure",
         "year": "2026"
       },
@@ -436,6 +549,7 @@
         "id": "shivam-sudha-milk-parlour",
         "src": "images/infrastructure/shivam-sudha-milk-parlour-bandwar.jpg",
         "caption": "Shivam Sudha Milk Parlour on Bandwar Road",
+        "imageAlt": "The Shivam Sudha Milk Parlour shopfront selling dairy products in Bandwar.",
         "category": "infrastructure",
         "year": "2026"
       },
@@ -443,6 +557,7 @@
         "id": "pm-wani-wifi",
         "src": "images/infrastructure/pm-wani-wifi-hotspot-gram-panchayat-bandwar.jpg",
         "caption": "Public WiFi under PM-WANI at the Gram Panchayat",
+        "imageAlt": "A sign indicating the PM-WANI public WiFi hotspot available at the Gram Panchayat Bhawan in Bandwar.",
         "category": "infrastructure",
         "year": "2024"
       }
@@ -649,6 +764,7 @@
       "lat": 25.507831,
       "lng": 86.158875,
       "description": "The office of the Bandwar Gram Panchayat.",
+      "article": "community-panchayat-bandwar",
       "photo": "images/infrastructure/gram-panchayat-bhawan-bandwar.jpg"
     },
     {
