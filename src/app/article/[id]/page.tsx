@@ -26,10 +26,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!article) return { title: "Not Found", robots: { index: false } };
 
   const baseUrl = config.site.url;
-  // ✅ Use fallback.jpg when article has no hero image
-  const ogImage = article.hero
-    ? `${baseUrl}/${article.hero.replace(/^\//, '')}`
-    : `${baseUrl}${FALLBACK_IMAGE}`;
+  
+  // ✅ Use displayHero for SEO so it falls back to fallback.jpg if needed
+  const seoImage = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
+  const ogImage = seoImage.startsWith("http") 
+    ? seoImage 
+    : `${baseUrl}/${seoImage.replace(/^\//, '')}`;
 
   return {
     title: article.metaTitle || article.title,
@@ -84,11 +86,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
     return dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
   };
 
-  // 🚀 ADVANCED IMAGE SEO: Adding creator, license, and precise descriptions to fight "Toran" confusion
+  // ✅ Use displayHero for JSON-LD (Ensures Google gets a valid image URL)
+  const heroForSEO = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
+
+  // 🚀 ADVANCED IMAGE SEO: Adding creator, license, and precise descriptions
   const imagesArray: any[] = [];
   
-  if (article.hero) {
-    const imgUrl = article.hero.startsWith("http") ? article.hero : `${baseUrl}/${article.hero.replace(/^\//, "")}`;
+  if (heroForSEO) {
+    const imgUrl = heroForSEO.startsWith("http") ? heroForSEO : `${baseUrl}/${heroForSEO.replace(/^\//, "")}`;
     imagesArray.push({
       "@type": "ImageObject",
       "url": imgUrl,
@@ -124,7 +129,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   }
 
   // ✅ Fallback image for JSON-LD if article has NO real images at all
-  // (Real images always take priority for SEO)
   if (imagesArray.length === 0) {
     imagesArray.push({
       "@type": "ImageObject",
@@ -213,8 +217,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
   const relatedArticles = article.related?.map(id => allArticles.find(a => a.id === id)).filter(Boolean) || [];
 
-  // ✅ Hero path: real hero if exists, otherwise fallback (still editable via ArticleHeroImage)
-  const heroSrc = article.hero ? article.hero : FALLBACK_IMAGE;
+  // ✅ Display logic: Screen par dikhne wali image (Real ya Fallback)
+  const heroDisplaySrc = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
 
   return (
     <EditModeProvider>
@@ -308,10 +312,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             </header>
 
-            {/* ✅ Hero image: shows real hero, or fallback.jpg if not uploaded yet */}
+            {/* ✅ Hero image: Shows displayHero, but passes originalHero to editor */}
             <div className="mb-8">
               <ArticleHeroImage 
-                hero={heroSrc} 
+                hero={heroDisplaySrc} 
+                originalHero={article.hero} 
                 title={article.title} 
                 articleId={article.id} 
                 altText={article.photos?.[0]?.imageAlt || article.title} 
