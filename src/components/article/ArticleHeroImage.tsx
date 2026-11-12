@@ -6,13 +6,14 @@ import { ImageUpdateButton } from "@/components/shared/ImageUpdateButton";
 import { Lightbox } from "@/components/place/Lightbox";
 
 interface ArticleHeroImageProps {
-  hero: string;
+  hero: string;         // Display image (fallback ke sath)
+  originalHero?: string; // Asli image path (fallback ke bina - Editor ke liye)
   title: string;
   articleId: string;
   altText: string;
 }
 
-export function ArticleHeroImage({ hero, title, articleId, altText }: ArticleHeroImageProps) {
+export function ArticleHeroImage({ hero, originalHero, title, articleId, altText }: ArticleHeroImageProps) {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // 🚀 SEO FIX: Strip query strings (e.g., ?v=hash) for Next.js Image optimization
@@ -70,7 +71,7 @@ export function ArticleHeroImage({ hero, title, articleId, altText }: ArticleHer
           <ImageUpdateButton 
             contextName={`Article: ${title}`} 
             contextId={articleId} 
-            currentImage={hero} 
+            currentImage={originalHero || ""} // ✅ FIX: Editor ko asli path bhejenge (ya khaali string)
           />
         </div>
       </div>
