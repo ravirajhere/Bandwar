@@ -74,7 +74,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         name: `${category.title} — Bandwar Village Archive`,
         description: category.description,
         isPartOf: { "@id": `${baseUrl}/#website` },
-        about: { "@id": `${baseUrl}/#place` }, // 🚀 Links to main Village entity
+        about: { "@id": `${baseUrl}/#place` },
         mainEntity: {
           "@type": "ItemList",
           "@id": `${baseUrl}/section/${category.id}#itemlist`
@@ -96,12 +96,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         name: `${category.title} Articles`,
         description: `List of articles related to ${category.title} in Bandwar Village.`,
         numberOfItems: articles.length,
-        itemListOrder: "https://schema.org/ItemListOrderDescending", // 🚀 Tells Google it's sorted Newest-First
+        itemListOrder: "https://schema.org/ItemListOrderDescending",
         itemListElement: articles.slice(0, 20).map((article, index) => {
-          // 🚀 ADVANCED: Adding images to ItemList helps Google show Carousels in Search
           const images: string[] = [];
-          if (article.hero) {
-            images.push(article.hero.startsWith("http") ? article.hero : `${baseUrl}/${article.hero.replace(/^\//, "")}`);
+          
+          // ✅ FIX: Use displayHero for SEO JSON-LD
+          const seoHero = (article as any).displayHero || article.hero;
+          
+          if (seoHero) {
+            images.push(seoHero.startsWith("http") ? seoHero : `${baseUrl}/${seoHero.replace(/^\//, "")}`);
           }
           
           return {
