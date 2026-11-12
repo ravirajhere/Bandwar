@@ -18,6 +18,25 @@
       "jsonObj": {
         "Category": "culture"
       }
+    },
+    {
+      "id": "edit_1794487532951_ktr8yy",
+      "type": "Image Update Suggestion",
+      "contextId": "tolas-of-bandwar-society",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T12:45:32.952Z",
+      "pendingImageUrl": "/images/pending/edit_1794487531669_ui9ic5.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/society.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/society/bandwar-village-lane-tola.jpg",
+      "jsonObj": {
+        "Category": "society"
+      }
     }
   ],
   "approved": []
