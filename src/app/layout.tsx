@@ -110,7 +110,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         url: baseUrl,
         logo: {
           "@type": "ImageObject",
-          url: `${baseUrl}/images/brand/bandwar-logo.svg`,
+          // 🚀 FIXED: Changed from .svg to .png
+          url: `${baseUrl}/images/brand/bandwar-logo.png`,
           width: 512, height: 512,
         },
         description: config.organization?.mission || config.site.description,
