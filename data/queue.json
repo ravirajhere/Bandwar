@@ -1,25 +1,5 @@
 {
-  "pending": [
-    {
-      "id": "edit_1794487587782_aytdmg",
-      "type": "Image Update Suggestion",
-      "contextId": "janmashtami-mela-bandwar-bihar",
-      "userName": "Bandwar Editor",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-12T12:46:27.782Z",
-      "pendingImageUrl": "/images/pending/edit_1794487586551_nvq5js.jpg",
-      "intent": "image_update",
-      "filePath": "data/articles/culture.json",
-      "targetType": "article",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
-      "jsonObj": {
-        "Category": "culture"
-      }
-    }
-  ],
+  "pending": [],
   "approved": [
     {
       "id": "edit_1794475522721_b8tjn7",
