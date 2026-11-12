@@ -1,0 +1,232 @@
+{
+  "articles": [
+    {
+      "id": "demographics-wards-bandwar",
+      "title": "Bandwar Demographics: The 17 Wards and a Growing Population",
+      "subtitle": "How a village of 12,000 in 2011 became an estimated 22,000 by 2026",
+      "categories": [
+        "society",
+        "history"
+      ],
+      "summary": "Bandwar is divided into 17 administrative wards, reflecting a rapidly growing population. While the 2011 Census recorded 12,943 residents, local estimates for 2026 place the population near 22,000. This rapid growth has transformed the village's social fabric, creating a high demand for infrastructure, schools, and healthcare across its numerous Tolas.",
+      "hero": "images/society/bandwar-village-aerial-view-wards.jpg",
+      "photos": [
+        {
+          "src": "images/society/bandwar-village-aerial-view-wards.jpg",
+          "caption": "An aerial view of Bandwar, showing the dense settlement across its 17 wards.",
+          "imageAlt": "Aerial view of Bandwar village showing the 17 wards in Begusarai, Bihar (2026)"
+        }
+      ],
+      "infobox": {
+        "Administrative Units": "17 Wards",
+        "Population (Census 2011)": "12,943",
+        "Estimated Population (2026)": "~22,000",
+        "Key Tolas": "Musahri, Kunjartoli, Baraitoli, Dhanuktoli, Chaubatta, Punabas, Mohra Chowk, Bharmpura, Malha, Khatha Tol",
+        "Growth Rate": "Rapid"
+      },
+      "datePublished": "2026-11-12",
+      "lastUpdated": "2026-11-12",
+      "content": [
+        {
+          "heading": "The 2011 Baseline",
+          "text": "According to the 2011 Census of India, Bandwar had a population of 12,943. This data has been the benchmark for all administrative planning in the village for over a decade. However, anyone walking through the village today can see that this number has grown exponentially. With an estimated 22,000 people now living in Bandwar, the village is no longer a small settlement; it is a bustling rural town."
+        },
+        {
+          "heading": "The 17 Ward Structure",
+          "text": "To manage this growing population, Bandwar Gram Panchayat is divided into 17 administrative wards. Each ward elects a Ward Member (Panch) who represents the community in local governance. The village is a tapestry of distinct neighborhoods (Tolas). Wards 1 and 2 encompass the historic Musahri Tola, while Ward 9 covers the populous Kunjartoli. Other major areas include Baraitoli, Dhanuktoli, Punabas, Bharmpura, and the commercial hubs of Chaubatta and Mohra Chowk. The riverine communities reside in Malha and the separate Khatha Tol. The division is not just political; it defines how government schemes, from the [[jal-jeevan-mission-water-tower-bandwar|Jal Jeevan Mission]] to local road development, are rolled out."
+        },
+        {
+          "heading": "The Infrastructure Strain",
+          "text": "A population jump from 13,000 to 22,000 in a single generation puts immense pressure on the village's resources. The demand for clean drinking water, schooling, and healthcare has outpaced supply. The [[health-infrastructure-bandwar-village|lack of a Primary Health Centre (PHC)]] is felt more acutely now than ever. Schools like [[ms-bandwar-middle-school|MS Bandwar]] and [[uhs-plus-2-bandwar|UHS +2]] are struggling to accommodate the growing number of children. The tragedy of the [[diarrhea-outbreak-bandwar-september-2025|2025 diarrhea outbreak]] was a harsh reminder of what happens when basic infrastructure cannot keep up with population growth."
+        },
+        {
+          "heading": "The Future",
+          "text": "The youth of Bandwar are increasingly moving to cities like Delhi, Punjab, and Bengaluru for education and employment, yet the village population continues to rise. This indicates a high birth rate and a trend of families returning to their roots. Managing the 17 wards efficiently, ensuring equitable distribution of resources across all Tolas, and demanding better infrastructure from the state government will be the defining challenges for Bandwar's panchayat in the coming decade."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "How many wards are there in Bandwar?",
+          "a": "Bandwar Gram Panchayat is divided into 17 administrative wards, each represented by an elected Ward Member (Panch)."
+        },
+        {
+          "q": "What is the current estimated population of Bandwar?",
+          "a": "While the 2011 Census recorded 12,943 residents, local estimates for 2026 place the population at approximately 22,000 due to rapid growth."
+        },
+        {
+          "q": "What are the major Tolas in Bandwar?",
+          "a": "Bandwar comprises several distinct Tolas including Musahri, Kunjartoli, Baraitoli, Dhanuktoli, Chaubatta, Punabas, Mohra Chowk, Bharmpura, Malha, and Khatha Tol."
+        }
+      ],
+      "related": [
+        "diarrhea-outbreak-bandwar-september-2025",
+        "health-infrastructure-bandwar-village",
+        "tolas-of-bandwar-society",
+        "ms-bandwar-middle-school"
+      ],
+      "location": {
+        "lat": 25.5005,
+        "lng": 86.1608
+      },
+      "tags": [
+        "bandwar population",
+        "bandwar 17 wards",
+        "demographics begusarai",
+        "village growth bihar",
+        "bandwar panchayat"
+      ]
+    },
+    {
+      "id": "tolas-of-bandwar-society",
+      "title": "The Tolas of Bandwar: Mapping the Village's Social Fabric",
+      "subtitle": "From Musahri to Malha, how Bandwar's neighborhoods define its identity",
+      "categories": [
+        "society",
+        "culture"
+      ],
+      "summary": "Bandwar is not a single, uniform settlement; it is a collective of distinct 'Tolas' (neighborhoods). From the historic Musahri Tola and the bustling Kunjartoli to the riverine communities of Malha and Khatha Tol, each area has its own character. Central junctions like Chaubatta and Mohra Chowk serve as the commercial arteries, binding the village's social fabric together.",
+      "hero": "images/society/bandwar-village-lane-tola.jpg",
+      "photos": [
+        {
+          "src": "images/society/bandwar-village-lane-tola.jpg",
+          "caption": "A typical lane inside one of Bandwar's Tolas, lined with brick houses.",
+          "imageAlt": "A narrow brick lane inside a Tola in Bandwar village, Begusarai (2026)"
+        }
+      ],
+      "infobox": {
+        "Key Tolas": "Musahri, Kunjartoli, Baraitoli, Dhanuktoli, Punabas, Bharmpura",
+        "Commercial Hubs": "Chaubatta, Mohra Chowk",
+        "Riverine Communities": "Malha, Khatha Tol",
+        "Social Structure": "Community-based neighborhoods mapped to 17 Wards"
+      },
+      "datePublished": "2026-11-12",
+      "lastUpdated": "2026-11-12",
+      "content": [
+        {
+          "heading": "The Anatomy of a Tola",
+          "text": "In Bihar, a village is a federation of smaller clusters called 'Tolas'. Historically, these tolas were formed along occupational and community lines, but today they are tight-knit neighborhoods. In Bandwar, your Tola is your primary social identity. When a marriage is arranged, a death occurs, or a dispute arises, the Tola mobilizes first. The village's 22,000 people are spread across a fascinating mix of these settlements."
+        },
+        {
+          "heading": "The Heart of Commerce: Chaubatta and Mohra Chowk",
+          "text": "If the [[historic-well-chaupal-bandwar|Chaupal]] is the social heart of Bandwar, then **Chaubatta** and **Mohra Chowk** are its commercial arteries. 'Chowk' and 'Chauraha' mean crossroads, and these areas are where the village's main roads intersect. Chaubatta and Mohra Chowk are lined with small shops, tea stalls, grocery stores, and repair joints. In the evenings, these junctions buzz with activity as villagers returning from their fields or jobs stop for a chat or to buy daily essentials. They are also the primary spots for local political discussions."
+        },
+        {
+          "heading": "Residential and Occupational Tolas",
+          "text": "Moving away from the chowks, the residential fabric unfolds. **Kunjartoli** (Ward 9) is one of the most densely populated areas, home to the [[nps-kunjartol-wd-9|NPS Kunjartol school]]. **Musahri** (Wards 1 & 2) is historically the Mahadalit basti, a community of resilient agricultural laborers that was the center of the [[diarrhea-outbreak-bandwar-september-2025|2025 health crisis]]. **Baraitoli** traditionally relates to the 'Barai' community (artisans/betel leaf growers), while **Dhanuktoli** is home to the Dhanuk community. **Punabas** and **Bharmpura** are other major residential hubs that house diverse families, each contributing to the village's social tapestry."
+        },
+        {
+          "heading": "The Riverine Communities: Malha and Khatha Tol",
+          "text": "A unique aspect of Bandwar is its connection to the [[burhi-gandak-river-bandwar|Burhi Gandak river]]. This is reflected in its Tolas. **Malha** is the neighborhood associated with the Mallah (boatmen/fishermen) community, whose lives have historically revolved around the river. The village also has a distinct **Khatha Tol**, a settlement that has its own specific social identity and history. Together, these riverine Tolas form an indispensable part of Bandwar's geography and economy."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "What is a Tola in Bandwar?",
+          "a": "A Tola is a distinct neighborhood or hamlet within the village. Bandwar has several Tolas, including Musahri, Kunjartoli, Baraitoli, and Malha, which form the social fabric of the village."
+        },
+        {
+          "q": "Which areas are the commercial hubs of Bandwar?",
+          "a": "Chaubatta and Mohra Chowk are the main commercial crossroads in Bandwar, lined with shops, tea stalls, and local businesses."
+        },
+        {
+          "q": "What is the significance of Malha and Khatha Tol?",
+          "a": "Malha is traditionally associated with the boatmen (Mallah) community, reflecting the village's connection to the Burhi Gandak river. Khatha Tol is a separate, historically significant settlement within the village."
+        }
+      ],
+      "related": [
+        "demographics-wards-bandwar",
+        "gps-bandwar-musahri-school",
+        "nps-kunjartol-wd-9",
+        "burhi-gandak-river-bandwar"
+      ],
+      "location": {
+        "lat": 25.5006,
+        "lng": 86.1605
+      },
+      "tags": [
+        "tolas of bandwar",
+        "musahri tola",
+        "kunjartoli bandwar",
+        "chaubatta bandwar",
+        "mohra chowk",
+        "malha tola",
+        "khatha tol"
+      ]
+    },
+    {
+      "id": "community-panchayat-bandwar",
+      "title": "Community and Panchayat: How 22,000 People Govern Themselves",
+      "subtitle": "The role of the Mukhiya, Ward Members, and Shramdaan in Bandwar",
+      "categories": [
+        "society",
+        "infrastructure"
+      ],
+      "summary": "With a population of roughly 22,000 across 17 wards and diverse Tolas like Musahri, Kunjartoli, and Chaubatta, Bandwar's local governance is managed by the Gram Panchayat. However, beyond the formal system, the village runs on a deep-rooted tradition of community participation and 'Shramdaan' (voluntary labour).",
+      "hero": "images/society/bandwar-gram-panchayat-office.jpg",
+      "photos": [
+        {
+          "src": "images/society/bandwar-gram-panchayat-office.jpg",
+          "caption": "The Gram Panchayat office in Bandwar, the center of local administration.",
+          "imageAlt": "Bandwar Gram Panchayat office building in Begusarai, Bihar (2026)"
+        }
+      ],
+      "infobox": {
+        "Governance": "Gram Panchayat",
+        "Wards": "17",
+        "Key Officials": "Mukhiya, Ward Members (Panch), Sarpanch",
+        "Traditional System": "Chaupal, Shramdaan, Tola Elders"
+      },
+      "datePublished": "2026-11-12",
+      "lastUpdated": "2026-11-12",
+      "content": [
+        {
+          "heading": "The Formal System: Gram Panchayat",
+          "text": "Bandwar's administration falls under the Bihar Panchayati Raj system. The village is divided into 17 wards spanning areas from Musahri to Malha, each electing a Ward Member. These members, along with the Mukhiya (village head), manage the allocation of funds from the state government — including the 15th Finance Commission grants and MPLAD funds. They oversee infrastructure projects, from the [[roads-connectivity-bandwar|village roads]] to the distribution of funds for schemes like the [[jal-jeevan-mission-water-tower-bandwar|Jal Jeevan Mission]]."
+        },
+        {
+          "heading": "The Real Power: Shramdaan",
+          "text": "However, to understand Bandwar, one must look beyond the government office. The true engine of the village is 'Shramdaan' — the voluntary contribution of labour. The [[bandh-embankment-bandwar|Bandwar Bandh]] that protects the village from the Burhi Gandak was built by the ancestors of the village through community effort. The [[janmashtami-mela-bandwar-bihar|Janmashtami Mela]], which attracts thousands of people, is organized entirely without government help. Whether a family is from Baraitoli, Punabas, or Bharmpura, every household contributes what it can — be it grain, money, or physical labour. This collective spirit is the real government of Bandwar."
+        },
+        {
+          "heading": "The Chaupal and Dispute Resolution",
+          "text": "For generations, the [[historic-well-chaupal-bandwar|historic well and chaupal]] has served as the village's informal court. Before a land dispute or a family quarrel goes to the police or the formal Panchayat, the elders of the village gather at the Chaupal to resolve it. Similarly, elders within individual Tolas (like Chaubatta or Dhanuktoli) often mediate local issues before they escalate. In a village of 22,000 people, this traditional system of social mediation is crucial for maintaining harmony."
+        },
+        {
+          "heading": "The 2025 Health Crisis Response",
+          "text": "The 2025 diarrhea outbreak exposed the limits of local governance. Villagers from Musahri Tola had to demand action from the district administration, and local leaders played a key role in bringing the health camp to [[gps-bandwar-musahri-school|Musahri Tola]]. It showed that while the community can build temples and organize fairs through Shramdaan, major health and water infrastructure still requires the state government's intervention."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "How is Bandwar village governed?",
+          "a": "Bandwar is governed by a Gram Panchayat, divided into 17 wards. It has an elected Mukhiya and Ward Members who manage local administration and government funds."
+        },
+        {
+          "q": "What is Shramdaan in Bandwar?",
+          "a": "Shramdaan is the tradition of voluntary community labour. In Bandwar, it is used to maintain the embankment (bandh), organize the Janmashtami Mela, and maintain village temples."
+        },
+        {
+          "q": "What is the role of the Chaupal in village governance?",
+          "a": "The historic Chaupal (well area) serves as a traditional gathering place where village elders resolve disputes and discuss community matters, acting as an informal local court."
+        }
+      ],
+      "related": [
+        "demographics-wards-bandwar",
+        "bandh-embankment-bandwar",
+        "janmashtami-mela-bandwar-bihar",
+        "historic-well-chaupal-bandwar"
+      ],
+      "location": {
+        "lat": 25.5010,
+        "lng": 86.1612
+      },
+      "tags": [
+        "bandwar panchayat",
+        "gram panchayat bihar",
+        "shramdaan bandwar",
+        "village governance bihar",
+        "mukhiya bandwar"
+      ]
+    }
+  ]
+}
