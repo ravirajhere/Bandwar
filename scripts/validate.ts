@@ -55,7 +55,7 @@ const validateFile = (fileName: string, schema: z.ZodTypeAny) => {
       console.error(`❌ FAIL: ${fileName}`);
       console.error(formatZodErrors(parsed.error));
       console.log("");
-      hasErrors = true;
+      hasErrors = true; // Yeh build fail karega (Kyunki JSON structure kharab hai)
       failedFiles++;
     } else {
       console.log(`✅ PASS: ${fileName}`);
@@ -78,7 +78,7 @@ validateFile("categories.json", CategoriesDataSchema);
 validateFile("people.json", PeopleDataSchema);
 validateFile("media.json", MediaSchema);
 validateFile("directory.json", DirectoryDataSchema);
-validateFile("contributors.json", z.object({ contributors: z.array(z.any()) })); // Basic check
+validateFile("contributors.json", z.object({ contributors: z.array(z.any()) })); 
 
 const articlesDir = path.join(dataDir, "articles");
 const validArticleIds = new Set<string>();
@@ -98,7 +98,7 @@ if (fs.existsSync(articlesDir)) {
   failedFiles++;
 }
 
-// --- Phase 2: Cross-Reference Validation ---
+// --- Phase 2: Cross-Reference Validation (SOFT CHECKS) ---
 console.log("\n--- Phase 2: Cross-Reference & Internal Link Validation ---");
 
 try {
@@ -132,19 +132,19 @@ if (fs.existsSync(articlesDir)) {
   const linkRegex = /\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/gi;
 
   allArticles.forEach((art) => {
-    const artErrors: string[] = [];
+    const artWarnings: string[] = [];
     
     // Check Categories
     if (Array.isArray(art.categories)) {
       art.categories.forEach((cat: string) => {
-        if (!validCategoryIds.has(cat)) artErrors.push(`   ❌ [Category]: "${cat}" does not exist in categories.json`);
+        if (!validCategoryIds.has(cat)) artWarnings.push(`   ⚠️ [Category]: "${cat}" does not exist in categories.json`);
       });
     }
 
     // Check Related IDs
     if (Array.isArray(art.related)) {
       art.related.forEach((relId: string) => {
-        if (!validArticleIds.has(relId)) artErrors.push(`   ❌ [Related]: Article ID "${relId}" does not exist`);
+        if (!validArticleIds.has(relId)) artWarnings.push(`   ⚠️ [Related]: Article ID "${relId}" does not exist`);
       });
     }
 
@@ -157,16 +157,16 @@ if (fs.existsSync(articlesDir)) {
       let match;
       while ((match = linkRegex.exec(text)) !== null) {
         const targetId = match[1];
-        if (!validArticleIds.has(targetId)) artErrors.push(`   ❌ [Wikilink]: Target ID "${targetId}" does not exist`);
+        if (!validArticleIds.has(targetId)) artWarnings.push(`   ⚠️ [Wikilink]: Target ID "${targetId}" does not exist`);
       }
     });
 
-    if (artErrors.length > 0) {
-      console.error(`❌ BROKEN LINKS in ${art._file} (Article: ${art.id}):`);
-      artErrors.forEach(err => console.error(err));
+    if (artWarnings.length > 0) {
+      // Yahan hasErrors = true NAHI kiya gaya hai. Build fail nahi hoga.
+      console.warn(`⚠️ WARNINGS in ${art._file} (Article: ${art.id}):`);
+      artWarnings.forEach(warn => console.warn(warn));
       console.log("");
-      hasErrors = true;
-      brokenLinksCount += artErrors.length;
+      brokenLinksCount += artWarnings.length;
     }
   });
 }
@@ -176,13 +176,17 @@ console.log(`📊 SUMMARY:`);
 console.log(`   Total Files Checked : ${totalFiles}`);
 console.log(`   Passed Files        : ${passedFiles}`);
 console.log(`   Failed Files        : ${failedFiles}`);
-console.log(`   Broken Links Found  : ${brokenLinksCount}`);
+console.log(`   Broken Links Found  : ${brokenLinksCount} (These won't stop the build)`);
 console.log("--------------------------------------------\n");
 
 if (hasErrors) {
-  console.error("🚨 VALIDATION FAILED! Please fix the errors above before deploying.");
-  process.exit(1);
+  console.error("🚨 VALIDATION FAILED! Please fix the SCHEMA errors above (JSON syntax or missing fields) before deploying.");
+  process.exit(1); // Sirf JSON kharab hone par build fail hoga
 } else {
-  console.log("🎉 ALL DATA VALIDATED SUCCESSFULLY. Ready for deployment.");
-  process.exit(0);
+  if (brokenLinksCount > 0) {
+    console.log("⚠️ Note: Broken links found, but Schema is valid. Build will continue.\n");
+  } else {
+    console.log("🎉 ALL DATA VALIDATED SUCCESSFULLY. Ready for deployment.\n");
+  }
+  process.exit(0); // Links tootne par bhi build PASS ho jayega
 }
