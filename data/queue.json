@@ -1,25 +1,6 @@
 {
   "pending": [
     {
-      "id": "edit_1794487532951_ktr8yy",
-      "type": "Image Update Suggestion",
-      "contextId": "tolas-of-bandwar-society",
-      "userName": "Bandwar Editor",
-      "userUsername": "@Bandwarofficial",
-      "timestamp": "2026-11-12T12:45:32.952Z",
-      "pendingImageUrl": "/images/pending/edit_1794487531669_ui9ic5.jpg",
-      "intent": "image_update",
-      "filePath": "data/articles/society.json",
-      "targetType": "article",
-      "field": "",
-      "oldValue": "",
-      "newValue": "",
-      "currentImagePath": "images/society/bandwar-village-lane-tola.jpg",
-      "jsonObj": {
-        "Category": "society"
-      }
-    },
-    {
       "id": "edit_1794487587782_aytdmg",
       "type": "Image Update Suggestion",
       "contextId": "janmashtami-mela-bandwar-bihar",
@@ -57,6 +38,26 @@
       "currentImagePath": "images/culture/bandwar-janmashtami-mela-kushti-mud-wrestling.jpg",
       "jsonObj": {
         "Category": "culture"
+      },
+      "approvedVia": "Dashboard"
+    },
+    {
+      "id": "edit_1794487532951_ktr8yy",
+      "type": "Image Update Suggestion",
+      "contextId": "tolas-of-bandwar-society",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-12T12:45:32.952Z",
+      "pendingImageUrl": "/images/pending/edit_1794487531669_ui9ic5.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/society.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/society/bandwar-village-lane-tola.jpg",
+      "jsonObj": {
+        "Category": "society"
       },
       "approvedVia": "Dashboard"
     }
