@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794445901228_3mf732",
       "type": "Image Update Suggestion",
@@ -17,8 +18,8 @@
       "currentImagePath": "/fallback.jpg",
       "jsonObj": {
         "Category": "health"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
