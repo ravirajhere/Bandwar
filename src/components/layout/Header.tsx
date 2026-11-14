@@ -7,7 +7,8 @@ import { Menu, X, Search, User } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { SearchModal } from "./SearchModal";
 import { SearchItem } from "@/lib/search-data";
-import { useLanguage } from "@/components/providers/LanguageProvider"; // 🚀 NEW IMPORT
+import { useLanguage } from "@/components/providers/LanguageProvider";
+import { useToast } from "@/components/ui/Toast"; // 🚀 NEW IMPORT
 
 interface HeaderProps {
   searchIndex?: SearchItem[];
@@ -19,8 +20,8 @@ export function Header({ searchIndex = [] }: HeaderProps) {
   const [contributor, setContributor] = useState<any>(null); 
   const pathname = usePathname();
   
-  // 🚀 Language Hook
   const { language, setLanguage } = useLanguage();
+  const { toast } = useToast(); // 🚀 Toast hook
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -52,6 +53,19 @@ export function Header({ searchIndex = [] }: HeaderProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // 🚀 Professional Notice Function
+  const handleLanguageClick = (lang: "en" | "hi" | "an") => {
+    if (lang === "en") {
+      setLanguage("en");
+      return;
+    }
+    // Agar Hindi ya Angika click ho toh formal toast dikhao
+    toast(
+      "Notice: Multi-language support (Hindi & Angika) is currently in development. The archive remains fully accessible in English.", 
+      "info"
+    );
+  };
 
   return (
     <>
@@ -118,26 +132,26 @@ export function Header({ searchIndex = [] }: HeaderProps) {
               <Search size={20} aria-hidden="true" />
             </button>
 
-            {/* 🚀 Language Toggle */}
+            {/* 🚀 Language Toggle (Professional Notice Version) */}
             <div className="flex bg-surface border border-divider rounded-sm overflow-hidden text-[10px] sm:text-xs font-bold ml-1">
               <button 
-                onClick={() => setLanguage("en")} 
-                className={`px-1.5 sm:px-2 py-1.5 transition-colors ${language === "en" ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
+                onClick={() => handleLanguageClick("en")} 
+                className={`px-1.5 sm:px-2 py-1.5 transition-colors bg-accent text-white`}
                 aria-label="Switch to English"
               >
                 EN
               </button>
               <button 
-                onClick={() => setLanguage("hi")} 
-                className={`px-1.5 sm:px-2 py-1.5 transition-colors ${language === "hi" ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
-                aria-label="Switch to Hindi"
+                onClick={() => handleLanguageClick("hi")} 
+                className="px-1.5 sm:px-2 py-1.5 transition-colors text-ink-muted hover:bg-canvas hover:text-ink"
+                aria-label="Hindi (Coming Soon)"
               >
                 हिं
               </button>
               <button 
-                onClick={() => setLanguage("an")} 
-                className={`px-1.5 sm:px-2 py-1.5 transition-colors ${language === "an" ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
-                aria-label="Switch to Angika"
+                onClick={() => handleLanguageClick("an")} 
+                className="px-1.5 sm:px-2 py-1.5 transition-colors text-ink-muted hover:bg-canvas hover:text-ink"
+                aria-label="Angika (Coming Soon)"
               >
                 अं
               </button>
@@ -170,13 +184,13 @@ export function Header({ searchIndex = [] }: HeaderProps) {
 
           <nav className="flex flex-col pb-6" aria-label="Mobile Navigation">
             
-            {/* 🚀 Mobile Language Toggle */}
+            {/* Mobile Language Toggle */}
             <div className="px-6 py-4 border-b border-divider flex items-center justify-between bg-surface/30">
               <span className="text-sm font-medium text-ink">Language</span>
               <div className="flex bg-canvas border border-divider rounded-sm overflow-hidden text-xs font-bold">
-                <button onClick={() => setLanguage("en")} className={`px-4 py-1.5 ${language === "en" ? "bg-accent text-white" : "text-ink-muted"}`}>English</button>
-                <button onClick={() => setLanguage("hi")} className={`px-4 py-1.5 ${language === "hi" ? "bg-accent text-white" : "text-ink-muted"}`}>हिंदी</button>
-                <button onClick={() => setLanguage("an")} className={`px-4 py-1.5 ${language === "an" ? "bg-accent text-white" : "text-ink-muted"}`}>अंगिका</button>
+                <button onClick={() => handleLanguageClick("en")} className="px-4 py-1.5 bg-accent text-white">English</button>
+                <button onClick={() => handleLanguageClick("hi")} className="px-4 py-1.5 text-ink-muted hover:bg-surface">हिंदी</button>
+                <button onClick={() => handleLanguageClick("an")} className="px-4 py-1.5 text-ink-muted hover:bg-surface">अंगिका</button>
               </div>
             </div>
 
