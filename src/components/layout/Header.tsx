@@ -7,6 +7,7 @@ import { Menu, X, Search, User } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { SearchModal } from "./SearchModal";
 import { SearchItem } from "@/lib/search-data";
+import { useLanguage } from "@/components/providers/LanguageProvider"; // 🚀 NEW IMPORT
 
 interface HeaderProps {
   searchIndex?: SearchItem[];
@@ -17,6 +18,9 @@ export function Header({ searchIndex = [] }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [contributor, setContributor] = useState<any>(null); 
   const pathname = usePathname();
+  
+  // 🚀 Language Hook
+  const { language, setLanguage } = useLanguage();
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -54,7 +58,6 @@ export function Header({ searchIndex = [] }: HeaderProps) {
       <header className="sticky top-0 z-50 bg-canvas border-b border-divider h-16 3xl:h-20 transition-colors duration-200">
         <div className="container mx-auto h-full flex items-center justify-between px-4 md:px-0">
           
-          {/* 🚀 SEO FIX: Standardized Brand Name & ARIA Label */}
           <Link 
             href="/" 
             aria-label="Bandwar Village Archive Home"
@@ -115,11 +118,36 @@ export function Header({ searchIndex = [] }: HeaderProps) {
               <Search size={20} aria-hidden="true" />
             </button>
 
+            {/* 🚀 Language Toggle */}
+            <div className="flex bg-surface border border-divider rounded-sm overflow-hidden text-[10px] sm:text-xs font-bold ml-1">
+              <button 
+                onClick={() => setLanguage("en")} 
+                className={`px-1.5 sm:px-2 py-1.5 transition-colors ${language === "en" ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
+                aria-label="Switch to English"
+              >
+                EN
+              </button>
+              <button 
+                onClick={() => setLanguage("hi")} 
+                className={`px-1.5 sm:px-2 py-1.5 transition-colors ${language === "hi" ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
+                aria-label="Switch to Hindi"
+              >
+                हिं
+              </button>
+              <button 
+                onClick={() => setLanguage("an")} 
+                className={`px-1.5 sm:px-2 py-1.5 transition-colors ${language === "an" ? "bg-accent text-white" : "text-ink-muted hover:bg-canvas"}`}
+                aria-label="Switch to Angika"
+              >
+                अं
+              </button>
+            </div>
+
             <ThemeToggle />
 
             {/* Mobile Menu Toggle */}
             <button 
-              className="lg:hidden p-2 text-ink-muted hover:text-ink"
+              className="lg:hidden p-2 text-ink-muted hover:text-ink ml-1"
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
               aria-label="Toggle Menu"
@@ -141,6 +169,17 @@ export function Header({ searchIndex = [] }: HeaderProps) {
           </div>
 
           <nav className="flex flex-col pb-6" aria-label="Mobile Navigation">
+            
+            {/* 🚀 Mobile Language Toggle */}
+            <div className="px-6 py-4 border-b border-divider flex items-center justify-between bg-surface/30">
+              <span className="text-sm font-medium text-ink">Language</span>
+              <div className="flex bg-canvas border border-divider rounded-sm overflow-hidden text-xs font-bold">
+                <button onClick={() => setLanguage("en")} className={`px-4 py-1.5 ${language === "en" ? "bg-accent text-white" : "text-ink-muted"}`}>English</button>
+                <button onClick={() => setLanguage("hi")} className={`px-4 py-1.5 ${language === "hi" ? "bg-accent text-white" : "text-ink-muted"}`}>हिंदी</button>
+                <button onClick={() => setLanguage("an")} className={`px-4 py-1.5 ${language === "an" ? "bg-accent text-white" : "text-ink-muted"}`}>अंगिका</button>
+              </div>
+            </div>
+
             {contributor && (
               <Link 
                 href={`/contributors/${contributor.username}`}
