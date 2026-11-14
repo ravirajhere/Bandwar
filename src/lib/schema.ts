@@ -163,19 +163,33 @@ export const MasterSchema = z.object({
 }).passthrough();
 
 // ==========================================
-// 3. Article Schema (With Auto-Fix for SEO)
+// 3. Article Schema (With Multi-Language & SEO)
 // ==========================================
 export const ArticleSchema = z.object({
   id: IdSchema,
   title: z.string(),
-  metaTitle: z.string().optional(), // Next.js fallback handles this
-  metaDescription: z.string().optional(), // Next.js fallback handles this
+  
+  // 🚀 NEW: Multi-language fields for Title
+  title_hi: z.string().optional(),
+  title_an: z.string().optional(),
+
+  metaTitle: z.string().optional(), 
+  metaDescription: z.string().optional(), 
+  
   subtitle: z.string(),
+  // 🚀 NEW: Multi-language fields for Subtitle
+  subtitle_hi: z.string().optional(),
+  subtitle_an: z.string().optional(),
+
   categories: z.array(IdSchema).min(1, "Article must have at least one category"),
+  
   summary: z.string(),
+  // 🚀 NEW: Multi-language fields for Summary
+  summary_hi: z.string().optional(),
+  summary_an: z.string().optional(),
+
   hero: z.string().optional(),
   
-  // 🚀 2026 SEO AUTO-FIX: If imageAlt is missing, it auto-generates from caption or title.
   photos: z.array(
     z.object({ 
       src: z.string(), 
@@ -194,7 +208,6 @@ export const ArticleSchema = z.object({
   lastEditedBy: z.string().optional(),
   lastEditedByUsername: z.string().optional(),
   
-  // 🚀 2026 SEO FIX: Default to true so sitemap doesn't break
   published: z.boolean().default(true),
   
   content: z.array(z.object({ 
@@ -202,6 +215,10 @@ export const ArticleSchema = z.object({
     text: z.string() 
   })).min(1),
   
+  // 🚀 NEW: Future-proofing for translated content blocks
+  content_hi: z.array(z.object({ heading: z.string(), text: z.string() })).optional(),
+  content_an: z.array(z.object({ heading: z.string(), text: z.string() })).optional(),
+
   faqs: z.array(z.object({ 
     q: z.string(), 
     a: z.string() 
@@ -279,10 +296,9 @@ export const PersonSchema = z.object({
   journey: z.string().optional(),
   lastUpdated: DateSchema.optional(),
   lastEditedBy: z.string().optional(),
-  published: z.boolean().default(true), // 🚀 Auto-default
+  published: z.boolean().default(true),
   tags: z.array(z.string()).optional(),
 }).passthrough().transform(person => {
-  // 🚀 2026 SEO AUTO-FIX: If photo exists but photoAlt is missing, generate it.
   if (person.photo && !person.photoAlt) {
     person.photoAlt = `${person.name} - ${person.role} in Bandwar`;
   }
