@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getMasterData } from "@/lib/data";
-import { getSearchIndex } from "@/lib/search-data"; // 🚀 NEW IMPORT
+import { getSearchIndex } from "@/lib/search-data"; 
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ToastProvider } from "@/components/ui/Toast";
+import { LanguageProvider } from "@/components/providers/LanguageProvider"; // 🚀 NEW IMPORT
 
 export const viewport: Viewport = {
   themeColor: [
@@ -62,7 +63,6 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     verification: {
       google: "Xy4-LAYUiew9mIskBFJOgSQR1pRRObyOjF9rkn_U8Zs",
-      // 🚀 ADDED BING VERIFICATION HERE
       other: {
         "msvalidate.01": "6C3971730BD8FB6D0A94D21200CC2C27",
       },
@@ -83,7 +83,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const baseUrl = config.site.url;
   const siteLanguage = config.site.language || "en-IN";
   
-  // 🚀 FIX: Fetch Search Index on the server
   const searchIndex = getSearchIndex();
 
   const socialLinks = Object.values(config.social || {}).filter(Boolean) as string[];
@@ -126,7 +125,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           "@type": "ContactPoint",
           contactType: "customer support",
           email: config.contact?.email || "contact@bandwar.in",
-          availableLanguage: ["English", "Hindi", "Maithili"]
+          availableLanguage: ["English", "Hindi", "Maithili", "Angika"] // 🚀 Added Angika
         },
         knowsAbout: [
           "Bandwar Village History",
@@ -199,11 +198,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <ToastProvider>
-          <Header searchIndex={searchIndex} />
-          <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
-            {children}
-          </main>
-          <Footer />
+          {/* 🚀 FIX: Wrapped with LanguageProvider */}
+          <LanguageProvider>
+            <Header searchIndex={searchIndex} />
+            <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
+              {children}
+            </main>
+            <Footer />
+          </LanguageProvider>
         </ToastProvider>
       </body>
     </html>
