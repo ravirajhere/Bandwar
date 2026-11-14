@@ -6,10 +6,10 @@ import { ArticleToolbar } from "@/components/article/ArticleToolbar";
 import { ReadingProgress } from "@/components/article/ReadingProgress";
 import { MobileTOC } from "@/components/article/MobileTOC"; 
 import { ArticleHeroImage } from "@/components/article/ArticleHeroImage"; 
-import { EditableText } from "@/components/editor/EditableText"; 
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
 import { EditModeToggle } from "@/components/editor/EditModeToggle";
+import { TranslatedText } from "@/components/shared/TranslatedText"; // 🚀 NEW IMPORT
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; 
 
@@ -83,17 +83,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const formatToISO = (dateStr: string) => dateStr.includes("T") ? dateStr : `${dateStr}T00:00:00+05:30`;
   const heroForSEO = (article as any).displayHero || article.hero || FALLBACK_IMAGE;
 
-  // ==========================================
-  // 🚀 ADVANCED JSON-LD SCHEMA (Restored Rich Entity Linking)
-  // ==========================================
   const imagesArray: any[] = [];
   
   if (heroForSEO) {
     const imgUrl = heroForSEO.startsWith("http") ? heroForSEO : `${baseUrl}/${heroForSEO.replace(/^\//, "")}`;
     imagesArray.push({
       "@type": "ImageObject",
-      "@id": `${imgUrl}#image`, // 🚀 RESTORED
-      "contentUrl": imgUrl, // 🚀 RESTORED
+      "@id": `${imgUrl}#image`,
+      "contentUrl": imgUrl,
       "url": imgUrl,
       "width": 1200,
       "height": 630,
@@ -102,13 +99,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       "caption": article.photos?.[0]?.caption || article.title,
       "creator": { 
         "@type": "Organization", 
-        "@id": `${baseUrl}/#organization` // 🚀 RESTORED: Links to the main Organization entity (pulls logo, address, sameAs)
+        "@id": `${baseUrl}/#organization`
       },
       "creditText": "Bandwar Village Archive", 
       "copyrightNotice": "© Bandwar Village Community",
       "license": `${baseUrl}/about#license`,
       "acquireLicensePage": `${baseUrl}/about#license`,
-      "uploadDate": formatToISO(article.lastUpdated) // 🚀 RESTORED
+      "uploadDate": formatToISO(article.lastUpdated)
     });
   }
   
@@ -118,8 +115,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
       if (!imagesArray.some(img => img.url === imgUrl)) {
         imagesArray.push({
           "@type": "ImageObject",
-          "@id": `${imgUrl}#image`, // 🚀 RESTORED
-          "contentUrl": imgUrl, // 🚀 RESTORED
+          "@id": `${imgUrl}#image`,
+          "contentUrl": imgUrl,
           "url": imgUrl,
           "width": 800,
           "height": 600,
@@ -128,13 +125,13 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           "caption": photo.caption || article.title,
           "creator": { 
             "@type": "Organization", 
-            "@id": `${baseUrl}/#organization` // 🚀 RESTORED
+            "@id": `${baseUrl}/#organization`
           },
           "creditText": "Bandwar Village Archive", 
           "copyrightNotice": "© Bandwar Village Community",
           "license": `${baseUrl}/about#license`,
           "acquireLicensePage": `${baseUrl}/about#license`,
-          "uploadDate": formatToISO(article.lastUpdated) // 🚀 RESTORED
+          "uploadDate": formatToISO(article.lastUpdated)
         });
       }
     });
@@ -320,10 +317,24 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
             <header className="mb-8 border-b border-divider pb-6">
               <div className="mb-3">
-                <EditableText initialValue={article.title} contextId={article.id} contextType="Article" fieldName="Article Title" as="h1" className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink leading-[1.1] font-bold tracking-tight" />
+                {/* 🚀 REPLACED WITH TranslatedText */}
+                <TranslatedText 
+                  as="h1" 
+                  en={article.title} 
+                  hi={article.title_hi} 
+                  an={article.title_an} 
+                  className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink leading-[1.1] font-bold tracking-tight" 
+                />
               </div>
               <div className="mb-5">
-                <EditableText initialValue={article.subtitle} contextId={article.id} contextType="Article" fieldName="Article Subtitle" as="p" className="text-lg md:text-xl text-ink-muted leading-relaxed font-normal m-0" />
+                {/* 🚀 REPLACED WITH TranslatedText */}
+                <TranslatedText 
+                  as="p" 
+                  en={article.subtitle} 
+                  hi={article.subtitle_hi} 
+                  an={article.subtitle_an} 
+                  className="text-lg md:text-xl text-ink-muted leading-relaxed font-normal m-0" 
+                />
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
@@ -366,6 +377,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             </div>
 
             <div className="mb-10 article-lead-summary">
+              {/* 🚀 Note: Summary is kept as EditableParagraph because it contains wikilinks */}
               <EditableParagraph initialValue={article.summary} contextId={article.id} contextType="Article" fieldName="Article Summary" className="text-lg md:text-xl 3xl:text-[1.35rem] text-ink leading-relaxed font-medium" />
             </div>
 
