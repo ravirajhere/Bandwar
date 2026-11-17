@@ -29,10 +29,11 @@ export function ProfileClientWrapper({ contributor }: { contributor: any }) {
       <button 
         type="button"
         onClick={() => setIsEditOpen(true)}
-        className="inline-flex items-center gap-2 bg-canvas border border-divider text-ink px-4 py-2 rounded-sm text-sm font-semibold hover:border-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+        // 🚀 UPGRADED: Premium Dashboard Button Style
+        className="inline-flex items-center justify-center gap-2 bg-surface border border-divider text-ink px-6 py-2.5 rounded-sm text-sm font-semibold hover:border-accent hover:text-accent hover:bg-canvas transition-all duration-200 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         aria-label="Edit my contributor profile"
       >
-        <Edit3 size={16} aria-hidden="true" /> Edit My Profile
+        <Edit3 size={16} aria-hidden="true" /> Edit Profile
       </button>
       
       {isEditOpen && (
