@@ -50,7 +50,7 @@ export default async function ContributorProfile({ params }: { params: Promise<{
   const contributor = getContributorByUsername(username);
   const config = getMasterData();
   const allArticles = getAllArticles();
-  const media = getMediaData(); // 🚀 Fetch media for photo stats
+  const media = getMediaData();
 
   if (!contributor) notFound();
 
@@ -62,7 +62,7 @@ export default async function ContributorProfile({ params }: { params: Promise<{
     a.lastEditedByUsername === contributor.username || a.lastEditedBy === contributor.displayName
   );
 
-  // 🚀 Find photos by this user (Agar future mein uploadedBy field add hoti hai)
+  // Find photos by this user
   const uploadedPhotos = media.gallery.photos.filter(p => 
     (p as any).uploadedBy === contributor.username || (p as any).credit === contributor.displayName
   );
@@ -198,9 +198,13 @@ export default async function ContributorProfile({ params }: { params: Promise<{
                     Recent Contributions
                   </h2>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                
+                {/* 🚀 FIX: Added items-stretch and h-full to fix the overlapping layout issue */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                   {authoredArticles.map(article => (
-                    <ArticleCard key={article.id} article={article} />
+                    <div key={article.id} className="h-full flex flex-col">
+                      <ArticleCard article={article} />
+                    </div>
                   ))}
                 </div>
               </div>
