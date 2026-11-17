@@ -105,7 +105,7 @@
         "religion"
       ],
       "summary": "Chhath Puja is the most significant festival in Bihar and the Mithila region, dedicated to Surya Dev (the Sun God) and Chhathi Maiya. In Bandwar, the festival is celebrated at the [[bandh-embankment-bandwar|bandh]] along the [[burhi-gandak-river-bandwar|Burhi Gandak]], with the entire village gathering on the riverbank. A large idol of Surya Dev, mounted on his chariot with seven horses, is set up at the bandh, and the village observes four days of rigorous fasting and Vedic rituals.",
-      "hero": "images/culture/bandwar-chhath-puja-surya-dev-idol-bandh.jpg",
+      "hero": "/images/culture/bandwar-chhath-puja-surya-dev-idol-bandh.jpg",
       "photos": [
         {
           "src": "images/culture/bandwar-chhath-puja-surya-dev-idol-bandh.jpg",
@@ -123,7 +123,7 @@
         "Key Ritual": "Standing in water to offer Arghya to the Sun"
       },
       "datePublished": "2026-10-28",
-      "lastUpdated": "2026-10-28",
+      "lastUpdated": "2026-11-17",
       "content": [
         {
           "heading": "Overview",
@@ -188,7 +188,8 @@
         "mithila festivals",
         "bandh chhath puja",
         "thekua prasad"
-      ]
+      ],
+      "lastEditedBy": "Admin"
     },
     {
       "id": "sama-chakeva-mithila-festival-bandwar",
