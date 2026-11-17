@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794928391862_trp09f",
+      "type": "Image Update Suggestion",
+      "contextId": "maharishi-gautam-durga-mandir-bandwar",
+      "userName": "Bandwar Editor",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-17T15:13:11.862Z",
+      "pendingImageUrl": "/images/pending/edit_1794928390119_tnfr9m.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/religion.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
+      "jsonObj": {
+        "Category": "religion"
+      }
+    }
+  ],
   "approved": []
 }
