@@ -57,17 +57,14 @@ export default async function ContributorProfile({ params }: { params: Promise<{
   const baseUrl = config.site.url;
   const profileUrl = `${baseUrl}/contributors/${contributor.username}`;
   
-  // E-E-A-T: Find articles edited by this user
   const authoredArticles = allArticles.filter(a => 
     a.lastEditedByUsername === contributor.username || a.lastEditedBy === contributor.displayName
   );
 
-  // Find photos by this user
   const uploadedPhotos = media.gallery.photos.filter(p => 
     (p as any).uploadedBy === contributor.username || (p as any).credit === contributor.displayName
   );
 
-  // Default cover image (Nadi wali)
   const coverImage = `${baseUrl}/images/geography/burhi-gandak-river-dawn-bandwar.jpg`;
 
   const profileJsonLd = {
@@ -103,7 +100,7 @@ export default async function ContributorProfile({ params }: { params: Promise<{
       <div className="container mx-auto px-4 md:px-0 max-w-6xl">
         
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-ink-muted mb-8">
+        <nav className="flex flex-wrap items-center gap-2 text-sm text-ink-muted mb-8">
           <Link href="/" className="hover:text-accent transition-colors">Home</Link>
           <ChevronRight size={14} className="text-divider shrink-0" aria-hidden="true" />
           <Link href="/contributors" className="hover:text-accent transition-colors">Contributors</Link>
@@ -111,11 +108,11 @@ export default async function ContributorProfile({ params }: { params: Promise<{
           <span className="text-ink font-medium truncate">{contributor.displayName}</span>
         </nav>
 
-        {/* 🚀 2-COLUMN LAYOUT */}
-        <div className="grid grid-cols-1 lg:grid-cols-[350px_minmax(0,1fr)] gap-8 items-start">
+        {/* 2-COLUMN LAYOUT (Clean, no extra wrappers) */}
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 items-start">
           
           {/* LEFT SIDEBAR (Profile Info) */}
-          <aside className="bg-surface border border-divider rounded-lg overflow-hidden shadow-sm sticky top-24">
+          <aside className="bg-surface border border-divider rounded-lg overflow-hidden shadow-sm w-full">
             {/* Cover Banner */}
             <div className="relative h-32 w-full bg-accent/10">
               <Image 
@@ -128,8 +125,8 @@ export default async function ContributorProfile({ params }: { params: Promise<{
               <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
             </div>
             
-            <div className="px-6 pb-8 relative">
-              {/* Avatar with Ring */}
+            <div className="px-6 pb-8 relative flex flex-col items-center text-center">
+              {/* Avatar */}
               <div className="w-28 h-28 bg-canvas border-4 border-surface rounded-full flex items-center justify-center shrink-0 overflow-hidden shadow-md -mt-14 mb-4 z-10 relative">
                 {contributor.photo ? (
                   <Image 
@@ -144,12 +141,12 @@ export default async function ContributorProfile({ params }: { params: Promise<{
                 )}
               </div>
 
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center justify-center gap-2 mb-2 w-full">
                 <h1 className="font-serif text-2xl font-bold text-ink truncate">{contributor.displayName}</h1>
                 <BadgeCheck size={20} className="text-accent shrink-0" aria-label="Verified Contributor" />
               </div>
               
-              <p className="text-sm text-ink-muted mb-6 flex items-center gap-2">
+              <p className="text-sm text-ink-muted mb-6 flex items-center justify-center gap-2">
                 <Calendar size={14} aria-hidden="true" />
                 {contributor.joinedAt ? (
                   <time dateTime={contributor.joinedAt}>
@@ -161,7 +158,7 @@ export default async function ContributorProfile({ params }: { params: Promise<{
               </p>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-2 gap-3 mb-6 w-full">
                 <div className="bg-canvas border border-divider p-3 rounded-md text-center">
                   <FileText size={18} className="mx-auto text-accent mb-1" aria-hidden="true" />
                   <span className="block text-xl font-bold text-ink">{authoredArticles.length}</span>
@@ -174,24 +171,24 @@ export default async function ContributorProfile({ params }: { params: Promise<{
                 </div>
               </div>
 
-              <div className="prose prose-sm dark:prose-invert text-ink/80 mb-6">
+              <div className="text-sm text-ink/80 mb-6 w-full text-left">
                 {contributor.bio ? (
                   <p className="whitespace-pre-wrap">{contributor.bio}</p>
                 ) : (
-                  <p className="italic text-ink/40">This contributor has not added a bio yet.</p>
+                  <p className="italic text-ink/40 text-center">This contributor has not added a bio yet.</p>
                 )}
               </div>
 
-              <div className="pt-6 border-t border-divider">
+              <div className="pt-6 border-t border-divider w-full flex justify-center">
                 <ProfileClientWrapper contributor={contributor} />
               </div>
             </div>
           </aside>
 
           {/* RIGHT MAIN AREA (Activity) */}
-          <main className="min-w-0">
+          <main className="min-w-0 w-full">
             {authoredArticles.length > 0 ? (
-              <div>
+              <div className="w-full">
                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-divider">
                   <h2 className="font-serif text-2xl font-bold text-ink flex items-center gap-2">
                     <Shield size={20} className="text-accent" aria-hidden="true" /> 
@@ -199,17 +196,15 @@ export default async function ContributorProfile({ params }: { params: Promise<{
                   </h2>
                 </div>
                 
-                {/* 🚀 FIX: Added items-stretch and h-full to fix the overlapping layout issue */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
+                {/* 🚀 THE FIX: Removed all extra wrappers. Just a clean grid. */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
                   {authoredArticles.map(article => (
-                    <div key={article.id} className="h-full flex flex-col">
-                      <ArticleCard article={article} />
-                    </div>
+                    <ArticleCard key={article.id} article={article} />
                   ))}
                 </div>
               </div>
             ) : (
-              <div className="bg-surface border border-dashed border-divider p-12 text-center rounded-lg flex flex-col items-center justify-center min-h-[300px]">
+              <div className="bg-surface border border-dashed border-divider p-12 text-center rounded-lg flex flex-col items-center justify-center min-h-[300px] w-full">
                 <FileText size={48} className="text-ink/20 mb-4" aria-hidden="true" />
                 <h3 className="font-serif text-xl font-bold text-ink mb-2">No Articles Yet</h3>
                 <p className="text-sm text-ink-muted max-w-xs mx-auto">This contributor hasn't published any articles at the moment. Check back later.</p>
