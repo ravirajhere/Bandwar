@@ -363,7 +363,7 @@
         "landmarks"
       ],
       "summary": "A Hindu temple in Bandwar dedicated to Durga, with a distinctive orange exterior and green pillars. The temple houses a Chaiti Durga idol and is the site of the village's Chaitra Navratri celebrations. It is Bandwar's Chaiti Durga temple, while the village's other Durga temple, [[durga-mandir-bandwar|Shri Adi Durga Sthan]], serves the autumn Navratri.",
-      "hero": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
+      "hero": "/images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
       "photos": [
         {
           "src": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
@@ -384,7 +384,7 @@
         "Distinctive feature": "Ten-armed Durga idol with Mahishasura",
         "Managed by": "Village community"
       },
-      "lastUpdated": "2026-03-22",
+      "lastUpdated": "2026-11-17",
       "content": [
         {
           "heading": "Overview",
@@ -443,7 +443,8 @@
         "navratri temple begusarai",
         "aadi shakti temple",
         "bandwar village temples"
-      ]
+      ],
+      "lastEditedBy": "Bandwar Editor"
     },
     {
       "id": "sankat-mochan-hanuman-mandir-bandwar",
