@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { X, Loader2, Save, UploadCloud, User } from "lucide-react";
+import { X, Loader2, Save, UploadCloud, User, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // 🚀 Image Compression Logic
 const compressImage = async (file: File): Promise<File> => {
@@ -17,7 +18,7 @@ const compressImage = async (file: File): Promise<File> => {
         const canvas = document.createElement("canvas");
         let width = img.width;
         let height = img.height;
-        const maxSize = 400; // Profile pics shouldn't be huge
+        const maxSize = 400; 
 
         if (width > maxSize || height > maxSize) {
           if (width > height) {
@@ -81,7 +82,6 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
       formData.append("bio", bio);
       
       if (file) {
-        // 🚀 Compress and send
         const compressed = await compressImage(file);
         formData.append("photoFile", compressed);
       }
@@ -109,96 +109,131 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
 
   return (
     <div 
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm no-print animate-in fade-in"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm no-print animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-label="Edit Profile"
     >
-      <div className="bg-surface w-full max-w-lg rounded-sm border border-divider shadow-xl flex flex-col max-h-[90vh]">
-        <div className="flex justify-between items-center p-5 border-b border-divider bg-canvas/50">
-          <h2 className="font-serif font-bold text-ink text-lg">Edit Profile</h2>
+      <div className="bg-surface w-full max-w-lg rounded-lg border border-divider shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+        
+        {/* Header */}
+        <div className="flex justify-between items-center px-6 py-5 border-b border-divider bg-canvas/50 shrink-0">
+          <div>
+            <h2 className="font-serif font-bold text-ink text-xl">Edit Profile</h2>
+            <p className="text-xs text-ink-muted mt-1">Update your public archive identity.</p>
+          </div>
           <button 
             type="button"
             onClick={onClose} 
-            className="p-2 border border-divider rounded-sm hover:bg-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="p-2 text-ink-muted hover:text-ink hover:bg-canvas border border-transparent hover:border-divider rounded-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             aria-label="Close modal"
           >
-            <X size={18} aria-hidden="true" />
+            <X size={20} aria-hidden="true" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-5 overflow-y-auto space-y-5">
-          
-          {/* 🚀 Photo Upload Section */}
-          <div className="flex items-center gap-4">
-            <div className="w-20 h-20 rounded-full border border-divider bg-canvas flex items-center justify-center shrink-0 overflow-hidden relative group cursor-pointer focus-within:ring-2 focus-within:ring-accent">
-              {preview ? (
-                <img src={preview} alt="Profile Preview" className="w-full h-full object-cover" />
-              ) : (
-                <User size={32} className="text-ink/20" aria-hidden="true" />
-              )}
-              <div className="absolute inset-0 bg-ink/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">
-                <UploadCloud size={20} className="text-white" />
-              </div>
-              <input 
-                type="file" 
-                accept="image/*"
-                onChange={handlePhotoChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-                aria-label="Upload new profile photo"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
+          <div className="p-6 overflow-y-auto space-y-6 text-left custom-scrollbar">
+            
+            {/* 🚀 Photo Upload Section */}
             <div>
-              <p className="text-sm font-semibold text-ink mb-1">Profile Photo</p>
-              <p className="text-xs text-ink-muted">Click to upload. (Auto-compressed)</p>
+              <label className="block text-sm font-semibold text-ink mb-3">Profile Photo</label>
+              <div className="flex items-center gap-5">
+                <div className="relative w-20 h-20 rounded-full border-2 border-divider bg-canvas flex items-center justify-center shrink-0 overflow-hidden group cursor-pointer shadow-sm">
+                  {preview ? (
+                    <Image src={preview} alt="Profile Preview" fill className="object-cover" />
+                  ) : (
+                    <User size={32} className="text-ink/20" aria-hidden="true" />
+                  )}
+                  <div className="absolute inset-0 bg-ink/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                    <UploadCloud size={20} className="text-white mb-1" />
+                    <span className="text-[8px] font-bold text-white uppercase tracking-wider">Change</span>
+                  </div>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                    aria-label="Upload new profile photo"
+                  />
+                </div>
+                <div className="text-sm">
+                  <p className="text-ink font-medium">Upload a new photo</p>
+                  <p className="text-ink-muted text-xs mt-1">JPG or PNG. Max 400x400px. Image will be auto-compressed.</p>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label htmlFor="username" className="block text-sm font-semibold text-ink mb-1.5">Username (Can only be changed once)</label>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-mono text-accent font-semibold" aria-hidden="true">@</span>
-              <input 
-                id="username"
-                type="text" 
-                value={username.replace('@', '')} 
-                onChange={(e) => setUsername(`@${e.target.value.replace(/[^a-zA-Z0-9_]/g, '')}`)}
-                disabled={contributor.hasChangedUsername}
-                autoComplete="off"
-                className="flex-1 h-11 px-4 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none disabled:opacity-50 focus:ring-2 focus:ring-accent/20" 
+            {/* 🚀 Username Section */}
+            <div className="pt-2 border-t border-divider">
+              <div className="flex items-center justify-between mb-2">
+                <label htmlFor="username" className="block text-sm font-semibold text-ink">Username</label>
+                {contributor.hasChangedUsername && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-accent bg-accent/10 px-2 py-0.5 rounded-sm">Locked</span>
+                )}
+              </div>
+              <div className="relative flex items-center">
+                <span className="absolute left-4 text-sm font-mono text-ink/40 font-semibold" aria-hidden="true">@</span>
+                <input 
+                  id="username"
+                  type="text" 
+                  value={username.replace('@', '')} 
+                  onChange={(e) => setUsername(`@${e.target.value.replace(/[^a-zA-Z0-9_]/g, '')}`)}
+                  disabled={contributor.hasChangedUsername}
+                  autoComplete="off"
+                  className="w-full h-11 pl-9 pr-4 rounded-sm border border-divider bg-canvas text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none disabled:opacity-60 disabled:cursor-not-allowed transition-all" 
+                />
+              </div>
+              <p className="text-[11px] text-ink-muted mt-1.5">
+                {contributor.hasChangedUsername 
+                  ? "You have already used your one-time username change." 
+                  : "You can only change your username once. Choose carefully."}
+              </p>
+            </div>
+
+            {/* 🚀 Bio Section */}
+            <div className="pt-2 border-t border-divider">
+              <label htmlFor="bio" className="block text-sm font-semibold text-ink mb-2">Short Bio</label>
+              <textarea 
+                id="bio"
+                value={bio} 
+                onChange={(e) => setBio(e.target.value)} 
+                rows={4} 
+                placeholder="Tell the community about yourself and your connection to Bandwar..." 
+                className="w-full px-4 py-3 rounded-sm border border-divider bg-canvas text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none resize-none transition-all leading-relaxed" 
               />
             </div>
-            {contributor.hasChangedUsername && <p className="text-[10px] text-red-500 mt-1">You have already used your one-time username change.</p>}
+
+            {error && (
+              <div className="text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded-sm flex items-start gap-2">
+                <span className="font-bold shrink-0">Error:</span> {error}
+              </div>
+            )}
           </div>
 
-          <div>
-            <label htmlFor="bio" className="block text-sm font-semibold text-ink mb-1.5">Bio</label>
-            <textarea 
-              id="bio"
-              value={bio} 
-              onChange={(e) => setBio(e.target.value)} 
-              rows={3} 
-              placeholder="Tell us a bit about yourself..." 
-              className="w-full px-4 py-3 rounded-sm border border-divider bg-surface text-ink text-sm focus:border-accent outline-none resize-y focus:ring-2 focus:ring-accent/20" 
-            />
-          </div>
-
-          {error && <p className="text-sm text-red-500 bg-red-500/10 p-2 border border-red-500/20 rounded-sm">{error}</p>}
-
-          <div className="pt-2 flex justify-end gap-3">
+          {/* Footer */}
+          <div className="p-4 border-t border-divider bg-canvas/50 flex justify-end gap-3 shrink-0">
             <button 
               type="button" 
               onClick={onClose} 
-              className="px-4 py-2 border border-divider rounded-sm text-sm hover:bg-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="px-5 py-2.5 border border-divider rounded-sm text-sm font-semibold hover:bg-surface text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               Cancel
             </button>
             <button 
               type="submit" 
               disabled={isSubmitting} 
-              className="px-5 py-2 bg-accent text-white rounded-sm font-semibold text-sm flex items-center gap-2 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="px-6 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-sm font-semibold text-sm flex items-center gap-2 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent shadow-sm"
             >
-              {isSubmitting ? <Loader2 size={16} className="animate-spin" aria-hidden="true" /> : <Save size={16} aria-hidden="true" />} Save Changes
+              {isSubmitting ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" aria-hidden="true" /> Saving...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 size={16} aria-hidden="true" /> Save Changes
+                </>
+              )}
             </button>
           </div>
         </form>
