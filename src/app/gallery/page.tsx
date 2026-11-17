@@ -84,7 +84,9 @@ export default function GalleryPage() {
           "caption": photo.caption,
           "creator": { "@type": "Organization", "name": "Bandwar Village Community" },
           "copyrightNotice": "© Bandwar Village Archive",
+          "creditText": "Bandwar Village Archive", // 🚀 ADDED: Fixes non-critical issue
           "license": `${baseUrl}/about#license`,
+          "acquireLicensePage": `${baseUrl}/about#license`, // 🚀 ADDED: Fixes non-critical issue
           ...(photo.year && { "datePublished": `${photo.year}-01-01` })
         }))
       }
