@@ -1,4 +1,24 @@
 {
-  "pending": [],
+  "pending": [
+    {
+      "id": "edit_1794922059311_46ahmn",
+      "type": "Image Update Suggestion",
+      "contextId": "chhath-puja-bandwar-bandh-burhi-gandak",
+      "userName": "Admin",
+      "userUsername": "@Bandwarofficial",
+      "timestamp": "2026-11-17T13:27:39.311Z",
+      "pendingImageUrl": "/images/pending/edit_1794922057792_h3lfs7.jpg",
+      "intent": "image_update",
+      "filePath": "data/articles/culture.json",
+      "targetType": "article",
+      "field": "",
+      "oldValue": "",
+      "newValue": "",
+      "currentImagePath": "images/culture/bandwar-chhath-puja-surya-dev-idol-bandh.jpg",
+      "jsonObj": {
+        "Category": "culture"
+      }
+    }
+  ],
   "approved": []
 }
