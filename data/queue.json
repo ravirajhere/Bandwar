@@ -1,5 +1,6 @@
 {
-  "pending": [
+  "pending": [],
+  "approved": [
     {
       "id": "edit_1794928391862_trp09f",
       "type": "Image Update Suggestion",
@@ -17,8 +18,8 @@
       "currentImagePath": "images/religion/maharishi-gautam-durga-mandir-bandwar.jpg",
       "jsonObj": {
         "Category": "religion"
-      }
+      },
+      "approvedVia": "Dashboard"
     }
-  ],
-  "approved": []
+  ]
 }
