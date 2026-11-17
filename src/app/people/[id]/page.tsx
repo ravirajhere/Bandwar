@@ -1,9 +1,9 @@
 import Link from "next/link";
-import Image from "next/image"; // 🚀 SEO FIX: Added Next.js Image
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getPeopleData, getMasterData } from "@/lib/data"; 
+import { getPeopleData, getMasterData, getAllArticles } from "@/lib/data"; // 🚀 Added getAllArticles
 import { Metadata } from "next";
-import { ShieldCheck, Calendar, ChevronRight, User, MapPin } from "lucide-react"; 
+import { ShieldCheck, Calendar, ChevronRight, User, MapPin, BookOpen, Quote, ArrowRight, Link2 } from "lucide-react"; 
 import { EditableText } from "@/components/editor/EditableText";
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
@@ -23,14 +23,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const config = getMasterData();
   const person = data.people.find((p) => p.id === id);
 
-  if (!person) {
-    return { title: "Person Not Found", robots: { index: false } };
-  }
+  if (!person) return { title: "Person Not Found", robots: { index: false } };
 
   const baseUrl = config.site.url;
   const personUrl = `${baseUrl}/people/${person.id}`;
-  
-  // 🚀 SEO FIX: Strip query strings for OG Image
   const cleanPhoto = person.photo ? person.photo.split('?')[0] : null;
   const imageUrl = cleanPhoto 
     ? (cleanPhoto.startsWith("http") ? cleanPhoto : `${baseUrl}/${cleanPhoto.replace(/^\//, "")}`)
@@ -41,12 +37,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     : `${person.name} — ${person.role} from Bandwar village, Begusarai (Bihar).`;
 
   return {
-    title: person.name, // Layout template will add "— Bandwar Village Archive"
+    title: person.name,
     description,
-    alternates: {
-      canonical: personUrl,
-      languages: { "en-IN": personUrl, "x-default": personUrl },
-    },
+    alternates: { canonical: personUrl, languages: { "en-IN": personUrl, "x-default": personUrl } },
     openGraph: {
       title: `${person.name} - ${person.role}`,
       description,
@@ -56,12 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       images: [{ url: imageUrl, width: 800, height: 800, alt: person.photoAlt || person.name }],
       type: "profile",
     },
-    twitter: {
-      card: "summary_large_image",
-      title: `${person.name} - ${person.role}`,
-      description,
-      images: [imageUrl],
-    },
+    twitter: { card: "summary_large_image", title: `${person.name} - ${person.role}`, description, images: [imageUrl] },
   };
 }
 
@@ -69,22 +57,27 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
   const { id } = await params;
   const data = getPeopleData();
   const config = getMasterData(); 
+  const allArticles = getAllArticles(); // 🚀 Fetch articles for backlinks
   const person = data.people.find((p) => p.id === id);
 
   if (!person) notFound();
 
   const isDeceased = !!person.deathDate;
-  
   const baseUrl = config.site.url;
   const personUrl = `${baseUrl}/people/${person.id}`;
   
-  // 🚀 SEO FIX: Strip query strings for Schema & Next Image
   const cleanPhoto = person.photo ? person.photo.split('?')[0] : null;
   const imageUrl = cleanPhoto 
     ? (cleanPhoto.startsWith("http") ? cleanPhoto : `${baseUrl}/${cleanPhoto.replace(/^\//, "")}`)
     : `${baseUrl}/icon.png`;
 
-  // 🚀 SEO FIX: Unified @graph with ProfilePage schema
+  // 🚀 Find articles that mention this person
+  const backlinks = allArticles.filter(a => {
+    const regex = new RegExp(`\\[\\[${person.id}(\\|.*?)?\\]\\]`, 'i');
+    return a.content.some(block => regex.test(block.text)) || a.summary?.includes(`[[${person.id}`);
+  });
+
+  // 🚀 Schema Upgrade
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -125,139 +118,106 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
   return (
     <EditModeProvider>
       <div className="bg-canvas min-h-screen py-8 md:py-12 3xl:py-16">
-        
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-        <div className="container mx-auto px-4 md:px-0">
+        <div className="container mx-auto px-4 md:px-0 max-w-6xl">
           
           {/* Breadcrumbs */}
           <nav className="mb-6 text-sm text-ink-muted flex items-center gap-2 no-print flex-wrap" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Home</Link>
+            <Link href="/" className="hover:text-accent transition-colors">Home</Link>
             <ChevronRight size={14} className="text-divider shrink-0" aria-hidden="true" />
-            <Link href="/people" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">People</Link>
+            <Link href="/people" className="hover:text-accent transition-colors">People</Link>
             <ChevronRight size={14} className="text-divider shrink-0" aria-hidden="true" />
             <span className="text-ink font-medium truncate max-w-[200px] sm:max-w-none">{person.name}</span>
           </nav>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 3xl:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 lg:gap-12 3xl:gap-16 items-start">
             
-            {/* LEFT COLUMN: Wikipedia-Style Infobox */}
-            <aside className="lg:col-span-4 order-2 lg:order-1 no-print">
-              <div className="lg:sticky lg:top-24 bg-surface border border-divider rounded-sm">
+            {/* 🚀 LEFT COLUMN: The "Archival Record" Sidebar */}
+            <aside className="lg:sticky lg:top-24 order-2 lg:order-1">
+              <div className="bg-surface border border-divider rounded-lg overflow-hidden shadow-sm">
                 
-                {/* 🚀 Photo Container with Update Button */}
-                <div className="relative w-full aspect-square bg-canvas border-b border-divider overflow-hidden group">
+                {/* Photo Container */}
+                <div className="relative w-full aspect-[4/5] bg-canvas border-b border-divider overflow-hidden group">
                   {cleanPhoto ? (
                     <Image
                       src={cleanPhoto}
                       alt={person.photoAlt || person.name}
                       fill
-                      className="object-cover object-top"
-                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="object-cover object-top grayscale-[20%] group-hover:grayscale-0 transition-all duration-500"
+                      sizes="(max-width: 1024px) 100vw, 320px"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-ink/20">
-                      <User size={64} className="3xl:w-24 3xl:h-24" aria-hidden="true" />
+                      <User size={64} aria-hidden="true" />
                     </div>
                   )}
-                  
-                  {/* Image Update Button (Sirf Edit Mode mein dikhega) */}
                   <div className="no-print">
-                    <ImageUpdateButton 
-                      contextName={person.name} 
-                      contextId={person.id} 
-                      currentImage={person.photo} 
-                      targetType="person" 
-                    />
+                    <ImageUpdateButton contextName={person.name} contextId={person.id} currentImage={person.photo} targetType="person" />
                   </div>
                 </div>
 
-                {/* Deceased Badge */}
+                {/* Deceased Badge (Memorial Ribbon) */}
                 {isDeceased && (
-                  <div className="bg-canvas border-b border-divider text-center py-1.5 text-ink-muted text-[10px] 3xl:text-xs font-bold uppercase tracking-widest">
-                    In Memoriam
+                  <div className="bg-accent text-white text-center py-2 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                    <ShieldCheck size={14} /> In Memoriam
                   </div>
                 )}
 
                 {/* Data Container */}
-                <div className="p-5 3xl:p-6">
-                  
-                  {/* Name */}
-                  <div className="mb-1">
+                <div className="p-6">
+                  <div className="mb-2 text-center">
                     <EditableText
                       initialValue={person.name}
                       contextId={person.id}
                       contextType="Person"
                       fieldName="Full Name"
                       as="h2"
-                      className="font-serif text-xl 3xl:text-2xl text-ink leading-tight m-0 font-bold"
+                      className="font-serif text-2xl text-ink leading-tight m-0 font-bold"
                     />
                   </div>
 
-                  {/* Role */}
-                  <div className="mb-4 pb-4 border-b border-divider">
+                  <div className="mb-6 text-center">
                     <EditableText
                       initialValue={person.role}
                       contextId={person.id}
                       contextType="Person"
                       fieldName="Role"
                       as="p"
-                      className="text-accent font-semibold text-sm 3xl:text-base m-0 leading-snug"
+                      className="text-accent font-bold text-sm uppercase tracking-wider m-0"
                     />
                   </div>
 
-                  {/* Details List */}
-                  <dl className="space-y-0 text-sm 3xl:text-base">
+                  <dl className="space-y-0 text-sm border-t border-divider pt-4">
                     {(person.dob || person.deathDate) && (
-                      <div className="flex flex-col gap-0.5 py-2 border-b border-divider/50 last:border-0 group">
-                        <dt className="text-ink/50 font-bold text-[10px] 3xl:text-xs uppercase tracking-wider">Lifespan</dt>
-                        <dd className="text-ink m-0">
+                      <div className="flex flex-col gap-1 py-3 border-b border-divider/50 last:border-0">
+                        <dt className="text-ink/50 font-bold text-[10px] uppercase tracking-wider flex items-center gap-1.5"><Calendar size={12}/> Lifespan</dt>
+                        <dd className="text-ink m-0 font-medium">
                           <EditableText
                             initialValue={person.dob && person.deathDate ? `${person.dob} – ${person.deathDate}` : person.dob ? `Born: ${person.dob}` : `Died: ${person.deathDate}`}
                             contextId={person.id}
                             contextType="Person"
                             fieldName="Lifespan (DOB/DOD)"
                             as="span"
-                            className="font-medium"
                           />
                         </dd>
                       </div>
                     )}
 
                     {person.birthplace && (
-                      <div className="flex flex-col gap-0.5 py-2 border-b border-divider/50 last:border-0 group">
-                        <dt className="text-ink/50 font-bold text-[10px] 3xl:text-xs uppercase tracking-wider">Birthplace</dt>
-                        <dd className="text-ink m-0">
-                           <EditableText
-                            initialValue={person.birthplace}
-                            contextId={person.id}
-                            contextType="Person"
-                            fieldName="Birthplace"
-                            as="span"
-                            className="font-medium"
-                          />
+                      <div className="flex flex-col gap-1 py-3 border-b border-divider/50 last:border-0">
+                        <dt className="text-ink/50 font-bold text-[10px] uppercase tracking-wider flex items-center gap-1.5"><MapPin size={12}/> Birthplace</dt>
+                        <dd className="text-ink m-0 font-medium">
+                           <EditableText initialValue={person.birthplace} contextId={person.id} contextType="Person" fieldName="Birthplace" as="span" />
                         </dd>
                       </div>
                     )}
 
                     {person.locality && (
-                      <div className="flex flex-col gap-0.5 py-2 border-b border-divider/50 last:border-0 group">
-                        <dt className="text-ink/50 font-bold text-[10px] 3xl:text-xs uppercase tracking-wider">Locality</dt>
-                        <dd className="text-ink m-0">
-                          <span className="font-medium flex items-center gap-1">
-                            <MapPin size={12} className="text-accent shrink-0" aria-hidden="true" /> 
-                            <EditableText
-                              initialValue={person.locality}
-                              contextId={person.id}
-                              contextType="Person"
-                              fieldName="Locality"
-                              as="span"
-                              className="font-medium"
-                            />
-                          </span>
+                      <div className="flex flex-col gap-1 py-3 border-b border-divider/50 last:border-0">
+                        <dt className="text-ink/50 font-bold text-[10px] uppercase tracking-wider flex items-center gap-1.5"><MapPin size={12}/> Locality</dt>
+                        <dd className="text-ink m-0 font-medium">
+                          <EditableText initialValue={person.locality} contextId={person.id} contextType="Person" fieldName="Locality" as="span" />
                         </dd>
                       </div>
                     )}
@@ -266,72 +226,97 @@ export default async function PersonProfilePage({ params }: { params: Promise<{ 
               </div>
             </aside>
 
-            {/* RIGHT COLUMN: Biography & Journey */}
-            <main className="lg:col-span-8 order-1 lg:order-2">
+            {/* 🚀 RIGHT COLUMN: Editorial Narrative */}
+            <main className="order-1 lg:order-2 min-w-0">
               
-              <header className="mb-8 pb-4 border-b border-divider flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink mb-3 font-bold tracking-tight">
+              {/* Hero Header */}
+              <header className="mb-10 pb-6 border-b border-divider">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded-sm">Biography</span>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-ink mb-2 font-bold tracking-tight leading-[1.1]">
                     {person.name}
                   </h1>
-                  
-                  <div className="flex items-center gap-2 text-sm text-ink-muted">
-                    {person.lastEditedBy && person.lastUpdated ? (
-                      <div className="flex items-center gap-1.5 font-medium">
-                        <ShieldCheck size={16} className="text-accent" aria-hidden="true" />
-                        <span>Updated <time dateTime={person.lastUpdated}>{new Date(person.lastUpdated).toLocaleDateString("en-IN", { year: 'numeric', month: 'short', day: 'numeric' })}</time> by {person.lastEditedBy}</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1.5 font-medium">
-                        <Calendar size={16} aria-hidden="true" />
-                        <span>Profile Verified</span>
-                      </div>
-                    )}
+                  <div className="no-print shrink-0 mt-2">
+                    <EditModeToggle />
                   </div>
                 </div>
-                <div className="no-print shrink-0">
-                  <EditModeToggle />
+
+                <div className="flex items-center gap-2 text-sm text-ink-muted mt-4">
+                  {person.lastEditedBy && person.lastUpdated ? (
+                    <div className="flex items-center gap-1.5 font-medium">
+                      <ShieldCheck size={16} className="text-accent" aria-hidden="true" />
+                      <span>Verified on <time dateTime={person.lastUpdated}>{new Date(person.lastUpdated).toLocaleDateString("en-IN", { year: 'numeric', month: 'short', day: 'numeric' })}</time></span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5 font-medium">
+                      <ShieldCheck size={16} className="text-accent" aria-hidden="true" />
+                      <span>Verified Archival Record</span>
+                    </div>
+                  )}
                 </div>
               </header>
 
               {/* Biography Section */}
-              <section className="mb-10">
-                <div className="flex items-center justify-between border-b border-divider pb-2 mb-4">
-                  <h3 className="text-xl 3xl:text-2xl font-serif font-bold text-ink">Biography</h3>
-                </div>
+              <section className="mb-12">
                 <EditableParagraph
                   initialValue={person.bio}
                   contextId={person.id}
                   contextType="Person"
                   fieldName="Biography"
-                  className="prose prose-lg dark:prose-invert max-w-[75ch] text-ink/90 leading-[1.8] text-base 3xl:text-lg"
+                  className="prose prose-lg dark:prose-invert max-w-[75ch] text-ink/90 leading-[1.9] text-lg font-medium first-letter:text-5xl first-letter:font-serif first-letter:text-accent first-letter:float-left first-letter:mr-3 first-letter:mt-1"
                 />
               </section>
 
-              {/* Journey Section */}
+              {/* 🚀 Journey Section (Vertical Timeline Style) */}
               {person.journey && (
-                <section className="mb-10">
-                  <div className="flex items-center justify-between border-b border-divider pb-2 mb-4">
-                    <h3 className="text-xl 3xl:text-2xl font-serif font-bold text-ink">Life Journey & Legacy</h3>
+                <section className="mb-12 bg-surface border border-divider rounded-lg p-6 md:p-8 relative overflow-hidden">
+                  <Quote className="absolute top-4 right-4 text-accent/5 w-24 h-24 pointer-events-none" />
+                  
+                  <div className="flex items-center gap-3 border-b border-divider pb-4 mb-6 relative z-10">
+                    <BookOpen className="text-accent" size={24} />
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-ink m-0">Life Journey & Legacy</h3>
                   </div>
-                  <div className="border-l-4 border-accent pl-4 md:pl-6 py-1 my-0 max-w-[75ch]">
+                  
+                  <div className="relative z-10 border-l-2 border-accent/30 pl-6 ml-3">
+                    {/* Decorative Dot */}
+                    <div className="absolute -left-[5px] top-2 w-2 h-2 rounded-full bg-accent" />
+                    
                     <EditableParagraph
                       initialValue={person.journey}
                       contextId={person.id}
                       contextType="Person"
                       fieldName="Life Journey"
-                      className="text-base md:text-lg 3xl:text-xl leading-relaxed text-ink/80 italic m-0"
+                      className="text-base md:text-lg leading-relaxed text-ink/80 italic m-0 whitespace-pre-wrap"
                     />
                   </div>
                 </section>
               )}
 
+              {/* 🚀 Mentioned In (Backlinks) */}
+              {backlinks.length > 0 && (
+                <section className="mt-12 pt-8 border-t border-divider">
+                  <h3 className="font-bold text-sm text-ink-muted uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <Link2 size={16} /> Mentioned In These Records
+                  </h3>
+                  <ul className="space-y-2">
+                    {backlinks.map((link) => (
+                      <li key={link.id}>
+                        <Link href={`/article/${link.id}`} className="group flex items-center justify-between p-3 bg-canvas border border-divider rounded-sm hover:border-accent transition-colors">
+                          <span className="font-medium text-ink group-hover:text-accent transition-colors truncate pr-4">{link.title}</span>
+                          <ArrowRight size={16} className="text-accent shrink-0 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
               {/* Back Button */}
-              <div className="mt-8 no-print">
-                <Link 
-                  href="/people" 
-                  className="inline-flex items-center text-sm font-semibold text-accent hover:underline underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
-                >
+              <div className="mt-12 pt-6 border-t border-divider no-print">
+                <Link href="/people" className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted hover:text-accent transition-colors">
                   ← Back to People Directory
                 </Link>
               </div>
