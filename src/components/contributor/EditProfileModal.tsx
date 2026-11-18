@@ -4,7 +4,7 @@ import { useState } from "react";
 import { X, Loader2, Save, UploadCloud, User, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import Image from "next/image"; // 🚀 Next.js Image Import
 
 // 🚀 Image Compression Logic
 const compressImage = async (file: File): Promise<File> => {
@@ -12,7 +12,8 @@ const compressImage = async (file: File): Promise<File> => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = (event) => {
-      const img = new Image();
+      // 🚀 FIX: Use window.Image to resolve Next.js Image conflict
+      const img = new window.Image(); 
       img.src = event.target?.result as string;
       img.onload = () => {
         const canvas = document.createElement("canvas");
@@ -135,7 +136,7 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
         <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto space-y-6 text-left custom-scrollbar">
             
-            {/* 🚀 Photo Upload Section */}
+            {/* Photo Upload Section */}
             <div>
               <label className="block text-sm font-semibold text-ink mb-3">Profile Photo</label>
               <div className="flex items-center gap-5">
@@ -159,12 +160,12 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
                 </div>
                 <div className="text-sm">
                   <p className="text-ink font-medium">Upload a new photo</p>
-                  <p className="text-ink-muted text-xs mt-1">JPG or PNG. Max 400x400px. Image will be auto-compressed.</p>
+                  <p className="text-ink-muted text-xs mt-1">JPG or PNG. Max 400x400px. Auto-compressed.</p>
                 </div>
               </div>
             </div>
 
-            {/* 🚀 Username Section */}
+            {/* Username Section */}
             <div className="pt-2 border-t border-divider">
               <div className="flex items-center justify-between mb-2">
                 <label htmlFor="username" className="block text-sm font-semibold text-ink">Username</label>
@@ -191,7 +192,7 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
               </p>
             </div>
 
-            {/* 🚀 Bio Section */}
+            {/* Bio Section */}
             <div className="pt-2 border-t border-divider">
               <label htmlFor="bio" className="block text-sm font-semibold text-ink mb-2">Short Bio</label>
               <textarea 
@@ -199,7 +200,7 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
                 value={bio} 
                 onChange={(e) => setBio(e.target.value)} 
                 rows={4} 
-                placeholder="Tell the community about yourself and your connection to Bandwar..." 
+                placeholder="Tell the community about yourself..." 
                 className="w-full px-4 py-3 rounded-sm border border-divider bg-canvas text-ink text-sm focus:border-accent focus:ring-1 focus:ring-accent outline-none resize-none transition-all leading-relaxed" 
               />
             </div>
@@ -216,14 +217,14 @@ export function EditProfileModal({ contributor, onClose }: { contributor: any, o
             <button 
               type="button" 
               onClick={onClose} 
-              className="px-5 py-2.5 border border-divider rounded-sm text-sm font-semibold hover:bg-surface text-ink transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className="px-5 py-2.5 border border-divider rounded-sm text-sm font-semibold hover:bg-surface text-ink transition-colors"
             >
               Cancel
             </button>
             <button 
               type="submit" 
               disabled={isSubmitting} 
-              className="px-6 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-sm font-semibold text-sm flex items-center gap-2 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent shadow-sm"
+              className="px-6 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-sm font-semibold text-sm flex items-center gap-2 transition-colors disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
