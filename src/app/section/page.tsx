@@ -1,7 +1,7 @@
 import { getAllArticles, getCategoriesData, getMasterData } from "@/lib/data";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import Link from "next/link";
-import { ChevronRight, Library, FileText } from "lucide-react";
+import { ChevronRight, Library, FileText, ArrowRight, BookOpen, PenLine } from "lucide-react";
 import { Metadata } from "next";
 import { AddContentModal } from "@/components/shared/AddContentModal";
 
@@ -19,10 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     alternates: {
       canonical: `${baseUrl}/section`,
-      languages: {
-        "en-IN": `${baseUrl}/section`,
-        "x-default": `${baseUrl}/section`,
-      },
+      languages: { "en-IN": `${baseUrl}/section`, "x-default": `${baseUrl}/section` },
     },
     openGraph: {
       type: "website",
@@ -33,12 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "en_IN",
       images: [{ url: ogImage, width: 1200, height: 630, alt: "Archive Index - Bandwar Village Archive" }],
     },
-    twitter: {
-      card: "summary_large_image",
-      title: `${title} — Bandwar Village Archive`,
-      description,
-      images: [ogImage],
-    },
+    twitter: { card: "summary_large_image", title: `${title} — Bandwar Village Archive`, description, images: [ogImage] },
   };
 }
 
@@ -50,6 +42,10 @@ export default function SectionPage() {
 
   // Count articles per category
   const getCount = (catId: string) => articles.filter(a => a.categories.includes(catId)).length;
+
+  // The first article becomes the "Latest Additions" lead
+  const latestArticle = articles[0];
+  const remainingArticles = articles.slice(1);
 
   // 🚀 SEO FIX: JSON-LD Schema (CollectionPage + ItemList)
   const jsonLd = {
@@ -76,7 +72,6 @@ export default function SectionPage() {
         "@id": `${baseUrl}/section#itemlist`,
         name: "All Articles",
         numberOfItems: articles.length,
-        // We limit to top 20 to keep the HTML payload size optimal for Google
         itemListElement: articles.slice(0, 20).map((article, index) => ({
           "@type": "ListItem",
           position: index + 1,
@@ -89,128 +84,144 @@ export default function SectionPage() {
 
   return (
     <div className="bg-canvas min-h-screen py-10 md:py-16 3xl:py-24">
-      {/* 🚀 JSON-LD Injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="container mx-auto px-4 md:px-0 max-w-7xl 3xl:max-w-[1600px]">
+      <div className="container mx-auto px-4 md:px-0 max-w-6xl">
         
-        {/* 🏛️ Page Header */}
-        <div className="mb-12 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-10">
-          <div className="max-w-3xl">
-            <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink mb-4 font-semibold tracking-tight text-balance">
-              The Archive
-            </h1>
-            
-            {/* Decorative Accent Line */}
-            <div className="w-16 md:w-20 h-1 bg-accent mb-6 rounded-full"></div>
-            
-            <p className="text-base md:text-lg 3xl:text-xl text-ink/70 leading-relaxed text-pretty">
-              The complete digital archive of Bandwar. Every article, photograph, and fact — kept by the village, for the record.
-            </p>
+        {/* 🏛️ Editorial Header */}
+        <div className="mb-12 md:mb-16 border-b border-divider pb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-8 h-px bg-accent"></span>
+            <span className="text-accent font-bold text-xs uppercase tracking-widest flex items-center gap-2">
+              <Library size={14} /> The Directory
+            </span>
           </div>
           
-          {/* 🚀 Write an Article Button */}
-          <div className="shrink-0 pb-2 3xl:pb-4">
-            <AddContentModal 
-              type="article" 
-              customButtonText="Write an Article" 
-              categories={categories.map(c => ({ id: c.id, title: c.title }))} 
-            />
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="max-w-2xl">
+              <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-ink mb-4 font-bold tracking-tight">
+                Archive Index
+              </h1>
+              <p className="text-ink-muted text-lg leading-relaxed">
+                The complete digital record of Bandwar. Browse the historical, cultural, and spatial archives preserved by the community.
+              </p>
+            </div>
+            
+            {/* Formal Write Button */}
+            <div className="shrink-0">
+              <AddContentModal 
+                type="article" 
+                customButtonText="Submit an Article" 
+                categories={categories.map(c => ({ id: c.id, title: c.title }))} 
+              />
+            </div>
           </div>
         </div>
 
         {/* =========================================
-            📚 Category Tiles Section
+            📚 The Ledger: Category Index
            ========================================= */}
         <section className="mb-16 md:mb-24">
-          <div className="flex items-center gap-4 mb-6 md:mb-8">
-            <h2 className="font-serif text-2xl 3xl:text-3xl font-semibold text-ink m-0 flex items-center gap-2">
-              <Library size={22} className="text-accent 3xl:w-7 3xl:h-7" aria-hidden="true" />
-              Browse by Category
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-ink-muted flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-accent"></div> Browse by Category
             </h2>
-            <div className="h-px bg-divider flex-grow rounded-full"></div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-cols-5 gap-4 3xl:gap-6">
+          {/* Formal Grid Layout for Categories */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-l border-divider rounded-sm overflow-hidden bg-surface">
             {categories.map((cat) => {
               const count = getCount(cat.id);
               const isDisabled = count === 0;
 
-              // 🚀 SEO FIX: Render a <div> if disabled, <Link> if active. Avoids "#" href crawl traps.
-              const commonClasses = `group relative bg-surface border border-divider rounded-lg p-5 3xl:p-6 transition-all duration-300 flex items-center gap-4 ${isDisabled ? "opacity-60 cursor-not-allowed" : "hover:border-accent/40 hover:shadow-md hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"}`;
+              const commonClasses = `group relative border-b border-r border-divider p-4 transition-colors flex items-center justify-between ${
+                isDisabled ? "bg-canvas opacity-60" : "hover:bg-canvas focus-visible:outline-none focus-visible:bg-canvas"
+              }`;
 
               const content = (
                 <>
-                  {/* Icon Badge */}
-                  <div className={`shrink-0 w-12 h-12 3xl:w-14 3xl:h-14 rounded-md flex items-center justify-center text-2xl 3xl:text-3xl transition-colors border border-divider ${isDisabled ? "bg-canvas" : "bg-canvas group-hover:bg-accent/5"}`} aria-hidden="true">
-                    {cat.icon}
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-10 h-10 rounded-sm bg-canvas border border-divider flex items-center justify-center shrink-0 text-xl">
+                      {cat.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className={`font-serif font-bold text-base leading-tight truncate ${isDisabled ? "text-ink/50" : "text-ink group-hover:text-accent transition-colors"}`}>
+                        {cat.title}
+                      </h3>
+                      <p className="text-[11px] text-ink-muted mt-0.5 font-medium uppercase tracking-wider">
+                        {count} {count === 1 ? "Record" : "Records"}
+                      </p>
+                    </div>
                   </div>
-
-                  {/* Content */}
-                  <div className="min-w-0 flex-grow">
-                    <h3 className={`font-serif font-semibold text-[15px] 3xl:text-lg leading-tight mb-1 truncate ${isDisabled ? "text-ink/50" : "text-ink group-hover:text-accent transition-colors"}`}>
-                      {cat.title}
-                    </h3>
-                    <p className="text-xs 3xl:text-sm text-ink/50 font-medium">
-                      {count} {count === 1 ? "page" : "pages"}
-                    </p>
-                  </div>
-
-                  {/* Arrow */}
+                  
                   {!isDisabled && (
-                    <ChevronRight 
-                      size={18} 
-                      className="shrink-0 text-ink/40 group-hover:text-accent transition-all transform group-hover:translate-x-0.5 3xl:w-5 3xl:h-5" 
-                      aria-hidden="true"
-                    />
+                    <ArrowRight size={16} className="text-ink/20 group-hover:text-accent group-hover:translate-x-1 transition-all shrink-0 ml-4" />
                   )}
                 </>
               );
 
-              if (isDisabled) {
-                return <div key={cat.id} className={commonClasses}>{content}</div>;
-              }
-
-              return (
-                <Link key={cat.id} href={`/section/${cat.id}`} className={commonClasses}>
-                  {content}
-                </Link>
-              );
+              if (isDisabled) return <div key={cat.id} className={commonClasses}>{content}</div>;
+              return <Link key={cat.id} href={`/section/${cat.id}`} className={commonClasses}>{content}</Link>;
             })}
           </div>
         </section>
 
         {/* =========================================
-            📄 All Articles Section
+            📄 The Records: Latest & All Articles
            ========================================= */}
         <section>
-          <div className="flex items-center gap-4 mb-6 md:mb-8">
-            <h2 className="font-serif text-2xl 3xl:text-3xl font-semibold text-ink m-0 flex items-center gap-2">
-              <FileText size={22} className="text-accent 3xl:w-7 3xl:h-7" aria-hidden="true" />
-              All Articles
+          <div className="flex items-center justify-between mb-8 pb-4 border-b border-divider">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-ink-muted flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-accent"></div> Recently Recorded
             </h2>
-            <div className="h-px bg-divider flex-grow rounded-full"></div>
-            <span className="text-sm 3xl:text-base text-ink/60 bg-surface border border-divider px-3 py-1 rounded-md font-medium whitespace-nowrap shadow-sm">
-              {articles.length} total
+            <span className="text-xs font-bold text-ink-muted bg-surface border border-divider px-2 py-1 rounded-sm">
+              {articles.length} TOTAL ENTRIES
             </span>
           </div>
-          
-          {/* Empty State */}
+
           {articles.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 bg-surface border border-dashed border-divider rounded-lg">
-              <Library size={48} className="text-ink/20 mb-4 3xl:w-16 3xl:h-16" aria-hidden="true" />
-              <h3 className="text-lg 3xl:text-xl font-semibold text-ink mb-1">No articles yet</h3>
-              <p className="text-ink/60 text-sm md:text-base 3xl:text-lg">Articles added by the editor will appear here.</p>
+            <div className="flex flex-col items-center justify-center py-20 bg-surface border border-dashed border-divider rounded-sm">
+              <FileText size={48} className="text-ink/20 mb-4" aria-hidden="true" />
+              <h3 className="text-lg font-serif font-bold text-ink mb-1">No records found</h3>
+              <p className="text-ink-muted text-sm">Articles added by the editor will appear here.</p>
             </div>
           ) : (
-            /* Grid Layout (Mobile: 1, Tablet/Desktop: 2, TV: 3) */
-            <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-3 gap-5 md:gap-6 3xl:gap-8">
-              {articles.map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
+            <div className="space-y-12">
+              {/* 🚀 Lead Article (Featured) */}
+              {latestArticle && (
+                <div className="bg-surface border border-divider rounded-sm p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-center hover:border-accent/40 transition-colors">
+                  <div className="w-full md:w-1/3 shrink-0 aspect-[4/3] relative rounded-sm overflow-hidden border border-divider bg-canvas">
+                    <img 
+                      src={latestArticle.hero ? (latestArticle.hero.startsWith("/") ? latestArticle.hero : `/${latestArticle.hero}`) : "/fallback.jpg"} 
+                      alt={latestArticle.title} 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                  <div className="flex flex-col h-full w-full">
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
+                      <span className="bg-accent/10 px-2 py-1 rounded-sm">Latest Entry</span>
+                      <span className="text-ink-muted">•</span>
+                      <span className="text-ink-muted">{latestArticle.categories[0]}</span>
+                    </div>
+                    <h3 className="font-serif text-2xl md:text-3xl font-bold text-ink mb-3 leading-tight">
+                      {latestArticle.title}
+                    </h3>
+                    <p className="text-ink-muted text-base leading-relaxed line-clamp-3 mb-6">
+                      {latestArticle.summary}
+                    </p>
+                    <Link href={`/article/${latestArticle.id}`} className="inline-flex items-center text-sm font-bold text-accent hover:text-accent-hover group mt-auto">
+                      Read Full Record <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+              {/* 🚀 Remaining Articles Grid (Standardized Cards) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                {remainingArticles.map((article) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))}
+              </div>
             </div>
           )}
         </section>
