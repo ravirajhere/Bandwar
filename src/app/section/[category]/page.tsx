@@ -2,7 +2,8 @@ import { getAllArticles, getCategoriesData, getMasterData } from "@/lib/data";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, FileText, FolderOpen } from "lucide-react";
+import Image from "next/image";
+import { ChevronRight, FileText, BookOpen, ArrowRight, ShieldCheck } from "lucide-react";
 import { Metadata } from "next";
 
 // Build time pe saari categories ke pages generate karega
@@ -60,8 +61,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   if (!category) notFound();
 
   const baseUrl = config.site.url;
-  // 🚀 SEO TIP: getAllArticles already sorts by newest first
   const articles = getAllArticles().filter(a => a.categories.includes(category.id));
+
+  // 🚀 Separate the Lead Article from the rest
+  const leadArticle = articles[0];
+  const remainingArticles = articles.slice(1);
 
   // 🚀 ADVANCED JSON-LD Schema (CollectionPage + Breadcrumb + Deep ItemList)
   const jsonLd = {
@@ -99,24 +103,17 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         itemListOrder: "https://schema.org/ItemListOrderDescending",
         itemListElement: articles.slice(0, 20).map((article, index) => {
           const images: string[] = [];
-          
-          // ✅ FIX: Use displayHero for SEO JSON-LD
           const seoHero = (article as any).displayHero || article.hero;
-          
           if (seoHero) {
             images.push(seoHero.startsWith("http") ? seoHero : `${baseUrl}/${seoHero.replace(/^\//, "")}`);
           }
-          
           return {
             "@type": "ListItem",
             position: index + 1,
             url: `${baseUrl}/article/${article.id}`,
             name: article.title,
             ...(images.length > 0 && { 
-              image: {
-                "@type": "ImageObject",
-                "url": images[0]
-              }
+              image: { "@type": "ImageObject", "url": images[0] }
             })
           };
         })
@@ -126,62 +123,113 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
   return (
     <div className="bg-canvas min-h-screen py-10 md:py-16 3xl:py-24">
-      {/* 🚀 JSON-LD Injection */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="container mx-auto px-4 md:px-0 max-w-7xl 3xl:max-w-[1600px]">
+      <div className="container mx-auto px-4 md:px-0 max-w-6xl">
         
-        {/* 🏛️ Breadcrumb (Standardized) */}
-        <nav className="flex flex-wrap items-center gap-2 text-sm 3xl:text-base text-ink/60 mb-8 md:mb-10 no-print" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Home</Link>
+        {/* 🏛️ Standardized Breadcrumb */}
+        <nav className="flex flex-wrap items-center gap-2 text-sm text-ink-muted mb-8 md:mb-12" aria-label="Breadcrumb">
+          <Link href="/" className="hover:text-accent transition-colors">Home</Link>
           <ChevronRight size={14} className="text-divider shrink-0" aria-hidden="true" />
-          <Link href="/section" className="hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm">Archive</Link>
+          <Link href="/section" className="hover:text-accent transition-colors">Archive</Link>
           <ChevronRight size={14} className="text-divider shrink-0" aria-hidden="true" />
           <span className="text-ink font-semibold truncate max-w-[200px] sm:max-w-none">{category.title}</span>
         </nav>
 
-        {/* 🏛️ Page Header */}
-        <div className="mb-10 md:mb-16">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-14 h-14 3xl:w-20 3xl:h-20 bg-surface border border-divider text-2xl 3xl:text-4xl rounded-lg flex items-center justify-center shadow-sm shrink-0" aria-hidden="true">
-              {category.icon}
-            </div>
-            <h1 className="font-serif text-3xl md:text-5xl 3xl:text-6xl text-ink font-semibold tracking-tight text-balance">
-              {category.title}
-            </h1>
+        {/* 🏛️ Archival Section Header */}
+        <div className="mb-12 md:mb-16 border-b border-divider pb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-8 h-px bg-accent"></span>
+            <span className="text-accent font-bold text-xs uppercase tracking-widest flex items-center gap-2">
+              <BookOpen size={14} /> Archival Section
+            </span>
           </div>
           
-          {/* Decorative Accent Line */}
-          <div className="w-16 md:w-20 h-1 bg-accent mb-6 rounded-full"></div>
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl text-ink font-bold tracking-tight mb-4 flex items-center gap-4">
+            <span className="text-3xl md:text-4xl opacity-80">{category.icon}</span> {category.title}
+          </h1>
           
-          <p className="text-base md:text-lg 3xl:text-xl text-ink/70 leading-relaxed max-w-3xl text-pretty mb-6">
+          <p className="text-ink-muted text-lg leading-relaxed max-w-3xl">
             {category.description}
           </p>
           
-          {/* Article Count Badge */}
-          <div className="inline-flex items-center gap-2 bg-surface border border-divider text-ink/70 text-xs 3xl:text-sm font-bold px-3 py-1.5 rounded-md shadow-sm uppercase tracking-wider">
-            <FolderOpen size={14} className="text-accent 3xl:w-4 3xl:h-4" aria-hidden="true" />
-            {articles.length} {articles.length === 1 ? "Article" : "Articles"}
+          {/* Metadata Row */}
+          <div className="flex flex-wrap items-center gap-4 mt-8 text-xs font-bold uppercase tracking-wider text-ink-muted">
+            <span className="flex items-center gap-1.5 bg-surface border border-divider px-3 py-1.5 rounded-sm">
+              <FileText size={14} className="text-accent" /> {articles.length} Records Indexed
+            </span>
+            <span className="flex items-center gap-1.5 bg-surface border border-divider px-3 py-1.5 rounded-sm">
+              <ShieldCheck size={14} className="text-accent" /> Verified Archive
+            </span>
           </div>
         </div>
 
-        {/* 📄 Articles Grid */}
+        {/* 📄 The Records (Articles) */}
         {articles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 3xl:grid-cols-3 gap-5 md:gap-6 3xl:gap-8">
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
+          <div className="space-y-12">
+            
+            {/* 🚀 1. Featured Lead Record */}
+            {leadArticle && (
+              <section>
+                <div className="flex items-center gap-4 mb-6">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-accent">Latest Entry</h2>
+                  <div className="h-px bg-divider flex-grow"></div>
+                </div>
+                
+                <Link href={`/article/${leadArticle.id}`} className="group flex flex-col md:flex-row bg-surface border border-divider rounded-sm overflow-hidden hover:border-accent/40 transition-colors shadow-sm">
+                  <div className="relative w-full md:w-1/2 aspect-[4/3] md:aspect-auto bg-canvas shrink-0 border-b md:border-b-0 md:border-r border-divider">
+                    <Image 
+                      src={(leadArticle as any).displayHero || leadArticle.hero ? ((leadArticle as any).displayHero || leadArticle.hero).startsWith("/") ? ((leadArticle as any).displayHero || leadArticle.hero) : `/${(leadArticle as any).displayHero || leadArticle.hero}` : "/fallback.jpg"} 
+                      alt={leadArticle.title} 
+                      fill 
+                      className="object-cover group-hover:scale-[1.02] transition-transform duration-500" 
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  </div>
+                  <div className="p-6 md:p-8 flex flex-col justify-center w-full">
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent mb-3">
+                      <span>{leadArticle.categories[0]}</span>
+                      <span className="text-ink-muted">•</span>
+                      <span className="text-ink-muted">{new Date(leadArticle.lastUpdated).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}</span>
+                    </div>
+                    <h3 className="font-serif text-2xl md:text-3xl lg:text-4xl font-bold text-ink group-hover:text-accent transition-colors leading-tight mb-4">
+                      {leadArticle.title}
+                    </h3>
+                    <p className="text-ink-muted text-base leading-relaxed line-clamp-3 mb-6">
+                      {leadArticle.summary}
+                    </p>
+                    <div className="mt-auto flex items-center gap-1.5 text-sm font-bold text-ink group-hover:text-accent transition-colors uppercase tracking-wider">
+                      Read Full Record <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </Link>
+              </section>
+            )}
+
+            {/* 🚀 2. Remaining Records Grid */}
+            {remainingArticles.length > 0 && (
+              <section>
+                <div className="flex items-center gap-4 mb-6">
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-ink-muted">Previously Recorded</h2>
+                  <div className="h-px bg-divider flex-grow"></div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  {remainingArticles.map((article) => (
+                    <ArticleCard key={article.id} article={article} />
+                  ))}
+                </div>
+              </section>
+            )}
+
           </div>
         ) : (
-          /* 📭 Empty State */
-          <div className="flex flex-col items-center justify-center py-24 bg-surface border border-dashed border-divider rounded-lg text-center px-4">
-            <FileText size={56} className="text-ink/20 mb-4 3xl:w-20 3xl:h-20" aria-hidden="true" />
-            <h3 className="font-serif text-xl 3xl:text-2xl font-bold text-ink mb-2">No articles found</h3>
-            <p className="text-ink/60 text-sm md:text-base 3xl:text-lg max-w-md mx-auto">
-              There are currently no articles published in this category. Please check back later.
+          /* 📭 Empty State (Formal) */
+          <div className="flex flex-col items-center justify-center py-24 bg-surface border border-dashed border-divider rounded-sm text-center px-4">
+            <FileText size={56} className="text-ink/10 mb-4" aria-hidden="true" />
+            <h3 className="font-serif text-2xl font-bold text-ink mb-2">Catalogue Empty</h3>
+            <p className="text-ink-muted text-base max-w-md mx-auto">
+              There are currently no records published in the {category.title} section. Please check back later.
             </p>
           </div>
         )}
