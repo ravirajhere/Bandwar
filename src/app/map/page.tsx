@@ -103,7 +103,7 @@ export default function MapPage() {
         </div>
 
         {/* 🚀 Atlas Layout (Sidebar + Map) */}
-        <div className="flex-grow grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-8 items-start h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-8 items-start">
           
           {/* Left Sidebar: The Index */}
           <aside className="bg-surface border border-divider rounded-sm overflow-hidden hidden lg:flex flex-col h-[75vh] sticky top-24">
@@ -137,13 +137,13 @@ export default function MapPage() {
           </aside>
 
           {/* Right Area: The Map */}
-          <div className="flex flex-col w-full h-full">
-            {/* Map Container with sharp border */}
-            <div className="bg-surface border border-divider rounded-sm overflow-hidden w-full h-[60vh] lg:h-[75vh] relative z-0 shadow-sm">
+          <div className="w-full flex flex-col">
+            {/* 🚀 FIX: Direct explicit height on the map container */}
+            <div className="bg-surface border border-divider rounded-sm overflow-hidden w-full h-[65vh] lg:h-[75vh] relative z-0 shadow-sm">
               <MapClient landmarks={landmarks} />
             </div>
             
-            {/* Map Footer / Attribution */}
+            {/* Map Footer */}
             <div className="mt-3 flex items-center justify-between text-xs text-ink-muted px-1">
               <span>© Bandwar Village Archive — Cartographic Division</span>
               <span className="flex items-center gap-1"><MapIcon size={12}/> OpenStreetMap Contributors</span>
