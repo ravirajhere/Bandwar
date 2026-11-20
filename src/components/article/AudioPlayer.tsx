@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Play, Pause, Square, Volume2, Gauge } from "lucide-react";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 interface AudioPlayerProps {
   title: string;
@@ -10,12 +11,11 @@ interface AudioPlayerProps {
 }
 
 export function AudioPlayer({ title, summary, content }: AudioPlayerProps) {
+  const { language } = useLanguage();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeText, setActiveText] = useState("");
   const synthRef = useRef<SpeechSynthesis | null>(null);
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -26,12 +26,27 @@ export function AudioPlayer({ title, summary, content }: AudioPlayerProps) {
     };
   }, []);
 
+  // 🚀 SMART VOICE SELECTION LOGIC
+  const getBestVoice = () => {
+    if (!synthRef.current) return null;
+    const voices = synthRef.current.getVoices();
+    
+    if (language === "hi" || language === "an") {
+      // Hindi ke liye best voice dhoondhein
+      return voices.find(v => v.lang.includes("hi-IN")) || 
+             voices.find(v => v.lang.includes("hi")) || null;
+    } else {
+      // English ke liye best Indian voice dhoondhein (Google/Microsoft natural voices)
+      return voices.find(v => v.lang.includes("en-IN")) || 
+             voices.find(v => v.name.includes("Google UK English Female")) ||
+             voices.find(v => v.lang.includes("en")) || null;
+    }
+  };
+
   const prepareText = () => {
-    // 1. Title
-    // 2. Summary
-    // 3. Content blocks
-    const fullText = `${title}. ${summary}. ` + content.map(c => `${c.heading}. ${c.text}`).join(" ");
-    return fullText;
+    // Agar future mein aapke paas Hindi/Angika ka content aata hai, 
+    // toh yahan language ke hisaab se text select karein.
+    return `${title}. ${summary}. ` + content.map(c => `${c.heading}. ${c.text}`).join(" ");
   };
 
   const handlePlay = () => {
@@ -51,20 +66,24 @@ export function AudioPlayer({ title, summary, content }: AudioPlayerProps) {
       return;
     }
 
-    // Start fresh
     synthRef.current.cancel();
     const text = prepareText();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-IN"; // Professional English (Indian accent) or "hi-IN" for Hindi
+    
+    // 🚀 Apply Best Voice
+    const bestVoice = getBestVoice();
+    if (bestVoice) {
+      utterance.voice = bestVoice;
+    }
+
+    utterance.lang = language === "hi" || language === "an" ? "hi-IN" : "en-IN";
     utterance.rate = speed;
     
     utterance.onend = () => {
       setIsPlaying(false);
       setIsPaused(false);
-      setActiveText("");
     };
 
-    utteranceRef.current = utterance;
     synthRef.current.speak(utterance);
     setIsPlaying(true);
     setIsPaused(false);
@@ -84,7 +103,6 @@ export function AudioPlayer({ title, summary, content }: AudioPlayerProps) {
     const newSpeed = speeds[nextIndex];
     setSpeed(newSpeed);
     
-    // If already playing, restart with new speed
     if (isPlaying) {
       if (synthRef.current) synthRef.current.cancel();
       setIsPlaying(false);
@@ -120,7 +138,9 @@ export function AudioPlayer({ title, summary, content }: AudioPlayerProps) {
             <Volume2 size={16} className="text-accent" />
             <span className="text-sm font-bold text-ink uppercase tracking-wider">Listen to this article</span>
           </div>
-          <p className="text-xs text-ink-muted">Narrated in English (Browser TTS)</p>
+          <p className="text-xs text-ink-muted capitalize">
+            Narrated in {language === 'hi' || language === 'an' ? 'Hindi' : 'English'} (Browser TTS)
+          </p>
         </div>
       </div>
 
