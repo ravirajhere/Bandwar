@@ -6,10 +6,11 @@ import { ArticleToolbar } from "@/components/article/ArticleToolbar";
 import { ReadingProgress } from "@/components/article/ReadingProgress";
 import { MobileTOC } from "@/components/article/MobileTOC"; 
 import { ArticleHeroImage } from "@/components/article/ArticleHeroImage"; 
+import { AudioPlayer } from "@/components/article/AudioPlayer"; // 🚀 NEW IMPORT
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
 import { EditModeToggle } from "@/components/editor/EditModeToggle";
-import { TranslatedText } from "@/components/shared/TranslatedText"; // 🚀 NEW IMPORT
+import { TranslatedText } from "@/components/shared/TranslatedText"; 
 import Link from "next/link";
 import { Calendar, ChevronRight, Edit3, Link2, ShieldCheck } from "lucide-react"; 
 
@@ -317,7 +318,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
             <header className="mb-8 border-b border-divider pb-6">
               <div className="mb-3">
-                {/* 🚀 REPLACED WITH TranslatedText */}
                 <TranslatedText 
                   as="h1" 
                   en={article.title} 
@@ -327,7 +327,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                 />
               </div>
               <div className="mb-5">
-                {/* 🚀 REPLACED WITH TranslatedText */}
                 <TranslatedText 
                   as="p" 
                   en={article.subtitle} 
@@ -376,8 +375,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               />
             </div>
 
+            {/* 🚀 AUDIO PLAYER YAHAN ADD KAREIN */}
+            <AudioPlayer 
+              title={article.title}
+              summary={article.summary}
+              content={article.content}
+            />
+
             <div className="mb-10 article-lead-summary">
-              {/* 🚀 Note: Summary is kept as EditableParagraph because it contains wikilinks */}
               <EditableParagraph initialValue={article.summary} contextId={article.id} contextType="Article" fieldName="Article Summary" className="text-lg md:text-xl 3xl:text-[1.35rem] text-ink leading-relaxed font-medium" />
             </div>
 
