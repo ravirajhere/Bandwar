@@ -95,5 +95,3 @@ export function Footer() {
     </footer>
   );
 }
-
-Bhai ab sun galti kya hai ye to tu bata raha, lekin kami hai bhaut kuch top tier banane ke liye, to mai chahta hu wo sab cheej tu add kar jo ek top top tier wale website mein hota hai , aaur mera to aaur bhi website advanced hona chahiye, to us hisab se approach bata, kaha kya karega? Jab file bhejne kahunga tab ek ek karke ek ek file bhejna
