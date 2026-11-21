@@ -1,12 +1,50 @@
 import { Info } from "lucide-react";
 import { EditableInfoboxRow } from "@/components/editor/EditableInfoboxRow";
 
+// NEW: Supports BOTH legacy string + new Zod shape
+type InfoboxValue =
+  | string
+  | {
+      value: string;
+      confidence?: string;
+      provenance?: {
+        sourceLabel?: string;
+        sourceUrl?: string;
+        verifiedBy?: string;
+        notes?: string;
+      };
+    };
+
+function getValue(v: InfoboxValue): string {
+  if (typeof v === "string") return v;
+  return v?.value ?? "";
+}
+
+function getConfidence(v: InfoboxValue): string | undefined {
+  if (typeof v === "string") return undefined;
+  return v?.confidence;
+}
+
+const CONFIDENCE_LABEL: Record<string, string> = {
+  community: "Community",
+  elder: "Elder Verified",
+  archival: "Archival",
+  contested: "Contested",
+};
+
+const CONFIDENCE_STYLE: Record<string, string> = {
+  community: "bg-blue-50 text-blue-700 border-blue-200",
+  elder: "bg-green-50 text-green-700 border-green-200",
+  archival: "bg-amber-50 text-amber-700 border-amber-200",
+  contested: "bg-red-50 text-red-700 border-red-200",
+};
+
 export function Infobox({
   data,
   title,
   articleId,
 }: {
-  data: Record<string, string>;
+  data: Record<string, InfoboxValue>;
   title: string;
   articleId?: string;
 }) {
@@ -27,15 +65,32 @@ export function Infobox({
 
       {/* Infobox Data Rows */}
       <dl className="m-0 divide-y divide-divider">
-        {Object.entries(data).map(([key, value]) => (
-          <EditableInfoboxRow
-            key={key}
-            label={key}
-            initialValue={value}
-            contextId={articleId || title}
-            contextType="Article Infobox"
-          />
-        ))}
+        {Object.entries(data).map(([key, rawValue]) => {
+          const value = getValue(rawValue);
+          const confidence = getConfidence(rawValue);
+          if (!value) return null;
+
+          return (
+            <div key={key} className="relative">
+              <EditableInfoboxRow
+                label={key}
+                initialValue={value}
+                contextId={articleId || title}
+                contextType="Article Infobox"
+              />
+              {confidence && confidence !== "unverified" && (
+                <span
+                  className={`absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center border px-1.5 py-0.5 text-[10px] font-semibold rounded-full pointer-events-none ${
+                    CONFIDENCE_STYLE[confidence] ?? "bg-ink/5 text-ink-muted border-divider"
+                  }`}
+                  title={`Confidence: ${confidence}`}
+                >
+                  {CONFIDENCE_LABEL[confidence] ?? confidence}
+                </span>
+              )}
+            </div>
+          );
+        })}
       </dl>
     </aside>
   );
