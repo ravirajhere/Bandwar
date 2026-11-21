@@ -1,260 +1,242 @@
+/* ============================================================
+   BANDWAR VILLAGE ARCHIVE — TOP TIER DESIGN SYSTEM v2.0
+   Single Source of Truth: Sab kuch yahin se chalega
+   tailwind.config.ts sirf isko refer karega, duplicate nahi
+   ============================================================ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ---------- 1. DESIGN TOKENS — LIGHT (Default) ---------- */
+:root {
+  /* Canvas / Surface */
+  --bg-canvas: #FBF8F3;
+  --bg-surface: #FFFFFF;
+  --bg-paper: #F5EFE6;
+  --bg-elevated: #FFFFFF;
+
+  /* Text */
+  --text-ink: #1C1815;
+  --text-ink-muted: #5C554E;
+  --text-ink-subtle: #8A8178;
+  --text-inverted: #FBF8F3;
+
+  /* Brand — Mithila Terracotta */
+  --brand-accent: #C2410C;
+  --brand-accent-hover: #9A3412;
+  --brand-accent-subtle: #FFF1E6;
+  --brand-accent-muted: #FED7AA;
+  --brand-gold: #B45309;
+
+  /* Borders */
+  --border-divider: #E7DDD1;
+  --border-subtle: #F0E8DC;
+  --border-strong: #D6C9B8;
+
+  /* Status */
+  --status-success: #15803D;
+  --status-warning: #B45309;
+  --status-error: #B91C1C;
+  --status-info: #1D4ED8;
+
+  /* Fonts — next/font se aayenge, yahan sirf naam */
+  --font-fraunces: "Fraunces", Georgia, serif;
+  --font-inter: "Inter", system-ui, sans-serif;
+  --font-jetbrains: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Radius — TOP TIER SYSTEM: Ek jagah, sab jagah same */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-card: 12px;
+  --radius-image: 8px;
+  --radius-pill: 9999px;
+  --radius-input: 8px;
+
+  /* Shadow — Warm tinted, Apple/Stripe style */
+  --shadow-sm: 0 1px 2px 0 rgba(124, 45, 18, 0.05);
+  --shadow-card: 0 1px 3px 0 rgba(124, 45, 18, 0.06), 0 1px 2px -1px rgba(124, 45, 18, 0.04);
+  --shadow-lifted: 0 10px 25px -5px rgba(124, 45, 18, 0.12), 0 4px 8px -2px rgba(124, 45, 18, 0.06);
+  --shadow-editorial: 0 20px 40px -12px rgba(28, 24, 21, 0.18);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+}
+
+/* ---------- 2. DARK MODE — Token se pura ---------- */
+.dark {
+  --bg-canvas: #0F0D0B;
+  --bg-surface: #1C1917;
+  --bg-paper: #292524;
+  --bg-elevated: #292524;
+
+  --text-ink: #F5F0E8;
+  --text-ink-muted: #C9C0B4;
+  --text-ink-subtle: #8A8178;
+  --text-inverted: #1C1815;
+
+  --brand-accent: #FB923C;
+  --brand-accent-hover: #FDBA74;
+  --brand-accent-subtle: #431407;
+  --brand-accent-muted: #7C2D12;
+  --brand-gold: #F59E0B;
+
+  --border-divider: #292524;
+  --border-subtle: #1C1917;
+  --border-strong: #44403C;
+
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --shadow-lifted: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- 3. BASE ---------- */
 @layer base {
-  :root {
-    /* 🏛️ BANDWAR IDENTITY: Warm Aged Paper */
-    --bg-canvas: #FBF8F3;           
-    --bg-surface: #FFFFFF;           
-    --bg-paper: #F5EFE6;            /* For depth layers */
-    
-    /* 🖤 Warm Charcoal Ink */
-    --text-ink: #1C1815;         
-    --text-ink-muted: #57504A;        
-    --text-ink-subtle: #8A8078;
-    --text-inverted: #FBF8F3;
-    
-    /* 🎨 Mithila Terracotta (Signature) */
-    --brand-accent: #7C2D12;     
-    --brand-accent-hover: #92400E;
-    --brand-accent-subtle: #FEF3C7;
-    --brand-accent-muted: #D97706;
-    
-    /* 🌾 Warm Dividers */
-    --border-divider: #E8E0D5;
-    --border-subtle: #F0EAE0;
-    --border-strong: #D4C9BA;
-    
-    /* ✨ Editorial Gold */
-    --brand-gold: #B45309;
-
-    /* Semantic */
-    --status-success: #15803D;
-    --status-warning: #CA8A04;
-    --status-error: #B91C1C;
-    --status-info: #1E40AF;
-  }
-
-  .dark {
-    /* 🌙 Deep Warm Black */
-    --bg-canvas: #0F0D0B;           
-    --bg-surface: #1A1613;           
-    --bg-paper: #141110;            
-    
-    --text-ink: #F5F1EA;         
-    --text-ink-muted: #A8A29E;        
-    --text-ink-subtle: #78716C;
-    --text-inverted: #0F0D0B;
-    
-    /* 🔥 Warm Gold Accent (glows on dark) */
-    --brand-accent: #F59E0B;     
-    --brand-accent-hover: #FBBF24;
-    --brand-accent-subtle: #422006;
-    --brand-accent-muted: #D97706;
-    
-    --border-divider: #2A2521;       
-    --border-subtle: #1F1B18;
-    --border-strong: #3A322D;
-    
-    --brand-gold: #F59E0B;
-
-    --status-success: #4ADE80;
-    --status-warning: #FACC15;
-    --status-error: #F87171;
-    --status-info: #60A5FA;
-  }
-
   html {
     scroll-behavior: smooth;
-    font-size: 16px; 
-    scroll-padding-top: 6rem; 
-  }
-
-  @media (min-width: 1920px) { html { font-size: 18px; } }
-  @media (min-width: 2560px) { html { font-size: 20px; } }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
-  body {
-    background-color: var(--bg-canvas);
-    background-image: var(--paper-texture, none);
-    color: var(--text-ink);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-inter), system-ui, sans-serif;
     text-rendering: optimizeLegibility;
-    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   }
-
+  body {
+    @apply bg-canvas text-ink font-sans;
+    font-feature-settings: "cv11", "ss01";
+  }
   ::selection {
-    background-color: var(--brand-accent);
-    color: var(--text-inverted);
+    background: var(--brand-accent);
+    color: #fff;
   }
-
-  *:focus-visible {
+  /* Focus — Accessibility Top Tier */
+  :focus-visible {
     outline: 2px solid var(--brand-accent);
     outline-offset: 2px;
     border-radius: 2px;
   }
-
-  /* 🔗 Editorial Links with Animated Underline */
-  a {
-    color: var(--brand-accent);
-    text-decoration: none;
-    background-image: linear-gradient(var(--brand-accent), var(--brand-accent));
-    background-size: 0% 1px;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    transition: background-size 0.2s ease;
-    padding-bottom: 1px;
-  }
-  a:hover { 
-    background-size: 100% 1px;
-  }
-
-  /* 📖 Fraunces Headings (Editorial Impact) */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-fraunces), Georgia, serif;
-    color: var(--text-ink);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    text-wrap: balance;
-    font-feature-settings: 'ss01' 1, 'ss02' 1;
-  }
-
-  h1 { 
-    font-size: 2.5rem; 
-    line-height: 1.1; 
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  h2 { 
-    font-size: 1.75rem; 
-    line-height: 1.25;
-    margin-top: 2.5rem; 
-    margin-bottom: 1rem; 
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-divider);
-  }
-  h3 { 
-    font-size: 1.375rem; 
-    line-height: 1.35;
-    margin-top: 1.75rem; 
-    margin-bottom: 0.5rem; 
-  }
-
-  p {
-    line-height: 1.75; 
-    margin-bottom: 1.25rem; 
-    font-size: 1.0625rem;
-    font-feature-settings: 'liga' 1, 'kern' 1;
-  }
-
-  img { 
-    display: block; 
-    max-width: 100%; 
-    height: auto; 
-    border-radius: 3px; 
-  }
-  .dark img { 
-    border: 1px solid var(--border-divider); 
-  }
-
-  /* 📊 Data Tables (Editorial Museum Style) */
-  table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    font-size: 0.9375rem; 
-    font-family: var(--font-jetbrains), monospace;
-  }
-  th, td { 
-    border-bottom: 1px solid var(--border-divider); 
-    padding: 0.75rem 1rem; 
-    text-align: left; 
-    vertical-align: top;
-  }
-  th { 
-    background-color: var(--bg-paper); 
-    font-weight: 600; 
-    color: var(--text-ink);
-    font-family: var(--font-inter), sans-serif;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  /* 💾 Mono for Data */
-  .mono {
-    font-family: var(--font-jetbrains), ui-monospace, monospace;
-    font-size: 0.875em;
-    font-feature-settings: 'tnum' 1;
-  }
-
-  /* 📝 Forms */
-  input, select, textarea {
-    width: 100%;
-    border: 1px solid var(--border-divider);
-    border-radius: 3px;
-    background-color: var(--bg-surface);
-    color: var(--text-ink);
-    padding: 0.625rem 0.75rem;
-    font-family: var(--font-inter), system-ui, sans-serif;
-    font-size: 0.9375rem;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  }
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--brand-accent);
-    box-shadow: 0 0 0 3px var(--brand-accent-subtle);
-  }
-
-  /* 🎯 Section Marker (Signature Element) */
-  .section-marker {
-    position: relative;
-    padding-left: 1rem;
-  }
-  .section-marker::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    bottom: 0.25rem;
-    width: 3px;
-    background-color: var(--brand-accent);
-    border-radius: 2px;
-  }
-
-  /* 📖 Drop Cap (Editorial Signature) */
-  .drop-cap::first-letter {
-    font-family: var(--font-fraunces), Georgia, serif;
-    font-size: 3.5rem;
-    font-weight: 600;
-    float: left;
-    line-height: 0.85;
-    margin-right: 0.5rem;
-    margin-top: 0.25rem;
-    color: var(--brand-accent);
-  }
-}
-
-/* Custom Scrollbar */
-@media (pointer: fine) {
+  /* Scrollbar — Subtle */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: var(--bg-canvas); }
-  ::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
-    border-radius: 10px; 
-    border: 2px solid var(--bg-canvas); 
-  }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text-ink-subtle); }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; border: 2px solid var(--bg-canvas); }
+  ::-webkit-scrollbar-track { background: transparent; }
 }
 
-/* Print */
-@media print {
-  @page { margin: 15mm; size: A4; }
-  body { background: #FFFFFF !important; color: #000000 !important; font-size: 11pt !important; }
-  .no-print, header, footer, nav, aside, button { display: none !important; }
-  h1 { font-size: 24pt !important; color: #000000 !important; }
-  h2 { font-size: 16pt !important; color: #000000 !important; border-bottom: 1px solid #ccc !important; }
-  a { color: #000000 !important; text-decoration: underline !important; }
+/* ---------- 4. TYPOGRAPHY — Single Source (Double h2 fix) ---------- */
+@layer base {
+  h1, h2, h3, h4 {
+    @apply font-serif text-ink tracking-tight;
+    text-wrap: balance;
+  }
+  h1 { @apply text-4xl md:text-5xl leading-[1.08] font-bold; }
+  h2 { @apply text-2xl md:text-3xl leading-[1.15] font-bold; }
+  h3 { @apply text-xl leading-snug font-bold; }
+  p { text-wrap: pretty; }
 }
+
+/* ---------- 5. COMPONENTS — Top Tier Feel ---------- */
+@layer components {
+  /* Button — Pill System */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-accent hover:bg-accent-hover text-white px-6 py-3 font-semibold text-sm transition-all duration-200;
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-lifted); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 text-ink hover:text-accent px-4 py-3 font-semibold text-sm transition-colors;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Card — Lift on Hover */
+  .card {
+    @apply bg-surface border border-divider transition-all duration-300;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lifted);
+    border-color: var(--brand-accent-muted);
+  }
+
+  /* Article Body — Reading Comfort */
+  .article-body-wrapper p {
+    @apply leading-[1.85] text-[17px] md:text-[18px] text-ink/90;
+  }
+  .article-body-wrapper h2 {
+    /* Article page ka alag border div hatane ke baad yehi chalega */
+    @apply pb-3 mb-5 border-b border-divider;
+  }
+  .article-body-wrapper a {
+    @apply text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent;
+  }
+  .article-body-wrapper img {
+    border-radius: var(--radius-image);
+  }
+
+  /* Eyebrow Label */
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.14em] text-accent flex items-center gap-2;
+  }
+
+  /* Chip / Category */
+  .chip {
+    @apply inline-flex items-center gap-1.5 bg-surface border border-divider px-3 py-1.5 text-xs font-medium text-ink-muted hover:text-accent hover:border-accent transition-colors;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Input */
+  .input {
+    @apply w-full bg-surface border border-divider px-4 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none transition-colors focus:border-accent;
+    border-radius: var(--radius-input);
+  }
+
+  /* Hero Image — Full Bleed Ready */
+  .hero-frame {
+    @apply relative overflow-hidden bg-surface border border-divider;
+    border-radius: var(--radius-image);
+    box-shadow: var(--shadow-editorial);
+  }
+
+  /* TOC Active State — JS se .active lagega */
+  .toc-link { @apply text-ink-muted hover:text-accent transition-colors leading-snug; }
+  .toc-link.active { @apply text-accent font-semibold; }
+  .toc-link.active::before {
+    content: "";
+    position: absolute; left: -12px; top: 50%;
+    width: 3px; height: 18px; transform: translateY(-50%);
+    background: var(--brand-accent);
+    border-radius: 999px;
+  }
+}
+
+/* ---------- 6. UTILITIES ---------- */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .line-clamp-3 {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+}
+
+/* ---------- 7. MOTION — Reduced Motion Respect ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 8. PRINT — Top Tier Print ---------- */
+@media print {
+  .no-print, header, footer, .toc, nav { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .article-body-wrapper p { font-size: 12pt; line-height: 1.6; color: #000; }
+  a { color: #000 !important; text-decoration: none !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #666; }
+  .print-only { display: block !important; }
+  .print-infobox { break-inside: avoid; border: 1px solid #000 !important; }
+}
+.print-only { display: none; }
