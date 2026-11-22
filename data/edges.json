@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "edges": [
+    {
+      "id": "edge-ms-to-uhs",
+      "type": "educational-pipeline",
+      "from": "ms-bandwar-middle-school",
+      "to": "uhs-plus-2-bandwar",
+      "label": "Students progress to",
+      "description": "Students who complete Class 8 at MS Bandwar move on to UHS +2 Bandwar for secondary education."
+    },
+    {
+      "id": "edge-ms-to-snk",
+      "type": "educational-pipeline",
+      "from": "ms-bandwar-middle-school",
+      "to": "snk-high-school-bandwar",
+      "label": "Students progress to"
+    },
+    {
+      "id": "edge-musahri-to-ms",
+      "type": "educational-pipeline",
+      "from": "gps-bandwar-musahri-school",
+      "to": "ms-bandwar-middle-school",
+      "label": "Students progress to"
+    },
+    {
+      "id": "edge-vaani-uhs",
+      "type": "related",
+      "from": "vaani-vilas-library-bandwar",
+      "to": "uhs-plus-2-bandwar",
+      "label": "Supplements library needs",
+      "description": "UHS +2 students rely on Vaani Vilas for reading needs as the school lacks a library."
+    },
+    {
+      "id": "edge-vaani-ms",
+      "type": "related",
+      "from": "vaani-vilas-library-bandwar",
+      "to": "ms-bandwar-middle-school",
+      "label": "Supplements library needs"
+    },
+    {
+      "id": "edge-gautam-to-adharsh",
+      "type": "influence",
+      "from": "gautam-buddha-global-school-bandwar",
+      "to": "adharsh-vikash-vidhya-mandir",
+      "label": "Pioneered private education",
+      "description": "Gautam Buddha Global School (est. 2010) set the stage for private schools like Adharsh Vikash (est. 2015)."
+    },
+    {
+      "id": "edge-gautam-to-stpaul",
+      "type": "influence",
+      "from": "gautam-buddha-global-school-bandwar",
+      "to": "st-paul-school-bandwar",
+      "label": "Pioneered private education"
+    },
+    {
+      "id": "edge-snk-vaani",
+      "type": "related",
+      "from": "snk-high-school-bandwar",
+      "to": "vaani-vilas-library-bandwar",
+      "label": "Historical connection"
+    }
+  ]
+}
