@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
-import { getAllArticles, getArticleById, getMasterData, getCategoriesData, getContributors, FALLBACK_IMAGE } from "@/lib/data"; 
+import { getAllArticles, getArticleById, getMasterData, getCategoriesData, getContributors, getAbsencesFor, FALLBACK_IMAGE } from "@/lib/data"; 
 import { Infobox } from "@/components/article/Infobox";
 import { FaqAccordion } from "@/components/article/FaqAccordion";
 import { ArticleToolbar } from "@/components/article/ArticleToolbar"; 
 import { ReadingProgress } from "@/components/article/ReadingProgress";
 import { MobileTOC } from "@/components/article/MobileTOC"; 
 import { ArticleHeroImage } from "@/components/article/ArticleHeroImage"; 
-import { AudioPlayer } from "@/components/article/AudioPlayer"; // 🚀 NEW IMPORT
+import { AudioPlayer } from "@/components/article/AudioPlayer";
+import { ProvenanceBar } from "@/components/article/ProvenanceBar"; // 🚀 NEW
+import { AbsenceCard } from "@/components/article/AbsenceCard"; // 🚀 NEW
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
 import { EditModeToggle } from "@/components/editor/EditModeToggle";
@@ -70,6 +72,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const config = getMasterData(); 
   const categoriesData = getCategoriesData().categories; 
   const contributors = getContributors();
+  
+  // 🚀 NEW: Fetch absences for this specific article
+  const absences = getAbsencesFor(article?.id || "");
 
   if (!article) notFound();
 
@@ -365,7 +370,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               </div>
             </header>
 
-            <div className="mb-8">
+            <div className="mb-6">
               <ArticleHeroImage 
                 hero={heroDisplaySrc} 
                 originalHero={article.hero} 
@@ -375,7 +380,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               />
             </div>
 
-            {/* 🚀 AUDIO PLAYER YAHAN ADD KAREIN */}
+            {/* 🚀 NEW: Provenance Bar */}
+            <ProvenanceBar 
+              provenance={article.provenance} 
+              confidence={article.confidence} 
+            />
+
             <AudioPlayer 
               title={article.title}
               summary={article.summary}
@@ -404,6 +414,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                 ))}
               </div>
             </div>
+
+            {/* 🚀 NEW: Absence Cards (if any exist for this article) */}
+            {absences.length > 0 && (
+              <div className="mt-10">
+                {absences.map((absence) => (
+                  <AbsenceCard key={absence.id} absence={absence} />
+                ))}
+              </div>
+            )}
 
             <div id="faqs" className="scroll-mt-24 mt-12 3xl:mt-16">
               {article.faqs && article.faqs.length > 0 && (
