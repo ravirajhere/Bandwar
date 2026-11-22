@@ -15,7 +15,7 @@ const DateSchema = z.string().regex(
 );
 
 // ==========================================
-// 2. Provenance & Confidence (NEW — Phase 0 Core)
+// 2. Provenance & Confidence (Phase 0 Core)
 // ==========================================
 export const ConfidenceTierEnum = z.enum([
   "unverified",
@@ -27,8 +27,8 @@ export const ConfidenceTierEnum = z.enum([
 export type ConfidenceTier = z.infer<typeof ConfidenceTierEnum>;
 
 export const ProvenanceSchema = z.object({
-  sourceId: z.string().optional(),        // Reference to master.json sourceRegistry
-  sourceLabel: z.string().optional(),      // Human-readable fallback
+  sourceId: z.string().optional(),        
+  sourceLabel: z.string().optional(),      
   sourceUrl: z.string().url().optional(),
   method: z.enum([
     "document",
@@ -38,7 +38,7 @@ export const ProvenanceSchema = z.object({
     "public-record",
     "inferred",
   ]).optional(),
-  verifiedBy: z.string().optional(),       // Name of person/role who verified
+  verifiedBy: z.string().optional(),       
   verifiedAt: DateSchema.optional(),
   confidence: ConfidenceTierEnum.optional(),
   notes: z.string().optional(),
@@ -65,8 +65,6 @@ export const AbsenceReasonEnum = z.enum([
 // ==========================================
 // 3. Infobox (Backward Compatible Upgrade)
 // ==========================================
-// Accepts BOTH legacy string form AND new structured form.
-// Auto-normalizes string → { value, confidence: "unverified" }.
 const InfoboxValueSchema = z.union([
   z.string(),
   z.object({
@@ -105,11 +103,9 @@ export const ArticleSchema = z.object({
   id: IdSchema,
   title: z.string(),
 
-  // Legacy multi-language (kept for backward compat)
   title_hi: z.string().optional(),
   title_an: z.string().optional(),
 
-  // Future-proof translations map
   translations: z.record(TranslationBlockSchema).optional(),
 
   metaTitle: z.string().optional(),
@@ -126,8 +122,6 @@ export const ArticleSchema = z.object({
   summary_an: z.string().optional(),
 
   hero: z.string().optional(),
-
-  // NEW: hero provenance
   heroProvenance: ProvenanceSchema.optional(),
 
   photos: z.array(
@@ -135,7 +129,6 @@ export const ArticleSchema = z.object({
       src: z.string(),
       caption: z.string(),
       imageAlt: z.string().optional(),
-      // NEW: per-photo provenance & conservation
       provenance: ProvenanceSchema.optional(),
       conservation: ConservationStateEnum.optional(),
       year: z.string().optional(),
@@ -146,7 +139,6 @@ export const ArticleSchema = z.object({
     }))
   ).default([]),
 
-  // CHANGED: now supports provenance; legacy strings auto-upgraded
   infobox: InfoboxSchema.optional(),
 
   datePublished: DateSchema.optional(),
@@ -155,10 +147,7 @@ export const ArticleSchema = z.object({
   lastEditedBy: z.string().optional(),
   lastEditedByUsername: z.string().optional(),
 
-  // NEW: Article status enum (extends `published` boolean)
   status: z.enum(["draft", "review", "published", "archived", "stale"]).optional(),
-
-  // Kept for backward compat
   published: z.boolean().default(true),
 
   content: z.array(z.object({
@@ -172,24 +161,17 @@ export const ArticleSchema = z.object({
   faqs: z.array(z.object({
     q: z.string(),
     a: z.string(),
-    // NEW: FAQ provenance for AI/SGE (Google FAQPage)
     provenance: ProvenanceSchema.optional(),
   })).default([]),
 
   related: z.array(IdSchema).default([]),
-
-  // NEW: explicit graph connection IDs (points to edges.json)
   connectionIds: z.array(z.string()).optional(),
-
   location: z.object({ lat: z.number(), lng: z.number() }).optional(),
-
   tags: z.array(z.string()).default([]),
 
-  // NEW: article-level provenance & confidence
   provenance: ProvenanceSchema.optional(),
   confidence: ConfidenceTierEnum.optional(),
 
-  // NEW: polyvocal voices (Atlas Obscura step-up)
   voices: z.array(z.object({
     role: z.enum(["elder", "youth", "historian", "visitor", "resident", "descendant"]),
     name: z.string().optional(),
@@ -197,7 +179,6 @@ export const ArticleSchema = z.object({
     provenance: ProvenanceSchema.optional(),
   })).optional(),
 
-  // NEW: absence records (what's missing)
   absences: z.array(z.object({
     reason: AbsenceReasonEnum,
     description: z.string(),
@@ -216,7 +197,6 @@ export const PhotoSchema = z.object({
   caption: z.string(),
   category: z.string(),
   year: z.string(),
-  // NEW
   provenance: ProvenanceSchema.optional(),
   conservation: ConservationStateEnum.optional(),
   confidence: ConfidenceTierEnum.optional(),
@@ -233,12 +213,10 @@ export const TimelineEventSchema = z.object({
   category: z.string(),
   icon: z.string().optional(),
   article: z.string().optional(),
-  // NEW
   provenance: ProvenanceSchema.optional(),
   confidence: ConfidenceTierEnum.optional(),
 }).passthrough();
 
-// NEW: temporal coordinate support
 export const TemporalCoordSchema = z.object({
   year: z.string(),
   lat: z.number(),
@@ -256,7 +234,6 @@ export const LandmarkSchema = z.object({
   lng: z.number(),
   description: z.string().optional(),
   category: z.string().optional(),
-  // NEW
   provenance: ProvenanceSchema.optional(),
   confidence: ConfidenceTierEnum.optional(),
   historicalCoords: z.array(TemporalCoordSchema).optional(),
@@ -306,11 +283,9 @@ export const PersonSchema = z.object({
   lastEditedBy: z.string().optional(),
   published: z.boolean().default(true),
   tags: z.array(z.string()).optional(),
-  // NEW
   provenance: ProvenanceSchema.optional(),
   confidence: ConfidenceTierEnum.optional(),
   roles: z.array(z.enum(["elder", "researcher", "volunteer", "editor", "descendant", "resident"])).optional(),
-  // Lineage (succession, apprenticeship)
   lineage: z.array(z.object({
     type: z.enum(["teacher", "student", "parent", "child", "spouse", "sibling"]),
     personId: IdSchema,
@@ -333,7 +308,6 @@ export const CategorySchema = z.object({
   title: z.string(),
   icon: z.string(),
   description: z.string(),
-  // NEW
   provenance: ProvenanceSchema.optional(),
 }).passthrough();
 
@@ -353,7 +327,6 @@ export const DirectoryItemSchema = z.object({
   isEmergency: z.boolean().default(false),
   lastUpdated: DateSchema.optional(),
   lastEditedBy: z.string().optional(),
-  // NEW
   provenance: ProvenanceSchema.optional(),
   confidence: ConfidenceTierEnum.optional(),
   livingStatus: z.enum(["active", "retired", "passed", "family-continues"]).optional(),
@@ -387,7 +360,6 @@ export const ContributorSchema = z.object({
   bio: z.string().optional(),
   joinedAt: z.string().optional(),
   contributions: z.number().optional(),
-  // NEW
   roles: z.array(ContributorRoleEnum).optional(),
   canVerify: z.array(ConfidenceTierEnum).optional(),
   verifiedContributions: z.number().optional(),
@@ -398,7 +370,7 @@ export const ContributorsDataSchema = z.object({
 });
 
 // ==========================================
-// 10. Master Schema (Extended — new config blocks)
+// 10. Master Schema (Extended)
 // ==========================================
 export const MasterSchema = z.object({
   version: z.string().optional(),
@@ -454,7 +426,6 @@ export const MasterSchema = z.object({
     festivals: z.array(z.string()).optional(),
     mainCrops: z.array(z.string()).optional(),
     popularName: z.string().optional(),
-    // NEW: field-level source references
     fieldSources: z.record(ProvenanceSchema).optional(),
   }).passthrough().optional(),
 
@@ -518,7 +489,6 @@ export const MasterSchema = z.object({
       icon: z.string(),
       title: z.string(),
       description: z.string(),
-      // NEW
       sourceId: z.string().optional(),
       since: z.string().optional(),
     })),
@@ -538,9 +508,6 @@ export const MasterSchema = z.object({
     license: z.string().optional(),
   }).passthrough().optional(),
 
-  // =============================================
-  // NEW: Phase 0 config blocks
-  // =============================================
   provenanceTiers: z.object({
     version: z.string(),
     tiers: z.array(z.object({
@@ -672,7 +639,6 @@ export const MasterSchema = z.object({
     priority: z.record(z.number()).optional(),
   }).passthrough().optional(),
 
-  // Additional blocks (passthrough for now, typed in Phase 1)
   imageSEO: z.record(z.any()).optional(),
   bot: z.record(z.any()).optional(),
   features: z.record(z.any()).optional(),
@@ -691,10 +657,9 @@ export const MasterSchema = z.object({
 // 11. NEW FILE SCHEMAS
 // ==========================================
 
-// edges.json — knowledge graph
 export const EdgeSchema = z.object({
   id: z.string(),
-  type: z.string(),                    // matches master.connectionTypes
+  type: z.string(),                    
   from: IdSchema,
   to: IdSchema,
   label: z.string().optional(),
@@ -710,15 +675,14 @@ export const EdgesDataSchema = z.object({
   edges: z.array(EdgeSchema),
 });
 
-// stewardship.json — verification audit log
 export const StewardshipEntrySchema = z.object({
   id: z.string(),
   entityId: IdSchema,
   entityType: z.enum(["article", "person", "photo", "landmark", "directory", "media"]),
   action: z.enum(["created", "verified", "contested", "unverified", "corrected", "flagged"]),
   tier: ConfidenceTierEnum,
-  role: z.string(),                    // matches master.stewardshipRoles
-  actor: z.string(),                   // contributor username or display name
+  role: z.string(),                    
+  actor: z.string(),                   
   method: z.string().optional(),
   notes: z.string().optional(),
   timestamp: DateSchema,
@@ -730,7 +694,6 @@ export const StewardshipDataSchema = z.object({
   entries: z.array(StewardshipEntrySchema),
 });
 
-// absences.json — memorialized missing items
 export const AbsenceRecordSchema = z.object({
   id: z.string(),
   entityId: IdSchema.optional(),
@@ -748,7 +711,6 @@ export const AbsencesDataSchema = z.object({
   absences: z.array(AbsenceRecordSchema),
 });
 
-// queue.json — user submissions (lenient but shape-checked)
 export const QueueItemSchema = z.object({
   id: z.string(),
   type: z.enum(["edit", "new-article", "photo", "directory", "person", "correction"]),
@@ -757,12 +719,13 @@ export const QueueItemSchema = z.object({
   submittedBy: z.string(),
   submittedAt: DateSchema,
   channel: z.enum(["telegram", "web", "admin"]).optional(),
-  payload: z.record(z.any()),          // free-form; validated at accept time
+  payload: z.record(z.any()),          
   notes: z.string().optional(),
 }).passthrough();
 
 export const QueueDataSchema = z.object({
-  items: z.array(QueueItemSchema),
+  pending: z.array(QueueItemSchema).default([]),
+  approved: z.array(QueueItemSchema).default([]),
 }).passthrough();
 
 // ==========================================
