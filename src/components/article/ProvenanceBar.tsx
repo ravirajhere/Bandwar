@@ -15,22 +15,22 @@ export function ProvenanceBar({ provenance, confidence }: ProvenanceBarProps) {
   const isVerified = confidence === 'archival' || confidence === 'elder';
 
   return (
-    <div className="my-6 p-4 rounded-lg bg-[#FBF8F3] border border-[#7C2D12]/10 text-sm text-gray-700 font-sans flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      <div className="flex items-start gap-3">
+    <div className="my-6 p-3.5 rounded-sm bg-surface border border-divider flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+      <div className="flex items-start gap-2.5">
         <div className="mt-0.5">
-          {isVerified ? <CheckCircle2 className="w-5 h-5 text-[#1F7A3D]" /> : <Info className="w-5 h-5 text-[#A64B2A]" />}
+          {isVerified ? <CheckCircle2 className="w-4 h-4 text-accent" /> : <Info className="w-4 h-4 text-ink-muted" />}
         </div>
         <div>
-          <p className="font-medium text-[#7C2D12]">
+          <p className="font-medium text-xs text-ink uppercase tracking-wider">
             {isVerified ? 'Verified Information' : 'Community Provided'}
           </p>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-[13px] text-ink-muted mt-0.5">
             {provenanceSummary(provenance)}
-            {provenance.verifiedAt && ` on ${new Date(provenance.verifiedAt).toLocaleDateString()}`}
+            {provenance.verifiedAt && ` • ${new Date(provenance.verifiedAt).toLocaleDateString()}`}
           </p>
         </div>
       </div>
-      <div>
+      <div className="shrink-0">
         <ConfidenceBadge tier={confidence as any} />
       </div>
     </div>
