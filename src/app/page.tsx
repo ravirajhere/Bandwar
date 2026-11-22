@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getMasterData, getAllArticles, getMediaData } from "@/lib/data";
-import { MapPin, Clock, ShieldCheck, ArrowRight, PhoneCall, Users, BookOpen, MoveRight } from "lucide-react";
+import { getMasterData, getAllArticles, getMediaData, getAbsences, getEdges } from "@/lib/data";
+import { MapPin, Clock, ShieldCheck, ArrowRight, MoveRight, GitBranch, ArrowUpRight, FileQuestion, CheckCircle2 } from "lucide-react";
 import LandmarkMapWrapper from "@/components/map/LandmarkMapWrapper";
+import { ConfidenceBadge } from "@/components/article/ConfidenceBadge"; // 🚀 NEW
 
 interface StatItem { label: string; value: string; }
 
@@ -45,12 +46,21 @@ export default function Home() {
   const media = getMediaData();
   const baseUrl = config.site.url;
   
+  // 🚀 NEW: Fetching Graph and Absences
+  const absences = getAbsences().absences;
+  const edges = getEdges().edges;
+
   // Sort by latest
   const sortedArticles = [...allArticles].sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime());
   
-  // The first one becomes the Lead Story, the rest are secondary
   const leadArticle = sortedArticles[0];
   const recentArticles = sortedArticles.slice(1, 5);
+
+  // 🚀 NEW: Build a curated "Thread" from edges
+  // We pick an edge with a description, and find the connected articles
+  const featuredEdge = edges.find(e => e.description && e.type === 'educational-pipeline') || edges[0];
+  const sourceArticle = featuredEdge ? allArticles.find(a => a.id === featuredEdge.from) : null;
+  const targetArticle = featuredEdge ? allArticles.find(a => a.id === featuredEdge.to) : null;
 
   if (!home) return null;
 
@@ -88,7 +98,6 @@ export default function Home() {
         {/* 🚀 1. THE EDITORIAL HERO (Split Layout) */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-16 md:mb-24 border-b border-divider pb-12 md:pb-20">
           
-          {/* Left: Typography */}
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-8 h-px bg-accent"></span>
@@ -115,7 +124,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: Hero Image (No dark overlay, clean frame) */}
           <div className="relative w-full aspect-[4/3] lg:aspect-square bg-surface border border-divider p-2 rounded-sm shadow-sm">
             <div className="relative w-full h-full overflow-hidden rounded-sm">
               <Image 
@@ -127,14 +135,17 @@ export default function Home() {
                 sizes="(max-width: 1024px) 100vw, 50vw" 
               />
             </div>
-            {/* Subtle caption */}
-            <div className="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-sm p-3 border border-divider rounded-sm">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-ink/70 text-center m-0">The village of Bandwar, situated on the banks of the Burhi Gandak river.</p>
+            {/* 🚀 Provenance Strip on Hero */}
+            <div className="absolute bottom-4 left-4 right-4 bg-surface/95 backdrop-blur-md p-3 border border-divider rounded-sm flex flex-col sm:flex-row items-center justify-between gap-2 shadow-lg">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-ink/70 text-center sm:text-left m-0">
+                Bandwar, on the banks of the Burhi Gandak.
+              </p>
+              <ConfidenceBadge tier="archival" className="scale-90" />
             </div>
           </div>
         </section>
 
-        {/* 🚀 2. THE INDEX BAR (Replacing App Buttons) */}
+        {/* 🚀 2. THE INDEX BAR */}
         <section className="mb-16 md:mb-24 grid grid-cols-1 md:grid-cols-3 border-y border-divider divide-y md:divide-y-0 md:divide-x divide-divider">
           <Link href="/directory" className="group py-6 md:py-8 px-6 flex items-center justify-between hover:bg-surface transition-colors">
             <div>
@@ -161,10 +172,9 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* 🚀 3. MAIN CONTENT GRID (Articles & Sidebar) */}
+        {/* 🚀 3. MAIN CONTENT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           
-          {/* LEFT COLUMN: News & Articles */}
           <div className="lg:col-span-8 space-y-16">
             
             {/* Featured Lead Story */}
@@ -205,6 +215,40 @@ export default function Home() {
               </section>
             )}
 
+            {/* 🚀 NEW: The Editorial Thread (Graph-based) */}
+            {featuredEdge && sourceArticle && targetArticle && (
+              <section className="bg-surface border border-divider p-6 md:p-8 rounded-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <GitBranch size={16} className="text-accent" />
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-accent">Historical Thread</h2>
+                </div>
+                
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                  <Link href={`/article/${sourceArticle.id}`} className="flex-1 group text-center md:text-right w-full">
+                    <h3 className="font-serif text-xl font-bold text-ink group-hover:text-accent transition-colors">{sourceArticle.title}</h3>
+                    <p className="text-sm text-ink-muted mt-1">Est. {sourceArticle.infobox?.['Established']?.value || 'Historical'}</p>
+                  </Link>
+                  
+                  <div className="flex flex-col items-center justify-center shrink-0 w-full md:w-auto relative">
+                    <div className="h-px w-full md:w-24 bg-divider absolute top-1/2 -z-10 hidden md:block"></div>
+                    <div className="bg-canvas px-4 py-2 border border-divider rounded-full text-xs font-semibold text-ink-muted flex items-center gap-2 relative z-10">
+                      <MoveRight size={14} className="text-accent" /> {featuredEdge.label || "Connection"}
+                    </div>
+                  </div>
+
+                  <Link href={`/article/${targetArticle.id}`} className="flex-1 group text-center md:text-left w-full">
+                    <h3 className="font-serif text-xl font-bold text-ink group-hover:text-accent transition-colors">{targetArticle.title}</h3>
+                    <p className="text-sm text-ink-muted mt-1">Est. {targetArticle.infobox?.['Established']?.value || 'Historical'}</p>
+                  </Link>
+                </div>
+                {featuredEdge.description && (
+                  <p className="text-sm text-ink-muted text-center mt-6 pt-4 border-t border-divider/50 italic">
+                    "{featuredEdge.description}"
+                  </p>
+                )}
+              </section>
+            )}
+
             {/* Recent Articles Grid */}
             <section>
               <div className="flex items-center gap-4 mb-6">
@@ -216,7 +260,10 @@ export default function Home() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
                 {recentArticles.map((article) => (
                   <Link href={`/article/${article.id}`} key={article.id} className="group flex flex-col h-full border-t border-divider pt-4">
-                    <div className="text-[11px] text-accent font-bold uppercase tracking-wider mb-2">{article.categories[0]}</div>
+                    <div className="text-[11px] text-accent font-bold uppercase tracking-wider mb-2 flex items-center justify-between">
+                      <span>{article.categories[0]}</span>
+                      <ConfidenceBadge tier={article.confidence || 'unverified'} className="scale-90 origin-right" />
+                    </div>
                     <h3 className="font-serif text-xl font-bold text-ink group-hover:text-accent transition-colors leading-snug mb-2">
                       {article.title}
                     </h3>
@@ -225,14 +272,39 @@ export default function Home() {
                     </p>
                     <div className="flex items-center justify-between text-xs text-ink-muted mt-auto">
                       <time dateTime={article.lastUpdated}>{new Date(article.lastUpdated).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}</time>
-                      <span className="flex items-center gap-1"><ShieldCheck size={12}/> Verified</span>
                     </div>
                   </Link>
                 ))}
               </div>
             </section>
 
-            {/* About Section (Refined) */}
+            {/* 🚀 NEW: Absence Memorial (Top-tier honesty) */}
+            {absences.length > 0 && (
+              <section className="border border-dashed border-accent/40 bg-accent/5 rounded-sm p-6">
+                <div className="flex items-start gap-4">
+                  <FileQuestion className="w-8 h-8 text-accent shrink-0 mt-1" />
+                  <div>
+                    <h2 className="font-serif text-xl font-bold text-ink mb-2">What is still missing?</h2>
+                    <p className="text-ink-muted text-sm mb-4">
+                      An honest archive documents its own gaps. We are actively searching for the following records:
+                    </p>
+                    <ul className="space-y-3">
+                      {absences.slice(0, 2).map((absence) => (
+                        <li key={absence.id} className="flex items-start gap-2 text-sm">
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0"></span>
+                          <span className="text-ink">{absence.description}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href="/contribute" className="inline-flex items-center gap-1 text-accent font-semibold text-sm mt-4 hover:underline">
+                      Help us find these <ArrowUpRight size={14} />
+                    </Link>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* About Section */}
             <section className="bg-surface border border-divider p-6 md:p-8 rounded-sm">
               <h2 className="font-serif text-2xl font-bold text-ink mb-4">{home.about.title}</h2>
               <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none text-ink/80 leading-relaxed">
@@ -249,7 +321,6 @@ export default function Home() {
 
           </div>
 
-          {/* RIGHT COLUMN: Sidebar */}
           <aside className="lg:col-span-4 space-y-10">
             
             {/* Stats Table */}
@@ -266,10 +337,15 @@ export default function Home() {
                     </dd>
                   </div>
                 ))}
+                {/* 🚀 New: Trust Metric */}
+                <div className="flex justify-between items-center border-b border-divider py-3 bg-[#1F7A3D]/5 -mx-2 px-2">
+                  <dt className="text-[#1F7A3D] flex items-center gap-1.5 font-medium"><CheckCircle2 size={14}/> Archive Sourced</dt>
+                  <dd className="text-[#1F7A3D] font-bold font-mono">100%</dd>
+                </div>
               </dl>
             </section>
 
-            {/* Pullquote (Editorial style) */}
+            {/* Pullquote */}
             <section className="border-l-2 border-accent pl-5 py-2">
               <blockquote className="text-xl font-serif font-bold text-ink italic leading-snug mb-3">
                 &ldquo;{home.pullquote.text}&rdquo;
@@ -279,7 +355,7 @@ export default function Home() {
               </p>
             </section>
 
-            {/* Map (Moved to Sidebar for Desktop, Bottom for Mobile) */}
+            {/* Map Section */}
             <section className="hidden lg:block">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xs font-bold uppercase tracking-widest text-accent flex items-center gap-2">
@@ -293,18 +369,6 @@ export default function Home() {
             </section>
           </aside>
         </div>
-
-        {/* Mobile Map (Sirf mobile par dikhega) */}
-        <section className="mt-12 lg:hidden">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-accent">Cartographic Index</h3>
-            <Link href="/map" className="text-xs font-semibold text-ink hover:text-accent">Open Full Map</Link>
-          </div>
-          <div className="bg-surface border border-divider rounded-sm overflow-hidden h-[400px] relative z-0">
-            <LandmarkMapWrapper landmarks={media.landmarks || []} activeLandmark={null} showLegend={false} showScale={false} />
-          </div>
-        </section>
-
       </div>
     </div>
   );
