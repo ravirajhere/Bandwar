@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "absences": [
+    {
+      "id": "absence-freedom-fighters-source",
+      "entityId": "bandwar-village",
+      "entityType": "article",
+      "reason": "undocumented",
+      "description": "Primary archival source for the title 'Land of Freedom Fighters' (popularName). Referenced in local memory but specific historical documents are pending.",
+      "relatedEntityIds": []
+    },
+    {
+      "id": "absence-2600-years",
+      "entityId": "bandwar-village",
+      "entityType": "article",
+      "reason": "unverified",
+      "description": "Archaeological or historical evidence for the claim of '2,600 years of history'.",
+      "relatedEntityIds": []
+    }
+  ]
+}
