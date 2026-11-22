@@ -1,26 +1,34 @@
-import React from 'react';
-import { Article } from '@/lib/schema';
-import { getInfoboxEntries } from '@/lib/infobox';
-import { ConfidenceBadge } from './ConfidenceBadge';
+import React from "react";
+import { ConfidenceBadge } from "./ConfidenceBadge";
+import { ConfidenceTier } from "@/lib/schema";
 
-export function Infobox({ article }: { article: Article }) {
-  const entries = getInfoboxEntries(article);
-  if (entries.length === 0) return null;
+interface InfoboxProps {
+  data?: Record<string, { value: string; confidence?: ConfidenceTier }>;
+  title: string;
+  articleId: string;
+}
+
+export function Infobox({ data, title, articleId }: InfoboxProps) {
+  if (!data || Object.keys(data).length === 0) return null;
+
+  const entries = Object.entries(data);
 
   return (
-    <aside className="bg-[#FBF8F3] border border-[#7C2D12]/10 rounded-xl p-5 my-6">
-      <h3 className="font-serif text-lg font-semibold text-[#7C2D12] mb-4 pb-2 border-b border-[#7C2D12]/10">
+    <aside className="bg-surface border border-divider rounded-sm p-4 3xl:p-5 text-sm">
+      <h3 className="font-serif text-base 3xl:text-lg font-bold text-ink mb-3 pb-2 border-b border-divider">
         Key Facts
       </h3>
-      <dl className="space-y-3 text-sm">
-        {entries.map((entry) => (
-          <div key={entry.key} className="grid grid-cols-3 gap-2">
-            <dt className="text-gray-500 font-medium col-span-1">{entry.key}</dt>
-            <dd className="text-gray-800 col-span-2 flex items-start gap-2 flex-wrap">
-              <span>{entry.value}</span>
-              {/* Show confidence badge only if it's NOT unverified, to reduce visual noise */}
-              {entry.confidence && entry.confidence !== 'unverified' && (
-                <ConfidenceBadge tier={entry.confidence} className="scale-75 origin-left" />
+      <dl className="space-y-2.5">
+        {entries.map(([key, val]) => (
+          <div key={key} className="grid grid-cols-[100px_minmax(0,1fr)] gap-2">
+            <dt className="text-ink-muted font-medium text-xs 3xl:text-sm pt-0.5 truncate" title={key}>
+              {key}
+            </dt>
+            <dd className="text-ink flex flex-wrap items-center gap-2 text-xs 3xl:text-sm leading-snug">
+              <span>{val.value}</span>
+              {/* Sirf tab dikhao jab unverified na ho, taaki visual clutter na ho */}
+              {val.confidence && val.confidence !== "unverified" && (
+                <ConfidenceBadge tier={val.confidence} className="scale-90 origin-left" />
               )}
             </dd>
           </div>
