@@ -279,7 +279,7 @@ export function getQueue(): QueueData {
   if (cache.queue) return cache.queue;
   const fullPath = path.join(process.cwd(), "data", "queue.json");
   if (!fs.existsSync(fullPath)) {
-    cache.queue = { items: [] };
+    cache.queue = { pending: [], approved: [] }; // FIXED: items -> pending & approved
     return cache.queue;
   }
   const rawData = readJsonFile("queue.json");
