@@ -1,25 +1,37 @@
+import 'server-only';
 import fs from "fs";
 import path from "path";
 import { z } from "zod";
-import { 
-  MasterSchema, ArticleListSchema, MediaSchema, 
+import {
+  MasterSchema, ArticleListSchema, MediaSchema,
   PeopleDataSchema, CategoriesDataSchema, DirectoryDataSchema,
   ContributorsDataSchema,
+  EdgesDataSchema, StewardshipDataSchema, AbsencesDataSchema, QueueDataSchema,
   MasterConfig, Article, Media, PeopleData, CategoriesData, DirectoryData,
+  Edge, EdgesData, StewardshipEntry, StewardshipData, AbsenceRecord, AbsencesData,
+  QueueData, Provenance,
 } from "./schema";
 import { Contributor } from "./contributor";
+import {
+  FALLBACK_IMAGE,
+  resolveHeroPath,
+  imageExists,
+} from "./media";
+
+// Re-export for backward compat
+export { FALLBACK_IMAGE };
 
 // ==========================================
 // 1. CORE HELPERS
 // ==========================================
 
-export const FALLBACK_IMAGE = "/fallback.jpg";
-
+// TODO(phase-1): remove — superseded by resolveHeroPath() in ./media
 export function getArticleImage(image?: string | null): string {
   if (!image || image.trim() === "") return FALLBACK_IMAGE;
   return image.split("?")[0];
 }
 
+// TODO(phase-1): remove — superseded by resolveHeroPath() in ./media
 export function getMediaImage(src?: string | null): string {
   if (!src || src.trim() === "") return FALLBACK_IMAGE;
   return src.split("?")[0];
@@ -47,7 +59,7 @@ function validateData<T extends z.ZodTypeAny>(schema: T, data: unknown, fileName
     ).join("\n");
     throw new Error(`❌ Validation Failed in data/${fileName}:\n${errorMessages}`);
   }
-  return parsed.data as z.infer<T>;
+  return parsed.data;
 }
 
 function normalizeUsername(u: string): string {
@@ -65,11 +77,15 @@ const cache = {
   categories: null as CategoriesData | null,
   directory: null as DirectoryData | null,
   contributors: null as Contributor[] | null,
+  edges: null as EdgesData | null,
+  stewardship: null as StewardshipData | null,
+  absences: null as AbsencesData | null,
+  queue: null as QueueData | null,
 };
 
 export function clearCache() {
   (Object.keys(cache) as (keyof typeof cache)[]).forEach((k) => {
-    (cache as any)[k] = null;
+    cache[k] = null;
   });
 }
 
@@ -86,12 +102,12 @@ export function getMasterData(): MasterConfig {
 
 export function getAllArticles(): Article[] {
   if (cache.articles) return cache.articles;
-  
+
   const articlesDir = path.join(process.cwd(), "data", "articles");
   if (!fs.existsSync(articlesDir)) {
     throw new Error("❌ Data Error: 'data/articles' directory not found!");
   }
-  
+
   const fileNames = fs.readdirSync(articlesDir);
   let allArticles: Article[] = [];
 
@@ -99,46 +115,24 @@ export function getAllArticles(): Article[] {
     if (fileName.endsWith(".json")) {
       const rawData = readJsonFile(`articles/${fileName}`);
       const parsedData = validateData(ArticleListSchema, rawData, `articles/${fileName}`);
-      
-      // ✅ SAFE IMAGE CHECKER: Original data untouched, creates 'displayHero' for UI
-      const safeArticles = parsedData.articles.map((art: any) => {
-        let updatedArt = { ...art };
-        
-        // 1. Check hero for DISPLAY
-        let needsHeroFallback = false;
-        if (updatedArt.hero && !updatedArt.hero.startsWith("http")) {
-          const cleanSrc = updatedArt.hero.split("?")[0].replace(/^\//, "");
-          const imgPath = path.join(process.cwd(), "public", cleanSrc);
-          if (!fs.existsSync(imgPath)) needsHeroFallback = true;
-        } else if (!updatedArt.hero) {
-          needsHeroFallback = true;
-        }
-        updatedArt.displayHero = needsHeroFallback ? FALLBACK_IMAGE : updatedArt.hero;
 
-        // 2. Check image for DISPLAY
-        let needsImgFallback = false;
-        if (updatedArt.image && !updatedArt.image.startsWith("http")) {
-          const cleanSrc = updatedArt.image.split("?")[0].replace(/^\//, "");
-          const imgPath = path.join(process.cwd(), "public", cleanSrc);
-          if (!fs.existsSync(imgPath)) needsImgFallback = true;
-        } else if (!updatedArt.image) {
-           needsImgFallback = true;
-        }
-        updatedArt.displayImage = needsImgFallback ? FALLBACK_IMAGE : updatedArt.image;
-
-        return updatedArt;
-      });
+      // TODO(phase-1): remove displayHero/displayImage — use resolveHeroPath(article.hero) in UI
+      const safeArticles = parsedData.articles.map((art) => ({
+        ...art,
+        displayHero: resolveHeroPath(art.hero),
+        displayImage: resolveHeroPath(art.hero),
+      }));
 
       allArticles = [...allArticles, ...safeArticles];
     }
   }
 
   allArticles.sort((a, b) => {
-    const aDate = (a as any).dateModified || a.lastUpdated;
-    const bDate = (b as any).dateModified || b.lastUpdated;
+    const aDate = a.dateModified || a.lastUpdated;
+    const bDate = b.dateModified || b.lastUpdated;
     return new Date(bDate).getTime() - new Date(aDate).getTime();
   });
-  
+
   cache.articles = allArticles;
   return allArticles;
 }
@@ -155,31 +149,28 @@ export function getArticlesByCategory(categoryId: string): Article[] {
 
 export function getArticleDates(article: Article): { published: string; modified: string } {
   return {
-    published: (article as any).datePublished || article.lastUpdated,
-    modified: (article as any).dateModified || article.lastUpdated,
+    published: article.datePublished || article.lastUpdated,
+    modified: article.dateModified || article.lastUpdated,
   };
 }
 
 export function getMediaData(): Media {
   if (cache.media) return cache.media;
-  
+
   const rawData = readJsonFile("media.json");
   const media = validateData(MediaSchema, rawData, "media.json");
-  
+
+  const missing: string[] = [];
   if (media.gallery && media.gallery.photos) {
     media.gallery.photos = media.gallery.photos.filter((photo) => {
-      const pathWithoutQuery = photo.src.split("?")[0];
-      const cleanSrc = pathWithoutQuery.startsWith("/")
-        ? pathWithoutQuery.slice(1)
-        : pathWithoutQuery;
-      const imgPath = path.join(process.cwd(), "public", cleanSrc);
-      
-      const exists = fs.existsSync(imgPath);
-      if (!exists) {
-        console.log(`⚠️ Gallery Image Missing (Hidden): ${photo.src}`);
-      }
+      const exists = imageExists(photo.src);
+      if (!exists) missing.push(photo.src);
       return exists;
     });
+  }
+  if (missing.length > 0) {
+    console.warn(`⚠️  getMediaData: ${missing.length} gallery photo(s) missing — hidden from gallery:`);
+    missing.forEach((src) => console.warn(`   - ${src}`));
   }
 
   cache.media = media;
@@ -209,16 +200,16 @@ export function getDirectoryData(): DirectoryData {
 
 export function getContributors(): Contributor[] {
   if (cache.contributors) return cache.contributors;
-  
+
   const fullPath = path.join(process.cwd(), "data", "contributors.json");
   if (!fs.existsSync(fullPath)) {
     cache.contributors = [];
     return [];
   }
-  
+
   const rawData = readJsonFile("contributors.json");
   const parsed = validateData(ContributorsDataSchema, rawData, "contributors.json");
-  
+
   cache.contributors = parsed.contributors as unknown as Contributor[];
   return cache.contributors;
 }
@@ -236,9 +227,96 @@ export function getContributorByUsername(username: string): Contributor | undefi
 
 export function getRecentContributors(months: number = 6): Contributor[] {
   const all = getContributors();
-  const cutoffDate = new Date(Date.now() - months * 30 * 24 * 60 * 60 * 1000);
+  const cutoffDate = new Date();
+  cutoffDate.setMonth(cutoffDate.getMonth() - months);
 
   return all
     .filter((c) => c.joinedAt && new Date(c.joinedAt) >= cutoffDate)
     .sort((a, b) => new Date(b.joinedAt || 0).getTime() - new Date(a.joinedAt || 0).getTime());
+}
+
+// ==========================================
+// 4. PHASE 0 LOADERS (new)
+// ==========================================
+
+export function getEdges(): EdgesData {
+  if (cache.edges) return cache.edges;
+  const fullPath = path.join(process.cwd(), "data", "edges.json");
+  if (!fs.existsSync(fullPath)) {
+    cache.edges = { version: "1.0", edges: [] };
+    return cache.edges;
+  }
+  const rawData = readJsonFile("edges.json");
+  cache.edges = validateData(EdgesDataSchema, rawData, "edges.json");
+  return cache.edges;
+}
+
+export function getStewardshipLog(): StewardshipData {
+  if (cache.stewardship) return cache.stewardship;
+  const fullPath = path.join(process.cwd(), "data", "stewardship.json");
+  if (!fs.existsSync(fullPath)) {
+    cache.stewardship = { version: "1.0", entries: [] };
+    return cache.stewardship;
+  }
+  const rawData = readJsonFile("stewardship.json");
+  cache.stewardship = validateData(StewardshipDataSchema, rawData, "stewardship.json");
+  return cache.stewardship;
+}
+
+export function getAbsences(): AbsencesData {
+  if (cache.absences) return cache.absences;
+  const fullPath = path.join(process.cwd(), "data", "absences.json");
+  if (!fs.existsSync(fullPath)) {
+    cache.absences = { version: "1.0", absences: [] };
+    return cache.absences;
+  }
+  const rawData = readJsonFile("absences.json");
+  cache.absences = validateData(AbsencesDataSchema, rawData, "absences.json");
+  return cache.absences;
+}
+
+export function getQueue(): QueueData {
+  if (cache.queue) return cache.queue;
+  const fullPath = path.join(process.cwd(), "data", "queue.json");
+  if (!fs.existsSync(fullPath)) {
+    cache.queue = { items: [] };
+    return cache.queue;
+  }
+  const rawData = readJsonFile("queue.json");
+  cache.queue = validateData(QueueDataSchema, rawData, "queue.json");
+  return cache.queue;
+}
+
+// ==========================================
+// 5. GRAPH & PROVENANCE HELPERS (new)
+// ==========================================
+
+export function getConnections(entityId: string): Edge[] {
+  const { edges } = getEdges();
+  return edges.filter((e) => e.from === entityId || e.to === entityId);
+}
+
+export function getStewardshipFor(entityId: string): StewardshipEntry[] {
+  const { entries } = getStewardshipLog();
+  return entries
+    .filter((e) => e.entityId === entityId)
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+}
+
+export function getAbsencesFor(entityId: string): AbsenceRecord[] {
+  const { absences } = getAbsences();
+  return absences.filter((a) => a.entityId === entityId);
+}
+
+export function getProvenanceFor(entityId: string): Provenance | undefined {
+  const article = getArticleById(entityId);
+  if (article) return article.provenance;
+
+  const person = getPeopleData().people.find((p) => p.id === entityId);
+  if (person) return person.provenance;
+
+  const directoryItem = getDirectoryData().items.find((i) => i.id === entityId);
+  if (directoryItem) return directoryItem.provenance;
+
+  return undefined;
 }
