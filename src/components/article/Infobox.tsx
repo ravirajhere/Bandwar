@@ -1,96 +1,30 @@
-import { Info } from "lucide-react";
-import { EditableInfoboxRow } from "@/components/editor/EditableInfoboxRow";
+import React from 'react';
+import { Article } from '@/lib/schema';
+import { getInfoboxEntries } from '@/lib/infobox';
+import { ConfidenceBadge } from './ConfidenceBadge';
 
-// NEW: Supports BOTH legacy string + new Zod shape
-type InfoboxValue =
-  | string
-  | {
-      value: string;
-      confidence?: string;
-      provenance?: {
-        sourceLabel?: string;
-        sourceUrl?: string;
-        verifiedBy?: string;
-        notes?: string;
-      };
-    };
-
-function getValue(v: InfoboxValue): string {
-  if (typeof v === "string") return v;
-  return v?.value ?? "";
-}
-
-function getConfidence(v: InfoboxValue): string | undefined {
-  if (typeof v === "string") return undefined;
-  return v?.confidence;
-}
-
-const CONFIDENCE_LABEL: Record<string, string> = {
-  community: "Community",
-  elder: "Elder Verified",
-  archival: "Archival",
-  contested: "Contested",
-};
-
-const CONFIDENCE_STYLE: Record<string, string> = {
-  community: "bg-blue-50 text-blue-700 border-blue-200",
-  elder: "bg-green-50 text-green-700 border-green-200",
-  archival: "bg-amber-50 text-amber-700 border-amber-200",
-  contested: "bg-red-50 text-red-700 border-red-200",
-};
-
-export function Infobox({
-  data,
-  title,
-  articleId,
-}: {
-  data: Record<string, InfoboxValue>;
-  title: string;
-  articleId?: string;
-}) {
-  if (!data || Object.keys(data).length === 0) return null;
+export function Infobox({ article }: { article: Article }) {
+  const entries = getInfoboxEntries(article);
+  if (entries.length === 0) return null;
 
   return (
-    <aside
-      aria-label={`Quick facts about ${title}`}
-      className="bg-surface border border-divider rounded-sm w-full mb-8 overflow-hidden"
-    >
-      {/* Infobox Header */}
-      <div className="bg-canvas/80 px-4 py-3 border-b border-divider flex items-center gap-2">
-        <Info size={16} className="text-accent shrink-0" aria-hidden="true" />
-        <h3 className="font-serif font-bold text-ink text-sm m-0 tracking-tight truncate">
-          {title}
-        </h3>
-      </div>
-
-      {/* Infobox Data Rows */}
-      <dl className="m-0 divide-y divide-divider">
-        {Object.entries(data).map(([key, rawValue]) => {
-          const value = getValue(rawValue);
-          const confidence = getConfidence(rawValue);
-          if (!value) return null;
-
-          return (
-            <div key={key} className="relative">
-              <EditableInfoboxRow
-                label={key}
-                initialValue={value}
-                contextId={articleId || title}
-                contextType="Article Infobox"
-              />
-              {confidence && confidence !== "unverified" && (
-                <span
-                  className={`absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center border px-1.5 py-0.5 text-[10px] font-semibold rounded-full pointer-events-none ${
-                    CONFIDENCE_STYLE[confidence] ?? "bg-ink/5 text-ink-muted border-divider"
-                  }`}
-                  title={`Confidence: ${confidence}`}
-                >
-                  {CONFIDENCE_LABEL[confidence] ?? confidence}
-                </span>
+    <aside className="bg-[#FBF8F3] border border-[#7C2D12]/10 rounded-xl p-5 my-6">
+      <h3 className="font-serif text-lg font-semibold text-[#7C2D12] mb-4 pb-2 border-b border-[#7C2D12]/10">
+        Key Facts
+      </h3>
+      <dl className="space-y-3 text-sm">
+        {entries.map((entry) => (
+          <div key={entry.key} className="grid grid-cols-3 gap-2">
+            <dt className="text-gray-500 font-medium col-span-1">{entry.key}</dt>
+            <dd className="text-gray-800 col-span-2 flex items-start gap-2 flex-wrap">
+              <span>{entry.value}</span>
+              {/* Show confidence badge only if it's NOT unverified, to reduce visual noise */}
+              {entry.confidence && entry.confidence !== 'unverified' && (
+                <ConfidenceBadge tier={entry.confidence} className="scale-75 origin-left" />
               )}
-            </div>
-          );
-        })}
+            </dd>
+          </div>
+        ))}
       </dl>
     </aside>
   );
