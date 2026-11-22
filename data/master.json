@@ -1,7 +1,7 @@
 {
-  "version": "7.0.0",
+  "version": "8.0.0",
   "lastUpdated": "2026-11-11",
-  "schemaVersion": "master-v7",
+  "schemaVersion": "master-v8",
 
   "site": {
     "name": "Bandwar Village Archive",
@@ -18,6 +18,80 @@
     "contentLicense": "CC BY-NC-SA 4.0",
     "codeLicense": "MIT",
     "sourceCode": null
+  },
+
+  "provenanceTiers": {
+    "version": "1.0",
+    "tiers": [
+      { "id": "unverified", "label": "Unverified", "description": "Submitted, not reviewed", "color": "#A64B2A", "icon": "○", "rank": 0 },
+      { "id": "community", "label": "Community", "description": "Confirmed by 2+ residents", "color": "#7C2D12", "icon": "◐", "rank": 1 },
+      { "id": "elder", "label": "Elder-validated", "description": "Confirmed by village elder", "color": "#1F7A3D", "icon": "◑", "rank": 2 },
+      { "id": "archival", "label": "Archival", "description": "Backed by document/record", "color": "#1F7A3D", "icon": "●", "rank": 3 },
+      { "id": "contested", "label": "Contested", "description": "Multiple accounts disagree", "color": "#A64B2A", "icon": "⚡", "rank": 0 }
+    ]
+  },
+
+  "connectionTypes": {
+    "version": "1.0",
+    "types": [
+      { "id": "related", "label": "Related", "symmetric": true, "icon": "↔" },
+      { "id": "educational-pipeline", "label": "Educational Pipeline", "symmetric": false, "icon": "↓" },
+      { "id": "influence", "label": "Influence", "symmetric": false, "icon": "→" },
+      { "id": "migration", "label": "Migration", "symmetric": false, "icon": "⇢" },
+      { "id": "kinship", "label": "Kinship", "symmetric": true, "icon": "👪" },
+      { "id": "stewardship", "label": "Stewardship", "symmetric": false, "icon": "◈" },
+      { "id": "contradiction", "label": "Contradicts", "symmetric": true, "icon": "⚡" }
+    ]
+  },
+
+  "stewardshipRoles": {
+    "roles": [
+      { "id": "contributor", "label": "Contributor", "canVerify": [] },
+      { "id": "editor", "label": "Editor", "canVerify": ["community"] },
+      { "id": "elder", "label": "Village Elder", "canVerify": ["community", "elder"] },
+      { "id": "researcher", "label": "Researcher", "canVerify": ["community", "archival"] },
+      { "id": "archivist", "label": "Archivist", "canVerify": ["community", "elder", "archival"] }
+    ]
+  },
+
+  "sourceRegistry": {
+    "sources": [
+      { "id": "census-2011", "type": "Government Record", "name": "Census of India, 2011", "url": "https://censusindia.gov.in/", "reliability": "high" },
+      { "id": "mgnrega-portal", "type": "Government Portal", "name": "MGNREGA Public Portal", "url": "https://nrega.nic.in/", "reliability": "high" },
+      { "id": "resident-interviews-2024-2026", "type": "Primary Research", "name": "Resident Interviews (village elders)", "reliability": "medium" },
+      { "id": "news-coverage-2024-2026", "type": "Media", "name": "News18, Prabhat Khabar, Hindustan, Dainik Jagran", "reliability": "medium" },
+      { "id": "asi-context", "type": "Archaeological", "name": "Archaeological Survey of India", "reliability": "high" },
+      { "id": "udise-plus", "type": "Government Dashboard", "name": "UDISE+ Report Cards", "url": "https://udiseplus.gov.in/", "reliability": "high" }
+    ]
+  },
+
+  "absenceReasons": {
+    "reasons": [
+      { "id": "lost", "label": "Lost" },
+      { "id": "destroyed", "label": "Destroyed" },
+      { "id": "undocumented", "label": "Never documented" },
+      { "id": "withheld", "label": "Held by family/community, not public" },
+      { "id": "unavailable", "label": "Exists but not accessible" },
+      { "id": "unverified", "label": "Reported but unconfirmed" }
+    ]
+  },
+
+  "conservationStates": {
+    "states": [
+      { "id": "original", "label": "Original" },
+      { "id": "good", "label": "Good condition" },
+      { "id": "fair", "label": "Fair, some damage" },
+      { "id": "poor", "label": "Poor, deteriorating" },
+      { "id": "digitized-only", "label": "Digitized; original not traceable" },
+      { "id": "lost", "label": "Lost" }
+    ]
+  },
+
+  "citationFormats": {
+    "formats": ["apa", "mla", "chicago", "bibtex"],
+    "default": "apa",
+    "includeAccessedDate": true,
+    "permanentUrlPattern": "{base}/article/{id}"
   },
 
   "village": {
@@ -51,7 +125,13 @@
     "language": ["Hindi", "Maithili", "Urdu", "English"],
     "festivals": ["Chhath Puja", "Janmashtami Mela", "Ram Katha", "Sama Chakeva", "Durga Puja"],
     "mainCrops": ["Paddy", "Wheat", "Maize", "Gram"],
-    "popularName": "Land of Freedom Fighters"
+    "popularName": "Land of Freedom Fighters",
+    "fieldSources": {
+      "population": { "sourceId": "census-2011", "confidence": "archival" },
+      "literacyRate": { "sourceId": "census-2011", "confidence": "archival" },
+      "households": { "sourceId": "census-2011", "confidence": "archival" },
+      "popularName": { "sourceId": "resident-interviews-2024-2026", "confidence": "community" }
+    }
   },
 
   "emergencyContacts": [
