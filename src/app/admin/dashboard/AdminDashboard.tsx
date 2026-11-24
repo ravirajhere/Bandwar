@@ -7,14 +7,36 @@ import AdminShell from "@/app/admin/AdminShell";
 import {
   CheckCircle2, XCircle, FileText, User, Clock,
   Loader2, Image as ImageIcon, Rocket,
-  ShieldCheck, ArrowRight
+  ShieldCheck, ArrowRight, FilePlus2, Users, Images, Activity, BookOpen, Eye
 } from "lucide-react";
+
+interface Stats {
+  totalArticles: number;
+  published: number;
+  drafts: number;
+  unverified: number;
+  people: number;
+  contributors: number;
+  gallery: number;
+  updatedThisWeek: number;
+}
+
+interface RecentArticle {
+  id: string;
+  title: string;
+  status: string;
+  confidence: string;
+  lastUpdated: string;
+  lastEditedBy: string;
+}
 
 interface AdminDashboardProps {
   pendingVerificationCount: number;
+  stats: Stats;
+  recentArticles: RecentArticle[];
 }
 
-export function AdminDashboard({ pendingVerificationCount }: AdminDashboardProps) {
+export function AdminDashboard({ pendingVerificationCount, stats, recentArticles }: AdminDashboardProps) {
   const router = useRouter();
   const [queue, setQueue] = useState<any>({ pending: [], approved: [] });
   const [loading, setLoading] = useState(true);
@@ -66,9 +88,67 @@ export function AdminDashboard({ pendingVerificationCount }: AdminDashboardProps
 
   const currentList = activeTab === "pending" ? queue.pending : queue.approved;
 
+  // --- PHASE 2: COMMAND CENTER CARDS ---
+  const cards = [
+    { label: "Total Articles", value: stats.totalArticles, sub: `${stats.published} published • ${stats.drafts} draft`, icon: BookOpen },
+    { label: "Pending Review", value: queue.pending.length, sub: "Approve / Reject karo", icon: FileText },
+    { label: "Staged for Publish", value: queue.approved.length, sub: "Publish dabao, live hoga", icon: Rocket },
+    { label: "Unverified", value: stats.unverified, sub: "Trust upgrade chahiye", icon: ShieldCheck },
+    { label: "People", value: stats.people, sub: `${stats.contributors} contributors`, icon: Users },
+    { label: "Gallery Photos", value: stats.gallery, sub: `${stats.updatedThisWeek} updated this week`, icon: Images },
+  ];
+
   return (
     <AdminShell title="Moderation Dashboard" subtitle="Review, approve, and batch-publish contributions.">
-      {/* VERIFICATION QUEUE BANNER */}
+      {/* COMMAND CENTER — STATS */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        {cards.map((c) => (
+          <div key={c.label} className="bg-surface border border-divider rounded-sm p-4">
+            <div className="flex justify-between items-start">
+              <p className="text-xs font-bold text-ink-muted uppercase tracking-wider">{c.label}</p>
+              <c.icon size={18} className="text-accent" />
+            </div>
+            <p className="font-serif text-3xl font-bold text-ink mt-1">{c.value}</p>
+            <p className="text-xs text-ink-muted mt-1">{c.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* QUICK ACTIONS + RECENT ACTIVITY */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+        <div className="bg-surface border border-divider rounded-sm p-4">
+          <h3 className="font-serif font-bold text-ink mb-3 flex items-center gap-2"><FilePlus2 size={18} className="text-accent" /> Quick Actions</h3>
+          <div className="space-y-2">
+            <Link href="/admin/verify" className="flex justify-between items-center text-sm font-semibold text-ink hover:text-accent border border-divider rounded-sm px-3 py-2">Verify Queue <ArrowRight size={16} /></Link>
+            <a href="#queue" className="flex justify-between items-center text-sm font-semibold text-ink hover:text-accent border border-divider rounded-sm px-3 py-2">Review Pending ({queue.pending.length}) <ArrowRight size={16} /></a>
+            <button onClick={handlePublish} disabled={publishing || queue.approved.length === 0} className="w-full flex justify-center gap-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white px-3 py-2 rounded-sm text-sm font-bold">
+              {publishing ? <Loader2 size={16} className="animate-spin" /> : <Rocket size={16} />} Publish {queue.approved.length} Staged
+            </button>
+          </div>
+        </div>
+        <div className="lg:col-span-2 bg-surface border border-divider rounded-sm p-4">
+          <h3 className="font-serif font-bold text-ink mb-3 flex items-center gap-2"><Activity size={18} className="text-accent" /> Recently Updated Articles</h3>
+          {recentArticles.length === 0 ? <p className="text-sm text-ink-muted">Koi recent update nahi.</p> : (
+            <div className="divide-y divide-divider">
+              {recentArticles.map((a) => (
+                <div key={a.id} className="py-2.5 flex justify-between items-center gap-3">
+                  <div className="min-w-0">
+                    <Link href={`/admin/article/${a.id}`} className="text-sm font-semibold text-ink hover:text-accent truncate block">{a.title}</Link>
+                    <p className="text-xs text-ink-muted">By {a.lastEditedBy} • {new Date(a.lastUpdated).toLocaleDateString("en-IN")}</p>
+                  </div>
+                  <div className="flex gap-1 shrink-0 items-center">
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${a.status === "published" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>{a.status}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${a.confidence === "verified" ? "bg-blue-100 text-blue-700" : "bg-red-100 text-red-600"}`}>{a.confidence}</span>
+                    <Link href={`/admin/article/${a.id}`} className="text-xs font-semibold text-accent flex items-center gap-1 ml-1"><Eye size={14} /> Edit</Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* VERIFICATION QUEUE BANNER — same as before */}
       <Link href="/admin/verify" className="group block mb-8 bg-surface border border-divider hover:border-accent rounded-sm p-4 transition-colors relative overflow-hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-4">
@@ -93,7 +173,7 @@ export function AdminDashboard({ pendingVerificationCount }: AdminDashboardProps
         </div>
       </Link>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div id="queue" className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 scroll-mt-8">
         <div className="flex bg-surface border border-divider rounded-sm p-1">
           <button onClick={() => setActiveTab("pending")} className={`px-4 py-1.5 text-sm font-semibold rounded-sm ${activeTab === "pending" ? "bg-accent text-white" : "text-ink-muted"}`}>
             Pending ({queue.pending.length})
@@ -145,7 +225,7 @@ export function AdminDashboard({ pendingVerificationCount }: AdminDashboardProps
                       <ImageIcon size={12} /> New Image Preview
                     </div>
                     <img src={item.pendingImageUrl} alt="Pending" className="w-full h-auto object-cover rounded-sm cursor-pointer hover:opacity-80 transition-opacity" onClick={() => window.open(item.pendingImageUrl, "_blank")} />
-                    <p className="text-xs text-ink-muted mt-2">Target: {item.targetType === 'person' ? 'People Profile' : 'Article Hero'}</p>
+                    <p className="text-xs text-ink-muted mt-2">Target: {item.targetType === "person" ? "People Profile" : "Article Hero"}</p>
                   </div>
                 )}
                 <div className="flex-grow min-w-0">
