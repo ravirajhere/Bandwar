@@ -5,7 +5,8 @@ import { getSearchIndex } from "@/lib/search-data";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ToastProvider } from "@/components/ui/Toast";
-import { LanguageProvider } from "@/components/providers/LanguageProvider"; // 🚀 NEW IMPORT
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
+import { CommandPalette } from "@/components/layout/CommandPalette"; // 🚀 NEW IMPORT
 
 export const viewport: Viewport = {
   themeColor: [
@@ -125,7 +126,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           "@type": "ContactPoint",
           contactType: "customer support",
           email: config.contact?.email || "contact@bandwar.in",
-          availableLanguage: ["English", "Hindi", "Maithili", "Angika"] // 🚀 Added Angika
+          availableLanguage: ["English", "Hindi", "Maithili", "Angika"]
         },
         knowsAbout: [
           "Bandwar Village History",
@@ -198,9 +199,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <ToastProvider>
-          {/* 🚀 FIX: Wrapped with LanguageProvider */}
           <LanguageProvider>
             <Header searchIndex={searchIndex} />
+            
+            {/* 🚀 NEW: Global Command Palette */}
+            <CommandPalette searchIndex={searchIndex} />
+
             <main id="main-content" className="flex-grow w-full outline-none" tabIndex={-1}>
               {children}
             </main>
