@@ -1,86 +1,154 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import crypto from 'crypto';
+import { NextRequest, NextResponse } from "next/server";
+import { isValidSession } from "@/lib/adminAuth";
+import { getArticleById } from "@/lib/data";
 
-export async function POST(req: Request) {
+export const runtime = "nodejs";
+const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
+
+// ==========================================
+// 1. GITHUB API HELPERS (Copied from publish/route.ts)
+// ==========================================
+async function ghFetch(url: string, init?: RequestInit) {
+  const GITHUB_HEADERS = { 
+    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`, 
+    Accept: "application/vnd.github.v3+json", 
+    "X-GitHub-Api-Version": "2022-11-28" 
+  };
+  return fetch(url, { ...init, headers: { ...GITHUB_HEADERS, ...(init?.headers || {}) } });
+}
+
+async function fetchGithubFile(path: string) {
+  const owner = process.env.GITHUB_REPO_OWNER, repo = process.env.GITHUB_REPO_NAME;
+  const res = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, { cache: "no-store" });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`fetchGithubFile(${path}) failed: ${res.status}`);
+  return res.json();
+}
+
+async function commitMultipleFiles(files: { path: string; content: string; encoding?: "utf-8" | "base64"; delete?: boolean }[], message: string) {
+  const owner = process.env.GITHUB_REPO_OWNER, repo = process.env.GITHUB_REPO_NAME, branch = "main";
+  const refRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`);
+  if (!refRes.ok) throw new Error(`Fetch ref failed: ${refRes.status}`);
+  const ref = await refRes.json();
+  
+  const commitRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits/${ref.object.sha}`);
+  if (!commitRes.ok) throw new Error(`Fetch commit failed: ${commitRes.status}`);
+  const commit = await commitRes.json();
+
+  const treeEntries = await Promise.all(files.map(async (f) => {
+    if (f.delete) return { path: f.path, mode: "100644", type: "blob", sha: null };
+    const blobRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/blobs`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: f.content, encoding: f.encoding || "utf-8" }),
+    });
+    if (!blobRes.ok) throw new Error(`Blob failed: ${f.path}`);
+    const blob = await blobRes.json();
+    return { path: f.path, mode: "100644", type: "blob", sha: blob.sha };
+  }));
+
+  const treeRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ base_tree: commit.tree.sha, tree: treeEntries }),
+  });
+  if (!treeRes.ok) throw new Error(`Tree failed: ${treeRes.status}`);
+  const newTree = await treeRes.json();
+
+  const newCommitRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message, tree: newTree.sha, parents: [ref.object.sha] }),
+  });
+  if (!newCommitRes.ok) throw new Error(`Commit failed: ${newCommitRes.status}`);
+  const newCommit = await newCommitRes.json();
+
+  const updateRes = await ghFetch(`https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`, {
+    method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sha: newCommit.sha }),
+  });
+  if (!updateRes.ok) throw new Error(`Ref update failed: ${updateRes.status}`);
+}
+
+// ==========================================
+// 2. POST HANDLER
+// ==========================================
+export async function POST(request: NextRequest) {
+  const sessionCookie = request.cookies.get("admin_session")?.value;
+  if (!(await isValidSession(sessionCookie))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: NO_STORE });
+  }
+
   try {
-    // 1. Auth Check (Aap apna existing admin auth middleware/check yahan use karein)
-    // const isAuthenticated = await checkAdminAuth(req);
-    // if (!isAuthenticated) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const body = await req.json();
+    const body = await request.json();
     const { articleId, tier, sourceId, method, notes, verifiedBy } = body;
 
     if (!articleId || !tier || !verifiedBy) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400, headers: NO_STORE });
     }
 
-    const articlesDir = path.join(process.cwd(), 'data', 'articles');
-    const stewardshipFile = path.join(process.cwd(), 'data', 'stewardship.json');
+    // 1. Find which category file the article belongs to (using existing build data)
+    const existingArticle = getArticleById(articleId);
+    if (!existingArticle) {
+      return NextResponse.json({ error: "Article not found" }, { status: 404, headers: NO_STORE });
+    }
+    
+    const category = existingArticle.categories?.[0] || "general";
+    const targetPath = `data/articles/${category}.json`;
 
-    let articleUpdated = false;
-    let updatedArticleData = null;
-
-    // 2. Update Article in its specific category file
-    const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.json'));
-    for (const file of files) {
-      const filePath = path.join(articlesDir, file);
-      const rawData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      
-      const articleIndex = rawData.articles?.findIndex((a: any) => a.id === articleId);
-      if (articleIndex !== -1 && articleIndex !== undefined) {
-        // Update confidence and provenance
-        rawData.articles[articleIndex].confidence = tier;
-        rawData.articles[articleIndex].provenance = {
-          sourceId: sourceId || undefined,
-          method: method || 'document',
-          verifiedBy,
-          verifiedAt: new Date().toISOString(),
-          notes: notes || undefined
-        };
-        
-        updatedArticleData = rawData.articles[articleIndex];
-        fs.writeFileSync(filePath, JSON.stringify(rawData, null, 2), 'utf8');
-        articleUpdated = true;
-        break;
-      }
+    // 2. Fetch the latest article file from GitHub
+    const articleFile = await fetchGithubFile(targetPath);
+    if (!articleFile) {
+      return NextResponse.json({ error: "Article file not found on GitHub" }, { status: 404, headers: NO_STORE });
+    }
+    
+    const articleContent = JSON.parse(Buffer.from(articleFile.content, "base64").toString("utf-8"));
+    const articleIndex = articleContent.articles.findIndex((a: any) => a.id === articleId);
+    
+    if (articleIndex === -1) {
+      return NextResponse.json({ error: "Article not found in GitHub file" }, { status: 404, headers: NO_STORE });
     }
 
-    if (!articleUpdated) {
-      return NextResponse.json({ error: 'Article not found' }, { status: 404 });
+    // 3. Update the article's confidence and provenance
+    articleContent.articles[articleIndex].confidence = tier;
+    articleContent.articles[articleIndex].provenance = {
+      sourceId: sourceId || undefined,
+      method: method || 'document',
+      verifiedBy,
+      verifiedAt: new Date().toISOString(),
+      notes: notes || undefined
+    };
+
+    // 4. Fetch stewardship.json from GitHub
+    const stewardshipFile = await fetchGithubFile("data/stewardship.json");
+    let stewardshipContent = { version: "1.0", entries: [] };
+    
+    if (stewardshipFile) {
+      stewardshipContent = JSON.parse(Buffer.from(stewardshipFile.content, "base64").toString("utf-8"));
     }
 
-    // 3. Add Entry to Stewardship Log
-    const stewardship = JSON.parse(fs.readFileSync(stewardshipFile, 'utf8'));
+    // 5. Add log entry to stewardship
     const newEntry = {
       id: `stew-${crypto.randomUUID()}`,
       entityId: articleId,
       entityType: "article",
       action: "verified",
       tier: tier,
-      role: "archivist", // Aap admin role ke hisaab se change kar sakte hain
+      role: "archivist", 
       actor: verifiedBy,
-      method: method,
-      notes: notes,
+      method: method || 'document',
+      notes: notes || "",
       timestamp: new Date().toISOString(),
       sourceIds: sourceId ? [sourceId] : []
     };
-    
-    stewardship.entries.push(newEntry);
-    fs.writeFileSync(stewardshipFile, JSON.stringify(stewardship, null, 2), 'utf8');
 
-    // 🚀 4. COMMIT TO GITHUB 
-    // Yahan aap apna existing GitHub API logic call karein:
-    // await commitToGitHub([
-    //   { path: `data/articles/${targetFile}`, content: updatedArticleData },
-    //   { path: 'data/stewardship.json', content: stewardship }
-    // ], `Verify ${articleId} as ${tier}`);
+    stewardshipContent.entries.push(newEntry);
 
-    return NextResponse.json({ success: true, message: 'Article verified successfully' });
+    // 6. Commit both files to GitHub in a single atomic commit
+    const filesToCommit = [
+      { path: targetPath, content: JSON.stringify(articleContent, null, 2) },
+      { path: "data/stewardship.json", content: JSON.stringify(stewardshipContent, null, 2) }
+    ];
 
-  } catch (error) {
-    console.error('Verification Error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    await commitMultipleFiles(filesToCommit, `Verify: ${articleId} as ${tier}`);
+
+    return NextResponse.json({ success: true, message: "Article verified and committed to GitHub" }, { headers: NO_STORE });
+
+  } catch (error: any) {
+    console.error("Verification Error:", error);
+    return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500, headers: NO_STORE });
   }
 }
