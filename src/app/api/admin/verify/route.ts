@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isValidSession } from "@/lib/adminAuth";
 import { getArticleById } from "@/lib/data";
+import { StewardshipEntry } from "@/lib/schema"; // 🚀 Imported Type
 
 export const runtime = "nodejs";
 const NO_STORE = { "Cache-Control": "no-store, max-age=0" };
@@ -114,14 +115,17 @@ export async function POST(request: NextRequest) {
 
     // 4. Fetch stewardship.json from GitHub
     const stewardshipFile = await fetchGithubFile("data/stewardship.json");
-    let stewardshipContent = { version: "1.0", entries: [] };
+    
+    // 🚀 FIX: Explicitly typed entries as StewardshipEntry[]
+    let stewardshipContent: { version: string; entries: StewardshipEntry[] } = { version: "1.0", entries: [] };
     
     if (stewardshipFile) {
       stewardshipContent = JSON.parse(Buffer.from(stewardshipFile.content, "base64").toString("utf-8"));
     }
 
     // 5. Add log entry to stewardship
-    const newEntry = {
+    // 🚀 FIX: Explicitly typed newEntry
+    const newEntry: StewardshipEntry = {
       id: `stew-${crypto.randomUUID()}`,
       entityId: articleId,
       entityType: "article",
