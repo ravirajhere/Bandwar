@@ -9,6 +9,7 @@ import { ArticleHeroImage } from "@/components/article/ArticleHeroImage";
 import { AudioPlayer } from "@/components/article/AudioPlayer";
 import { ProvenanceBar } from "@/components/article/ProvenanceBar"; // 🚀 NEW
 import { AbsenceCard } from "@/components/article/AbsenceCard"; // 🚀 NEW
+import { CiteThisButton } from "@/components/article/CiteThisButton";
 import { EditableParagraph } from "@/components/editor/EditableParagraph";
 import { EditModeProvider } from "@/components/editor/EditModeProvider";
 import { EditModeToggle } from "@/components/editor/EditModeToggle";
@@ -364,6 +365,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                   )}
                 </div>
                 <div className="flex items-center gap-3">
+                  {/* 🚀 NEW: Cite This Button */}
+                  <CiteThisButton 
+                    title={article.title}
+                    author={article.lastEditedBy || config.site.name}
+                    siteName={config.site.name}
+                    url={articleUrl}
+                    date={article.datePublished || article.lastUpdated}
+                  />
                   <EditModeToggle />
                   <ArticleToolbar title={article.title} summary={article.summary} contentBlocks={article.content} />
                 </div>
