@@ -1,7 +1,6 @@
 import { getAllArticles, getMasterData } from "@/lib/data";
 import { VerifyClient } from "@/components/admin/VerifyClient";
-import Link from "next/link";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
+import AdminShell from "@/app/admin/AdminShell";
 
 export default async function AdminVerifyPage() {
   const allArticles = getAllArticles();
@@ -14,25 +13,18 @@ export default async function AdminVerifyPage() {
   const sources = master.sourceRegistry?.sources || [];
 
   return (
-    <div className="min-h-screen bg-canvas p-6 md:p-10">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <Link href="/admin" className="text-sm text-ink-muted hover:text-accent flex items-center gap-1 mb-2">
-              <ArrowLeft size={14} /> Back to Dashboard
-            </Link>
-            <h1 className="font-serif text-3xl font-bold text-ink flex items-center gap-2">
-              <ShieldCheck className="text-accent" /> Verification Queue
-            </h1>
-            <p className="text-ink-muted mt-1">Review and upgrade unverified knowledge.</p>
-          </div>
-          <div className="bg-surface border border-divider px-4 py-2 rounded-sm text-sm">
-            Pending: <strong className="text-accent">{unverifiedArticles.length}</strong>
-          </div>
+    <AdminShell title="Verification Queue" subtitle="Review and upgrade unverified knowledge.">
+      {/* Pending Count — Dashboard ke banner jaisa */}
+      <div className="flex justify-between items-center mb-6 bg-surface border border-divider rounded-sm p-4">
+        <p className="text-sm text-ink-muted">
+          Unverified articles jo abhi trust tier upgrade ka wait kar rahe hain.
+        </p>
+        <div className="bg-canvas border border-divider px-4 py-2 rounded-sm text-sm shrink-0">
+          Pending: <strong className="text-accent">{unverifiedArticles.length}</strong>
         </div>
-
-        <VerifyClient articles={unverifiedArticles} sources={sources} />
       </div>
-    </div>
+
+      <VerifyClient articles={unverifiedArticles} sources={sources} />
+    </AdminShell>
   );
 }
