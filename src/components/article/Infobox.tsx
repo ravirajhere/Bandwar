@@ -1,6 +1,7 @@
 import React from "react";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { ConfidenceTier } from "@/lib/schema";
+import { EditableInfoboxRow } from "@/components/editor/EditableInfoboxRow";
 
 interface InfoboxProps {
   data?: Record<string, { value: string; confidence?: ConfidenceTier }>;
@@ -20,17 +21,18 @@ export function Infobox({ data, title, articleId }: InfoboxProps) {
       </h3>
       <dl className="space-y-2.5">
         {entries.map(([key, val]) => (
-          <div key={key} className="grid grid-cols-[100px_minmax(0,1fr)] gap-2">
-            <dt className="text-ink-muted font-medium text-xs 3xl:text-sm pt-0.5 truncate" title={key}>
-              {key}
-            </dt>
-            <dd className="text-ink flex flex-wrap items-center gap-2 text-xs 3xl:text-sm leading-snug">
-              <span>{val.value}</span>
-              {/* Sirf tab dikhao jab unverified na ho, taaki visual clutter na ho */}
-              {val.confidence && val.confidence !== "unverified" && (
+          <div key={key}>
+            <EditableInfoboxRow
+              label={key}
+              initialValue={val.value}
+              contextId={articleId}
+              contextType="Article"
+            />
+            {val.confidence && val.confidence !== "unverified" && (
+              <div className="pl-5 pb-1">
                 <ConfidenceBadge tier={val.confidence} className="scale-90 origin-left" />
-              )}
-            </dd>
+              </div>
+            )}
           </div>
         ))}
       </dl>
