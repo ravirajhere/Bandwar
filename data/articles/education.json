@@ -100,8 +100,7 @@
       "metaDescription": "UHS +2 Bandwar is the largest school in the village (Classes 9-12). UDISE Code: 10201008406. Learn about its 601 students, facilities, and educational impact.",
       "subtitle": "The village's main higher secondary school — Classes 9 to 12",
       "categories": [
-        "education",
-        "history"
+        "education"
       ],
       "summary": "UHS +2 Bandwar (Upgraded High School +2) is the largest higher secondary school in Bandwar, Begusarai. Established in 1955 (UDISE: 10201008406), it provides education from Class 9 to 12 to 601 students, with a focus on inclusivity.",
       "hero": "images/education/uhs-plus-2-bandwar-school-building.jpg",
@@ -113,18 +112,48 @@
         }
       ],
       "infobox": {
-        "Type": "Government higher secondary school",
-        "Established": "1955",
-        "UDISE Code": "10201008406",
-        "Classes": "9–12",
-        "Medium": "Hindi",
-        "Students": "601",
-        "Teachers": "15",
-        "Management": "State Government",
-        "Location": "Bandwar, Begusarai, Bihar"
+        "Type": {
+          "value": "Government higher secondary school",
+          "confidence": "unverified"
+        },
+        "Established": {
+          "value": "1955",
+          "confidence": "unverified"
+        },
+        "UDISE Code": {
+          "value": "10201008406",
+          "confidence": "unverified"
+        },
+        "Classes": {
+          "value": "9–12",
+          "confidence": "unverified"
+        },
+        "Medium": {
+          "value": "Hindi",
+          "confidence": "unverified"
+        },
+        "Students": {
+          "value": "601",
+          "confidence": "unverified"
+        },
+        "Teachers": {
+          "value": "15",
+          "confidence": "unverified"
+        },
+        "Management": {
+          "value": "State Government",
+          "confidence": "unverified"
+        },
+        "Location": {
+          "value": "Bandwar, Begusarai, Bihar",
+          "confidence": "unverified"
+        }
       },
       "datePublished": "2026-05-25",
-      "lastUpdated": "2026-05-25",
+      "dateModified": "2026-11-24T11:12:00.564Z",
+      "lastUpdated": "2026-11-24T11:12:00.558Z",
+      "status": "draft",
+      "published": false,
       "content": [
         {
           "heading": "Overview",
@@ -186,7 +215,9 @@
         "class 9 to 12 bihar",
         "udise 10201008406",
         "rural education bihar"
-      ]
+      ],
+      "displayHero": "images/education/uhs-plus-2-bandwar-school-building.jpg",
+      "displayImage": "images/education/uhs-plus-2-bandwar-school-building.jpg"
     },
     {
       "id": "ms-bandwar-middle-school",
