@@ -93,83 +93,123 @@ The Bandwar Archive is not just a website; it is a **digital preservation projec
 
 ```text
 bandwar-archive/
-├── data/                       # 👑 CONTENT WORKSPACE (All JSONs)
-│   ├── master.json             # Site Config, Homepage, Footer, SEO
-│   ├── directory.json          # Local services, doctors, shops
-│   ├── media.json              # Gallery photos and Map landmarks
-│   ├── people.json             # Notable personalities directory
-│   ├── categories.json         # Article categories (12 total)
-│   ├── contributors.json       # Registered user profiles (Auto-managed)
-│   ├── queue.json              # PENDING & STAGED community edits (Auto-managed)
-│   └── articles/               # Articles split by category
-│       ├── culture.json        # 9 Articles (Festivals, Art, Sports)
-│       ├── education.json      # 11 Articles (Schools, Library)
-│       ├── economy.json        # 3 Articles (Agriculture, Haat)
-│       ├── geography.json      # 2 Articles (River, Bandh)
-│       ├── health.json         # 2 Articles (Outbreak, Infra)
-│       ├── infrastructure.json # 5 Articles (Bank, Roads, etc.)
-│       ├── landmarks.json      # 4 Articles (Dwar, Chowk, Well)
-│       ├── religion.json       # 8 Articles (Temples)
-│       ├── society.json        # 3 Articles (Wards, Tolas, Panchayat)
-│       └── sports.json         # 1 Article (Volleyball)
+├── README.md                     # Ye file — project guide + Admin + Articles docs
+├── data/                         # 👑 CONTENT WORKSPACE (All JSONs — GitHub hi DB hai)
+│   ├── master.json               # Site Config, Homepage, Footer, SEO
+│   ├── directory.json            # Directory — categories + entries
+│   ├── media.json                # Gallery photos + Map landmarks
+│   ├── people.json               # Notable personalities directory
+│   ├── categories.json           # Article categories (12 total) — Admin se manage hota hai
+│   ├── contributors.json         # Registered user profiles (Auto-managed — haath se mat chhedo)
+│   ├── queue.json                # PENDING & STAGED community edits (Auto-managed)
+│   ├── audit.json                # Audit Log — Admin se kisne kab kya badla
+│   └── articles/                 # Articles — har category ki alag file
+│       ├── culture.json          # 9 Articles (Festivals, Art, Sports)
+│       ├── education.json        # 11 Articles (Schools, Library)
+│       ├── economy.json          # 3 Articles (Agriculture, Haat)
+│       ├── geography.json        # 2 Articles (River, Bandh)
+│       ├── health.json           # 2 Articles (Outbreak, Infra)
+│       ├── infrastructure.json   # 5 Articles (Bank, Roads, etc.)
+│       ├── landmarks.json        # 4 Articles (Dwar, Chowk, Well)
+│       ├── religion.json         # 8 Articles (Temples)
+│       ├── society.json          # 3 Articles (Wards, Tolas, Panchayat)
+│       └── sports.json           # 1 Article (Volleyball)
 │
-├── public/                     
-│   ├── images/                 # All photos organized by category
-│   │   └── pending/            # Temp folder for user uploads awaiting review
-│   └── images/contributors/    # Auto-generated profile photos
+├── public/
+│   ├── images/                   # All photos organized by category
+│   │   └── pending/              # Temp folder for user uploads awaiting review
+│   └── images/contributors/      # Auto-generated profile photos
 │
-├── scripts/                    
-│   └── validate.ts             # Zod validation engine & Cross-Reference checker
+├── scripts/
+│   └── validate.ts               # Zod validation engine & Cross-Reference checker
 │
-├── src/                        
-│   ├── app/                    # Next.js App Router
-│   │   ├── admin/              # Moderation Dashboard (Protected)
-│   │   ├── api/                
-│   │   │   ├── admin/          # APIs for fetching queue, publishing, rejecting
-│   │   │   ├── contributor/    # APIs for registration, lookup, profile updates
-│   │   │   └── telegram-submit/# Receives forms, saves to queue, alerts Telegram
-│   │   ├── article/[id]/       # Article Page (TOC, Reading Progress, Toolbar)
-│   │   ├── contributors/       # Public Contributor Profiles
-│   │   ├── contribute/         # "Get Involved" guide & General Feedback Hub
-│   │   ├── directory/          # Village Directory Page
-│   │   ├── gallery/            # Photo Gallery Page
-│   │   ├── map/                # Dedicated Map Page (A-Z Index, Legend)
-│   │   ├── people/             # People Directory & Profiles
-│   │   ├── section/            # Archive category listing
-│   │   ├── robots.ts           # Crawler rules (Allows Googlebot-Image & AI Bots)
-│   │   ├── sitemap.ts          # Dynamic Sitemap (Image Deduplication & Safe Dates)
-│   │   ├── globals.css         # Custom CSS tokens, fonts, print styles
-│   │   └── layout.tsx          # Main Layout (Header, Footer, JSON-LD, Search Index)
+├── src/
+│   ├── app/                      # Next.js App Router
+│   │   ├── admin/                # 🔐 Admin Panel — Moderation + Full CMS (Protected)
+│   │   │   ├── AdminShell.tsx    # Shared sidebar / layout — sab admin pages isi ko use karte hai
+│   │   │   ├── layout.tsx        # Admin layout wrapper
+│   │   │   ├── page.tsx          # /admin — login / redirect to dashboard
+│   │   │   ├── dashboard/        # Moderation — Pending / Staged queue, Batch Publish
+│   │   │   │   └── page.tsx
+│   │   │   ├── verify/           # Verification — logo / contributor verification
+│   │   │   │   └── page.tsx
+│   │   │   ├── people/           # People CMS — Add / Edit / Delete
+│   │   │   │   └── page.tsx
+│   │   │   ├── gallery/          # Gallery CMS — Photo Add / Edit / Delete
+│   │   │   │   └── page.tsx
+│   │   │   ├── directory/        # Directory CMS — Entries + Categories, ek hi page
+│   │   │   │   └── page.tsx
+│   │   │   ├── articles/         # Articles CMS — List / Add / Delete, Draft / Published
+│   │   │   │   └── page.tsx
+│   │   │   ├── article-categories/ # Article Categories CMS — Add / Edit / Delete, file auto-create
+│   │   │   │   └── page.tsx
+│   │   │   ├── audit/            # Audit Log — kisne kab kya badla
+│   │   │   │   └── page.tsx
+│   │   │   └── settings/         # Site Settings
+│   │   │       └── page.tsx
+│   │   ├── api/
+│   │   │   ├── admin/            # Admin APIs — sab GitHub API se JSON likhte hai
+│   │   │   │   ├── articles/
+│   │   │   │   │   └── route.ts  # Articles — List + Add + Delete
+│   │   │   │   ├── article/
+│   │   │   │   │   └── [Id]/
+│   │   │   │   │       └── route.ts # Single Article — PUT Edit (Zod validated, ArticleSchema)
+│   │   │   │   ├── article-categories/
+│   │   │   │   │   └── route.ts  # Article Categories — Add / Edit / Delete + file auto-create
+│   │   │   │   ├── directory/
+│   │   │   │   │   └── route.ts  # Directory — Entries + Categories Add / Edit / Delete
+│   │   │   │   ├── gallery/
+│   │   │   │   │   └── route.ts  # Gallery API — Add / Edit / Delete
+│   │   │   │   ├── people/
+│   │   │   │   │   └── route.ts  # People API — Add / Edit / Delete
+│   │   │   │   ├── audit/
+│   │   │   │   │   └── route.ts  # Audit Log API
+│   │   │   │   └── queue/        # Moderation queue — fetch / publish / reject
+│   │   │   ├── contributor/      # APIs for registration, lookup, profile updates
+│   │   │   └── telegram-submit/  # Receives forms, saves to queue, alerts Telegram
+│   │   ├── article/[id]/         # Article Page (TOC, Reading Progress, Toolbar)
+│   │   ├── contributors/         # Public Contributor Profiles
+│   │   ├── contribute/           # "Get Involved" guide & General Feedback Hub
+│   │   ├── directory/            # Village Directory Page (Public)
+│   │   ├── gallery/              # Photo Gallery Page (Public)
+│   │   ├── map/                  # Dedicated Map Page (A-Z Index, Legend)
+│   │   ├── people/               # People Directory & Profiles (Public)
+│   │   ├── section/              # Archive category listing
+│   │   ├── robots.ts             # Crawler rules (Allows Googlebot-Image & AI Bots)
+│   │   ├── sitemap.ts            # Dynamic Sitemap (Image Deduplication & Safe Dates)
+│   │   ├── globals.css           # Custom CSS tokens, fonts, print styles
+│   │   └── layout.tsx            # Main Layout (Header, Footer, JSON-LD, Search Index)
 │   │
-│   ├── components/             
-│   │   ├── about/              # ContributorGrid
-│   │   ├── article/            # ArticleToolbar, Infobox, MobileTOC
-│   │   ├── contribute/         # JoinCTA, ContributeForm
-│   │   ├── contributor/        # ProfileClientWrapper, EditProfileModal
-│   │   ├── editor/             # EditableText, EditableParagraph, EditModeToggle
-│   │   ├── layout/             # Header, Footer, SearchModal
-│   │   ├── map/                # LandmarkMap, MapIndex, MapLegend, MapClient
-│   │   ├── shared/             # AddContentModal, ImageUpdateButton, Toast
-│   │   └── ui/                 # Button, Input primitives
+│   ├── components/
+│   │   ├── about/                # ContributorGrid
+│   │   ├── article/              # ArticleToolbar, Infobox, MobileTOC
+│   │   ├── contribute/           # JoinCTA, ContributeForm
+│   │   ├── contributor/          # ProfileClientWrapper, EditProfileModal
+│   │   ├── editor/               # EditableText, EditableParagraph, EditModeToggle
+│   │   ├── layout/               # Header, Footer, SearchModal
+│   │   ├── map/                  # LandmarkMap, MapIndex, MapLegend, MapClient
+│   │   ├── shared/               # AddContentModal, ImageUpdateButton, Toast
+│   │   └── ui/                   # Button, Input primitives
 │   │
-│   ├── hooks/                  # Custom React Hooks
-│   │   ├── useContributorGate.tsx 
-│   │   └── useInlineEdit.ts    
+│   ├── hooks/                    # Custom React Hooks
+│   │   ├── useContributorGate.tsx
+│   │   └── useInlineEdit.ts
 │   │
-│   ├── lib/                    
-│   │   ├── data.ts             # Reads JSON, Filters missing images, Caches data
-│   │   ├── contributor.ts      # Username generation, types
-│   │   ├── search-data.ts      # Aggregates data for Global Search
-│   │   ├── adminAuth.ts        # HMAC session generation & validation
-│   │   └── schema.ts           # Zod schemas with Auto-Fix Transformers
+│   ├── lib/
+│   │   ├── data.ts               # Reads JSON, Filters missing images, Caches data
+│   │   ├── contributor.ts        # Username generation, types
+│   │   ├── search-data.ts        # Aggregates data for Global Search
+│   │   ├── adminAuth.ts          # HMAC session generation & validation
+│   │   ├── github.ts             # ghReadJson / ghWriteJson / ghAudit (GitHub as DB)
+│   │   └── schema.ts             # Zod schemas with Auto-Fix Transformers
 │   │
-│   └── middleware.ts           # Edge Middleware to protect /admin routes
+│   └── middleware.ts             # Edge Middleware to protect /admin routes
 │
-├── .npmrc                      # Forces legacy-peer-deps for Leaflet
-├── next.config.js              # Redirects, Security Headers, Image Caching
-├── tailwind.config.ts          # Identity tokens (Warm Archive theme)
-├── vercel.json                 # Ignores Vercel builds for queue.json updates
-└── package.json                # Dependencies (Includes `sharp` for Image Opt)
+├── .npmrc                        # Forces legacy-peer-deps for Leaflet
+├── next.config.js                # Redirects, Security Headers, Image Caching
+├── tailwind.config.ts            # Identity tokens (Warm Archive theme)
+├── vercel.json                   # Ignores Vercel builds for queue.json updates
+└── package.json                  # Dependencies (Includes `sharp` for Image Opt)
 ```
 
 ---
