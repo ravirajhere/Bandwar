@@ -358,7 +358,14 @@
         "mithila region culture",
         "madhubani painting history"
       ],
-      "lastEditedBy": "Bandwar Editor"
+      "lastEditedBy": "Bandwar Editor",
+      "confidence": "archival",
+      "provenance": {
+        "sourceId": "resident-interviews-2024-2026",
+        "method": "document",
+        "verifiedBy": "Activist",
+        "verifiedAt": "2026-11-24T08:19:25.472Z"
+      }
     },
     {
       "id": "ram-katha-thakurbari-bandwar-2021",
