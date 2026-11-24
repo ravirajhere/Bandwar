@@ -23,6 +23,45 @@ async function deleteGithubFile(path: string): Promise<void> {
   } catch (error) { console.error(`[action] Exception during delete: ${path}`, error); }
 }
 
+// NEW: Audit Log — data/audit.json me append karo
+// Iske bina Approve / Reject Audit Log me nahi dikhega
+async function appendAudit(entry: { action: string; target: string; detail: string }) {
+  const githubToken = process.env.GITHUB_TOKEN;
+  const repoOwner = process.env.GITHUB_REPO_OWNER;
+  const repoName = process.env.GITHUB_REPO_NAME;
+  if (!githubToken || !repoOwner || !repoName) return;
+  try {
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/audit.json`;
+    const headers = { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json", "X-GitHub-Api-Version": "2022-11-28" };
+    let sha: string | undefined;
+    let list: any[] = [];
+    const getRes = await fetch(url, { headers, cache: "no-store" });
+    if (getRes.ok) {
+      const d = await getRes.json();
+      sha = d.sha;
+      try { list = JSON.parse(Buffer.from(d.content, "base64").toString("utf-8")); } catch { list = []; }
+    }
+    if (!Array.isArray(list)) list = [];
+    list.push({
+      id: `audit-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      at: new Date().toISOString(),
+      actor: "Admin",
+      ...entry,
+    });
+    // Last 500 hi rakho — file badi nahi hogi
+    const kept = list.slice(-500);
+    await fetch(url, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({
+        message: `chore: audit ${entry.action} ${entry.target}`,
+        content: Buffer.from(JSON.stringify(kept, null, 2)).toString("base64"),
+        ...(sha ? { sha } : {}),
+      }),
+    });
+  } catch (e) { console.error("[audit] failed", e); }
+}
+
 export async function POST(request: NextRequest) {
   const sessionCookie = request.cookies.get("admin_session")?.value;
   if (!(await isValidSession(sessionCookie))) {
@@ -39,7 +78,7 @@ export async function POST(request: NextRequest) {
   let body: { editId?: unknown; editIds?: unknown; action?: unknown; reason?: unknown };
   try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400, headers: NO_STORE }); }
 
-  // ✅ BACKWARD COMPAT: purana {editId} bhi chalega, naya {editIds: []} bhi chalega
+  // BACKWARD COMPAT: purana {editId} bhi chalega, naya {editIds: []} bhi chalega
   const editIds: string[] = Array.isArray(body.editIds)
     ? body.editIds.filter((x): x is string => typeof x === "string").map(s => s.trim()).filter(Boolean).slice(0, 50)
     : typeof body.editId === "string" && body.editId.trim() ? [body.editId.trim()] : [];
@@ -63,7 +102,7 @@ export async function POST(request: NextRequest) {
       if (!Array.isArray(queueContent.pending)) queueContent.pending = [];
       if (!Array.isArray(queueContent.approved)) queueContent.approved = [];
 
-      // ✅ Bulk: saare items ek hi PUT me move karo — 10 baar GitHub hit nahi hoga
+      // Bulk: saare items ek hi PUT me move karo — 10 baar GitHub hit nahi hoga
       const moved: any[] = [];
       const remainingPending: any[] = [];
       for (const item of queueContent.pending) {
@@ -106,6 +145,16 @@ export async function POST(request: NextRequest) {
           } catch (tgErr) { console.warn(`[action] Telegram fail:`, tgErr); }
         }
       }
+
+      // NEW: Audit — har approve / reject ab log hoga
+      for (const item of moved) {
+        await appendAudit({
+          action: action === "approve" ? "STAGED" : "REJECTED",
+          target: item.contextId || item.id,
+          detail: `${item.type || ""} • ${item.field || "Image"} • ${reason || ""}`.trim(),
+        });
+      }
+
       return NextResponse.json({ success: true, processed: moved.length }, { headers: NO_STORE });
     } catch (error: any) {
       lastError = error.message || "Unknown error";
