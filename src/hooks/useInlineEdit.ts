@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/components/ui/Toast";
-import { useContributorGate } from "./useContributorGate"; 
+import { useContributorGate } from "./useContributorGate";
 
 export type EditStatus = "idle" | "editing" | "saving" | "pending" | "error";
 
@@ -13,31 +13,39 @@ export function useInlineEdit(
   fieldName: string
 ) {
   const { toast } = useToast();
-  const { submitWithGate, registrationModal } = useContributorGate(); 
+  const { submitWithGate, registrationModal } = useContributorGate();
   const [status, setStatus] = useState<EditStatus>("idle");
   const [value, setValue] = useState(initialValue);
   const [draft, setDraft] = useState(initialValue);
 
-  // 🚀 FIX: Sync state if initialValue changes (e.g., on client-side navigation)
+  // Sync state if initialValue changes (e.g., on client-side navigation)
+  // Par agar already pending hai, toh usko overwrite mat karo
   useEffect(() => {
-    setValue(initialValue);
-    setDraft(initialValue);
+    setValue((prev) => {
+      if (status === "pending") return prev;
+      return initialValue;
+    });
+    setDraft((prev) => {
+      if (status === "editing" || status === "saving" || status === "pending") return prev;
+      return initialValue;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValue]);
 
-  const startEditing = useCallback(() => { 
-    setDraft(value); 
-    setStatus("editing"); 
+  const startEditing = useCallback(() => {
+    setDraft(value);
+    setStatus("editing");
   }, [value]);
 
-  const cancelEditing = useCallback(() => { 
-    setDraft(value); 
-    setStatus("idle"); 
+  const cancelEditing = useCallback(() => {
+    setDraft(value);
+    setStatus("idle");
   }, [value]);
 
   const saveEdit = useCallback(async () => {
-    if (draft.trim() === value.trim()) { 
-      setStatus("idle"); 
-      return; 
+    if (draft.trim() === value.trim()) {
+      setStatus("idle");
+      return;
     }
 
     setStatus("saving");
@@ -54,17 +62,19 @@ export function useInlineEdit(
         const resData = await res.json();
 
         if (resData.success) {
-          setValue(draft); 
+          // IMPORTANT: Live value MAT badlo — purana hi dikhega
+          // Sirf status pending rakho, taaki amber dot dikhe
+          // Draft ko bhi purane value pe wapas lao
+          setDraft(value);
           setStatus("pending");
-          toast("Suggestion sent for review.", "success");
-          setTimeout(() => setStatus("idle"), 4000);
+          toast("Suggestion sent — Pending Review. Admin ke approve ke baad live hoga.", "success");
+          // Yaha timeout HATA diya — pending tab tak rahega jab tak page reload na ho
+          // Taaki visitor ko pata chale ispe already suggestion gaya hai
         } else {
-          // 🚀 FIX: Revert to editing state so the user doesn't lose their draft
           setStatus("editing");
           toast("Failed to send suggestion. Please try again.", "error");
         }
       } catch (err) {
-        // 🚀 FIX: Revert to editing state
         setStatus("editing");
         toast("Network error. Please try again.", "error");
       }
@@ -73,6 +83,6 @@ export function useInlineEdit(
 
   return {
     status, value, draft, setDraft, startEditing, cancelEditing, saveEdit,
-    registrationModal, 
+    registrationModal,
   };
 }
