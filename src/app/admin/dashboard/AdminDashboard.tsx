@@ -2,12 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link"; // 🚀 NEW IMPORT
 import {
   CheckCircle2, XCircle, FileText, User, Clock,
   LogOut, Loader2, Image as ImageIcon, Rocket,
+  ShieldCheck, ArrowRight // 🚀 NEW ICONS
 } from "lucide-react";
 
-export function AdminDashboard() {
+// 🚀 Prop type update
+interface AdminDashboardProps {
+  pendingVerificationCount: number;
+}
+
+export function AdminDashboard({ pendingVerificationCount }: AdminDashboardProps) {
   const router = useRouter();
   const [queue, setQueue] = useState<any>({ pending: [], approved: [] });
   const [loading, setLoading] = useState(true);
@@ -122,6 +129,34 @@ export function AdminDashboard() {
             <LogOut size={16} aria-hidden="true" /> Logout
           </button>
         </div>
+
+        {/* 🚀 NEW: VERIFICATION QUEUE BANNER */}
+        <Link 
+          href="/admin/verify" 
+          className="group block mb-8 bg-surface border border-divider hover:border-accent rounded-sm p-4 transition-colors relative overflow-hidden"
+        >
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
+            <div className="flex items-center gap-4">
+              <div className="bg-accent/10 p-2.5 rounded-full text-accent group-hover:scale-110 transition-transform">
+                <ShieldCheck size={24} />
+              </div>
+              <div>
+                <h3 className="font-serif text-lg font-bold text-ink flex items-center gap-2">
+                  Verification Queue
+                  {pendingVerificationCount > 0 && (
+                    <span className="bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      {pendingVerificationCount} Pending
+                    </span>
+                  )}
+                </h3>
+                <p className="text-sm text-ink-muted mt-0.5">Review unverified knowledge and upgrade trust tiers.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-sm font-semibold text-ink group-hover:text-accent transition-colors shrink-0">
+              Open Queue <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+        </Link>
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div className="flex bg-surface border border-divider rounded-sm p-1">
