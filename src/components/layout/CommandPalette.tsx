@@ -2,15 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Search, FileText, User, MapPin, ArrowRight, Compass } from "lucide-react";
-
-interface SearchItem {
-  id: string;
-  title: string;
-  type: "article" | "person" | "page";
-  category?: string;
-  href: string;
-}
+import { Search, FileText, User, MapPin, ArrowRight, Compass, Image as ImageIcon, Phone } from "lucide-react";
+import { SearchItem } from "@/lib/search-data"; // 🚀 Importing exact type
 
 interface CommandPaletteProps {
   searchIndex: SearchItem[];
@@ -50,12 +43,12 @@ export function CommandPalette({ searchIndex }: CommandPaletteProps) {
     }
   }, [isOpen]);
 
-  // Filter results
+  // Filter results (Search in title and description)
   const filteredItems = query === "" 
     ? searchIndex.slice(0, 5) // Show recent/popular if empty
     : searchIndex.filter((item) => 
         item.title.toLowerCase().includes(query.toLowerCase()) || 
-        (item.category && item.category.toLowerCase().includes(query.toLowerCase()))
+        item.description.toLowerCase().includes(query.toLowerCase())
       ).slice(0, 8);
 
   // Handle keyboard navigation
@@ -69,9 +62,21 @@ export function CommandPalette({ searchIndex }: CommandPaletteProps) {
     } else if (e.key === "Enter") {
       e.preventDefault();
       if (filteredItems[selectedIndex]) {
-        router.push(filteredItems[selectedIndex].href);
+        router.push(filteredItems[selectedIndex].url); // 🚀 FIX: Using .url instead of .href
         setIsOpen(false);
       }
+    }
+  };
+
+  // 🚀 Icon Mapping based on Type
+  const getIcon = (type: string) => {
+    switch (type) {
+      case "article": return <FileText size={16} />;
+      case "person": return <User size={16} />;
+      case "directory": return <Phone size={16} />;
+      case "landmark": return <MapPin size={16} />;
+      case "photo": return <ImageIcon size={16} />;
+      default: return <Compass size={16} />;
     }
   };
 
@@ -104,7 +109,7 @@ export function CommandPalette({ searchIndex }: CommandPaletteProps) {
             value={query}
             onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0); }}
             onKeyDown={handleKeyDown}
-            placeholder="Search articles, people, or pages..."
+            placeholder="Search articles, people, landmarks..."
             className="flex-1 bg-transparent border-none outline-none text-ink placeholder:text-ink-muted text-base"
           />
           <kbd className="hidden sm:inline-block border border-divider bg-surface rounded px-1.5 text-[10px] text-ink-muted font-mono">ESC</kbd>
@@ -120,20 +125,16 @@ export function CommandPalette({ searchIndex }: CommandPaletteProps) {
               {filteredItems.map((item, index) => (
                 <li key={item.id}>
                   <button
-                    onClick={() => { router.push(item.href); setIsOpen(false); }}
+                    onClick={() => { router.push(item.url); setIsOpen(false); }}
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-sm transition-colors ${index === selectedIndex ? "bg-accent/10 text-accent" : "text-ink hover:bg-canvas"}`}
                   >
                     <div className={`p-1.5 rounded-sm ${index === selectedIndex ? "bg-accent/20 text-accent" : "bg-canvas text-ink-muted border border-divider"}`}>
-                      {item.type === "article" && <FileText size={16} />}
-                      {item.type === "person" && <User size={16} />}
-                      {item.type === "page" && <Compass size={16} />}
+                      {getIcon(item.type)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold truncate">{item.title}</p>
-                      {item.category && (
-                        <p className="text-[10px] uppercase tracking-wider font-bold opacity-60 mt-0.5">{item.category}</p>
-                      )}
+                      <p className="text-xs text-ink-muted truncate mt-0.5">{item.description}</p>
                     </div>
                     {index === selectedIndex && <ArrowRight size={16} className="text-accent shrink-0" />}
                   </button>
