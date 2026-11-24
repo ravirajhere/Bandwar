@@ -195,8 +195,7 @@
       "metaDescription": "Government middle school in Bandwar, Begusarai. UDISE: 10201008401. Serving 669 students from Class 1 to 8. View facilities, teachers, and history.",
       "subtitle": "The village's main government middle school — Classes 1 to 8",
       "categories": [
-        "education",
-        "history"
+        "education"
       ],
       "summary": "MS Bandwar (Middle School Bandwar) is the main government middle school in Bandwar, Begusarai. Established in 1955 (UDISE: 10201008401), it serves Classes 1 to 8 with 669 students, making it the most inclusive school in the village.",
       "hero": "images/education/ms-bandwar-middle-school-building.jpg",
@@ -208,18 +207,48 @@
         }
       ],
       "infobox": {
-        "Type": "Government middle school",
-        "Established": "1955",
-        "UDISE Code": "10201008401",
-        "Classes": "1–8",
-        "Medium": "Hindi, Sanskrit, English",
-        "Students": "669",
-        "Teachers": "17",
-        "Management": "State Government",
-        "Location": "Bandwar, Begusarai, Bihar"
+        "Type": {
+          "value": "Government middle school",
+          "confidence": "unverified"
+        },
+        "Established": {
+          "value": "1955",
+          "confidence": "unverified"
+        },
+        "UDISE Code": {
+          "value": "10201008401",
+          "confidence": "unverified"
+        },
+        "Classes": {
+          "value": "1–8",
+          "confidence": "unverified"
+        },
+        "Medium": {
+          "value": "Hindi, Sanskrit, English",
+          "confidence": "unverified"
+        },
+        "Students": {
+          "value": "669",
+          "confidence": "unverified"
+        },
+        "Teachers": {
+          "value": "17",
+          "confidence": "unverified"
+        },
+        "Management": {
+          "value": "State Government",
+          "confidence": "unverified"
+        },
+        "Location": {
+          "value": "Bandwar, Begusarai, Bihar",
+          "confidence": "unverified"
+        }
       },
       "datePublished": "2026-06-25",
-      "lastUpdated": "2026-06-25",
+      "dateModified": "2026-11-24T09:05:51.396Z",
+      "lastUpdated": "2026-11-24T09:05:51.396Z",
+      "status": "published",
+      "published": true,
       "content": [
         {
           "heading": "Overview",
@@ -281,7 +310,9 @@
         "class 1 to 8 bihar",
         "udise 10201008401",
         "government school bandwar"
-      ]
+      ],
+      "displayHero": "images/education/ms-bandwar-middle-school-building.jpg",
+      "displayImage": "images/education/ms-bandwar-middle-school-building.jpg"
     },
     {
       "id": "gps-paschimibandwar-school",
