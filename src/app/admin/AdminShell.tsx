@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, LayoutDashboard, ShieldCheck, Users, Images, Settings, History, Phone } from "lucide-react";
+import { LogOut, LayoutDashboard, ShieldCheck, Users, Images, Settings, History, Phone, FileText, FolderTree } from "lucide-react";
 
 export default function AdminShell({ children, title, subtitle }: { children: React.ReactNode; title: string; subtitle?: string }) {
   const path = usePathname();
@@ -19,6 +19,8 @@ export default function AdminShell({ children, title, subtitle }: { children: Re
     { href: "/admin/people", label: "People", icon: Users },
     { href: "/admin/gallery", label: "Gallery", icon: Images },
     { href: "/admin/directory", label: "Directory", icon: Phone },
+    { href: "/admin/articles", label: "Articles", icon: FileText },
+    { href: "/admin/article-categories", label: "Article Categories", icon: FolderTree },
     { href: "/admin/audit", label: "Audit Log", icon: History },
     { href: "/admin/settings", label: "Settings", icon: Settings },
   ];
