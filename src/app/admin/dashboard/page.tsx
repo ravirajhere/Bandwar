@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AdminDashboard } from "./AdminDashboard";
+import { getAllArticles } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Moderation Dashboard",
@@ -12,5 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <AdminDashboard />;
+  // 🚀 Server side pe count calculate karein
+  const allArticles = getAllArticles();
+  const pendingVerificationCount = allArticles.filter(a => !a.confidence || a.confidence === 'unverified').length;
+
+  return <AdminDashboard pendingVerificationCount={pendingVerificationCount} />;
 }
