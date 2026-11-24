@@ -7,7 +7,7 @@ import AdminShell from "@/app/admin/AdminShell";
 import {
   CheckCircle2, XCircle, FileText, User, Clock,
   Loader2, Image as ImageIcon, Rocket,
-  ShieldCheck, ArrowRight, FilePlus2, Users, Images, Activity, BookOpen, Eye
+  ShieldCheck, ArrowRight, FilePlus2, Users, Images, Activity, BookOpen, Eye, Search, Filter
 } from "lucide-react";
 
 interface Stats {
@@ -45,6 +45,12 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
   const [activeTab, setActiveTab] = useState<"pending" | "approved">("pending");
   const [authError, setAuthError] = useState(false);
 
+  // --- PHASE 3 STATE ---
+  const [search, setSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkProcessing, setBulkProcessing] = useState(false);
+
   const fetchQueue = async () => {
     setLoading(true);
     try {
@@ -80,13 +86,50 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
       const res = await fetch("/api/admin/publish", { method: "POST", credentials: "same-origin" });
       if (res.status === 401) { router.replace("/admin"); return; }
       const data = await res.json();
-      if (data.success) { alert("🎉 Successfully published! GitHub updated. Vercel is deploying."); await fetchQueue(); setActiveTab("pending"); }
+      if (data.success) { alert("🎉 Successfully published! GitHub updated. Vercel is deploying."); await fetchQueue(); setActiveTab("pending"); setSelected(new Set()); }
       else alert(`❌ Failed: ${data.error}`);
     } catch (error: any) { alert(`❌ Error: ${error.message}`); }
     finally { setPublishing(false); }
   };
 
+  // --- PHASE 3 LOGIC ---
   const currentList = activeTab === "pending" ? queue.pending : queue.approved;
+
+  const filteredList = currentList.filter((item: any) => {
+    if (typeFilter !== "all" && item.type !== typeFilter) return false;
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (item.contextId || "").toLowerCase().includes(q) ||
+      (item.userName || "").toLowerCase().includes(q) ||
+      (item.userUsername || "").toLowerCase().includes(q) ||
+      (item.newValue || "").toLowerCase().includes(q) ||
+      (item.field || "").toLowerCase().includes(q);
+  });
+
+  const toggleSelect = (id: string) => {
+    setSelected(prev => { const n = new Set(prev); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  };
+  const toggleSelectAll = () => {
+    setSelected(prev => prev.size === filteredList.length ? new Set() : new Set(filteredList.map((x: any) => x.id)));
+  };
+  const switchTab = (tab: "pending" | "approved") => { setActiveTab(tab); setSelected(new Set()); };
+
+  const handleBulk = async (action: "approve" | "reject") => {
+    if (selected.size === 0) return;
+    let reason = "";
+    if (action === "reject") reason = prompt("Reject reason (optional, contributor ko pata chalega):") || "";
+    if (!confirm(`${selected.size} item(s) ${action} karna hai?`)) return;
+    setBulkProcessing(true);
+    try {
+      const res = await fetch("/api/admin/action", {
+        method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin",
+        body: JSON.stringify({ editIds: Array.from(selected), action, reason }),
+      });
+      if (!res.ok) throw new Error("Bulk failed");
+      setSelected(new Set());
+      await fetchQueue();
+    } catch { alert("Bulk action failed."); } finally { setBulkProcessing(false); }
+  };
 
   // --- PHASE 2: COMMAND CENTER CARDS ---
   const cards = [
@@ -148,7 +191,7 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
         </div>
       </div>
 
-      {/* VERIFICATION QUEUE BANNER — same as before */}
+      {/* VERIFICATION QUEUE BANNER */}
       <Link href="/admin/verify" className="group block mb-8 bg-surface border border-divider hover:border-accent rounded-sm p-4 transition-colors relative overflow-hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
           <div className="flex items-center gap-4">
@@ -173,12 +216,13 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
         </div>
       </Link>
 
-      <div id="queue" className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 scroll-mt-8">
+      {/* TABS + PUBLISH */}
+      <div id="queue" className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 scroll-mt-8">
         <div className="flex bg-surface border border-divider rounded-sm p-1">
-          <button onClick={() => setActiveTab("pending")} className={`px-4 py-1.5 text-sm font-semibold rounded-sm ${activeTab === "pending" ? "bg-accent text-white" : "text-ink-muted"}`}>
+          <button onClick={() => switchTab("pending")} className={`px-4 py-1.5 text-sm font-semibold rounded-sm ${activeTab === "pending" ? "bg-accent text-white" : "text-ink-muted"}`}>
             Pending ({queue.pending.length})
           </button>
-          <button onClick={() => setActiveTab("approved")} className={`px-4 py-1.5 text-sm font-semibold rounded-sm ${activeTab === "approved" ? "bg-accent text-white" : "text-ink-muted"}`}>
+          <button onClick={() => switchTab("approved")} className={`px-4 py-1.5 text-sm font-semibold rounded-sm ${activeTab === "approved" ? "bg-accent text-white" : "text-ink-muted"}`}>
             Staged ({queue.approved.length})
           </button>
         </div>
@@ -190,6 +234,38 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
         )}
       </div>
 
+      {/* PHASE 3: SEARCH + FILTER BAR */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex-1 min-w-[200px] flex items-center gap-2 bg-surface border border-divider rounded-sm px-3">
+          <Search size={16} className="text-ink-muted shrink-0" />
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by title / user / text..." className="w-full py-2 text-sm bg-transparent outline-none placeholder:text-ink-muted" />
+        </div>
+        <div className="flex items-center gap-2 bg-surface border border-divider rounded-sm px-3">
+          <Filter size={16} className="text-ink-muted" />
+          <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="bg-transparent py-2 text-sm outline-none">
+            <option value="all">All Types</option>
+            <option value="article">Article</option>
+            <option value="person">Person</option>
+            <option value="image">Image</option>
+            <option value="directory">Directory</option>
+          </select>
+        </div>
+        {(search || typeFilter !== "all") && <button onClick={() => { setSearch(""); setTypeFilter("all"); }} className="px-3 py-2 text-sm font-semibold border border-divider bg-surface rounded-sm">Clear</button>}
+      </div>
+
+      {/* PHASE 3: BULK BAR */}
+      {activeTab === "pending" && filteredList.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 mb-4 bg-surface border border-divider rounded-sm px-3 py-2">
+          <label className="flex items-center gap-2 text-sm font-semibold cursor-pointer select-none">
+            <input type="checkbox" checked={selected.size === filteredList.length && filteredList.length > 0} onChange={toggleSelectAll} className="w-4 h-4" /> Select All ({selected.size} / {filteredList.length})
+          </label>
+          <div className="ml-auto flex gap-2">
+            <button onClick={() => handleBulk("approve")} disabled={selected.size === 0 || bulkProcessing} className="px-3 py-1.5 bg-accent text-white text-sm font-semibold rounded-sm disabled:opacity-50 flex items-center gap-1">{bulkProcessing ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />} Approve Selected ({selected.size})</button>
+            <button onClick={() => handleBulk("reject")} disabled={selected.size === 0 || bulkProcessing} className="px-3 py-1.5 border border-divider text-sm font-semibold rounded-sm disabled:opacity-50 flex items-center gap-1"><XCircle size={14} /> Reject Selected</button>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="flex justify-center py-20"><Loader2 className="animate-spin text-accent" size={32} /></div>
       ) : authError ? (
@@ -198,16 +274,19 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
           <p className="text-sm text-ink-muted mt-1">Please log in again.</p>
           <button onClick={() => router.replace("/admin")} className="mt-4 px-4 py-2 bg-accent text-white text-sm font-semibold rounded-sm">Return to Login</button>
         </div>
-      ) : currentList.length === 0 ? (
+      ) : filteredList.length === 0 ? (
         <div className="text-center py-20 bg-surface border border-divider rounded-sm">
           <CheckCircle2 size={40} className="mx-auto text-green-500 mb-3 opacity-50" />
-          <h3 className="text-lg font-serif text-ink">No items {activeTab === "pending" ? "pending" : "staged"}!</h3>
+          <h3 className="text-lg font-serif text-ink">{search || typeFilter !== "all" ? "Koi result nahi mila — filter clear karke dekho" : `No items ${activeTab === "pending" ? "pending" : "staged"}!`}</h3>
         </div>
       ) : (
         <div className="space-y-4">
-          {currentList.map((item: any) => (
-            <div key={item.id} className="bg-surface border border-divider rounded-sm overflow-hidden">
-              <div className="bg-canvas/50 border-b border-divider px-4 py-2.5 flex flex-wrap justify-between items-center gap-2">
+          {filteredList.map((item: any) => (
+            <div key={item.id} className="relative bg-surface border border-divider rounded-sm overflow-hidden">
+              {activeTab === "pending" && (
+                <input type="checkbox" checked={selected.has(item.id)} onChange={() => toggleSelect(item.id)} className="absolute top-3 right-3 w-4 h-4 z-10 cursor-pointer" />
+              )}
+              <div className="bg-canvas/50 border-b border-divider px-4 py-2.5 flex flex-wrap justify-between items-center gap-2 pr-10">
                 <div className="flex items-center gap-3 text-xs font-medium text-ink-muted">
                   <span className="flex items-center gap-1"><FileText size={14} className="text-accent" /> {item.type}</span>
                   <span className="text-divider">|</span>
