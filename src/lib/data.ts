@@ -279,7 +279,8 @@ export function getQueue(): QueueData {
   if (cache.queue) return cache.queue;
   const fullPath = path.join(process.cwd(), "data", "queue.json");
   if (!fs.existsSync(fullPath)) {
-    cache.queue = { pending: [], approved: [] }; // FIXED: items -> pending & approved
+    // FIXED: rejected bhi chahiye — nahi toh schema.ts wala build error aayega
+    cache.queue = { pending: [], approved: [], rejected: [] };
     return cache.queue;
   }
   const rawData = readJsonFile("queue.json");
@@ -311,7 +312,6 @@ export function getSuggestionsFor(username: string): ProfileSuggestion[] {
   const queue = getQueue() as any;
   const pending = Array.isArray(queue.pending) ? queue.pending : [];
   const approved = Array.isArray(queue.approved) ? queue.approved : [];
-  // Agar kabhi rejected alag se rakhoge toh yaha add kar dena
   const rejected = Array.isArray(queue.rejected) ? queue.rejected : [];
 
   const withStatus = [
@@ -328,15 +328,18 @@ export function getSuggestionsFor(username: string): ProfileSuggestion[] {
     .map((s: any) => {
       // Article ka title — contextId se, nahi mila toh contextId hi dikhao
       const article = s.contextId ? getArticleById(String(s.contextId)) : undefined;
+      // FIXED: _status ko priority do — s.status me kabhi "staged" bhi aa jata hai
+      // FIXED: reason me rejectedReason bhi — nahi toh Reject ka reason khali dikhega
+      const status = s._status as ProfileSuggestion["status"];
       return {
         id: String(s.id || `${s.contextId}-${s.timestamp}`),
         articleId: String(s.contextId || ""),
         articleTitle: article?.title || String(s.contextId || "Unknown"),
         fieldName: String(s.field || s.type || "Suggestion"),
         newValue: String(s.newValue ?? s.suggestedValue ?? ""),
-        status: (s.status || s._status || "pending") as ProfileSuggestion["status"],
-        reason: String(s.reason || s.rejectReason || ""),
-        createdAt: String(s.timestamp || s.createdAt || ""),
+        status,
+        reason: String(s.reason || s.rejectedReason || s.rejectReason || ""),
+        createdAt: String(s.timestamp || s.createdAt || s.submittedAt || ""),
       } as ProfileSuggestion;
     })
     .sort((a, b) => +new Date(b.createdAt || 0) - +new Date(a.createdAt || 0));
