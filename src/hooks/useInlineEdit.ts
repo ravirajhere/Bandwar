@@ -71,18 +71,10 @@ export function useInlineEdit(
 
     await submitWithGate(formData, async (data) => {
       try {
-        // 1) Telegram — admin ko turant pata chale
+        // Ek hi API — ye Telegram bhejega + queue.json me save bhi karega
+        // Alag /api/suggestions mat banao, double entry banegi
         const tg = await fetch("/api/telegram-submit", { method: "POST", body: data });
         const tgData = await tg.json().catch(() => ({}));
-
-        // 2) DB / JSON me save — profile pe dikhane ke liye
-        // Agar ye API abhi nahi hai toh fail hone do, Telegram wala suggest toh gaya hi hai
-        try {
-          await fetch("/api/suggestions", {
-            method: "POST",
-            body: data,
-          });
-        } catch {}
 
         if (tgData.success !== false) {
           // IMPORTANT: Live value MAT badlo — purana hi dikhega
