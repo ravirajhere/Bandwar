@@ -27,8 +27,8 @@ export const ConfidenceTierEnum = z.enum([
 export type ConfidenceTier = z.infer<typeof ConfidenceTierEnum>;
 
 export const ProvenanceSchema = z.object({
-  sourceId: z.string().optional(),        
-  sourceLabel: z.string().optional(),      
+  sourceId: z.string().optional(),
+  sourceLabel: z.string().optional(),
   sourceUrl: z.string().url().optional(),
   method: z.enum([
     "document",
@@ -38,7 +38,7 @@ export const ProvenanceSchema = z.object({
     "public-record",
     "inferred",
   ]).optional(),
-  verifiedBy: z.string().optional(),       
+  verifiedBy: z.string().optional(),
   verifiedAt: DateSchema.optional(),
   confidence: ConfidenceTierEnum.optional(),
   notes: z.string().optional(),
@@ -659,7 +659,7 @@ export const MasterSchema = z.object({
 
 export const EdgeSchema = z.object({
   id: z.string(),
-  type: z.string(),                    
+  type: z.string(),
   from: IdSchema,
   to: IdSchema,
   label: z.string().optional(),
@@ -681,8 +681,8 @@ export const StewardshipEntrySchema = z.object({
   entityType: z.enum(["article", "person", "photo", "landmark", "directory", "media"]),
   action: z.enum(["created", "verified", "contested", "unverified", "corrected", "flagged"]),
   tier: ConfidenceTierEnum,
-  role: z.string(),                    
-  actor: z.string(),                   
+  role: z.string(),
+  actor: z.string(),
   method: z.string().optional(),
   notes: z.string().optional(),
   timestamp: DateSchema,
@@ -711,21 +711,53 @@ export const AbsencesDataSchema = z.object({
   absences: z.array(AbsenceRecordSchema),
 });
 
+// FIXED: Queue — real data se match kar diya
+// Pehle submittedBy / submittedAt / payload required tha, real data me hai hi nahi
+// Isliye validateData fail hota tha aur profile khali dikhta tha
 export const QueueItemSchema = z.object({
   id: z.string(),
-  type: z.enum(["edit", "new-article", "photo", "directory", "person", "correction"]),
-  status: z.enum(["pending", "staged", "rejected", "published"]),
+  // Real data me type kabhi "article" / "person" bhi hota hai, kabhi "edit" — isliye loose rakha
+  type: z.string().optional(),
+  // status kabhi missing hota hai — pending / approved / rejected array se bhi pata chalta hai
+  status: z.enum(["pending", "staged", "approved", "rejected", "published"]).optional(),
+  // Naya shape
   targetId: z.string().optional(),
-  submittedBy: z.string(),
-  submittedAt: DateSchema,
+  submittedBy: z.string().optional(),
+  submittedAt: DateSchema.optional(),
   channel: z.enum(["telegram", "web", "admin"]).optional(),
-  payload: z.record(z.any()),          
+  payload: z.record(z.any()).optional(),
   notes: z.string().optional(),
+  // Purana / real shape — Telegram + Dashboard dono se aata hai
+  contextId: z.string().optional(),
+  userName: z.string().optional(),
+  userUsername: z.string().optional(),
+  suggestedBy: z.string().optional(),
+  field: z.string().optional(),
+  intent: z.string().optional(),
+  oldValue: z.string().optional(),
+  newValue: z.string().optional(),
+  suggestedValue: z.string().optional(),
+  sourceReason: z.string().optional(),
+  reason: z.string().optional(),
+  rejectedReason: z.string().optional(),
+  rejectReason: z.string().optional(),
+  timestamp: z.string().optional(),
+  createdAt: z.string().optional(),
+  approvedAt: z.string().optional(),
+  rejectedAt: z.string().optional(),
+  approvedVia: z.string().optional(),
+  rejectedVia: z.string().optional(),
+  pendingImageUrl: z.string().optional(),
+  targetType: z.string().optional(),
+  telegramMessageId: z.any().optional(),
+  chatId: z.any().optional(),
 }).passthrough();
 
 export const QueueDataSchema = z.object({
   pending: z.array(QueueItemSchema).default([]),
   approved: z.array(QueueItemSchema).default([]),
+  // FIXED: Reject ab yaha save hoga — pehle tha hi nahi, isliye gayab ho jata tha
+  rejected: z.array(QueueItemSchema).default([]),
 }).passthrough();
 
 // ==========================================
