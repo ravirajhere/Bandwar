@@ -101,6 +101,8 @@ export async function POST(request: NextRequest) {
       const queueContent = JSON.parse(Buffer.from(queueData.content, "base64").toString("utf-8"));
       if (!Array.isArray(queueContent.pending)) queueContent.pending = [];
       if (!Array.isArray(queueContent.approved)) queueContent.approved = [];
+      // FIXED: rejected array bhi ensure karo — nahi toh reject gayab ho jayega
+      if (!Array.isArray(queueContent.rejected)) queueContent.rejected = [];
 
       // Bulk: saare items ek hi PUT me move karo — 10 baar GitHub hit nahi hoga
       const moved: any[] = [];
@@ -113,10 +115,23 @@ export async function POST(request: NextRequest) {
 
       queueContent.pending = remainingPending;
       if (action === "approve") {
-        for (const item of moved) queueContent.approved.push({ ...item, approvedVia: "Dashboard", approvedAt: new Date().toISOString() });
+        for (const item of moved) queueContent.approved.push({
+          ...item,
+          status: "approved",
+          approvedVia: "Dashboard",
+          approvedAt: new Date().toISOString(),
+        });
       } else {
-        // Reject reason save karo taaki baad me pata chale kyu reject hua
-        for (const item of moved) item.rejectedReason = reason || "Rejected via Dashboard";
+        // FIXED: Reject ko rejected[] me daalo — pehle kahin daala hi nahi ja raha tha
+        // Profile pe Rejected dikhane ke liye ye zaroori hai
+        for (const item of moved) queueContent.rejected.push({
+          ...item,
+          status: "rejected",
+          reason: reason || "Rejected via Dashboard",
+          rejectedReason: reason || "Rejected via Dashboard",
+          rejectedAt: new Date().toISOString(),
+          rejectedVia: "Dashboard",
+        });
       }
 
       const putRes = await fetch(queueUrl, {
