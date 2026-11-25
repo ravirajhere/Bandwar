@@ -37,19 +37,22 @@ export async function POST(req: NextRequest) {
     const type = String(formData.get("type") || "").slice(0, 100);
     const contextIdRaw = String(formData.get("contextId") || "").slice(0, 100);
     const contextId = contextIdRaw.toLowerCase().replace(/[^a-z0-9-]/g, "-");
-    
-    // 🚀 STRICT VALIDATION: Reject if ID is missing or invalid
+
     if (!contextId || contextId === "new-item" || contextId === "unknown") {
       return NextResponse.json({ error: "Invalid or missing Context ID. Cannot process." }, { status: 400, headers: NO_STORE });
     }
-    
+
     const userNameRaw = String(formData.get("submitterName") || "").slice(0, 100).trim() || "Anonymous";
-    const userUsernameRaw = String(formData.get("submitterUsername") || "").slice(0, 50).trim();
-    
+    // Gate ab dono bhejta hai — suggestedBy + submitterUsername, dono accept karo
+    const userUsernameRaw = String(formData.get("submitterUsername") || formData.get("suggestedBy") || "").slice(0, 50).trim();
+    const field = String(formData.get("field") || "");
+    const oldValue = String(formData.get("currentValue") || "");
+    const newValue = String(formData.get("suggestedValue") || "");
+
     let userUsername = "";
     if (userUsernameRaw) {
       const validUser = getContributors().find(c => normalizeUsername(c.username) === normalizeUsername(userUsernameRaw));
-      if (validUser) userUsername = userUsernameRaw;
+      if (validUser) userUsername = validUser.username; // normalized wala save karo, raw nahi
     }
 
     const imageFile = formData.get("image") as File | null;
@@ -58,12 +61,12 @@ export async function POST(req: NextRequest) {
     if (imageFile && imageFile.size > 0) {
       if (imageFile.size > 5 * 1024 * 1024) throw new Error("Image too large (max 5MB)");
       if (!["image/jpeg", "image/png", "image/webp"].includes(imageFile.type)) throw new Error("Invalid image type");
-      
+
       const arrayBuffer = await imageFile.arrayBuffer();
       const base64 = Buffer.from(arrayBuffer).toString("base64");
       const editId = `edit_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
       const imagePath = `public/images/pending/${editId}.jpg`;
-      
+
       const imgRes = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${imagePath}`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json", "Content-Type": "application/json" },
@@ -72,7 +75,6 @@ export async function POST(req: NextRequest) {
       if (imgRes.ok) pendingImageUrl = `/images/pending/${editId}.jpg`;
     }
 
-    // 🚀 DETERMINE INTENT & TARGET
     let intent = "add";
     const targetType = String(formData.get("targetType") || "").toLowerCase();
 
@@ -83,8 +85,7 @@ export async function POST(req: NextRequest) {
     }
 
     let filePath = "";
-    
-    // 🚀 STRICT ROUTING
+
     if (targetType === "gallery") {
       filePath = "data/media.json";
     } else if (targetType === "person") {
@@ -109,35 +110,36 @@ export async function POST(req: NextRequest) {
 
     const queueUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/data/queue.json`;
     const queueRes = await fetch(queueUrl, { headers: { Authorization: `Bearer ${githubToken}`, Accept: "application/vnd.github.v3+json" } });
-    
+
     let fileData = null;
     let queueContent: { pending: any[], approved: any[] } = { pending: [], approved: [] };
-    
-    if (queueRes.ok) { 
-      fileData = await queueRes.json(); 
-      queueContent = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8")); 
+
+    if (queueRes.ok) {
+      fileData = await queueRes.json();
+      queueContent = JSON.parse(Buffer.from(fileData.content, "base64").toString("utf-8"));
       if (!Array.isArray(queueContent.pending)) queueContent.pending = [];
       if (!Array.isArray(queueContent.approved)) queueContent.approved = [];
     }
-    
-    const queueItem = { 
-      id: `edit_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`, 
-      type, 
-      contextId, 
-      userName: userNameRaw, 
-      userUsername, 
-      timestamp: new Date().toISOString(), 
-      pendingImageUrl, 
+
+    const queueItem = {
+      id: `edit_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      type,
+      contextId,
+      userName: userNameRaw,
+      userUsername,
+      suggestedBy: userUsername, // profile pe filter isi se hoga — ek hi field
+      timestamp: new Date().toISOString(),
+      pendingImageUrl,
       intent,
       filePath,
       targetType,
-      field: formData.get("field") || "",
-      oldValue: formData.get("currentValue") || "",
-      newValue: formData.get("suggestedValue") || "",
+      field,
+      oldValue,
+      newValue,
       currentImagePath: formData.get("currentImagePath") || "Unknown",
       jsonObj: targetType === "article" ? { Category: filePath.split('/').pop()?.replace('.json', '') || "general" } : {}
     };
-    
+
     queueContent.pending.push(queueItem);
 
     await fetch(queueUrl, {
@@ -146,7 +148,16 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({ message: `New submission ${queueItem.id}`, content: Buffer.from(JSON.stringify(queueContent, null, 2)).toString("base64"), ...(fileData && { sha: fileData.sha }) }),
     });
 
-    const tgMsg = `🔔 <b>New ${escapeHtml(type.toUpperCase())}</b>\n\n👤 <b>By:</b> ${escapeHtml(userNameRaw)}\n🎯 <b>Target:</b> <code>${escapeHtml(contextId)}</code>\n📂 <b>Type:</b> ${escapeHtml(targetType)}\n👇 <b>Review:</b> https://bandwar.vercel.app/admin/dashboard`;
+    // Telegram — ab admin ko Telegram se hi decision ho jayega
+    const profileLine = userUsername
+      ? `👤 <b>By:</b> ${escapeHtml(userNameRaw)} (@${escapeHtml(userUsername)})\n🔗 <b>Profile:</b> https://bandwar.vercel.app/contributors/${escapeHtml(userUsername)}`
+      : `👤 <b>By:</b> ${escapeHtml(userNameRaw)}`;
+
+    const diffLine = intent === "edit" && field
+      ? `\n\n📝 <b>${escapeHtml(field)}:</b>\n❌ Old: ${escapeHtml(oldValue.slice(0, 200))}\n✅ New: ${escapeHtml(newValue.slice(0, 200))}`
+      : pendingImageUrl ? `\n\n🖼️ New image uploaded` : "";
+
+    const tgMsg = `🔔 <b>New ${escapeHtml(type.toUpperCase())}</b>\n\n${profileLine}\n🎯 <b>Target:</b> <code>${escapeHtml(contextId)}</code>\n📂 <b>Type:</b> ${escapeHtml(targetType)}${diffLine}\n\n👇 <b>Review:</b> https://bandwar.vercel.app/admin/dashboard`;
     await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId, text: tgMsg, parse_mode: "HTML", disable_web_page_preview: true }),
