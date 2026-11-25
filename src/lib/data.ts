@@ -288,7 +288,62 @@ export function getQueue(): QueueData {
 }
 
 // ==========================================
-// 5. GRAPH & PROVENANCE HELPERS (new)
+// 5. SUGGESTIONS FOR PROFILE (new)
+// Profile: contributors/[username] pe dikhane ke liye
+// Source: data/queue.json hi hai — alag store nahi
+// ==========================================
+
+export type ProfileSuggestion = {
+  id: string;
+  articleId: string;
+  articleTitle: string;
+  fieldName: string;
+  newValue: string;
+  status: "pending" | "approved" | "rejected";
+  reason: string;
+  createdAt: string;
+};
+
+export function getSuggestionsFor(username: string): ProfileSuggestion[] {
+  const normalized = normalizeUsername(username);
+  if (!normalized) return [];
+
+  const queue = getQueue() as any;
+  const pending = Array.isArray(queue.pending) ? queue.pending : [];
+  const approved = Array.isArray(queue.approved) ? queue.approved : [];
+  // Agar kabhi rejected alag se rakhoge toh yaha add kar dena
+  const rejected = Array.isArray(queue.rejected) ? queue.rejected : [];
+
+  const withStatus = [
+    ...pending.map((s: any) => ({ ...s, _status: "pending" as const })),
+    ...approved.map((s: any) => ({ ...s, _status: "approved" as const })),
+    ...rejected.map((s: any) => ({ ...s, _status: "rejected" as const })),
+  ];
+
+  return withStatus
+    .filter((s: any) => {
+      const owner = normalizeUsername(s.suggestedBy || s.userUsername || s.userName || "");
+      return owner === normalized;
+    })
+    .map((s: any) => {
+      // Article ka title — contextId se, nahi mila toh contextId hi dikhao
+      const article = s.contextId ? getArticleById(String(s.contextId)) : undefined;
+      return {
+        id: String(s.id || `${s.contextId}-${s.timestamp}`),
+        articleId: String(s.contextId || ""),
+        articleTitle: article?.title || String(s.contextId || "Unknown"),
+        fieldName: String(s.field || s.type || "Suggestion"),
+        newValue: String(s.newValue ?? s.suggestedValue ?? ""),
+        status: (s.status || s._status || "pending") as ProfileSuggestion["status"],
+        reason: String(s.reason || s.rejectReason || ""),
+        createdAt: String(s.timestamp || s.createdAt || ""),
+      } as ProfileSuggestion;
+    })
+    .sort((a, b) => +new Date(b.createdAt || 0) - +new Date(a.createdAt || 0));
+}
+
+// ==========================================
+// 6. GRAPH & PROVENANCE HELPERS (new)
 // ==========================================
 
 export function getConnections(entityId: string): Edge[] {
