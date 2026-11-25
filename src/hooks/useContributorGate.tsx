@@ -4,6 +4,15 @@ import { useState, useEffect, useCallback } from "react";
 import { RegisterProfileModal } from "@/components/shared/RegisterProfileModal";
 import { Contributor, CONTRIBUTOR_STORAGE_KEY } from "@/lib/contributor";
 
+function readStoredContributor(): Contributor | null {
+  try {
+    const stored = localStorage.getItem(CONTRIBUTOR_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function useContributorGate() {
   const [contributor, setContributor] = useState<Contributor | null>(null);
   const [showRegistration, setShowRegistration] = useState(false);
@@ -12,27 +21,26 @@ export function useContributorGate() {
     cb: (data: FormData) => Promise<void>;
   } | null>(null);
 
-  // 🚀 Load contributor from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem(CONTRIBUTOR_STORAGE_KEY);
-    if (stored) {
-      try { setContributor(JSON.parse(stored)); } catch {}
-    }
+    setContributor(readStoredContributor());
   }, []);
 
-  // 🚀 PERFORMANCE FIX: Wrap in useCallback to prevent unnecessary re-renders
   const submitWithGate = useCallback(async (
     formData: FormData,
     callback: (data: FormData) => Promise<void>
   ) => {
-    // 1. Agar user logged in hai (ya profile bana chuka hai)
-    if (contributor) {
-      formData.set("submitterName", contributor.displayName);
-      formData.set("submitterUsername", contributor.username);
+    // State ka wait mat karo — localStorage se turant padho, nahi toh pehle click pe galat modal khulega
+    const current = contributor || readStoredContributor();
+
+    if (current) {
+      if (!contributor) setContributor(current);
+      // Ek hi naam rakho — submitterUsername hi source of truth hai
+      // suggestedBy alias bhi de do taaki /api/suggestions ko alag se parse na karna pade
+      formData.set("submitterName", current.displayName);
+      formData.set("submitterUsername", current.username);
+      formData.set("suggestedBy", current.username);
       await callback(formData);
-    } 
-    // 2. Agar logged in nahi hai
-    else {
+    } else {
       setPendingSubmit({ data: formData, cb: callback });
       setShowRegistration(true);
     }
@@ -47,6 +55,7 @@ export function useContributorGate() {
       const { data, cb } = pendingSubmit;
       data.set("submitterName", newContributor.displayName);
       data.set("submitterUsername", newContributor.username);
+      data.set("suggestedBy", newContributor.username);
       await cb(data);
       setPendingSubmit(null);
     }
@@ -57,12 +66,10 @@ export function useContributorGate() {
     setPendingSubmit(null);
   }, []);
 
-  // 🚀 EditModeToggle se login trigger karne ke liye
   const requestLogin = useCallback(() => {
     setShowRegistration(true);
   }, []);
 
-  // 🚀 Render Registration Modal
   const registrationModal = showRegistration ? (
     <RegisterProfileModal
       onComplete={handleRegistrationComplete}
