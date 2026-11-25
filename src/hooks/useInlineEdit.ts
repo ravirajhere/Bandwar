@@ -13,13 +13,12 @@ export function useInlineEdit(
   fieldName: string
 ) {
   const { toast } = useToast();
-  // Gate se contributor bhi le lo — isme username hona chahiye
-  const { submitWithGate, registrationModal, contributor } = useContributorGate() as any;
+  const { submitWithGate, registrationModal } = useContributorGate();
   const [status, setStatus] = useState<EditStatus>("idle");
   const [value, setValue] = useState(initialValue);
   const [draft, setDraft] = useState(initialValue);
 
-  // Pending ko reload ke baad bhi yaad rakho — nahi toh visitor ko lagega suggest gaya hi nahi
+  // Pending ko reload ke baad bhi yaad rakho
   const pendingKey = `suggest-pending:${contextId}:${fieldName}`;
 
   useEffect(() => {
@@ -29,6 +28,8 @@ export function useInlineEdit(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingKey]);
 
+  // Sync state if initialValue changes (e.g., on client-side navigation)
+  // Par agar already pending hai, toh usko overwrite mat karo
   useEffect(() => {
     setValue((prev) => {
       if (status === "pending") return prev;
@@ -59,28 +60,22 @@ export function useInlineEdit(
 
     setStatus("saving");
 
-    // Username — gate se, nahi mila toh localStorage se, nahi toh anonymous
-    const suggestedBy =
-      contributor?.username ||
-      (typeof window !== "undefined" ? localStorage.getItem("contributor_username") || "" : "");
-
+    // Sirf content bhejo — username gate jodega (submitterUsername + suggestedBy)
     const formData = new FormData();
     formData.append("type", contextType);
     formData.append("contextId", contextId);
     formData.append("field", fieldName);
     formData.append("currentValue", value);
     formData.append("suggestedValue", draft);
-    formData.append("suggestedBy", suggestedBy);
-    // Profile pe article ka naam dikhane ke liye — backend isko save karega
     formData.append("articleId", contextId);
 
     await submitWithGate(formData, async (data) => {
       try {
-        // 1) Telegram — admin ko turant pata chale (pehle jaisa)
+        // 1) Telegram — admin ko turant pata chale
         const tg = await fetch("/api/telegram-submit", { method: "POST", body: data });
         const tgData = await tg.json().catch(() => ({}));
 
-        // 2) DB / JSON me save — profile pe dikhane ke liye (ye naya hai)
+        // 2) DB / JSON me save — profile pe dikhane ke liye
         // Agar ye API abhi nahi hai toh fail hone do, Telegram wala suggest toh gaya hi hai
         try {
           await fetch("/api/suggestions", {
@@ -90,6 +85,8 @@ export function useInlineEdit(
         } catch {}
 
         if (tgData.success !== false) {
+          // IMPORTANT: Live value MAT badlo — purana hi dikhega
+          // Sirf status pending rakho, taaki amber dot dikhe
           setDraft(value);
           setStatus("pending");
           try { localStorage.setItem(pendingKey, "1"); } catch {}
@@ -103,7 +100,7 @@ export function useInlineEdit(
         toast("Network error. Please try again.", "error");
       }
     });
-  }, [draft, value, contextType, contextId, fieldName, submitWithGate, toast, contributor, pendingKey]);
+  }, [draft, value, contextType, contextId, fieldName, submitWithGate, toast, pendingKey]);
 
   return {
     status, value, draft, setDraft, startEditing, cancelEditing, saveEdit,
