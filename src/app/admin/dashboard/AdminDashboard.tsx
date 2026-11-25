@@ -100,12 +100,17 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
   useEffect(() => { fetchQueue(); }, []);
   useEffect(() => { if (mainTab === "audit") fetchAudit(); }, [mainTab]);
 
+  // FIXED: Single Reject me bhi reason bhej raha hai — pehle khali jata tha
   const handleAction = async (editId: string, action: "approve" | "reject") => {
+    let reason = "";
+    if (action === "reject") {
+      reason = prompt("Reject reason (contributor ko pata chalega):") || "";
+    }
     setProcessing(editId);
     try {
       const res = await fetch("/api/admin/action", {
         method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin",
-        body: JSON.stringify({ editId, action }),
+        body: JSON.stringify({ editId, action, reason }),
       });
       if (res.status === 401) { router.replace("/admin"); return; }
       await fetchQueue();
@@ -149,6 +154,7 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
 
   const currentList = activeTab === "pending" ? queue.pending : queue.approved;
 
+  // FIXED: suggestedBy bhi search me — purane suggest bhi milenge
   const filteredList = currentList.filter((item: any) => {
     if (typeFilter !== "all" && item.type !== typeFilter) return false;
     if (!search.trim()) return true;
@@ -156,6 +162,7 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
     return (item.contextId || "").toLowerCase().includes(q) ||
       (item.userName || "").toLowerCase().includes(q) ||
       (item.userUsername || "").toLowerCase().includes(q) ||
+      (item.suggestedBy || "").toLowerCase().includes(q) ||
       (item.newValue || "").toLowerCase().includes(q) ||
       (item.field || "").toLowerCase().includes(q);
   });
@@ -372,7 +379,8 @@ export function AdminDashboard({ pendingVerificationCount, stats, recentArticles
                       <span className="font-mono text-ink">{item.contextId}</span>
                     </div>
                     <div className="flex items-center gap-3 text-xs font-medium text-ink-muted">
-                      <span className="flex items-center gap-1"><User size={14} /> {item.userName} ({item.userUsername})</span>
+                      {/* FIXED: Ramesh () nahi dikhega */}
+                      <span className="flex items-center gap-1"><User size={14} /> {item.userName}{item.userUsername ? ` (@${item.userUsername})` : ""}{item.suggestedBy && item.suggestedBy !== item.userUsername ? ` • @${item.suggestedBy}` : ""}</span>
                       <span className="flex items-center gap-1"><Clock size={14} /> {new Date(item.timestamp).toLocaleTimeString()}</span>
                     </div>
                   </div>
